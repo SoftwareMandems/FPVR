@@ -143,11 +143,11 @@
 
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 
-\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+\toprule {\bf Date} & {\bf Developer(s)} & {\bf Changes}\\
 
 \midrule
 
-Date 1 & 1.0 & Notes\\
+Oct 16 2026 & Sankalpa &  Goals Section\\
 
 Date 2 & 1.1 & Notes\\
 
@@ -197,19 +197,157 @@ FPVR aims to build on these existing approaches by focusing specifically on a pr
 
 The intended contribution of FPVR is therefore not the introduction of drone simulation or VR flight itself, but the integration of immersive flight practice with structured progression and measurable feedback. The effectiveness of this approach will require evaluation with potential users.
 
-% TODO: Write your team's content for G.2 here.
-
 \subsection{Expected Benefits}\label{g3}
 
-\guidance{New processes, or improvement to existing processes, made possible by the project's results. It presents the business benefits expected from the successful execution of the project. This chapter is the core of the Goals book, describing what the organization expects from the system. It ensures that the project remains focused: if at some stage it gets pushed in different directions, with ``creeping featurism'' threatening its integrity, a reminder about the original business goals stated in those chapters will help. \cite{BM22}}
+\textbf{Safe and Repeatable Practice (G1).}
+FPVR will allow users to practise drone operation without exposing
+a real drone or surrounding property to collision-related damage.
+Users can recover from simulated crashes and repeat exercises
+without the costs associated with damaging physical equipment.
 
-% TODO: Write your team's content for G.3 here.
+\medskip
+
+\textbf{Progressive Skill Development (G2).}
+Rather than relying exclusively on unrestricted flight, FPVR
+will offer structured challenges of varying difficulty.
+Users can freely select levels based on their experience and
+practise increasingly demanding manoeuvres at their own pace.
+
+\medskip
+
+\textbf{Performance Awareness (G3).}
+After completing a training level, users will be able to
+review their performance through recorded measures such as
+completion time, checkpoint progress, and collisions.
+This feedback is intended to help users identify areas for
+improvement and encourage deliberate practice.
+
+\medskip
+
+\textbf{Accessible Introductory Training (G4).}
+FPVR will accommodate users with limited or no prior FPV
+flying experience by providing a free-flight environment
+where they can become familiar with flight controls before
+attempting structured challenges.
+
+\medskip
+
+These benefits concern the intended training experience.
+Any claim that FPVR improves actual physical-drone piloting
+ability will require separate validation and is not assumed
+by this specification.
 
 \subsection{Functionality overview}\label{g4}
 
-\guidance{Overview of the functions (behavior) of the system. Principal properties only (details are in the System book). It is a short overview of the functions of the future system, a kind of capsule version of book S, skipping details but enabling readers to get a quick grasp of what the system will do. \cite{BM22}}
+FPVR will provide the following capabilities to support
+its goals.
 
-% TODO: Write your team's content for G.4 here.
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Functionality Overview}
+\label{tab:functionality-overview}
+
+\begin{tabularx}{\textwidth}{
+    @{}p{3.0cm} X p{2.4cm}@{}
+}
+\toprule
+\textbf{Functionality} &
+\textbf{Description} &
+\textbf{Initial Scope} \\
+\midrule
+
+VR Flight Experience &
+First-person simulated drone flight through a virtual
+reality headset. &
+Core \\
+
+\addlinespace
+
+Free-Flight Practice &
+An open-ended practice environment where users can
+freely operate the drone without course objectives,
+timers, or scoring. &
+Core \\
+
+\addlinespace
+
+Obstacle-Course Levels &
+Structured flight challenges of varying difficulty.
+Users may select any available level regardless of
+previous completion. &
+Core \\
+
+\addlinespace
+
+Different Environments &
+Multiple virtual environments for flight practice and
+obstacle courses. Different levels may share the same
+environment. &
+Core \\
+
+\addlinespace
+
+Checkpoint System &
+Designated course checkpoints used to track progress
+toward level completion. &
+Core \\
+
+\addlinespace
+
+Crash Recovery &
+Following a simulated crash, users can choose to
+restart the level or respawn at the most recently
+reached checkpoint. &
+Core \\
+
+\addlinespace
+
+Timing and Scoring &
+Records completion time and calculates a score
+based on defined performance measures during
+obstacle-course challenges. &
+Core \\
+
+\addlinespace
+
+Flight Review &
+Provides a summary of flight performance after
+completing a level, including completion time,
+collisions, checkpoint results, and score. &
+Core \\
+
+\addlinespace
+
+Flight Rating &
+Provides a separate performance rating based on
+defined flight measures. The evaluation criteria
+remain to be determined. &
+Core \\
+
+\addlinespace
+
+Intelligent Feedback &
+Potential AI-based analysis of flight performance
+to provide additional observations and recommendations,
+subject to feasibility evaluation. &
+Planned \\
+
+\addlinespace
+
+Controller Input &
+Supports drone control using Meta Quest controllers
+or a compatible Xbox controller. &
+Core \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The exact scoring and rating criteria, controller mappings,
+checkpoint and respawn behaviour, and requirements for
+AI-based feedback will be specified in the System section.
+
 
 \subsection{High-level usage scenarios}\label{g5}
 
