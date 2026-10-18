@@ -177,9 +177,9 @@ Date 2 & 1.1 & Notes\\
 
 \subsection{Context and Overall Objectives}\label{g1}
 
-Learning to operate a first-person-view (FPV) drone presents challenges for beginners, particularly when practising with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
+Learning to operate a first-person-view (FPV) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
 
-FPVR is a virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practise flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
+FPVR is a virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
 
 The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, checkpoints, and performance evaluation. Users will receive feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. An optional intelligent feedback component may provide further analysis of user performance.
 
@@ -187,9 +187,9 @@ The training environment will include free-flight practice, multiple obstacle-co
 
 \subsection{Current situation}\label{g2}
 
-Learning to operate a first-person-view (FPV) drone requires beginners to develop coordinated control skills while interpreting visual feedback from the drone's perspective. Practising with physical drones introduces risks of crashes, equipment damage, and additional costs, making simulation a valuable alternative for introductory training.
+Learning to operate a first-person-view (FPV) drone requires beginners to develop coordinated control skills while interpreting visual feedback from the drone's perspective. Practicing with physical drones introduces risks of crashes, equipment damage, and additional costs, making simulation a valuable alternative for introductory training.
 
-Several established FPV drone simulators, including Liftoff: FPV Drone Racing and VelociDrone, allow users to practise flight manoeuvres, complete racing courses, and explore virtual environments through conventional PC-based interfaces. These platforms provide extensive training and recreational capabilities, with a strong emphasis on realistic flight behaviour, racing, and freestyle flying. However, their traditional desktop experiences do not provide the same interaction environment as a dedicated virtual reality (VR) headset.
+Several established FPV drone simulators, including Liftoff: FPV Drone Racing and VelociDrone, allow users to practice flight manoeuvres, complete racing courses, and explore virtual environments through conventional PC-based interfaces. These platforms provide extensive training and recreational capabilities, with a strong emphasis on realistic flight behaviour, racing, and freestyle flying. However, their traditional desktop experiences do not provide the same interaction environment as a dedicated virtual reality (VR) headset.
 
 VR-based alternatives also exist. Liftoff: XR Drone introduces accessible drone flight using Meta Quest controllers, while DVR Simulator and Drone Blitz offer VR flight challenges and racing or performance-tracking features. These applications demonstrate that immersive drone simulation is already feasible, but they differ in their emphasis on casual exploration, racing, and structured practice.
 
@@ -200,7 +200,7 @@ The intended contribution of FPVR is therefore not the introduction of drone sim
 \subsection{Expected Benefits}\label{g3}
 
 \textbf{Safe and Repeatable Practice (G1).}
-FPVR will allow users to practise drone operation without exposing
+FPVR will allow users to practice drone operation without exposing
 a real drone or surrounding property to collision-related damage.
 Users can recover from simulated crashes and repeat exercises
 without the costs associated with damaging physical equipment.
@@ -211,7 +211,7 @@ without the costs associated with damaging physical equipment.
 Rather than relying exclusively on unrestricted flight, FPVR
 will offer structured challenges of varying difficulty.
 Users can freely select levels based on their experience and
-practise increasingly demanding manoeuvres at their own pace.
+practice increasingly demanding manoeuvres at their own pace.
 
 \medskip
 
@@ -351,11 +351,133 @@ AI-based feedback will be specified in the System section.
 
 \subsection{High-level usage scenarios}\label{g5}
 
-\guidance{Fundamental usage paths through the system. It presents the main scenarios (use cases) that the system should cover. The scenarios chosen for appearing here, in the Goals book, should only be the main usage patterns, without details such as special and erroneous cases; they should be stated in user terms only, independently of the system's structure. Detailed usage scenarios, taking into account system details and special cases, will appear in the System book (\hyperref[s4]{S.4}). \cite{BM22}}
+This section describes the primary interactions between
+users and FPVR during flight practice, obstacle-course
+completion, crash recovery, and performance evaluation.
+These scenarios illustrate the intended system behaviour
+and support the goals defined in Section G.1.
 
-% TODO: Write your team's content for G.5 here.
+\subsubsection{Scenario 1: Initial Free-Flight Practice}
 
-% TODO: Add your high-level use case diagram here.
+A first-time user launches FPVR and selects the free-flight
+mode using either Meta Quest controllers or a compatible
+Xbox controller. The user enters a virtual environment
+where they can practice basic flight manoeuvres, such as
+ascending, descending, turning, and navigating through
+the environment.
+
+Unlike structured obstacle-course levels, free-flight
+mode has no checkpoints, timers, or scoring. Users can
+explore and practice at their own pace without specific
+completion objectives.
+
+If the drone experiences a simulated crash, the user can
+reset its position and continue practicing. The user may
+leave free-flight mode and return to the level-selection
+interface when desired.
+
+This scenario supports G1 and G4 by providing a safe,
+repeatable environment for becoming familiar with FPV
+drone controls.
+
+
+\subsubsection{Scenario 2: Completing an Obstacle-Course Level}
+
+A user selects an obstacle-course level from the available
+challenges. All levels are accessible regardless of previous
+completion, allowing users to choose courses appropriate
+to their experience and preferences.
+
+Each level contains obstacles and a sequence of checkpoints
+that must be completed in the designated order. The system
+tracks the user's progression, total elapsed time, and time
+spent navigating between checkpoints. Upon reaching a
+checkpoint, the current section timer resets while the
+total elapsed time continues accumulating.
+
+The user navigates through the checkpoints in sequence
+until reaching the finish. After successful completion,
+the system calculates a numerical score and a separate
+performance rating based on the recorded flight results.
+
+The user can then review their performance, retry the
+level, or select another challenge.
+
+This scenario supports G2 by providing structured flight
+challenges of varying difficulty with measurable outcomes.
+
+
+\subsubsection{Scenario 3: Recovering from a Simulated Crash}
+
+While attempting an obstacle-course level, the user loses
+control of the drone and experiences a simulated crash.
+The system records the collision and provides two recovery
+options: restart the entire level or respawn at the most
+recently reached checkpoint.
+
+If the user selects respawn, the drone returns to the last
+successfully reached checkpoint. If no checkpoints have
+been reached, the drone returns to the level's starting
+position.
+
+The current section timer resets upon respawning, allowing
+the user to attempt the section again. However, the total
+elapsed time continues accumulating, including the time
+spent on failed attempts. The recorded collision also
+negatively affects the final score.
+
+The user can continue attempting the course without
+restarting the FPVR application.
+
+This scenario supports G1 and G2 by allowing users to
+recover from mistakes while maintaining meaningful
+performance consequences.
+
+\subsubsection{Scenario 4: Reviewing Flight Performance}
+
+After successfully completing an obstacle-course level,
+the user receives a flight review summarizing their
+performance.
+
+The review includes the total completion time, checkpoint
+results, collision count, and numerical score. The total
+completion time includes time spent on failed sections
+and subsequent attempts following checkpoint respawns.
+
+The system also presents a separate overall performance
+rating based on defined evaluation criteria. The user can
+examine these results to identify areas for improvement
+before attempting another flight challenge.
+
+This scenario supports G3 by providing measurable feedback
+intended to encourage deliberate practice and improvement.
+
+The exact scoring formula, rating categories, and penalties
+associated with collisions must be established in \hyperref[s4]{S.4}.
+
+
+\subsubsection{Scenario 5: AI-Assisted Flight Feedback
+(Planned: Subject to Feasibility)}
+
+If AI-assisted feedback is included in the final
+implementation, the system will automatically provide
+additional performance analysis as part of the post-level
+flight review.
+
+Using available flight-performance data, the system would
+identify areas of difficulty and provide understandable
+observations or recommendations. For example, the
+feedback might highlight repeated collisions or
+difficulties navigating particular obstacle sections.
+
+The intelligent feedback component is intended to
+complement the standard numerical score and performance
+rating rather than replace them.
+
+The feasibility, data requirements, analysis approach,
+and evaluation criteria for AI-assisted feedback remain
+to be determined. The standard flight review will remain
+available independently of this optional capability.
 
 % \begin{figure}[H]
 
