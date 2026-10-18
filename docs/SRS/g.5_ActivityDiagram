@@ -1,0 +1,34 @@
+
+@startuml
+title FPVR Activity Diagram
+
+skinparam shadowing false
+skinparam monochrome true
+
+|User|
+start
+:Launch FPVR;
+:Select obstacle-course level;
+:Control virtual drone;
+
+|Flight Simulation|
+:Simulate drone movement;
+:Detect collisions;
+:Handle restart or checkpoint\nrespawn when needed;
+
+|Course Manager|
+:Track checkpoint progression;
+:Record time and collisions;
+:Detect level completion;
+
+|Performance Evaluation|
+:Calculate score and rating;
+:Generate flight review;
+:Include AI feedback if available;
+
+|User|
+:View performance results;
+:Choose next activity;
+stop
+
+@enduml
