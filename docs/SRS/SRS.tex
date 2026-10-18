@@ -490,9 +490,107 @@ available independently of this optional capability.
 
 \subsection{Limitations and Exclusions}\label{g6}
 
-\guidance{Aspects that the system need not address. It states what the system will not do. This chapter addresses a key quality attribute of good requirements: the requirements must be delimited (or ``scoped''). \hyperref[g6]{G.6} is not, however, the place for an analysis of risks and obstacles, which pertain to the project rather than the goals and correspondingly appears in chapter \hyperref[p6]{P.6}. \cite{BM22}}
+FPVR is intended to provide an introductory virtual reality
+(VR) training experience for first-person-view (FPV) drone
+operation. The following limitations and exclusions define
+the boundaries of the system and clarify functionality
+outside the project's current scope.
 
-% TODO: Write your team's content for G.6 here.
+\newpage
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Limitations and Exclusions}
+\label{tab:limitations-exclusions}
+
+\begin{tabularx}{\textwidth}{
+    @{}p{3.5cm} X@{}
+}
+\toprule
+\textbf{Area} &
+\textbf{Limitation or Exclusion} \\
+\midrule
+
+Physical Drone Operation &
+FPVR is limited to simulated drone operation and will not
+communicate with or control physical drones. \\
+
+\addlinespace
+
+VR Hardware Requirement &
+FPVR requires a compatible VR headset for operation.
+Both Meta Quest controllers and compatible Xbox controllers
+will be supported, but conventional PC gameplay without
+a VR headset is excluded. \\
+
+\addlinespace
+
+Pilot Certification &
+FPVR will not provide official drone pilot certification
+or replace applicable regulatory examinations, assessments,
+or licensing requirements. \\
+
+\addlinespace
+
+Real-World Flight Proficiency &
+Performance within FPVR will not be considered proof
+of a user's ability to safely operate a physical drone.
+The transfer of skills from simulation to real-world
+flight is not guaranteed. \\
+
+\addlinespace
+
+Flight Simulation Realism &
+FPVR aims to provide realistic flight behaviour for
+training purposes. However, the underlying flight model,
+its implementation, and the required level of accuracy
+remain under review. The system is not intended to
+reproduce every physical and environmental characteristic
+of real-world drone operation. \\
+
+\addlinespace
+
+Multiplayer Functionality &
+FPVR is limited to single-player training.
+Multiplayer racing, cooperative flight, and shared
+online training sessions are excluded. \\
+
+\addlinespace
+
+Dedicated FPV Transmitters &
+Support for dedicated FPV radio transmitters is under
+consideration but is not part of the confirmed core
+controller requirements. Compatibility and feasibility
+will be evaluated during development. \\
+
+\addlinespace
+
+Historical Flight Records &
+FPVR will provide performance reviews after completing
+obstacle-course levels but will not include functionality
+for accessing or reviewing previously completed sessions. \\
+
+\addlinespace
+
+AI-Assisted Feedback &
+AI-generated flight feedback is planned subject to
+feasibility evaluation. Core flight reviews, numerical
+scores, and performance ratings will remain available
+independently of this optional capability. \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+FPVR focuses on safe introductory flight practice,
+structured obstacle-course challenges, and performance
+evaluation within a virtual environment. The system
+is not intended to replace real-world flight training
+or serve as a comprehensive engineering-grade flight
+simulator. The risks associated with these limitations and their corresponding
+mitigation strategies are discussed in
+\hyperref[p6]{P.6}.
+
 
 \subsection{Stakeholders and requirements sources}\label{g7}
 
