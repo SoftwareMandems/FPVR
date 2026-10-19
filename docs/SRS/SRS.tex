@@ -122,6 +122,12 @@
   \renewcommand{\theHsubsection}{#1.\arabic{subsection}}
   \setcounter{subsection}{0}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\req}[1]{\hyperlink{req:#1}{\texttt{#1}}}
+\newcommand{\ver}[1]{\hyperlink{ver:#1}{\texttt{#1}}}
+\newcommand{\goal}[1]{\hyperlink{goal:#1}{#1}}
+\newcommand{\haz}[1]{\href{../HazardAnalysis/HazardAnalysis.pdf\#haz:#1}{#1}}
+\newcommand{\sym}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\proposal}{\textbf{PROPOSED; review pending.}}
 
 \begin{document}
 
@@ -1004,29 +1010,29 @@ movement, flight controls, and collision detection.
 
 \begin{itemize}
 
-    \item \textbf{FR-FLT-01:}
+    \item \hypertarget{req:FR-FLT-01}{}\textbf{FR-FLT-01:}
     FPVR shall provide a first-person view corresponding
     to the position and orientation of the simulated drone.
 
-    \item \textbf{FR-FLT-02:}
+    \item \hypertarget{req:FR-FLT-02}{}\textbf{FR-FLT-02:}
     The simulated drone shall respond to four flight
     control inputs: throttle, pitch, roll, and yaw.
 
-    \item \textbf{FR-FLT-03:}
+    \item \hypertarget{req:FR-FLT-03}{}\textbf{FR-FLT-03:}
     The flight simulation shall account for gravity
     when determining drone movement.
 
-    \item \textbf{FR-FLT-04:}
+    \item \hypertarget{req:FR-FLT-04}{}\textbf{FR-FLT-04:}
     FPVR shall detect contact between the drone and
     designated environmental obstacles or ground surfaces.
 
-    \item \textbf{FR-FLT-05:}
+    \item \hypertarget{req:FR-FLT-05}{}\textbf{FR-FLT-05:}
     The drone shall be permitted to remain on the ground
     and take off without triggering a crash. Following
     takeoff, contact with the ground or a designated
     obstacle shall trigger a simulated crash.
 
-    \item \textbf{FR-FLT-06:}
+    \item \hypertarget{req:FR-FLT-06}{}\textbf{FR-FLT-06:}
     Upon a simulated crash, FPVR shall register one
     crash event and prevent normal flight progression
     until the applicable recovery action is performed.
@@ -1049,37 +1055,37 @@ and structured obstacle-course challenges.
 
 \begin{itemize}
 
-    \item \textbf{FR-LVL-01:}
+    \item \hypertarget{req:FR-LVL-01}{}\textbf{FR-LVL-01:}
     FPVR shall provide a free-flight mode in which
     users can operate the drone without checkpoints,
     timers, or performance scoring.
 
-    \item \textbf{FR-LVL-02:}
+    \item \hypertarget{req:FR-LVL-02}{}\textbf{FR-LVL-02:}
     FPVR shall allow users to reset the drone and
     continue practising following a simulated crash
     in free-flight mode.
 
-    \item \textbf{FR-LVL-03:}
+    \item \hypertarget{req:FR-LVL-03}{}\textbf{FR-LVL-03:}
     FPVR shall provide at least three selectable
     obstacle-course levels with different challenge
     configurations and intended difficulty levels.
 
-    \item \textbf{FR-LVL-04:}
+    \item \hypertarget{req:FR-LVL-04}{}\textbf{FR-LVL-04:}
     FPVR shall provide at least two distinct virtual
     environments. Multiple obstacle-course levels
     may share the same environment.
 
-    \item \textbf{FR-LVL-05:}
+    \item \hypertarget{req:FR-LVL-05}{}\textbf{FR-LVL-05:}
     FPVR shall allow users to select any available
     obstacle-course level without requiring the
     completion of another level.
 
-    \item \textbf{FR-LVL-06:}
+    \item \hypertarget{req:FR-LVL-06}{}\textbf{FR-LVL-06:}
     FPVR shall allow users to exit an active training
     session and return to the main menu without
     restarting the application.
 
-    \item \textbf{FR-LVL-07:}
+    \item \hypertarget{req:FR-LVL-07}{}\textbf{FR-LVL-07:}
     Starting a new obstacle-course attempt shall
     initialize checkpoint progress, timers, collision
     count, and performance data.
@@ -1103,42 +1109,42 @@ recovery following simulated crashes.
 
 \begin{itemize}
 
-    \item \textbf{FR-CHK-01:}
+    \item \hypertarget{req:FR-CHK-01}{}\textbf{FR-CHK-01:}
     Each obstacle-course level shall contain an
     ordered sequence of required checkpoints.
 
-    \item \textbf{FR-CHK-02:}
+    \item \hypertarget{req:FR-CHK-02}{}\textbf{FR-CHK-02:}
     FPVR shall advance checkpoint progress only when
     the drone passes through the next required
     checkpoint in the defined sequence.
 
-    \item \textbf{FR-CHK-03:}
+    \item \hypertarget{req:FR-CHK-03}{}\textbf{FR-CHK-03:}
     Passing through checkpoints out of sequence
     shall not advance checkpoint progress.
 
-    \item \textbf{FR-CHK-04:}
+    \item \hypertarget{req:FR-CHK-04}{}\textbf{FR-CHK-04:}
     Following a simulated crash during an obstacle
     course, FPVR shall provide the options to restart
     the entire level or respawn.
 
-    \item \textbf{FR-CHK-05:}
+    \item \hypertarget{req:FR-CHK-05}{}\textbf{FR-CHK-05:}
     When respawn is selected, FPVR shall return the
     drone to the most recently completed checkpoint.
     If no checkpoint has been completed, the drone
     shall return to the level's starting position.
 
-    \item \textbf{FR-CHK-06:}
+    \item \hypertarget{req:FR-CHK-06}{}\textbf{FR-CHK-06:}
     Respawning shall preserve previously completed
     checkpoints, accumulated total elapsed time,
     and recorded collision penalties.
 
-    \item \textbf{FR-CHK-07:}
+    \item \hypertarget{req:FR-CHK-07}{}\textbf{FR-CHK-07:}
     Restarting the entire level shall begin a new
     attempt, resetting checkpoint progress, total
     elapsed time, section elapsed time, collision
     count, and performance score.
 
-    \item \textbf{FR-CHK-08:}
+    \item \hypertarget{req:FR-CHK-08}{}\textbf{FR-CHK-08:}
     FPVR shall recognize successful level completion
     only when the drone reaches the finish after
     completing all required checkpoints in order.
@@ -1162,50 +1168,50 @@ results upon completion.
 
 \begin{itemize}
 
-    \item \textbf{FR-PER-01:}
+    \item \hypertarget{req:FR-PER-01}{}\textbf{FR-PER-01:}
     FPVR shall maintain a total elapsed-time
     measurement for each obstacle-course attempt.
 
-    \item \textbf{FR-PER-02:}
+    \item \hypertarget{req:FR-PER-02}{}\textbf{FR-PER-02:}
     The total elapsed time shall include time spent
     attempting course sections that end in crashes.
 
-    \item \textbf{FR-PER-03:}
+    \item \hypertarget{req:FR-PER-03}{}\textbf{FR-PER-03:}
     FPVR shall maintain a separate section timer
     measuring elapsed time since the start of the
     current checkpoint segment.
 
-    \item \textbf{FR-PER-04:}
+    \item \hypertarget{req:FR-PER-04}{}\textbf{FR-PER-04:}
     The section timer shall reset when the next
     required checkpoint is completed or when
     the drone respawns.
 
-    \item \textbf{FR-PER-05:}
+    \item \hypertarget{req:FR-PER-05}{}\textbf{FR-PER-05:}
     A checkpoint respawn shall not reset the
     accumulated total elapsed time.
 
-    \item \textbf{FR-PER-06:}
+    \item \hypertarget{req:FR-PER-06}{}\textbf{FR-PER-06:}
     The total elapsed-time measurement shall pause
     while the crash-recovery menu is displayed
     and resume when flight continues.
 
-    \item \textbf{FR-PER-07:}
+    \item \hypertarget{req:FR-PER-07}{}\textbf{FR-PER-07:}
     FPVR shall record the number of simulated crashes
     during an obstacle-course attempt. Each crash
     event shall increase the collision count by one.
 
-    \item \textbf{FR-PER-08:}
+    \item \hypertarget{req:FR-PER-08}{}\textbf{FR-PER-08:}
     FPVR shall calculate a numerical performance
     score using defined flight-performance measures.
     An additional simulated crash shall negatively
     affect the resulting score.
 
-    \item \textbf{FR-PER-09:}
+    \item \hypertarget{req:FR-PER-09}{}\textbf{FR-PER-09:}
     FPVR shall calculate a performance rating
     separate from the numerical score using
     defined evaluation criteria.
 
-    \item \textbf{FR-PER-10:}
+    \item \hypertarget{req:FR-PER-10}{}\textbf{FR-PER-10:}
     FPVR shall finalize the total completion time
     when the user successfully completes all
     required checkpoints and reaches the finish.
@@ -1229,31 +1235,31 @@ controller interactions required to operate FPVR.
 
 \begin{itemize}
 
-    \item \textbf{FR-UI-01:}
+    \item \hypertarget{req:FR-UI-01}{}\textbf{FR-UI-01:}
     FPVR shall provide its training experience
     through a compatible Meta Quest VR headset.
 
-    \item \textbf{FR-UI-02:}
+    \item \hypertarget{req:FR-UI-02}{}\textbf{FR-UI-02:}
     FPVR shall support both standalone Quest
     execution and PC-based VR execution using
     a compatible Quest headset.
 
-    \item \textbf{FR-UI-03:}
+    \item \hypertarget{req:FR-UI-03}{}\textbf{FR-UI-03:}
     FPVR shall support Meta Quest motion controllers
     and compatible Xbox controllers for drone
     flight control.
 
-    \item \textbf{FR-UI-04:}
+    \item \hypertarget{req:FR-UI-04}{}\textbf{FR-UI-04:}
     FPVR shall provide basic control instructions
     identifying the available flight inputs and
     their functions before users begin flight practice.
 
-    \item \textbf{FR-UI-05:}
+    \item \hypertarget{req:FR-UI-05}{}\textbf{FR-UI-05:}
     FPVR shall provide interfaces for selecting
     training modes, selecting levels, and
     navigating the main menu.
 
-    \item \textbf{FR-UI-06:}
+    \item \hypertarget{req:FR-UI-06}{}\textbf{FR-UI-06:}
     FPVR shall accommodate both seated and standing
     operation without requiring physical movement
     through the virtual environment.
@@ -1277,27 +1283,27 @@ obstacle-course level.
 
 \begin{itemize}
 
-    \item \textbf{FR-REV-01:}
+    \item \hypertarget{req:FR-REV-01}{}\textbf{FR-REV-01:}
     FPVR shall display a post-flight performance
     review after successful completion of an
     obstacle-course level.
 
-    \item \textbf{FR-REV-02:}
+    \item \hypertarget{req:FR-REV-02}{}\textbf{FR-REV-02:}
     The review shall display total completion time,
     checkpoint results, collision count, numerical
     score, and performance rating.
 
-    \item \textbf{FR-REV-03:}
+    \item \hypertarget{req:FR-REV-03}{}\textbf{FR-REV-03:}
     FPVR shall allow users to retry the completed
     level or select another training activity
     after reviewing the results.
 
-    \item \textbf{FR-REV-04:}
+    \item \hypertarget{req:FR-REV-04}{}\textbf{FR-REV-04:}
     The standard post-flight review shall remain
     available independently of optional
     intelligent feedback.
 
-    \item \textbf{FR-REV-05:}
+    \item \hypertarget{req:FR-REV-05}{}\textbf{FR-REV-05:}
     FPVR shall provide results for the current
     completed attempt without requiring access
     to previously completed sessions. The initial
@@ -1323,18 +1329,18 @@ required for the core training experience.
 
 \begin{itemize}
 
-    \item \textbf{FR-AI-01:}
+    \item \hypertarget{req:FR-AI-01}{}\textbf{FR-AI-01:}
     If implemented, FPVR shall analyze available
     flight-performance information to generate
     observations about a completed obstacle-course
     attempt.
 
-    \item \textbf{FR-AI-02:}
+    \item \hypertarget{req:FR-AI-02}{}\textbf{FR-AI-02:}
     If implemented, intelligent feedback shall
     appear automatically within the post-flight
     review without requiring a separate user request.
 
-    \item \textbf{FR-AI-03:}
+    \item \hypertarget{req:FR-AI-03}{}\textbf{FR-AI-03:}
     If intelligent feedback is unavailable or
     fails to produce an analysis, FPVR shall
     continue to provide the standard flight review
@@ -1358,40 +1364,40 @@ across the FPVR system.
 
 \begin{itemize}
 
-    \item \textbf{NFR-INST-01 (Installability):}
+    \item \hypertarget{req:NFR-INST-01}{}\textbf{NFR-INST-01 (Installability):}
     FPVR shall be installable and launchable
     on a supported standalone Meta Quest headset
     without requiring a connected computer.
 
-    \item \textbf{NFR-INST-02 (Installability):}
+    \item \hypertarget{req:NFR-INST-02}{}\textbf{NFR-INST-02 (Installability):}
     FPVR shall be launchable in PCVR mode
     using a supported computer and a compatible
     Meta Quest headset.
 
-    \item \textbf{NFR-COMP-01 (Compatibility):}
+    \item \hypertarget{req:NFR-COMP-01}{}\textbf{NFR-COMP-01 (Compatibility):}
     FPVR shall provide a functional flight-control
     configuration for each of the two confirmed
     controller types. Compatibility combinations
     for standalone and PCVR execution remain
     under review.
 
-    \item \textbf{NFR-PERF-01 (Performance):}
+    \item \hypertarget{req:NFR-PERF-01}{}\textbf{NFR-PERF-01 (Performance):}
     FPVR shall maintain a minimum rendering
     frame rate of [TO BE REVIEWED] frames per
     second during normal flight and obstacle-course
     operation on supported hardware.
 
-    \item \textbf{NFR-REL-01 (Reliability):}
+    \item \hypertarget{req:NFR-REL-01}{}\textbf{NFR-REL-01 (Reliability):}
     FPVR shall allow repeated crash-and-recovery
     interactions without requiring the application
     to restart.
 
-    \item \textbf{NFR-USAB-01 (Usability):}
+    \item \hypertarget{req:NFR-USAB-01}{}\textbf{NFR-USAB-01 (Usability):}
     FPVR shall make basic flight-control instructions
     accessible before the user's initial
     flight activity.
 
-    \item \textbf{NFR-SAFE-01 (Safety):}
+    \item \hypertarget{req:NFR-SAFE-01}{}\textbf{NFR-SAFE-01 (Safety):}
     FPVR shall provide an accessible method for
     leaving an active training activity without
     requiring removal of the VR headset.
@@ -1432,7 +1438,7 @@ acceptance criteria will be defined in
 Section~\ref{s6}.
 
 
-\guidance{This is the bulk of the System book, describing elements of functionality (behaviors). This chapter corresponds to the traditional view of requirements as defining "what the system does''. It is organized as one section, S.2.n, for each of the components identified in \hyperref[s1]{S.1}, describing the corresponding behaviors (functional and non-functional properties). \cite{BM22}}
+% \guidance{This is the bulk of the System book, describing elements of functionality (behaviors). This chapter corresponds to the traditional view of requirements as defining "what the system does''. It is organized as one section, S.2.n, for each of the components identified in \hyperref[s1]{S.1}, describing the corresponding behaviors (functional and non-functional properties). \cite{BM22}}
 
 % TODO: Write your team's content for S.2 here.
 
@@ -1446,13 +1452,201 @@ Section~\ref{s6}.
 
 \guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
 
-% TODO: Write your team's content for S.3 here.
+\begin{description}
+\item[IF-01: Entry and navigation:] The VR and nunchuck controllers provide access to a main menu where
+users can select modes for free flight, available course choices, and return/exit actions. (\req{FR-UI-04}/\req{FR-UI-05},
+\req{FR-LVL-05}/\req{FR-LVL-06}).
+\item[IF-02: Flight:] Continuous throttle, pitch, roll, and yaw actions affect
+the drone's first-person view based on inputs from a controller (\req{FR-FLT-02}). The application will display progress during
+a course (\req{FR-REV-02}), where as free flight has no course timer, checkpoints, or score
+(\req{FR-FLT-01}/\req{FR-FLT-02}, \req{FR-LVL-01}).
+\item[IF-03: Retry:] Upon failure to complete a course due to a crash or timeout, users can press a button on the controller to reset the drone to a prior checkpoint.
+Selection is an explicit menu action that can be interfaced with a controller.
+(\req{FR-LVL-02}, \req{FR-CHK-04}--\req{FR-CHK-07};).
+\item[IF-04: Review:] On course completion show the selected course, final total
+active time labelled in seconds, checkpoint results in course order, integer
+crash count, numerical score in points, and separate rating. Retry and activity
+selection remain available; prior-session navigation is absent. Unapproved
+scoring parameters must be identified as provisional in any prototype rather
+than presented as validated training results (\req{FR-REV-01}--\req{FR-REV-05};
+\ver{V-07}/\ver{V-10}).
+\item[IF-05: Platform Interaction:] Consumes pose/input availability and focus;
+produces frames and lifecycle responses through the supported runtime. The
+proposed unavailable-input presentation is descriptive and recoverable where
+the runtime permits (\req{SR-02}; \ver{V-12}). There is no promise of public
+network APIs, desktop-only controls, or physical-drone interfaces.
+\item[IF-06: AI Feedback:] The feedback provided by the AI system receives only separately approved
+current-attempt data and advises on possible places for improvement. The
+standard review is immediate and independent; an analysis may join it
+automatically if the optional capability is approved
+(\req{FR-AI-01}--\req{FR-AI-03}, \req{SR-08}; \ver{V-11}). Output schemas,
+provider, timeout, and data permission are \textbf{TO BE REVIEWED} before external
+AI enters scope.
+\end{description}
+Interfaces describe visible information and action meanings. Exact widget
+layout, engine classes, storage structures, and input packages remain design
+choices. Proposed safety/error interactions are subject to their SR status.
 
 \subsection{Detailed usage scenarios}\label{s4}
 
 \guidance{Examples of interaction between the environment (or human users) and the system, expressed as user stories. Such scenarios are not by themselves a substitute for precise descriptions of functionality (\hyperref[s3]{S.3}), but provide an important complement by specifying cases that these behavior descriptions must support; they also serve as a basis for developing test cases. The scenarios most relevant for stakeholders are given in chapter \hyperref[g5]{G.5} in the Goals book, at a general level, as use cases; in contrast, \hyperref[s4]{S.4} can refer to system components and functionality (from other chapters of the System book) as well as special and erroneous cases, and introduce more specific scenarios. \cite{BM22}}
 
-% TODO: Write your team's content for S.4 here.
+\begin{description}
+\item[U-01: Start a Free-Flight Session]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+
+\textbf{Precondition:} FPVR is running with all necessary hardware, a supported
+headset and controller are available, and the main menu is visible from the VR.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The pilot selects Free Flight, practises the four flight axes, and takes
+off.
+\item FPVR provides no course timer, checkpoints, or score.
+\item After a crash, the pilot resets the drone and continues practising.
+\item The pilot exits to the main menu.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the pilot crashes repeatedly, each reset returns the drone to its grounded starting position.
+\item If the controller disconnects or application focus is lost, FPVR pauses
+flight state and timers without consuming stale axes. After reconnection or
+restored focus, the pilot applies neutral controls and explicitly confirms
+resumption.
+\item If the runtime closes the session, FPVR abandons the run without
+presenting a fabricated completion or score.
+\end{itemize}
+
+\item[U-02: Running an Obstacle-Course Level]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+
+\textbf{Precondition:} An obstacle-course level with ordered checkpoints and a
+finish is available, and the user is at the level-selection interface.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user selects any available course.
+\item FPVR initializes the attempt.
+\item The user crosses each required checkpoint in order before reaching the
+finish.
+\item FPVR stops the timer and opens the current-attempt review.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item Crossing a later or already-completed checkpoint does not advance the
+required checkpoint progress.
+\item If a checkpoint is missing, an input axis is non-finite, a recovery pose
+is invalid, or frame rate remains degraded, FPVR prevents the condition from
+becoming a valid gate or result and pauses the session when possible.
+\item If recovery is not possible, FPVR keeps the session invalid and makes
+Exit available without awarding completion or score.
+\end{itemize}
+
+\item[U-03: Recover from Crash during a Course.]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots
+
+\textbf{Precondition:} The user is attempting an obstacle course and is
+actively flying until they collide with an obstacle such as the ground, wall, or a goal.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The drone crashes, and FPVR displays the recovery menu.
+\item The user selects the option to restart.
+\item FPVR returns the drone to the most recently completed checkpoint or at the beginning if no checkpoints exist.
+\item FPVR resets the section timer while preserving total time and crash
+penalties.
+\item The user resumes flight.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item Repeated contact while the recovery menu is shown counts as one crash.
+\item If the user selects Restart, FPVR begins a new attempt and resets
+progress, timers, collision count, and performance data.
+\item If external networking or the optional AI service is unavailable, FPVR
+still allows the user to practise, finish, and review using the standard
+flight and recovery behavior.
+\item Declined consent, timeout, or malformed AI output is reported as
+unavailable and does not delay the standard result or change its score.
+\end{itemize}
+
+\item[U-04: Replay and Analyze Flight Performance]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots, drone training instructors,
+and the team responsible for the optional AI feedback service.
+
+\textbf{Precondition:} The user has completed at least one course and the
+attempt has been recorded by the application. If AI feedback is enabled, the
+user has approved the data required for the optional analysis.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user selects a flight recording on the menu and wants to replay the attempt.
+\item System loads the locally stored virtual telemetry data and footage and brings it up on the VR or screen
+\item The user can pause, rewind, and fast forward the replay to analyze their performance.
+\item FPVR displays the standard performance results, including completion
+time, checkpoint results, collision count, numerical score, and performance
+rating.
+\item If the optional AI feedback capability is enabled, FPVR automatically
+analyzes the available flight-performance information and displays observations
+about the completed attempt within the review.
+\item The user can exit the replay and return to the main menu screen.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the user selects a flight recording that is corrupted or missing, FPVR displays an error message and returns to the main menu.
+\item If the user attempts to replay a flight recording that is not compatible with the current version of FPVR, the system displays a warning and suggests updating the recording or the application.
+\item If AI feedback is unavailable, declined, times out, or fails to produce
+an analysis, FPVR displays the standard review without interruption.
+\item If the AI response is malformed, FPVR discards it and does not change the
+recorded score, rating, or other standard results.
+\end{itemize}
+
+\item[U-05: Connecting to Multiplayer Training Session (optional)]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots
+
+\textbf{Precondition:} The user is running FPVR, has a stable internet
+connection, and has selected the optional multiplayer training mode. The application
+should be able to connect to an external database or server.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user selects Multiplayer Training from the main menu.
+\item FPVR connects the user to an available training session.
+\item FPVR displays the participating users and the selected training course.
+\item The users complete the training session while FPVR maintains each
+participant's separate flight state and performance data.
+\item FPVR displays the session results and returns the user to the main menu
+when the session ends.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If no training session is available, FPVR informs the user and allows
+them to return to the main menu or retry the connection.
+\item If the connection is lost during the session, FPVR pauses or ends the
+multiplayer session without fabricating a result and informs the user.
+\item If the multiplayer service is unavailable, the user can continue using
+the standard single-user training modes.
+\end{itemize}
+\end{description}
 
 \subsection{Prioritization}\label{s5}
 
