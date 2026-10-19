@@ -985,6 +985,472 @@ and usage assumptions.
 
 \subsection{Functionality}\label{s2}
 
+This section defines the functional and non-functional
+requirements of FPVR. Requirements are organized by
+the major system components identified in S.1.
+Each requirement has a unique identifier to support
+traceability and verification.
+
+Core requirements describe the functionality expected
+in the initial system. Planned requirements describe
+additional functionality subject to feasibility
+evaluation.
+
+\subsubsection{Drone Flight Simulation}
+\label{sec:s2-flight}
+
+The Drone Flight Simulation component manages drone
+movement, flight controls, and collision detection.
+
+\begin{itemize}
+
+    \item \textbf{FR-FLT-01:}
+    FPVR shall provide a first-person view corresponding
+    to the position and orientation of the simulated drone.
+
+    \item \textbf{FR-FLT-02:}
+    The simulated drone shall respond to four flight
+    control inputs: throttle, pitch, roll, and yaw.
+
+    \item \textbf{FR-FLT-03:}
+    The flight simulation shall account for gravity
+    when determining drone movement.
+
+    \item \textbf{FR-FLT-04:}
+    FPVR shall detect contact between the drone and
+    designated environmental obstacles or ground surfaces.
+
+    \item \textbf{FR-FLT-05:}
+    The drone shall be permitted to remain on the ground
+    and take off without triggering a crash. Following
+    takeoff, contact with the ground or a designated
+    obstacle shall trigger a simulated crash.
+
+    \item \textbf{FR-FLT-06:}
+    Upon a simulated crash, FPVR shall register one
+    crash event and prevent normal flight progression
+    until the applicable recovery action is performed.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+These requirements establish the fundamental flight
+behaviour necessary for an FPV training experience.
+The four primary control inputs support the intended
+drone operating model, while collision detection
+allows users to experience and recover from mistakes.
+
+\noindent\textbf{To Be Reviewed:}
+The underlying flight model, physical accuracy,
+wind disturbances, and the criteria for determining
+when takeoff has occurred remain under review.
+
+
+\subsubsection{Training Mode and Level Management}
+\label{sec:s2-levels}
+
+This component manages access to free-flight practice
+and structured obstacle-course challenges.
+
+\begin{itemize}
+
+    \item \textbf{FR-LVL-01:}
+    FPVR shall provide a free-flight mode in which
+    users can operate the drone without checkpoints,
+    timers, or performance scoring.
+
+    \item \textbf{FR-LVL-02:}
+    FPVR shall allow users to reset the drone and
+    continue practising following a simulated crash
+    in free-flight mode.
+
+    \item \textbf{FR-LVL-03:}
+    FPVR shall provide at least three selectable
+    obstacle-course levels with different challenge
+    configurations and intended difficulty levels.
+
+    \item \textbf{FR-LVL-04:}
+    FPVR shall provide at least two distinct virtual
+    environments. Multiple obstacle-course levels
+    may share the same environment.
+
+    \item \textbf{FR-LVL-05:}
+    FPVR shall allow users to select any available
+    obstacle-course level without requiring the
+    completion of another level.
+
+    \item \textbf{FR-LVL-06:}
+    FPVR shall allow users to exit an active training
+    session and return to the main menu without
+    restarting the application.
+
+    \item \textbf{FR-LVL-07:}
+    Starting a new obstacle-course attempt shall
+    initialize checkpoint progress, timers, collision
+    count, and performance data.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+Free-flight mode provides unrestricted introductory
+practice, while obstacle-course levels offer structured
+challenges. A minimum of three levels across two
+environments establishes a measurable initial scope.
+Additional levels and environments may be introduced
+if development time permits.
+
+
+\subsubsection{Checkpoint and Crash Recovery}
+\label{sec:s2-checkpoints}
+
+This component manages checkpoint progression and
+recovery following simulated crashes.
+
+\begin{itemize}
+
+    \item \textbf{FR-CHK-01:}
+    Each obstacle-course level shall contain an
+    ordered sequence of required checkpoints.
+
+    \item \textbf{FR-CHK-02:}
+    FPVR shall advance checkpoint progress only when
+    the drone passes through the next required
+    checkpoint in the defined sequence.
+
+    \item \textbf{FR-CHK-03:}
+    Passing through checkpoints out of sequence
+    shall not advance checkpoint progress.
+
+    \item \textbf{FR-CHK-04:}
+    Following a simulated crash during an obstacle
+    course, FPVR shall provide the options to restart
+    the entire level or respawn.
+
+    \item \textbf{FR-CHK-05:}
+    When respawn is selected, FPVR shall return the
+    drone to the most recently completed checkpoint.
+    If no checkpoint has been completed, the drone
+    shall return to the level's starting position.
+
+    \item \textbf{FR-CHK-06:}
+    Respawning shall preserve previously completed
+    checkpoints, accumulated total elapsed time,
+    and recorded collision penalties.
+
+    \item \textbf{FR-CHK-07:}
+    Restarting the entire level shall begin a new
+    attempt, resetting checkpoint progress, total
+    elapsed time, section elapsed time, collision
+    count, and performance score.
+
+    \item \textbf{FR-CHK-08:}
+    FPVR shall recognize successful level completion
+    only when the drone reaches the finish after
+    completing all required checkpoints in order.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+Ordered checkpoints prevent users from skipping
+required course sections. Crash recovery allows
+repeated practice without restarting the application,
+while preserving performance consequences when
+users choose to respawn.
+
+
+\subsubsection{Timing, Scoring, and Performance Evaluation}
+\label{sec:s2-performance}
+
+This component records performance information
+during obstacle-course attempts and calculates
+results upon completion.
+
+\begin{itemize}
+
+    \item \textbf{FR-PER-01:}
+    FPVR shall maintain a total elapsed-time
+    measurement for each obstacle-course attempt.
+
+    \item \textbf{FR-PER-02:}
+    The total elapsed time shall include time spent
+    attempting course sections that end in crashes.
+
+    \item \textbf{FR-PER-03:}
+    FPVR shall maintain a separate section timer
+    measuring elapsed time since the start of the
+    current checkpoint segment.
+
+    \item \textbf{FR-PER-04:}
+    The section timer shall reset when the next
+    required checkpoint is completed or when
+    the drone respawns.
+
+    \item \textbf{FR-PER-05:}
+    A checkpoint respawn shall not reset the
+    accumulated total elapsed time.
+
+    \item \textbf{FR-PER-06:}
+    The total elapsed-time measurement shall pause
+    while the crash-recovery menu is displayed
+    and resume when flight continues.
+
+    \item \textbf{FR-PER-07:}
+    FPVR shall record the number of simulated crashes
+    during an obstacle-course attempt. Each crash
+    event shall increase the collision count by one.
+
+    \item \textbf{FR-PER-08:}
+    FPVR shall calculate a numerical performance
+    score using defined flight-performance measures.
+    An additional simulated crash shall negatively
+    affect the resulting score.
+
+    \item \textbf{FR-PER-09:}
+    FPVR shall calculate a performance rating
+    separate from the numerical score using
+    defined evaluation criteria.
+
+    \item \textbf{FR-PER-10:}
+    FPVR shall finalize the total completion time
+    when the user successfully completes all
+    required checkpoints and reaches the finish.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+The total timer measures active flight time across
+the entire attempt, including failed sections.
+The section timer allows users to evaluate individual
+segments. Pausing the total timer during crash
+recovery prevents time spent navigating recovery
+options from affecting performance.
+
+\noindent\textbf{To Be Reviewed:}
+The numerical scoring formula, performance rating
+categories, and evaluation thresholds remain
+to be determined. These must be established
+before FR-PER-08 and FR-PER-09 can be fully verified.
+The treatment of other in-application menus
+during active timing also remains under review.
+
+
+\subsubsection{VR User Interface and Controller Input}
+\label{sec:s2-interface}
+
+This component provides the user interfaces and
+controller interactions required to operate FPVR.
+
+\begin{itemize}
+
+    \item \textbf{FR-UI-01:}
+    FPVR shall provide its training experience
+    through a compatible Meta Quest VR headset.
+
+    \item \textbf{FR-UI-02:}
+    FPVR shall support both standalone Quest
+    execution and PC-based VR execution using
+    a compatible Quest headset.
+
+    \item \textbf{FR-UI-03:}
+    FPVR shall support Meta Quest motion controllers
+    and compatible Xbox controllers for drone
+    flight control.
+
+    \item \textbf{FR-UI-04:}
+    FPVR shall provide basic control instructions
+    identifying the available flight inputs and
+    their functions before users begin flight practice.
+
+    \item \textbf{FR-UI-05:}
+    FPVR shall provide interfaces for selecting
+    training modes, selecting levels, and
+    navigating the main menu.
+
+    \item \textbf{FR-UI-06:}
+    FPVR shall accommodate both seated and standing
+    operation without requiring physical movement
+    through the virtual environment.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+Supporting standalone and PC-based VR provides
+alternative execution environments. Supporting
+two controller types increases flexibility, while
+basic control instructions help inexperienced
+users become familiar with drone operation.
+
+\noindent\textbf{To Be Reviewed:}
+The exact controller mappings and supported
+controller combinations for each execution
+mode remain to be determined.
+
+
+\subsubsection{Post-Flight Review}
+\label{sec:s2-review}
+
+This component presents performance results
+following successful completion of an
+obstacle-course level.
+
+\begin{itemize}
+
+    \item \textbf{FR-REV-01:}
+    FPVR shall display a post-flight performance
+    review after successful completion of an
+    obstacle-course level.
+
+    \item \textbf{FR-REV-02:}
+    The review shall display total completion time,
+    checkpoint results, collision count, numerical
+    score, and performance rating.
+
+    \item \textbf{FR-REV-03:}
+    FPVR shall allow users to retry the completed
+    level or select another training activity
+    after reviewing the results.
+
+    \item \textbf{FR-REV-04:}
+    The standard post-flight review shall remain
+    available independently of optional
+    intelligent feedback.
+
+    \item \textbf{FR-REV-05:}
+    FPVR shall provide results for the current
+    completed attempt without requiring access
+    to previously completed sessions. The initial
+    system shall not provide a historical
+    session-review interface.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+Post-flight results help users evaluate their
+performance and identify opportunities for
+improvement. The review focuses on the current
+attempt without requiring persistent historical
+flight records.
+
+
+\subsubsection{Intelligent Feedback (Planned)}
+\label{sec:s2-ai}
+
+Intelligent feedback is a planned enhancement
+subject to feasibility evaluation and is not
+required for the core training experience.
+
+\begin{itemize}
+
+    \item \textbf{FR-AI-01:}
+    If implemented, FPVR shall analyze available
+    flight-performance information to generate
+    observations about a completed obstacle-course
+    attempt.
+
+    \item \textbf{FR-AI-02:}
+    If implemented, intelligent feedback shall
+    appear automatically within the post-flight
+    review without requiring a separate user request.
+
+    \item \textbf{FR-AI-03:}
+    If intelligent feedback is unavailable or
+    fails to produce an analysis, FPVR shall
+    continue to provide the standard flight review
+    without interruption.
+
+\end{itemize}
+
+\noindent\textbf{To Be Reviewed:}
+The feasibility, required data, analysis method,
+and evaluation criteria for intelligent feedback
+remain under review. These requirements will
+become part of the acceptance baseline only if
+the feature is formally included in scope.
+
+
+\subsubsection{Non-Functional Requirements}
+\label{sec:s2-nfr}
+
+The following non-functional requirements
+define quality and operational expectations
+across the FPVR system.
+
+\begin{itemize}
+
+    \item \textbf{NFR-INST-01 (Installability):}
+    FPVR shall be installable and launchable
+    on a supported standalone Meta Quest headset
+    without requiring a connected computer.
+
+    \item \textbf{NFR-INST-02 (Installability):}
+    FPVR shall be launchable in PCVR mode
+    using a supported computer and a compatible
+    Meta Quest headset.
+
+    \item \textbf{NFR-COMP-01 (Compatibility):}
+    FPVR shall provide a functional flight-control
+    configuration for each of the two confirmed
+    controller types. Compatibility combinations
+    for standalone and PCVR execution remain
+    under review.
+
+    \item \textbf{NFR-PERF-01 (Performance):}
+    FPVR shall maintain a minimum rendering
+    frame rate of [TO BE REVIEWED] frames per
+    second during normal flight and obstacle-course
+    operation on supported hardware.
+
+    \item \textbf{NFR-REL-01 (Reliability):}
+    FPVR shall allow repeated crash-and-recovery
+    interactions without requiring the application
+    to restart.
+
+    \item \textbf{NFR-USAB-01 (Usability):}
+    FPVR shall make basic flight-control instructions
+    accessible before the user's initial
+    flight activity.
+
+    \item \textbf{NFR-SAFE-01 (Safety):}
+    FPVR shall provide an accessible method for
+    leaving an active training activity without
+    requiring removal of the VR headset.
+
+\end{itemize}
+
+\noindent\textbf{Rationale:}
+These requirements establish expectations for
+installation, compatibility, performance,
+reliability, usability, and safety. Installability
+is explicitly included to ensure that FPVR can
+be evaluated as a deployable application rather
+than only as a development prototype.
+
+\noindent\textbf{To Be Reviewed:}
+The minimum frame rate, supported Quest models,
+PCVR hardware requirements, controller compatibility
+matrix, and specific VR comfort and accessibility
+features require further investigation.
+
+
+\subsubsection*{Requirements Summary}
+
+The requirements in this section establish the
+core FPVR training experience, including drone
+control, free-flight practice, obstacle-course
+progression, crash recovery, performance
+evaluation, and post-flight review.
+
+Optional intelligent feedback has been identified
+separately from the core requirements. Unresolved
+technical specifications and numerical thresholds
+have been explicitly marked for review.
+
+Requirement priorities will be established in
+Section~\ref{s5}, while verification and
+acceptance criteria will be defined in
+Section~\ref{s6}.
+
+
 \guidance{This is the bulk of the System book, describing elements of functionality (behaviors). This chapter corresponds to the traditional view of requirements as defining "what the system does''. It is organized as one section, S.2.n, for each of the components identified in \hyperref[s1]{S.1}, describing the corresponding behaviors (functional and non-functional properties). \cite{BM22}}
 
 % TODO: Write your team's content for S.2 here.
