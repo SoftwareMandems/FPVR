@@ -1,0 +1,53 @@
+@startuml environment-domain
+' Editable source for the Environment domain model; not an implementation design.
+' Sources: ../SRS.tex G.4, G.6 and S.2 (FR-LVL, FR-CHK, FR-PER, FR-REV).
+' Draft reference: C:/Users/itari/Documents/SRS.tex E.1 and E.6.
+' Render: java -jar plantuml.jar -tpdf environment-domain.puml
+' Preview: java -jar plantuml.jar -tsvg environment-domain.puml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+skinparam wrapWidth 180
+title FPVR course-training domain
+
+class "Virtual environment" as Environment
+class "Obstacle-course level" as Course
+class "Required checkpoint" as Checkpoint {
+  sequence position
+}
+class "Course attempt" as Attempt {
+  completed checkpoint prefix
+  total and section elapsed time
+  crash count
+}
+class "Simulated drone" as Drone
+class "Completed-attempt review" as Review {
+  completion time and checkpoint results
+  crash count, score and rating
+}
+
+Environment "1" -- "0..*" Course : provides the setting for
+Course "1" -- "1..*" Checkpoint : defines an ordered sequence of
+Course "1" -- "0..*" Attempt : can be practised through
+Attempt "0..*" -- "1" Drone : uses
+Attempt "1" -- "0..1" Review : yields on successful completion
+
+note bottom of Attempt
+  One current course run; respawn continues it.
+  Restart creates a new attempt and resets its data.
+  Free flight is outside this course-attempt model.
+end note
+note bottom of Review
+  Completion requires all checkpoints in order,
+  followed by the finish. Review covers the current
+  completed attempt, independently of optional AI.
+end note
+
+legend bottom
+  Lines name domain relationships; end labels show multiplicity.
+  Multiplicities describe possible interactions, not stored history.
+  Classes are concepts, not software modules or database tables.
+endlegend
+@enduml
