@@ -348,6 +348,46 @@ fails &
 FR-AI-03, FR-REV-04 &
 H8-1 \\
 \hline
+
+% User Well-being
+User Well-being &
+User plays for extended periods without breaks &
+Eye strain, headaches, fatigue, or worsening motion sickness &
+Repeated attempts encourage continuous play; no reminders to rest &
+Display a break reminder after a defined period of continuous play; allow the
+user to pause or exit at any time &
+\reqref{SR21}, \reqref{SR2} &
+H9-1 \\
+\hline
+&
+Visual effects trigger a photosensitive seizure &
+Seizure or injury to users with photosensitive epilepsy &
+Rapid flashing from crash effects, lighting, or high-contrast patterns &
+Limit flashing visual effects to safe frequencies; include a photosensitivity
+warning in the safety notice &
+\reqref{SR22}, \reqref{SR1} &
+H9-2 \\
+\hline
+&
+Repeated crashes cause frustration or discouragement &
+Negative effect on user well-being and self-confidence; users abandon training &
+Difficulty increases too quickly; feedback focuses only on failures &
+Use neutral, constructive wording in crash feedback and results; suggest
+free-flight practice after repeated crashes in the same section &
+\reqref{SR24}, FR-LVL-01 &
+H9-3 \\
+\hline
+&
+User treats simulator results as readiness to fly a physical drone &
+Unsafe real-world drone operation, risking injury to people or damage to
+property &
+Simulated flight cannot reproduce every real-world condition, such as wind,
+signal loss, and battery limits &
+Remind users that simulator training complements real-world practice and
+applicable drone regulations &
+\reqref{SR23} &
+H9-4 \\
+\hline
 \end{longtable}
 \end{landscape}
 \global\landscapefooterfalse
@@ -458,7 +498,27 @@ rationale design process how and why to fake it.)}
 \noindent
 \reqdef{SR20} The system shall record security-relevant events, including failed authentication attempts and unauthorized access attempts, without unnecessarily logging sensitive user information.\\
 \textbf{Rationale:} Security logs support the investigation of suspicious activity while minimizing the exposure of sensitive data.\\
-\textbf{Risk:} Medium
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\reqdef{SR21} The system shall display a reminder to take a break after 30 minutes of continuous play.\\
+\textbf{Rationale:} Extended VR sessions can cause eye strain, headaches, and fatigue. A 30-minute interval is a common guideline for VR break reminders and gives users a regular opportunity to rest.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\reqdef{SR22} The system shall not display visual effects that flash more than three times in any one-second period.\\
+\textbf{Rationale:} Rapid flashing can trigger seizures in users with photosensitive epilepsy. The three-flashes-per-second limit follows the WCAG 2.3.1 threshold for flashing content.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\reqdef{SR23} The system shall inform users that simulator training supports, but does not replace, real-world practice and applicable drone regulations.\\
+\textbf{Rationale:} FPVR is designed to build flight skills, but simulated flight cannot reproduce every real-world condition, such as wind, signal loss, and battery limits. Users should continue practising in safe real-world conditions and follow applicable regulations before operating a physical drone.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\reqdef{SR24} The system shall suggest free-flight practice after three consecutive crashes within the same checkpoint section.\\
+\textbf{Rationale:} Repeated failures can discourage users and harm their confidence. Suggesting unscored practice gives users a low-pressure way to build skill before retrying the section.\\
+\textbf{Risk:} Low
 
 \subsection{Non-Functional Requirements}
 \noindent
@@ -528,6 +588,18 @@ be implemented in the future.
 
     \item \textbf{\reqref{SR16}:} The system shall validate and sanitize user-provided data before processing or storing it.\\
     \textbf{Justification:} Input validation is a basic safeguard that is far easier to include from the start than to add after data handling is built.
+
+    \item \textbf{\reqref{SR21}:} The system shall display a break reminder after 30 minutes of continuous play.\\
+    \textbf{Justification:} Eye strain and fatigue can affect any user, including participants in capstone user testing, and a timed reminder is simple to implement.
+
+    \item \textbf{\reqref{SR22}:} The system shall not display visual effects that flash more than three times per second.\\
+    \textbf{Justification:} Seizure risk is a severe hazard, and following the limit while visual effects are created avoids redesigning them later.
+
+    \item \textbf{\reqref{SR23}:} The system shall inform users that simulator training supports, but does not replace, real-world practice and applicable drone regulations.\\
+    \textbf{Justification:} The message requires little effort and should be in place before users begin relying on their training results.
+
+    \item \textbf{\reqref{SR24}:} The system shall suggest free-flight practice after three consecutive crashes within the same checkpoint section.\\
+    \textbf{Justification:} Free-flight mode is already part of the core system, so suggesting it only requires tracking consecutive crashes.
 
     \item \textbf{\reqref{NFR1}:} The system shall maintain at least 30 frames per second on the minimum supported VR hardware.\\
     \textbf{Justification:} Low frame rates cause motion sickness, so performance must be maintained throughout development rather than fixed at the end.
