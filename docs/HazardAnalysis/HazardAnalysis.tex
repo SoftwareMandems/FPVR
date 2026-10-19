@@ -93,106 +93,132 @@ documentation, and/or test cases.}
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
 rationale design process how and why to fake it.)}
 
+\```latex
+\subsection{Functional Requirements}
+
 \noindent
 \textbf{SR1:} The system shall provide users with a safety notice before their first VR session, reminding them to clear their physical play area of obstacles and remain aware of their surroundings.\\
 \textbf{Rationale:} Users may collide with nearby objects while immersed in the virtual environment, potentially causing injury or damaging equipment.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR2:} The system shall allow users to pause or exit gameplay at any time during a VR session.\\
 \textbf{Rationale:} Users may experience motion sickness, dizziness, or discomfort that requires them to stop playing immediately.\\
-\textbf{Risk:} High\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR3:} The system shall suspend active gameplay when the VR platform reports a headset disconnection or loss of tracking that prevents reliable interaction.\\
 \textbf{Rationale:} Continuing gameplay when tracking is unreliable may cause unexpected interactions and increase user disorientation.\\
-\textbf{Risk:} High\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR4:} The system shall verify that required VR hardware is detected and initialized before allowing users to begin a flight session.\\
 \textbf{Rationale:} Missing or improperly initialized hardware may prevent reliable controller input and compromise gameplay.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR5:} The system shall validate controller input values before applying them to the drone simulation and reject values outside supported input ranges.\\
 \textbf{Rationale:} Invalid controller inputs may produce unintended drone movements or unpredictable simulation behaviour.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR6:} The system shall verify connectivity to required external services before enabling features that depend on them.\\
 \textbf{Rationale:} Service connectivity failures may prevent multiplayer sessions or cause dependent features to behave incorrectly.\\
-\textbf{Risk:} Medium\\
-
-\noindent
-\textbf{SR7:} The system shall use encrypted communication when transmitting user data or multiplayer session information over a network.\\
-\textbf{Rationale:} Unencrypted network traffic may expose user information or session data to unauthorized parties.\\
-\textbf{Risk:} High\\
-
-\noindent
-\textbf{SR8:} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
-\textbf{Rationale:} Unauthorized access may expose private information or allow gameplay records to be modified.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR9:} The system shall validate data received from multiplayer clients before accepting it for gameplay state updates or performance record storage.\\
 \textbf{Rationale:} Malformed or manipulated network messages may cause inconsistent multiplayer behaviour or compromise recorded statistics.\\
-\textbf{Risk:} High\\
-
-\noindent
-\textbf{SR10:} The system shall preserve previously saved gameplay records when unexpected software errors or network interruptions occur.\\
-\textbf{Rationale:} Unexpected failures may otherwise result in corrupted records or the loss of user progress.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR11:} The system shall notify users when a network interruption prevents access to multiplayer functionality.\\
 \textbf{Rationale:} Users may otherwise be unaware that multiplayer functionality is unavailable or their session has been interrupted.\\
-\textbf{Risk:} Low\\
+\textbf{Risk:} Low\\[1em]
 
 \noindent
 \textbf{SR12:} The system shall disclose what gameplay data is collected, how it is used, and whether it is transmitted to external services before collecting user-associated data.\\
 \textbf{Rationale:} Users need to understand how their gameplay information is handled to make informed decisions about their privacy.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR13:} The system shall require users to authenticate before accessing personal accounts or user-specific gameplay records, if account functionality is implemented.\\
 \textbf{Rationale:} Authentication helps prevent unauthorized users from accessing personal information and saved progress.\\
-\textbf{Risk:} High\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR14:} The system shall enforce authorization checks before allowing users to view, modify, or delete stored gameplay records.\\
 \textbf{Rationale:} Authorization prevents users from accessing or modifying records belonging to other users.\\
-\textbf{Risk:} High\\
-
-\noindent
-\textbf{SR15:} The system shall securely store authentication credentials and shall not store passwords in plaintext.\\
-\textbf{Rationale:} Plaintext passwords may be exposed if stored data is accessed by an unauthorized party. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
-\textbf{Risk:} High\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR16:} The system shall validate and sanitize user-provided data before processing or storing it.\\
 \textbf{Rationale:} Improperly handled input may enable injection attacks, corrupt stored records, or cause unexpected system behaviour.\\
-\textbf{Risk:} High\\
-
-\noindent
-\textbf{SR17:} The system shall prevent unauthorized modification of stored gameplay records and verify data integrity when records are retrieved or updated.\\
-\textbf{Rationale:} Tampered performance records may produce inaccurate results and undermine the reliability of user progress tracking.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} High\\[1em]
 
 \noindent
 \textbf{SR18:} The system shall terminate or invalidate multiplayer session credentials when a user leaves a session or the session expires.\\
 \textbf{Rationale:} Invalidating expired session credentials reduces the risk of unauthorized reuse or continued access to multiplayer sessions.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium
+
+
+\noindent
+\textbf{SR7:} The system shall use encrypted communication when transmitting user data or multiplayer session information over a network.\\
+\textbf{Rationale:} Unencrypted network traffic may expose user information or session data to unauthorized parties.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR8:} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
+\textbf{Rationale:} Unauthorized access may expose private information or allow gameplay records to be modified.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR10:} The system shall preserve previously saved gameplay records when unexpected software errors or network interruptions occur.\\
+\textbf{Rationale:} Unexpected failures may otherwise result in corrupted records or the loss of user progress.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR15:} The system shall securely store authentication credentials and shall not store passwords in plaintext. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
+\textbf{Rationale:} Plaintext passwords may be exposed if stored data is accessed by an unauthorized party.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR17:} The system shall prevent unauthorized modification of stored gameplay records and verify data integrity when records are retrieved or updated.\\
+\textbf{Rationale:} Tampered performance records may produce inaccurate results and undermine the reliability of user progress tracking.\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR19:} The system shall limit repeated authentication attempts within a defined period.\\
 \textbf{Rationale:} Limiting repeated attempts helps reduce automated password-guessing and brute-force attacks.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium\\[1em]
 
 \noindent
 \textbf{SR20:} The system shall record security-relevant events, including failed authentication attempts and unauthorized access attempts, without unnecessarily logging sensitive user information.\\
 \textbf{Rationale:} Security logs support the investigation of suspicious activity while minimizing the exposure of sensitive data.\\
-\textbf{Risk:} Medium\\
+\textbf{Risk:} Medium
 
+\section{Non-Functional Requirements}
+\noindent
+\textbf{NFR1:} The system shall maintain a frame rate of at least 30 frames per second during standard single-player gameplay on the minimum supported VR hardware.\\
+\textbf{Rationale:} Maintaining a consistent frame rate helps reduce visual discomfort and supports an immersive VR experience.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{NFR2:} The system shall respond to valid controller inputs within 50 milliseconds under normal operating conditions.\\
+\textbf{Rationale:} Low input latency supports precise drone control and provides a more realistic flight simulation experience.\\
+\textbf{Risk:} High\\[1em]
+
+
+\noindent
+\textbf{NFR3:} The system shall operate correctly on all VR headsets, controllers, and operating system configurations explicitly listed as supported in the system documentation.\\
+\textbf{Rationale:} Defining supported configurations ensures consistent operation and reduces hardware compatibility issues.\\
+\textbf{Risk:} Medium\\[1em]
+
+
+\noindent
+\textbf{NFR4:} The system shall restore access to the main menu within 10 seconds of recovering from a recoverable VR tracking or network interruption, provided that the required hardware and services are available.\\
+\textbf{Rationale:} Prompt recovery minimizes disruption and reduces the need to restart the application.\\
+\textbf{Risk:} Medium
 
 
 \section{Roadmap}
