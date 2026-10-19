@@ -1993,4 +1993,115 @@ graduate attribute of Lifelong Learning.
 
 \input{../SRS_Reflection.text}
 
+\subsection*{Arjun - Reflection}
+
+\subsubsection*{What went well while writing this deliverable?}
+
+Writing the Project book went well because most of its content could be
+grounded in sources the team had already agreed on. The roles in P.1 came from
+the Development Plan, the milestone dates in P.3 came from the capstone
+calendar, and the phase-in plan was built around those milestones, so every
+phase has a real due date instead of a guess. I also only referred to
+requirement IDs that already existed in S.2. This meant the phase-in plan,
+tasks, risks, and likely changes all point back to specific requirements,
+which makes the Project book traceable to the System book rather than a
+separate plan that could drift away from it.
+
+\subsubsection*{What pain points did you experience during this deliverable,
+and how did you resolve them?}
+
+The main pain point was keeping the Project book consistent with documents
+that were written at different times. The Development Plan mentioned
+multiplayer networking and a custom RF module, while G.6 of the SRS excluded
+them, and the Hazard Analysis included security requirements for logins and
+multiplayer data. At first P.2 simply said these technologies were not
+needed. After discussing it, we decided that multiplayer, session history,
+and FPV transmitter support are stretch goals, so I recorded them as a likely
+change (LC-06), listed the technology each would need in P.5, and updated G.6
+so the three sections say the same thing.
+
+\subsubsection*{How many of your requirements were inspired by speaking to
+your client(s) or their proxies (e.g.\ your peers, stakeholders, potential
+users)?}
+
+The Project book does not define new requirements, but the plans in it were
+shaped by conversations. The supervisor meetings are the reason the flight
+model is phased in incrementally and the reference drone is listed as an open
+decision, and team discussions decided which features are stretch goals. None
+of the requirements came from speaking with potential end users, because no
+user consultation has happened yet (G.7). This is a weakness, and the
+elicitation plan in P.7 is meant to fix it before the requirements are
+accepted.
+
+\subsubsection*{Which of the courses you have taken, or are currently taking,
+will help your team to be successful with your capstone project?}
+
+SFWRENG 3RA3 (Software Requirements and Security Considerations) has helped
+the most so far. It taught me to write requirements that are verifiable, to
+separate imposed constraints from requirements, and to think about which
+requirements are likely or unlikely to change. These ideas map directly onto
+P.2, P.7, and the likely and unlikely changes in this document. The security
+part of the course is also relevant to the Hazard Analysis, especially if the
+multiplayer or session-history stretch goals are taken on.
+
+\subsubsection*{What knowledge and skills will the team collectively need to
+acquire to successfully complete this capstone project?}
+
+\begin{itemize}
+\item \textbf{Unity and C\# development} -- the whole team, since every
+component is built in Unity.
+\item \textbf{VR development on the Meta Quest 3 with OpenXR} -- John Cho and
+Ibrahim Tariq, for headset and controller integration and frame-rate
+performance.
+\item \textbf{Drone flight dynamics} -- Ibrahim Tariq, to build a flight model
+that feels like a real FPV drone.
+\item \textbf{Level and environment design} -- Sankalpa Chhetri Dhakal, for
+the obstacle courses and environments.
+\item \textbf{Machine learning for flight feedback} -- Sankalpa Chhetri
+Dhakal, to evaluate whether the optional AI feedback is feasible.
+\item \textbf{State machine design and testing} -- Vikram Chandar, to keep
+checkpoints, crashes, and timers consistent.
+\item \textbf{Scoring design and flight data recording} -- Arjun Sasidaran,
+to design a score and rating that are fair and that users can understand.
+\end{itemize}
+
+\subsubsection*{For each of the knowledge areas and skills identified in the
+previous question, what are at least two approaches to acquiring the
+knowledge or mastering the skill? Of the identified approaches, which will
+each team member pursue, and why did they make this choice?}
+
+\begin{itemize}
+\item \textbf{Unity and C\#} -- (1) Unity Learn tutorials and the Unity
+manual; (2) building small prototypes, such as a single checkpoint or timer,
+before the real features.
+\item \textbf{VR on the Meta Quest 3} -- (1) Meta's developer documentation and
+sample projects; (2) testing early builds on the headset and profiling them.
+\item \textbf{Drone flight dynamics} -- (1) reading about quadcopter dynamics
+and the reference drone's specifications; (2) flying existing simulators such
+as Liftoff and comparing their behaviour.
+\item \textbf{Level design} -- (1) studying the courses in existing FPV
+simulators; (2) playtesting courses with teammates and adjusting difficulty.
+\item \textbf{Machine learning} -- (1) online courses and model documentation
+for pre-trained models such as Qwen2-VL; (2) testing a model on small samples
+of recorded flight data.
+\item \textbf{State machine design and testing} -- (1) writing the state
+transitions down formally in the design document; (2) writing unit tests for
+each transition with Unity's test framework.
+\item \textbf{Scoring design and flight data recording} -- (1) studying how
+existing simulators such as VelociDrone and Drone Blitz score and rank runs;
+(2) building a first version of the score, then calibrating it by having
+teammates fly the courses and checking whether the results match how well
+they actually flew.
+\end{itemize}
+
+For my own area, I will mainly pursue the second approach for scoring:
+building a first version and calibrating it with real runs. A scoring formula
+is hard to judge on paper, and seeing whether a clean run actually scores
+higher than a messy one is the quickest way to find out whether it is fair.
+I will still look at existing simulators first so that the first version
+starts from ideas that are known to work. For Unity and C\#, I will build
+small prototypes, since I learn faster by writing code than by reading
+tutorials. The other team members describe their own choices in their
+reflections.
+
 \end{document}
