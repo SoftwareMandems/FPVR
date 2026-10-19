@@ -60,9 +60,10 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
+Oct 19, 2026 & Arjun Sasidaran & Added FMEA (Section 5), user well-being
+hazards and SR21--SR24, and the roadmap (Section 7); restructured safety
+requirements into functional and non-functional subsections; marked
+multiplayer, user account, and database requirements as stretch goals\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -311,12 +312,13 @@ H6-4 \\
 \hline
 
 % Network and Multiplayer Services
-Network and Multiplayer Services &
+Network and Multiplayer Services (Multiplayer: Stretch Goal) &
 Required external services are unavailable &
-Multiplayer and dependent features fail; user unaware of the cause &
+Dependent features, such as intelligent feedback or multiplayer, fail; user
+unaware of the cause &
 Server outage; unstable internet connection &
 Verify connectivity before enabling dependent features; notify the user of
-network interruptions &
+multiplayer network interruptions (notification: Future; see Section 7) &
 \reqref{SR6}, \reqref{SR11} &
 H7-1 \\
 \hline
@@ -324,7 +326,8 @@ H7-1 \\
 Malformed or manipulated multiplayer messages are accepted &
 Inconsistent gameplay state; corrupted performance records &
 Untrusted client data; modified clients &
-Validate all data received from multiplayer clients before applying it &
+Validate all data received from multiplayer clients before applying it
+(Future; see Section 7) &
 \reqref{SR9} &
 H7-2 \\
 \hline
@@ -333,7 +336,7 @@ Network traffic or session credentials are intercepted or reused &
 Exposure of user data; unauthorized access to sessions &
 Unencrypted communication; session credentials not invalidated &
 Encrypt network communication; invalidate session credentials when a user leaves
-or a session expires (credential invalidation: Future; see Section 7) &
+or a session expires (Future; see Section 7) &
 \reqref{SR7}, \reqref{SR18} &
 H7-3 \\
 \hline
@@ -569,19 +572,10 @@ be implemented in the future.
     \textbf{Justification:} Controller input drives the core flight simulation, so invalid values must be handled before flight features are built on top of it.
 
     \item \textbf{\reqref{SR6}:} The system shall verify connectivity to required external services before enabling dependent features.\\
-    \textbf{Justification:} Checking connectivity is low effort and prevents online features from failing without explanation during testing and demonstrations.
-
-    \item \textbf{\reqref{SR7}:} The system shall use encrypted communication when transmitting multiplayer session information.\\
-    \textbf{Justification:} Encryption is easiest to adopt when network communication is first set up, rather than retrofitted after it is built.
-
-    \item \textbf{\reqref{SR9}:} The system shall validate data received from multiplayer clients.\\
-    \textbf{Justification:} Invalid multiplayer data can corrupt shared gameplay state, so validation should be built in alongside the networking code.
+    \textbf{Justification:} Checking connectivity is low effort and prevents features that depend on external services, such as the planned intelligent feedback, from failing without explanation during testing and demonstrations.
 
     \item \textbf{\reqref{SR10}:} The system shall preserve saved gameplay records during unexpected errors or network interruptions.\\
     \textbf{Justification:} Losing user progress during testing would undermine both the user experience and the evaluation of the system.
-
-    \item \textbf{\reqref{SR11}:} The system shall notify users when a network interruption prevents multiplayer access.\\
-    \textbf{Justification:} A simple notification prevents user confusion and requires little effort once connectivity checks from SR6 are in place.
 
     \item \textbf{\reqref{SR12}:} The system shall disclose what gameplay data is collected and how it is used.\\
     \textbf{Justification:} Users must be informed before any data is collected, which includes participants in capstone user testing.
@@ -616,16 +610,26 @@ be implemented in the future.
 
 \subsection{Requirements Implemented in the Future}
 
-The following requirements depend on user account functionality and persistent
-server-side storage of gameplay records, which are outside the scope of the
-capstone timeline.
+The following requirements depend on multiplayer functionality, user accounts,
+or database storage of gameplay records. These features are stretch goals of
+the project that may not be implemented within the capstone timeline, so the
+requirements will be implemented when the corresponding features are developed.
 
 \begin{itemize}
+    \item \textbf{\reqref{SR7}:} The system shall use encrypted communication when transmitting multiplayer session information.\\
+    \textbf{Justification:} Encryption only applies once multiplayer networking is implemented, which is a stretch goal.
+
     \item \textbf{\reqref{SR8}:} The system shall restrict access to stored user-specific gameplay records.\\
     \textbf{Justification:} Access restrictions only apply once user-specific records are stored, which depends on account functionality.
 
+    \item \textbf{\reqref{SR9}:} The system shall validate data received from multiplayer clients.\\
+    \textbf{Justification:} Validation of client data is only needed once multiplayer is implemented, and should be built alongside the multiplayer networking code.
+
+    \item \textbf{\reqref{SR11}:} The system shall notify users when a network interruption prevents multiplayer access.\\
+    \textbf{Justification:} This notification only applies to multiplayer features, which are a stretch goal.
+
     \item \textbf{\reqref{SR13}:} The system shall require users to authenticate before accessing personal accounts or records.\\
-    \textbf{Justification:} Authentication is only needed once user accounts exist, which are not part of the capstone scope.
+    \textbf{Justification:} Authentication is only needed once user accounts exist, which are a stretch goal.
 
     \item \textbf{\reqref{SR14}:} The system shall enforce authorization checks before stored gameplay records are viewed, modified, or deleted.\\
     \textbf{Justification:} Authorization depends on both authenticated users and stored records, so it follows the implementation of SR13.
@@ -634,16 +638,16 @@ capstone timeline.
     \textbf{Justification:} No passwords are stored until account functionality is implemented.
 
     \item \textbf{\reqref{SR17}:} The system shall prevent unauthorized modification of stored gameplay records and verify their integrity.\\
-    \textbf{Justification:} Integrity verification depends on persistent server-side storage, which is planned after the capstone.
+    \textbf{Justification:} Integrity verification depends on database storage of gameplay records, which is a stretch goal.
 
     \item \textbf{\reqref{SR18}:} The system shall invalidate multiplayer session credentials when a user leaves or a session expires.\\
-    \textbf{Justification:} Session credentials tied to user identities depend on account functionality that is planned for a later release.
+    \textbf{Justification:} Session credentials only exist once multiplayer is implemented, and depend on user accounts; both are stretch goals.
 
     \item \textbf{\reqref{SR19}:} The system shall limit repeated authentication attempts within a defined period.\\
     \textbf{Justification:} Rate limiting only applies once an authentication system exists.
 
     \item \textbf{\reqref{SR20}:} The system shall record security-relevant events without logging unnecessary sensitive information.\\
-    \textbf{Justification:} Most security events relate to authentication and record access, which are implemented after the capstone.
+    \textbf{Justification:} Most security events relate to authentication and record access, which depend on the user account and database stretch goals.
 \end{itemize}
 
 \newpage{}
@@ -700,6 +704,63 @@ whether material was generated by a human or an AI system.}
     \item Other than the risk of physical harm (some projects may not have any
     appreciable risks of this form), list at least 2 other types of risk in
     software products. Why are they important to consider?
+\end{enumerate}
+
+\subsection*{Arjun Sasidaran}
+
+\begin{enumerate}
+    \item % What went well while writing this deliverable?
+    Organizing the FMEA by system component worked well. Working through the
+    flight simulation, VR headset, controllers, checkpoints, scoring, data,
+    network, and feedback components one at a time made it much easier to
+    brainstorm failure modes than trying to list hazards for the whole system
+    at once. Tracing every row to a safety requirement in Section 6 or a
+    requirement in the SRS also helped me check coverage: any requirement
+    without a matching failure mode, or any failure mode without a mitigation,
+    stood out right away. Splitting the roadmap into capstone and future work,
+    with a justification for each requirement, made our priorities much
+    clearer than a single list would have.
+
+    \item % What pain points did you experience, and how did you resolve them?
+    The main pain point was deciding which safety and security requirements
+    belong in the capstone timeline. Several requirements depend on
+    multiplayer, user accounts, or database storage of flight records, which
+    are all stretch goals. Rather than removing them,
+    I kept them so the hazards are still documented, moved them to the future
+    section of the roadmap with a justification for each, and marked the
+    related FMEA actions as future work. This keeps the analysis complete
+    without committing the team to features that may not be built. Formatting was another pain point: the FMEA table was too
+    wide for a portrait page, so I moved it to landscape pages, which then
+    required extra work to keep the page numbers and column text readable.
+
+    \item % Which risks did the team think of before vs. during this deliverable?
+    Before this deliverable, we had already thought about the physical risks
+    that are common to VR, such as motion sickness, colliding with objects in
+    the room, and losing headset tracking, as well as basic performance risks
+    like low frame rates and input latency. While completing the hazard
+    analysis, we identified several less obvious risks. Going through each
+    component led to gameplay logic failures, such as checkpoints registering
+    out of order, unsafe respawn points, and incorrect timers affecting scores.
+    Reviewing the hazard analysis checklist, which asks teams to think broadly
+    about safety, led to user well-being risks: eye strain from long sessions,
+    photosensitive seizures from flashing effects, frustration from repeated
+    crashes, and users treating simulator results as readiness to fly a real
+    drone. The last risk came from our own SRS, which already states that
+    performance in FPVR is not proof of real-world flight ability.
+
+    \item % At least 2 other types of risk in software products, and why they matter.
+    One type of risk is security and privacy risk, such as unauthorized access
+    to user data, intercepted network traffic, or compromised credentials.
+    These matter because they can harm users even when the software works
+    exactly as intended, and a breach can permanently damage user trust.
+    A second type is psychological and well-being risk, such as frustration,
+    discouragement, or software that encourages unhealthy amounts of use.
+    This is especially important for games and training tools used by the
+    general public, since their design directly shapes how users feel and
+    behave. A third type is data integrity risk, where results or progress
+    are lost or recorded incorrectly. In a training tool like FPVR, inaccurate
+    scores or lost progress would give users misleading feedback about their
+    skills.
 \end{enumerate}
 
 \end{document}
