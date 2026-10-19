@@ -109,7 +109,6 @@ documentation, and/or test cases.}
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
 rationale design process how and why to fake it.)}
 
-\```latex
 \subsection{Functional Requirements}
 
 \noindent
@@ -213,7 +212,7 @@ rationale design process how and why to fake it.)}
 \textbf{Rationale:} Security logs support the investigation of suspicious activity while minimizing the exposure of sensitive data.\\
 \textbf{Risk:} Medium
 
-\section{Non-Functional Requirements}
+\subsection{Non-Functional Requirements}
 \noindent
 \textbf{NFR1:} The system shall maintain a frame rate of at least 30 frames per second during standard single-player gameplay on the minimum supported VR hardware.\\
 \textbf{Rationale:} Maintaining a consistent frame rate helps reduce visual discomfort and supports an immersive VR experience.\\
@@ -239,8 +238,47 @@ rationale design process how and why to fake it.)}
 
 \section{Roadmap}
 
-\wss{Which safety requirements will be implemented as part of the capstone timeline?
-Which requirements will be implemented in the future?}
+The following roadmap outlines which of the safety and security requirements
+from Section 6 will be implemented within the capstone timeline and which will
+be implemented in the future.
+
+\subsection{Requirements Within the Capstone Timeline}
+
+\begin{itemize}
+    \item \textbf{SR1:} The system shall provide users with a safety notice before their first VR session.
+    \item \textbf{SR2:} The system shall allow users to pause or exit gameplay at any time.
+    \item \textbf{SR3:} The system shall suspend active gameplay when a headset disconnection or loss of tracking is reported.
+    \item \textbf{SR4:} The system shall verify that required VR hardware is initialized before a flight session begins.
+    \item \textbf{SR5:} The system shall validate controller input values before applying them to the drone simulation.
+    \item \textbf{SR6:} The system shall verify connectivity to required external services before enabling dependent features.
+    \item \textbf{SR7:} The system shall use encrypted communication when transmitting multiplayer session information.
+    \item \textbf{SR9:} The system shall validate data received from multiplayer clients.
+    \item \textbf{SR10:} The system shall preserve saved gameplay records during unexpected errors or network interruptions.
+    \item \textbf{SR11:} The system shall notify users when a network interruption prevents multiplayer access.
+    \item \textbf{SR12:} The system shall disclose what gameplay data is collected and how it is used.
+    \item \textbf{SR16:} The system shall validate and sanitize user-provided data before processing or storing it.
+    \item \textbf{NFR1:} The system shall maintain at least 30 frames per second on the minimum supported VR hardware.
+    \item \textbf{NFR2:} The system shall respond to valid controller inputs within 50 milliseconds.
+    \item \textbf{NFR3:} The system shall operate correctly on all explicitly supported hardware configurations.
+    \item \textbf{NFR4:} The system shall restore access to the main menu within 10 seconds of a recoverable interruption.
+\end{itemize}
+
+\subsection{Requirements Implemented in the Future}
+
+The following requirements depend on user account functionality and persistent
+server-side storage of gameplay records, which are outside the scope of the
+capstone timeline.
+
+\begin{itemize}
+    \item \textbf{SR8:} The system shall restrict access to stored user-specific gameplay records.
+    \item \textbf{SR13:} The system shall require users to authenticate before accessing personal accounts or records.
+    \item \textbf{SR14:} The system shall enforce authorization checks before stored gameplay records are viewed, modified, or deleted.
+    \item \textbf{SR15:} The system shall store passwords using a salted password-hashing algorithm.
+    \item \textbf{SR17:} The system shall prevent unauthorized modification of stored gameplay records and verify their integrity.
+    \item \textbf{SR18:} The system shall invalidate multiplayer session credentials when a user leaves or a session expires.
+    \item \textbf{SR19:} The system shall limit repeated authentication attempts within a defined period.
+    \item \textbf{SR20:} The system shall record security-relevant events without logging unnecessary sensitive information.
+\end{itemize}
 
 \newpage{}
 
