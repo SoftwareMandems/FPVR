@@ -18,6 +18,8 @@
 \usepackage{pdflscape}
 \usepackage{afterpage}
 \usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{float}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
 
@@ -141,18 +143,20 @@
 
 \section*{Revision History}
 
-\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
-
-\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
-
+\begin{tabularx}{\textwidth}{@{}p{2.8cm}p{3.5cm}X@{}}
+\toprule
+\textbf{Date} & \textbf{Developer(s)} & \textbf{Changes} \\
 \midrule
 
-Date 1 & 1.0 & Notes\\
+Oct 16, 2026 & Sankalpa &
+Adapted the SRS document structure to Meyer's template. \\
 
-Date 2 & 1.1 & Notes\\
+\addlinespace
+
+Oct 18, 2026 & Sankalpa &
+Completed the Goals (G) section of the SRS. \\
 
 \bottomrule
-
 \end{tabularx}
 
 \newpage
@@ -175,66 +179,758 @@ Date 2 & 1.1 & Notes\\
 
 \booksection{G}{Goals}
 
-\guidance{Goals are "needs of the target organization, which the system will address". While the development team is the principal user of the other books, the Goals book addresses a wider audience: essentially, all stakeholders \cite{BM22}}
-
-\guidance{It must contain enough information to provide --- if read just by itself --- a general sketch of the entire project. To this effect, chapter \hyperref[g3]{G.3} presents a short overview of the system and \hyperref[g1]{G.1} will typically include some key properties of the environment. As it addresses a wide readership, it should be clear and minimize the use of specialized technical terms. Together, \hyperref[g1]{G.1}, \hyperref[g2]{G.2} and \hyperref[g3]{G.3} describe the rationale for the project. It is important to state these justifications explicitly. Typically, they are well understood at the start of the project, but management and priorities can change \cite{BM22}}
-
-
 \subsection{Context and Overall Objectives}\label{g1}
 
-\guidance{High-level view of the project: organizational context and reason for building a system. It explains why the project is needed, recalls the business context, and presents the general business objectives. \cite{BM22}}
+Learning to operate a first-person-view (FPV) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
 
-% TODO: Write your team's content for G.1 here.
+FPVR is a virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
+
+The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, checkpoints, and performance evaluation. Users will receive feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. An optional intelligent feedback component may provide further analysis of user performance.
+
+
 
 \subsection{Current situation}\label{g2}
 
-\guidance{Current state of processes to be addressed by the project and the resulting system. It describes the current situation, upon which the system is expected to improve \cite{BM22}}
+Learning to operate a first-person-view (FPV) drone requires beginners to develop coordinated control skills while interpreting visual feedback from the drone's perspective. Practicing with physical drones introduces risks of crashes, equipment damage, and additional costs, making simulation a valuable alternative for introductory training.
 
-% TODO: Write your team's content for G.2 here.
+Several established FPV drone simulators, including Liftoff: FPV Drone Racing~\cite{liftoffFPV}  and VelociDrone\cite{velocidrone}, allow users to practice flight manoeuvres, complete racing courses, and explore virtual environments through conventional PC-based interfaces. These platforms provide extensive training and recreational capabilities, with a strong emphasis on realistic flight behaviour, racing, and freestyle flying. However, their traditional desktop experiences do not provide the same interaction environment as a dedicated virtual reality (VR) headset.
+
+VR-based alternatives also exist. Liftoff: XR Drone~\cite{liftoffXR} introduces accessible drone flight using Meta Quest controllers, while DVR Simulator~\cite{dvrSimulator} and Drone Blitz~\cite{droneBlitz} offer VR flight challenges and racing or performance-tracking features. These applications demonstrate that immersive drone simulation is already feasible, but they differ in their emphasis on casual exploration, racing, and structured practice.
+
+FPVR aims to build on these existing approaches by focusing specifically on a progressive, beginner-oriented VR training experience. Rather than treating flight practice and course completion as isolated activities, FPVR intends to connect free-flight familiarization, increasingly challenging obstacle courses, checkpoint-based objectives, and post-flight performance reviews into a continuous learning process. By allowing users to evaluate their results and repeat challenges, the system aims to help beginners recognize their mistakes and track improvements over successive attempts.
+
+The intended contribution of FPVR is therefore not the introduction of drone simulation or VR flight itself, but the integration of immersive flight practice with structured progression and measurable feedback. The effectiveness of this approach will require evaluation with potential users.
 
 \subsection{Expected Benefits}\label{g3}
 
-\guidance{New processes, or improvement to existing processes, made possible by the project's results. It presents the business benefits expected from the successful execution of the project. This chapter is the core of the Goals book, describing what the organization expects from the system. It ensures that the project remains focused: if at some stage it gets pushed in different directions, with ``creeping featurism'' threatening its integrity, a reminder about the original business goals stated in those chapters will help. \cite{BM22}}
+\textbf{Safe and Repeatable Practice (G1):}
+FPVR will allow users to practice drone operation without exposing
+a real drone or surrounding property to collision-related damage.
+Users can recover from simulated crashes and repeat exercises
+without the costs associated with damaging physical equipment.
 
-% TODO: Write your team's content for G.3 here.
+\medskip
+
+\textbf{Progressive Skill Development (G2):}
+Rather than relying exclusively on unrestricted flight, FPVR
+will offer structured challenges of varying difficulty.
+Users can freely select levels based on their experience and
+practice increasingly demanding manoeuvres at their own pace.
+
+\medskip
+
+\textbf{Performance Awareness (G3):}
+After completing a training level, users will be able to
+review their performance through recorded measures such as
+completion time, checkpoint progress, and collisions.
+This feedback is intended to help users identify areas for
+improvement and encourage deliberate practice.
+
+\medskip
+
+\textbf{Accessible Introductory Training (G4):}
+FPVR will accommodate users with limited or no prior FPV
+flying experience by providing a free-flight environment
+where they can become familiar with flight controls before
+attempting structured challenges.
+
+\medskip
+
+These benefits concern the intended training experience.
+Any claim that FPVR improves actual physical-drone piloting
+ability will require separate validation and is not assumed
+by this specification.
 
 \subsection{Functionality overview}\label{g4}
 
-\guidance{Overview of the functions (behavior) of the system. Principal properties only (details are in the System book). It is a short overview of the functions of the future system, a kind of capsule version of book S, skipping details but enabling readers to get a quick grasp of what the system will do. \cite{BM22}}
+FPVR will provide the following capabilities to support
+its goals.
 
-% TODO: Write your team's content for G.4 here.
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Functionality Overview}
+\label{tab:functionality-overview}
+
+\begin{tabularx}{\textwidth}{
+    @{}p{4.0cm} X p{2.4cm}@{}
+}
+\toprule
+\textbf{Functionality} &
+\textbf{Description} &
+\textbf{Initial Scope} \\
+\midrule
+
+VR Flight Experience &
+First-person simulated drone flight through a virtual
+reality headset. &
+Core \\
+
+\addlinespace
+
+Free-Flight Practice &
+An open-ended practice environment where users can
+freely operate the drone without course objectives,
+timers, or scoring. &
+Core \\
+
+\addlinespace
+
+Obstacle-Course Levels &
+Structured flight challenges of varying difficulty.
+Users may select any available level regardless of
+previous completion. &
+Core \\
+
+\addlinespace
+
+Different Environments &
+Multiple virtual environments for flight practice and
+obstacle courses. Different levels may share the same
+environment. &
+Core \\
+
+\addlinespace
+
+Checkpoint System &
+Designated course checkpoints used to track progress
+toward level completion. &
+Core \\
+
+\addlinespace
+
+Crash Recovery &
+Following a simulated crash, users can choose to
+restart the level or respawn at the most recently
+reached checkpoint. &
+Core \\
+
+\addlinespace
+
+Timing and Scoring &
+Records completion time and calculates a score
+based on defined performance measures during
+obstacle-course challenges. &
+Core \\
+
+\addlinespace
+
+Flight Review &
+Provides a summary of flight performance after
+completing a level, including completion time,
+collisions, checkpoint results, and score. &
+Core \\
+
+\addlinespace
+
+Flight Rating &
+Provides a separate performance rating based on
+defined flight measures. The evaluation criteria
+remain to be determined. &
+Core \\
+
+\addlinespace
+
+Intelligent Feedback &
+Potential AI-based analysis of flight performance
+to provide additional observations and recommendations,
+subject to feasibility evaluation. &
+Planned \\
+
+\addlinespace
+
+Controller Input &
+Supports drone control using Meta Quest controllers
+or a compatible Xbox controller. &
+Core \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The exact scoring and rating criteria, controller mappings,
+checkpoint and respawn behaviour, and requirements for
+AI-based feedback will be specified in the System section.
+
 
 \subsection{High-level usage scenarios}\label{g5}
 
-\guidance{Fundamental usage paths through the system. It presents the main scenarios (use cases) that the system should cover. The scenarios chosen for appearing here, in the Goals book, should only be the main usage patterns, without details such as special and erroneous cases; they should be stated in user terms only, independently of the system's structure. Detailed usage scenarios, taking into account system details and special cases, will appear in the System book (\hyperref[s4]{S.4}). \cite{BM22}}
+This section describes the primary interactions between
+users and FPVR during flight practice, obstacle-course
+completion, crash recovery, and performance evaluation.
+These scenarios illustrate the intended system behaviour
+and support the goals defined in Section G.1.
 
-% TODO: Write your team's content for G.5 here.
+\subsubsection{Scenario 1: Initial Free-Flight Practice}
 
-% TODO: Add your high-level use case diagram here.
+A first-time user launches FPVR and selects the free-flight
+mode using either Meta Quest controllers or a compatible
+Xbox controller. The user enters a virtual environment
+where they can practice basic flight manoeuvres, such as
+ascending, descending, turning, and navigating through
+the environment.
 
-% \begin{figure}[H]
+Unlike structured obstacle-course levels, free-flight
+mode has no checkpoints, timers, or scoring. Users can
+explore and practice at their own pace without specific
+completion objectives.
 
-% \centering
+If the drone experiences a simulated crash, the user can
+reset its position and continue practicing. The user may
+leave free-flight mode and return to the level-selection
+interface when desired.
 
-% \includegraphics[width=0.85\textwidth]{use_case_diagram.pdf}
+This scenario supports G1 and G4 by providing a safe,
+repeatable environment for becoming familiar with FPV
+drone controls.
 
-% \caption{High-Level Use Cases}
 
-% \label{fig:high-level-use-cases}
+\subsubsection{Scenario 2: Completing an Obstacle-Course Level}
 
-% \end{figure}
+A user selects an obstacle-course level from the available
+challenges. All levels are accessible regardless of previous
+completion, allowing users to choose courses appropriate
+to their experience and preferences.
 
+Each level contains obstacles and a sequence of checkpoints
+that must be completed in the designated order. The system
+tracks the user's progression, total elapsed time, and time
+spent navigating between checkpoints. Upon reaching a
+checkpoint, the current section timer resets while the
+total elapsed time continues accumulating.
+
+The user navigates through the checkpoints in sequence
+until reaching the finish. After successful completion,
+the system calculates a numerical score and a separate
+performance rating based on the recorded flight results.
+
+The user can then review their performance, retry the
+level, or select another challenge.
+
+This scenario supports G2 by providing structured flight
+challenges of varying difficulty with measurable outcomes.
+
+
+\subsubsection{Scenario 3: Recovering from a Simulated Crash}
+
+While attempting an obstacle-course level, the user loses
+control of the drone and experiences a simulated crash.
+The system records the collision and provides two recovery
+options: restart the entire level or respawn at the most
+recently reached checkpoint.
+
+If the user selects respawn, the drone returns to the last
+successfully reached checkpoint. If no checkpoints have
+been reached, the drone returns to the level's starting
+position.
+
+The current section timer resets upon respawning, allowing
+the user to attempt the section again. However, the total
+elapsed time continues accumulating, including the time
+spent on failed attempts. The recorded collision also
+negatively affects the final score.
+
+The user can continue attempting the course without
+restarting the FPVR application.
+
+This scenario supports G1 and G2 by allowing users to
+recover from mistakes while maintaining meaningful
+performance consequences.
+
+\subsubsection{Scenario 4: Reviewing Flight Performance}
+
+After successfully completing an obstacle-course level,
+the user receives a flight review summarizing their
+performance.
+
+The review includes the total completion time, checkpoint
+results, collision count, and numerical score. The total
+completion time includes time spent on failed sections
+and subsequent attempts following checkpoint respawns.
+
+The system also presents a separate overall performance
+rating based on defined evaluation criteria. The user can
+examine these results to identify areas for improvement
+before attempting another flight challenge.
+
+This scenario supports G3 by providing measurable feedback
+intended to encourage deliberate practice and improvement.
+
+The exact scoring formula, rating categories, and penalties
+associated with collisions must be established in \hyperref[s2]{S.2}.
+
+
+\subsubsection{Scenario 5: AI-Assisted Flight Feedback
+(Planned: Subject to Feasibility)}
+
+If AI-assisted feedback is included in the final
+implementation, the system will automatically provide
+additional performance analysis as part of the post-level
+flight review.
+
+Using available flight-performance data, the system would
+identify areas of difficulty and provide understandable
+observations or recommendations. For example, the
+feedback might highlight repeated collisions or
+difficulties navigating particular obstacle sections.
+
+The intelligent feedback component is intended to
+complement the standard numerical score and performance
+rating rather than replace them.
+
+The feasibility, data requirements, analysis approach,
+and evaluation criteria for AI-assisted feedback remain
+to be determined. The standard flight review will remain
+available independently of this optional capability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{activityDiagram.png}
+    \caption{High-Level FPVR Training Activity Diagram}
+    \label{fig:high-level-activity}
+\end{figure}
+The activity diagram illustrates the primary
+obstacle-course training workflow. Swimlanes
+identify the responsible user or system
+component, while arrows indicate the sequence
+of activities.
 \subsection{Limitations and Exclusions}\label{g6}
 
-\guidance{Aspects that the system need not address. It states what the system will not do. This chapter addresses a key quality attribute of good requirements: the requirements must be delimited (or ``scoped''). \hyperref[g6]{G.6} is not, however, the place for an analysis of risks and obstacles, which pertain to the project rather than the goals and correspondingly appears in chapter \hyperref[p6]{P.6}. \cite{BM22}}
+FPVR is intended to provide an introductory virtual reality
+(VR) training experience for first-person-view (FPV) drone
+operation. The following limitations and exclusions define
+the boundaries of the system and clarify functionality
+outside the project's current scope.
 
-% TODO: Write your team's content for G.6 here.
+\newpage
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Limitations and Exclusions}
+\label{tab:limitations-exclusions}
+
+\begin{tabularx}{\textwidth}{
+    @{}p{4cm} X@{}
+}
+\toprule
+\textbf{Area} &
+\textbf{Limitation or Exclusion} \\
+\midrule
+
+Physical Drone Operation &
+FPVR is limited to simulated drone operation and will not
+communicate with or control physical drones. \\
+
+\addlinespace
+
+VR Hardware Requirement &
+FPVR requires a compatible VR headset for operation.
+Both Meta Quest controllers and compatible Xbox controllers
+will be supported, but conventional PC gameplay without
+a VR headset is excluded. \\
+
+\addlinespace
+
+Pilot Certification &
+FPVR will not provide official drone pilot certification
+or replace applicable regulatory examinations, assessments,
+or licensing requirements. \\
+
+\addlinespace
+
+Real-World Flight Proficiency &
+Performance within FPVR will not be considered proof
+of a user's ability to safely operate a physical drone.
+The transfer of skills from simulation to real-world
+flight is not guaranteed. \\
+
+\addlinespace
+
+Flight Simulation Realism &
+FPVR aims to provide realistic flight behaviour for
+training purposes. However, the underlying flight model,
+its implementation, and the required level of accuracy
+remain under review. The system is not intended to
+reproduce every physical and environmental characteristic
+of real-world drone operation. \\
+
+\addlinespace
+
+Multiplayer Functionality &
+FPVR is limited to single-player training.
+Multiplayer racing, cooperative flight, and shared
+online training sessions are excluded. \\
+
+\addlinespace
+
+Dedicated FPV Transmitters &
+Support for dedicated FPV radio transmitters is under
+consideration but is not part of the confirmed core
+controller requirements. Compatibility and feasibility
+will be evaluated during development. \\
+
+\addlinespace
+
+Historical Flight Records &
+FPVR will provide performance reviews after completing
+obstacle-course levels but will not include functionality
+for accessing or reviewing previously completed sessions. \\
+
+\addlinespace
+
+AI-Assisted Feedback &
+AI-generated flight feedback is planned subject to
+feasibility evaluation. Core flight reviews, numerical
+scores, and performance ratings will remain available
+independently of this optional capability. \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+FPVR focuses on safe introductory flight practice,
+structured obstacle-course challenges, and performance
+evaluation within a virtual environment. The system
+is not intended to replace real-world flight training
+or serve as a comprehensive engineering-grade flight
+simulator. The risks associated with these limitations and their corresponding
+mitigation strategies are discussed in
+\hyperref[p6]{P.6}.
+
 
 \subsection{Stakeholders and requirements sources}\label{g7}
 
-\guidance{Groups of people who can affect the project or be affected by it, and other places to consider for information about the project and system. It lists stakeholders and other requirements sources. It should define stakeholders as categories of people, not individuals, even if such individuals are known at the time of writing. The main goal of chapter \hyperref[g7]{G.7} is to avoid forgetting any category of people whose input is relevant to the project. It also lists documents and other information that the project, aside from soliciting input from stakeholders, can consult for requirements information. \cite{BM22}}
+This section identifies the stakeholders who may influence
+or be affected by FPVR and the sources used to establish
+its initial requirements. It distinguishes confirmed
+project participants from potential stakeholders whose
+feedback has not yet been collected.
 
-% TODO: Write your team's content for G.7 here.
+\subsubsection{Stakeholders}
+
+Table~\ref{tab:stakeholders} identifies the primary
+and secondary stakeholders of FPVR and their interests
+in the project.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Stakeholders}
+\label{tab:stakeholders}
+
+\begin{tabularx}{\textwidth}{@{}p{3.4cm} X@{}}
+\toprule
+\textbf{Stakeholder} &
+\textbf{Interest in FPVR} \\
+\midrule
+
+Beginner FPV Pilots &
+Primary intended users seeking accessible introductory
+training, opportunities to practise basic flight
+manoeuvres, and feedback on their performance. \\
+
+\addlinespace
+
+Drone Enthusiasts &
+Potential users interested in additional flight practice,
+structured challenges, and evaluating the realism of
+the simulation. \\
+
+\addlinespace
+
+Students and Technology Enthusiasts &
+Potential users interested in experiencing FPV drone
+operation through virtual reality. Intended use is
+subject to applicable headset age and safety
+restrictions. \\
+
+\addlinespace
+
+McMaster Drone Team &
+Potential technical stakeholder that may provide
+feedback on simulated drone behaviour
+and operator training. The team has not yet been
+consulted. \\
+
+\addlinespace
+
+Project Team &
+Responsible for developing, testing, maintaining,
+and documenting FPVR according to the established
+requirements. \\
+
+\addlinespace
+
+Project Supervisor &
+Provides technical guidance and feedback on project
+scope, feasibility, and simulation realism. \\
+
+\addlinespace
+
+Course Evaluators &
+Review the project's requirements, engineering
+process, documentation, and delivered functionality
+against the course expectations. \\
+
+\addlinespace
+
+Parents and Guardians &
+Indirect stakeholders concerned with age-appropriate
+access and the safe use of VR by younger users. \\
+
+\addlinespace
+
+Society and General Public &
+Indirect stakeholders interested in safer introductory
+drone training, responsible technology use,
+accessibility, and the management of VR-related
+health and safety concerns. \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Society is considered an indirect stakeholder because
+VR-based drone training has implications for physical
+safety, user well-being, accessibility, and responsible
+drone operation. FPVR must not misrepresent simulated
+flight performance as proof of real-world piloting
+competence.
+
+FPVR is intended for users with varying levels of
+experience and age, subject to the age restrictions
+and safety requirements of the supported VR hardware.
+Applicable platform age-group requirements are
+documented by Meta~\cite{metaAgeGroups}.
+
+
+\subsubsection{Requirements Sources}
+
+The initial requirements for FPVR have been developed
+using existing project documentation, team discussions,
+supervisor guidance, and technical references relevant
+to virtual reality and flight simulation.
+
+The principal requirements sources are summarized
+in Table~\ref{tab:requirements-sources}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{FPVR Requirements Sources}
+\label{tab:requirements-sources}
+
+\begin{tabularx}{\textwidth}{@{}p{3.5cm} X@{}}
+\toprule
+\textbf{Source} &
+\textbf{Contribution to Requirements} \\
+\midrule
+
+Problem Statement &
+Establishes the problem being addressed, the
+project's objectives, and its intended benefits. \\
+
+\addlinespace
+
+Development Plan &
+Provides project scope, planned development
+activities, technical considerations, and
+project constraints. \\
+
+\addlinespace
+
+Hazard Analysis &
+Identifies potential hazards and safety
+considerations relevant to the simulator
+and its users. \\
+
+\addlinespace
+
+Supervisor Discussions and Meeting Notes &
+Provide technical guidance on simulation realism,
+drone flight behaviour, and the selection of
+an appropriate flight model. \\
+
+\addlinespace
+
+Unity Documentation &
+Provides information about available physics
+simulation capabilities, including movement,
+forces, gravity, and collision handling
+\cite{unityRigidbody}. \\
+
+\addlinespace
+
+Meta Quest Documentation &
+Provides technical information about VR device
+integration and controller input
+\cite{metaQuestInput}, as well as applicable
+age-group requirements \cite{metaAgeGroups}. \\
+
+\addlinespace
+
+Existing FPV Simulators &
+Provide a basis for comparing existing flight
+practice, training, and performance evaluation
+capabilities with the proposed functionality
+of FPVR. \\
+
+\addlinespace
+
+Potential End Users &
+Planned source of feedback on usability,
+flight-control expectations, training needs,
+and the effectiveness of performance feedback.
+Direct consultation has not yet occurred. \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The project supervisor has provided guidance
+concerning realistic flight behaviour and the
+selection of an existing drone model as a possible
+basis for the simulation. These discussions have
+informed the identification of technical concerns,
+but the final flight model and required accuracy
+remain under review.
+
+No structured requirements-elicitation sessions
+have yet been conducted with the intended end users.
+The project team plans to consult potential users,
+including beginners and individuals familiar with
+drone operation, to validate assumptions about
+usability, training needs, and performance feedback.
+
+Until this consultation takes place, the identified
+user needs and evaluation targets remain provisional.
+Feedback collected during development will be used
+to review and refine the system requirements.
+
+\subsection{User Profiles}\label{g8}
+
+FPVR is intended for users with varying levels of
+experience in drone operation, virtual reality (VR),
+and video games. The system primarily targets
+beginners while also accommodating recreational
+users and experienced FPV pilots. Users must comply
+with the age and safety restrictions of the
+supported VR hardware.
+
+The following profiles describe the anticipated
+experience, needs, and usage patterns of the
+system's main user groups.
+
+
+\subsubsection{Novice FPV Pilot}
+\label{sec:novice-user}
+
+The primary user is an individual with little or
+no experience operating first-person-view (FPV)
+drones. This user may also be unfamiliar with
+VR environments and their associated controllers.
+
+\noindent\textbf{Experience:}
+May have general familiarity with computers or
+video games but limited knowledge of drone flight
+controls, navigation, and flight behaviour.
+
+\noindent\textbf{Needs:}
+Clear control instructions, understandable
+interactions, opportunities to practise without
+risking damage to physical equipment, and
+feedback on flight performance.
+
+\noindent\textbf{Expected Usage:}
+The user reviews the basic control instructions
+and begins practising in free-flight mode.
+As confidence improves, the user may select
+obstacle-course levels of increasing difficulty.
+Progression is voluntary, as all levels are
+available without prerequisite completion.
+
+
+\subsubsection{Casual Gamer or Technology Enthusiast}
+\label{sec:casual-user}
+
+This user is interested in experiencing drone
+flight through VR without necessarily intending
+to purchase or operate a physical drone.
+
+\noindent\textbf{Experience:}
+May be familiar with video-game controllers and
+immersive experiences but have limited knowledge
+of actual FPV drone operation.
+
+\noindent\textbf{Needs:}
+Engaging virtual environments, accessible
+controls, understandable objectives, and
+opportunities to measure improvement through
+repeated challenges.
+
+\noindent\textbf{Expected Usage:}
+The user explores free-flight environments
+and attempts obstacle-course challenges for
+recreation and exploration. The user may
+repeat levels to improve completion times,
+scores, and performance ratings.
+
+
+\subsubsection{Experienced FPV Pilot or Technical Evaluator}
+\label{sec:experienced-user}
+
+This user has prior experience operating physical
+FPV drones or working with related technical
+systems. Experienced users may participate in
+regular training activities or provide feedback
+during system evaluation.
+
+\noindent\textbf{Experience:}
+Familiar with drone controls, flight manoeuvres,
+and the expected behaviour of physical drones.
+
+\noindent\textbf{Needs:}
+Consistent control responses, meaningful
+obstacle-course challenges, and sufficient
+performance information to evaluate the
+simulator's behaviour.
+
+\noindent\textbf{Expected Usage:}
+The user practises in free-flight mode,
+completes obstacle-course challenges, and
+reviews recorded performance results.
+The user may also compare simulated flight
+behaviour with prior experience and identify
+areas for improvement. The required accuracy
+of the underlying flight model remains
+under review.
+
+
+\subsubsection{General User Considerations}
+\label{sec:general-user-considerations}
+
+FPVR is intended to accommodate both seated and
+standing operation using a compatible VR headset.
+Users may interact with the simulator through
+Meta Quest controllers or compatible Xbox
+controllers.
+
+Users may differ in physical capabilities,
+experience with immersive environments, and
+susceptibility to VR-related discomfort.
+The system's design will consider applicable
+headset safety guidance and the needs of
+different user groups.
+
+The profiles presented in this section are
+based on the intended target audience rather
+than completed user interviews. As discussed
+in Section~\ref{g7},
+the project team plans to consult potential
+users to validate their needs, expectations,
+and usage assumptions.
+
+
 
 \booksection{E}{Environment}
 
@@ -376,25 +1072,88 @@ Date 2 & 1.1 & Notes\\
 
 \addcontentsline{toc}{section}{References}
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
+
+% =====================================
+% SRS TEMPLATE AND REQUIREMENTS ENGINEERING
+% =====================================
 
 \bibitem{BM22}
-
 Bertrand Meyer.
-
 \textit{Handbook of Requirements and Business Analysis}.
-
 Springer, 2022.
 
 \bibitem{RE97}
-
 Ian Sommerville and Peter Sawyer.
-
 \textit{Requirements Engineering: A Good Practice Guide}.
-
 Wiley, 1997.
 
-% TODO: Add sources used in your project and cite them in the text.
+
+% =====================================
+% G.2 - CURRENT SITUATION
+% =====================================
+
+\bibitem{liftoffFPV}
+LuGus Studios.
+\textit{Liftoff: FPV Drone Racing}.
+Official game features.
+Available: \url{https://www.liftoff-game.com/liftoff-fpv-drone-racing}.
+Accessed: October 18, 2026.
+
+\bibitem{velocidrone}
+VelociDrone.
+\textit{VelociDrone FPV Simulator: Features}.
+Available: \url{https://www.velocidrone.com/features}.
+Accessed: October 18, 2026.
+
+\bibitem{liftoffXR}
+LuGus Studios.
+\textit{Liftoff XR Drone Released! (FREE)}.
+July 10, 2024.
+Available: \url{https://www.liftoff-game.com/news/liftoffr-xr-drone-released-free}.
+Accessed: October 18, 2026.
+
+\bibitem{dvrSimulator}
+Meta Platforms, Inc.
+\textit{DVR Simulator}.
+Meta Quest Store.
+Available: \url{https://www.meta.com/experiences/dvr-simulator/3744737298949811/}.
+Accessed: October 18, 2026.
+
+\bibitem{droneBlitz}
+Meta Platforms, Inc.
+\textit{Drone Blitz}.
+Meta Quest Store.
+Available: \url{https://www.meta.com/experiences/drone-blitz/24984912851173154/}.
+Accessed: October 18, 2026.
+
+
+% =====================================
+% G.7 - STAKEHOLDERS AND REQUIREMENTS SOURCES
+% =====================================
+
+\bibitem{unityRigidbody}
+Unity Technologies.
+\textit{Rigidbody Physics}.
+Unity 6.0 User Manual.
+Available: \url{https://docs.unity3d.com/6000.0/Documentation/Manual/rigidbody-physics-section.html}.
+Accessed: October 18, 2026.
+
+\bibitem{metaQuestInput}
+Meta Platforms, Inc.
+\textit{Controller Input and Tracking Overview}.
+Meta Horizon OS Developer Documentation.
+Updated: February 13, 2026.
+Available: \url{https://developers.meta.com/vr/documentation/unity/unity-ovrinput/}.
+Accessed: October 18, 2026.
+
+\bibitem{metaAgeGroups}
+Meta Platforms, Inc.
+\textit{Age Group Self-Certification and Youth Requirements}.
+Meta Horizon OS Developer Documentation.
+Updated: April 2, 2026.
+Available: \url{https://developers.meta.com/vr/resources/age-groups/}.
+Accessed: October 18, 2026.
 
 \end{thebibliography}
 
