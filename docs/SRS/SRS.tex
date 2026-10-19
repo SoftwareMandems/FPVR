@@ -1377,7 +1377,61 @@ historical review does not establish a data-retention policy.
 
 \subsection{Effects}\label{e5}
 
-% TODO: Write your team's content for E.5 here.
+Effects describe influences from FPVR onto its environment, complementing the
+inputs and dependencies in \hyperref[e2]{E.2}. They identify affected people,
+resources and information without asserting that an unfinished implementation
+has already achieved a benefit or passed a safety evaluation.
+
+\begin{description}
+\item[E-F-01: Presentation and physical attention.]\phantomsection\label{ef-attention}
+The headset presents a moving drone viewpoint and interactive instructions.
+This can affect comfort, orientation and attention to nearby people or objects,
+even during seated or standing use. A simulated collision does not strike a
+physical aircraft, but the wearer remains in a real activity space.
+The relevant constraints are \hyperref[ec-safety]{E-C-04} and
+\hyperref[ea-space]{E-A-02}; review of exit and stationary tasks supports
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}. The
+\hyperref[es-meta-safety]{manufacturer guidance} informs preparation and breaks;
+no claim of universal comfort or completed human evaluation is made.
+
+\item[E-F-02: Practice and interpretation of results.]\phantomsection\label{ef-training}
+Repeatable flight challenges and current-attempt feedback are intended to help
+users recognize mistakes and practise without physical-drone damage
+(\hyperref[g3]{G.3, benefits G1--G4}, \hyperref[sec:s2-review]{FR-REV-01--03}).
+A user may also overestimate real-world competence after receiving a high
+score or rating. These results describe simulator performance; skill transfer
+and training effectiveness require separate evaluation, as stated in
+\hyperref[g6]{G.6}. No interviews, learning gains or validated performance
+improvements are inferred from the draft.
+
+\item[E-F-03: Current-attempt information and resources.]\phantomsection\label{ef-data}
+FPVR creates or updates the chosen level, completed checkpoint sequence,
+total/section times, collision count, score, rating and displayed flight review
+(\hyperref[sec:s2-performance]{FR-PER-01--10},
+\hyperref[sec:s2-review]{FR-REV-02, FR-REV-05}).
+Headset/runtime inputs support interaction but are not automatically an approved
+recording/export feature. Compute, memory, display and power use affect the
+execution device; PCVR also uses the host and headset link
+(\hyperref[ec-resources]{E-C-06}). Accounts, raw tracking logs, telemetry export
+and persistence are not established features. Any such data lifecycle needs the
+review in \hyperref[ec-release]{E-C-05}; the excluded history interface does not
+by itself imply that no data can ever be retained.
+
+\item[E-F-04: Conditional intelligent analysis.]\phantomsection\label{ef-analysis}
+If the planned analysis capability is included, it may produce additional
+observations about the completed attempt. Local analysis or an external service
+has not been selected. External processing would create an additional data and
+service dependency represented by F5 in Figure~\ref{fig:e-context}, subject to
+\hyperref[ec-release]{E-C-05}. Its absence or failure cannot remove the standard
+review (\hyperref[sec:s2-review]{FR-REV-04},
+\hyperref[sec:s2-ai]{FR-AI-03}). No outbound telemetry, provider or network
+protocol is approved by depicting that conditional dependency.
+\end{description}
+
+These effects also concern guardians, bystanders and the wider public identified
+in \hyperref[g7]{G.7}, through safe activity-space use and interpretation of
+training claims. This Environment book identifies the relevant concerns; it
+does not cite uncompleted hazard analyses as evidence of mitigation.
 
 \subsection{Invariants}\label{e6}
 
