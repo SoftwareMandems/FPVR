@@ -1167,10 +1167,11 @@ no physical-drone interface. Package versions, internal modules and concrete
 interface bindings belong to \hyperref[s1]{S.1}, \hyperref[s3]{S.3}, and
 \hyperref[p5]{P.5}, rather than this external context.
 
+\clearpage
 \subsubsection*{Execution environments and compatibility}
 The following are alternative required deployment paths, rather than two copies
 of FPVR running together. \hyperref[sec:s2-nfr]{NFR-INST-01 and NFR-INST-02}
-define the corresponding installation/launch obligations.
+define the corresponding installation and launch obligations.
 \begin{itemize}
 \item \textbf{Standalone Quest:} FPVR executes on the headset and uses its local
 runtime, display and tracking/input services; a connected computer is not
@@ -1235,7 +1236,8 @@ internal modules or algorithms. Performance, scoring and input bindings remain
 owned by the requirements in \hyperref[s2]{S.2}.
 
 \begin{description}
-\item[{\hyperref[et-platform]{E-C-01}: Execution platforms.}]\phantomsection\label{ec-platform}
+\item[{\hyperref[et-platform]{E-C-01}:}]\phantomsection\label{ec-platform}
+\textbf{Execution platforms.}
 Both execution paths in Figure~\ref{fig:e-deployment} and the two controller
 types overall are required by \hyperref[sec:s2-interface]{FR-UI-01--03} and
 \hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01}.
@@ -1245,7 +1247,8 @@ The \href{../DevelopmentPlan/DevelopmentPlan.tex}{Development Plan},
 experience and available development approach. They do not select an engine
 version, runtime package or controller pairing.
 
-\item[{\hyperref[et-platform]{E-C-02}: Hardware qualification.}]\phantomsection\label{ec-hardware}
+\item[{\hyperref[et-platform]{E-C-02}:}]\phantomsection\label{ec-hardware}
+\textbf{Hardware qualification.}
 The supplied first draft identifies Quest 3S as the intended primary headset;
 the earlier Development Plan names Quest 3. The exact supported models,
 Xbox controller generations, host operating system and minimum specifications,
@@ -1255,7 +1258,8 @@ acceptance evidence; every claimed configuration needs the recorded
 configuration and checks described in \hyperref[e2]{E.2} and
 \hyperref[sec:s2-nfr]{NFR-COMP-01}.
 
-\item[{\hyperref[et-scope]{E-C-03}: Scope and fidelity.}]\phantomsection\label{ec-scope}
+\item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
+\textbf{Scope and fidelity.}
 The exclusions in \hyperref[g6]{G.6} govern this specification. Wider
 possibilities in earlier planning documents do not extend that scope.
 \hyperref[sec:s2-flight]{FR-FLT-03} requires simulated gravity, while detailed
@@ -1263,7 +1267,8 @@ physical accuracy remains under review. \textit{Rationale:} FPVR supports
 introductory practice; neither a chosen engine nor a numerical result establishes
 physical-drone equivalence or certified piloting ability.
 
-\item[{\hyperref[et-safety]{E-C-04}: Safe activity and intended audience.}]\phantomsection\label{ec-safety}
+\item[{\hyperref[et-safety]{E-C-04}:}]\phantomsection\label{ec-safety}
+\textbf{Safe activity and intended audience.}
 The operating context follows the selected headset model's current
 \hyperref[es-meta-safety]{manufacturer safety instructions}, including
 activity-space preparation, appropriate supervision and breaks. Suitability
@@ -1274,7 +1279,8 @@ imagery still affects a person in a physical space. Stationary interaction and
 an accessible exit are specified in \hyperref[sec:s2-interface]{FR-UI-06} and
 \hyperref[sec:s2-nfr]{NFR-SAFE-01}; they are not assurances of universal comfort.
 
-\item[{\hyperref[et-release]{E-C-05}: Release, licensing and data conditions.}]\phantomsection\label{ec-release}
+\item[{\hyperref[et-release]{E-C-05}:}]\phantomsection\label{ec-release}
+\textbf{Release, licensing and data conditions.}
 If release through Meta's platform is pursued, its applicable
 \hyperref[es-meta-age]{age-group and distribution conditions} must be checked
 for the chosen release. Redistribution must respect the licences of the engine,
@@ -1285,7 +1291,8 @@ access, retention/deletion policy and applicable jurisdictional obligations.
 establish a cloud service or an approved data policy. These are release/design
 review conditions, not claims of completed compliance.
 
-\item[{\hyperref[et-resources]{E-C-06}: Resource envelope.}]\phantomsection\label{ec-resources}
+\item[{\hyperref[et-resources]{E-C-06}:}]\phantomsection\label{ec-resources}
+\textbf{Resource envelope.}
 Standalone operation depends on the selected headset's compute, memory, power
 and thermal limits; PCVR additionally depends on host capacity and link quality.
 \textit{Rationale:} these finite external resources affect responsive flight and
@@ -1311,8 +1318,8 @@ Accessed October 19, 2026; see also the existing reference~\cite{metaAgeGroups}.
 Used for \hyperref[ec-release]{E-C-05}.
 \end{description}
 
-The target device/controller matrix, host specifications, performance threshold,
-comfort/accessibility acceptance criteria, release channel, target audience and
+The target device and controller matrix, host specifications, performance threshold,
+comfort and accessibility acceptance criteria, release channel, target audience and
 any data-processing policy remain explicit review items. They require team
 confirmation and evidence before compatibility, safety or release compliance
 can be claimed.
@@ -1367,15 +1374,12 @@ justify marking an untested pairing as supported
 (\hyperref[sec:s2-nfr]{NFR-COMP-01, NFR-PERF-01}). \\
 \end{longtable}\endgroup
 
-The assumptions are intentionally limited. Continuous tracking/focus, reliable
-PCVR links, user compliance with every warning, universal VR tolerance,
-crash-free software, internet access and an available AI service are not
-assumed. Loss of input, tracking or focus, link interruption and unavailable
-optional analysis need explicit handling and acceptance criteria in
-\hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and \hyperref[s6]{S.6}; those sections
-are not completed by this Environment book. In particular, single-player scope
-alone does not establish an offline-operation requirement, and an absence of
-historical review does not establish a data-retention policy.
+These premises do not assume continuous tracking/focus, reliable links, user
+compliance, universal VR tolerance, fault-free software, internet access or
+available AI. Handling interruptions and unavailable analysis remains to be
+specified and checked in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
+\hyperref[s6]{S.6}. Single-player scope does not establish offline operation;
+historical-review exclusions do not define retention.
 
 \subsection{Effects}\label{e5}
 
@@ -1385,7 +1389,8 @@ resources and information without asserting that an unfinished implementation
 has already achieved a benefit or passed a safety evaluation.
 
 \begin{description}
-\item[{\hyperref[et-safety]{E-F-01}: Presentation and physical attention.}]\phantomsection\label{ef-attention}
+\item[{\hyperref[et-safety]{E-F-01}:}]\phantomsection\label{ef-attention}
+\textbf{Presentation and physical attention.}
 The headset presents a moving drone viewpoint and interactive instructions.
 This can affect comfort, orientation and attention to nearby people or objects,
 even during seated or standing use. A simulated collision does not strike a
@@ -1396,7 +1401,8 @@ The relevant constraints are \hyperref[ec-safety]{E-C-04} and
 \hyperref[es-meta-safety]{manufacturer guidance} informs preparation and breaks;
 no claim of universal comfort or completed human evaluation is made.
 
-\item[{\hyperref[et-scope]{E-F-02}: Practice and interpretation of results.}]\phantomsection\label{ef-training}
+\item[{\hyperref[et-scope]{E-F-02}:}]\phantomsection\label{ef-training}
+\textbf{Practice and interpretation of results.}
 Repeatable flight challenges and current-attempt feedback are intended to help
 users recognize mistakes and practise without physical-drone damage
 (\hyperref[g3]{G.3, benefits G1--G4}, \hyperref[sec:s2-review]{FR-REV-01--03}).
@@ -1406,7 +1412,8 @@ and training effectiveness require separate evaluation, as stated in
 \hyperref[g6]{G.6}. No interviews, learning gains or validated performance
 improvements are inferred from the draft.
 
-\item[{\hyperref[et-release]{E-F-03}: Current-attempt information and resources.}]\phantomsection\label{ef-data}
+\item[{\hyperref[et-release]{E-F-03}:}]\phantomsection\label{ef-data}
+\textbf{Current-attempt information and resources.}
 FPVR creates or updates the chosen level, completed checkpoint sequence,
 total/section times, collision count, score, rating and displayed flight review
 (\hyperref[sec:s2-performance]{FR-PER-01--10},
@@ -1419,7 +1426,8 @@ and persistence are not established features. Any such data lifecycle needs the
 review in \hyperref[ec-release]{E-C-05}; the excluded history interface does not
 by itself imply that no data can ever be retained.
 
-\item[{\hyperref[et-review]{E-F-04}: Conditional intelligent analysis.}]\phantomsection\label{ef-analysis}
+\item[{\hyperref[et-review]{E-F-04}:}]\phantomsection\label{ef-analysis}
+\textbf{Conditional intelligent analysis.}
 If the planned analysis capability is included, it may produce additional
 observations about the completed attempt. Local analysis or an external service
 has not been selected. External processing would create an additional data and
@@ -1430,10 +1438,8 @@ review (\hyperref[sec:s2-review]{FR-REV-04},
 protocol is approved by depicting that conditional dependency.
 \end{description}
 
-These effects also concern guardians, bystanders and the wider public identified
-in \hyperref[g7]{G.7}, through safe activity-space use and interpretation of
-training claims. This Environment book identifies the relevant concerns; it
-does not cite uncompleted hazard analyses as evidence of mitigation.
+Guardians, bystanders and the wider public (\hyperref[g7]{G.7}) are also affected
+by activity-space safety and interpretation of training claims.
 
 \subsection{Invariants}\label{e6}
 
@@ -1443,7 +1449,8 @@ boundary, not claims that the implementation already satisfies them. Referenced
 requirements remain the authoritative behavioural definitions.
 
 \begin{description}
-\item[{\hyperref[et-scope]{E-I-01}: Physical and training boundary.}]\phantomsection\label{ei-boundary}
+\item[{\hyperref[et-scope]{E-I-01}:}]\phantomsection\label{ei-boundary}
+\textbf{Physical and training boundary.}
 No FPVR action sends a control command to a physical drone; no simulator score
 or rating constitutes pilot certification (\hyperref[g6]{G.6}). Formally, let
 $O(a)$ be the set of outputs of application action $a$ and $D$ the set of
@@ -1454,9 +1461,11 @@ physical-drone control messages. The preserved boundary is
 \textit{Rationale:} presentation and virtual-state changes stay within the
 simulator's scope, including after crashes, restarts and optional analysis.
 
-\item[{\hyperref[et-course]{E-I-02}: Ordered course progress and attempt integrity.}]
+\item[{\hyperref[et-course]{E-I-02}:}]
 \phantomsection\label{ei-course}
-For a course with $n\geq1$ required checkpoints, write its ordered sequence as
+\textbf{Ordered course progress and attempt integrity.}
+Let the positive integer $n$ be the number of required checkpoints in a course,
+and write its ordered sequence as
 $\langle C_1,\ldots,C_n\rangle$. Let $k$ be the number completed in the current
 attempt, and $P$ the completed sequence. The course invariant is
 \[
@@ -1475,10 +1484,14 @@ permitted only when $k=n$ and the finish is reached. An out-of-order or repeated
 gate therefore cannot advance progress or establish completion
 (\hyperref[sec:s2-checkpoints]{FR-CHK-01--03, FR-CHK-08}).
 
-Let $\alpha$ identify the attempt, $T,U\in\mathbb R_{\geq0}$ be total and section
+Let $\mathbb N_0$ denote non-negative integers and $\mathbb R_{\geq0}$
+non-negative real numbers. Let $\alpha$ identify the attempt,
+$T,U\in\mathbb R_{\geq0}$ be total and section
 times in seconds, $c\in\mathbb N_0$ be the crash count, and $p_k$ the recovery
-position for completed prefix $k$, with $p_0$ the start. The remaining preserved
-relationships are
+position for completed prefix $k$, with $p_0$ the start. After a checkpoint
+passage, $P'=\langle C_1,\ldots,C_{k'}\rangle$; a valid next-checkpoint
+passage also sets $U'=0$ (\hyperref[sec:s2-performance]{FR-PER-04}).
+The recovery relationships are
 \begin{align*}
  \text{respawn:}\quad &\alpha'=\alpha,\quad k'=k,\quad T'=T,\quad U'=0,
                      \quad c'=c,\quad \text{position}'=p_k,\\
@@ -1488,8 +1501,7 @@ relationships are
 These are instantaneous recovery transitions, not elapsed-time intervals.
 Respawn also preserves recorded collision penalties; restart resets the score
 as specified by \hyperref[sec:s2-checkpoints]{FR-CHK-05--07}.
-Here $\mathbb N_0$ denotes non-negative integers and $\mathbb R_{\geq0}$
-non-negative real numbers. During flight, a non-negative elapsed interval
+During flight, a non-negative elapsed interval
 $\Delta t$ adds to $T$; while the crash-recovery menu is displayed, it does not:
 \[
  T'=\begin{cases}
@@ -1503,7 +1515,8 @@ is erased by respawn (\hyperref[sec:s2-performance]{FR-PER-01--07}).
 sections, preventing skipped gates and misleading results. This formalization
 covers course attempts; free flight has no checkpoint/timing/scoring contract.
 
-\item[{\hyperref[et-safety]{E-I-03}: Stationary interaction.}]\phantomsection\label{ei-stationary}
+\item[{\hyperref[et-safety]{E-I-03}:}]\phantomsection\label{ei-stationary}
+\textbf{Stationary interaction.}
 Flight control, menus and recovery remain operable in seated or standing use
 without requiring physical walking, and the active activity has an accessible
 exit without headset removal (\hyperref[sec:s2-interface]{FR-UI-06},
@@ -1511,7 +1524,8 @@ exit without headset removal (\hyperref[sec:s2-interface]{FR-UI-06},
 \textit{Rationale:} the virtual course must not turn movement through simulated
 space into a requirement to walk through the physical activity space.
 
-\item[{\hyperref[et-review]{E-I-04}: Independent standard review.}]\phantomsection\label{ei-review}
+\item[{\hyperref[et-review]{E-I-04}:}]\phantomsection\label{ei-review}
+\textbf{Independent standard review.}
 After successful course completion, the standard current-attempt review remains
 available for every optional-feedback outcome. Let $B$ contain the outcomes
 ``not included'', ``available'', ``unavailable'', and ``failed''. Then
@@ -1533,9 +1547,9 @@ requirements. These are planned review/acceptance checks, not evidence that
 software or user testing has already been performed.
 
 \begingroup\small\renewcommand{\arraystretch}{1.15}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
-                         >{\raggedright\arraybackslash}p{0.29\textwidth}
-                         >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}
+                         >{\raggedright\arraybackslash}p{0.23\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
 \caption{Environment traceability and verification routes}\label{tab:e-trace}\\
 \toprule\textbf{Environment statements} & \textbf{Existing scope / requirements} &
 \textbf{Intended check}\\\midrule\endfirsthead
@@ -1563,9 +1577,9 @@ simulated gravity using the eventual approved fidelity criteria. \\
 \hyperref[ef-attention]{E-F-01}, \hyperref[ei-stationary]{E-I-03} &
 \hyperref[sec:s2-interface]{FR-UI-06};
 \hyperref[sec:s2-nfr]{NFR-SAFE-01}; manufacturer guidance &
-Review setup against selected-model guidance; exercise menus, flight control,
-recovery and exit while seated and standing without required walking.
-Document discomfort/accessibility observations and unresolved criteria. \\
+Review selected-model setup and exercise menus, flight control, recovery
+and exit while seated and standing without walking. Document comfort and
+accessibility observations and unresolved criteria. \\
 \phantomsection\label{et-release}
 \hyperref[ec-release]{E-C-05}, \hyperref[ef-data]{E-F-03} &
 \hyperref[g6]{G.6}; \hyperref[sec:s2-review]{FR-REV-05};
@@ -1582,9 +1596,9 @@ configurations once a numerical target and repeatable workload are approved. \\
 \hyperref[ea-course]{E-A-03}, \hyperref[ei-course]{E-I-02} &
 \hyperref[sec:s2-checkpoints]{FR-CHK-01--08};
 \hyperref[sec:s2-performance]{FR-PER-01--07, FR-PER-10} &
-Exercise next/repeated/out-of-order gates and early finish; crash before and
-after a checkpoint; compare respawn with restart. Check preserved/reset fields
-and total-time pause while the recovery menu is displayed. \\
+Exercise next, repeated and out-of-order gates, early finish, and crashes
+before/after a checkpoint. Compare respawn/restart fields and total-time
+pause in the recovery menu. \\
 \phantomsection\label{et-review}
 \hyperref[ef-analysis]{E-F-04}, \hyperref[ei-review]{E-I-04} &
 \hyperref[sec:s2-review]{FR-REV-01--05};
@@ -1594,6 +1608,7 @@ confirm that the current-attempt standard review remains available in every case
 Conditional outcomes apply only if the feature is included. \\
 \end{longtable}\endgroup
 
+\clearpage
 \textbf{Change outlook.} Exact devices, runtime/link configurations, performance
 limits and optional analysis/data-processing choices are likely to change as
 compatibility and feasibility are investigated (\hyperref[ec-hardware]{E-C-02},
