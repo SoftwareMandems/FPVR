@@ -21,9 +21,12 @@
   \fi}
 \usepackage{hyperref}
 
-% Requirement anchors and links
-\newcommand{\reqdef}[1]{\hypertarget{req:#1}{\textbf{#1:}}}
-\newcommand{\reqref}[1]{\hyperlink{req:#1}{#1}}
+% Requirement labels and references. Links are disabled for now; to re-enable
+% them, use the commented-out definitions instead.
+% \newcommand{\reqdef}[1]{\hypertarget{req:#1}{\textbf{#1:}}}
+% \newcommand{\reqref}[1]{\hyperlink{req:#1}{#1}}
+\newcommand{\reqdef}[1]{\textbf{#1:}}
+\newcommand{\reqref}[1]{#1}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -276,7 +279,7 @@ Stored gameplay records are accessed or modified by unauthorized parties &
 Exposure of user data; inaccurate performance records &
 Missing access controls; tampering with stored data &
 Restrict access to user-specific records; enforce authorization checks; verify
-record integrity on retrieval &
+record integrity on retrieval (Future; see Section 7) &
 \reqref{SR8}, \reqref{SR14}, \reqref{SR17} &
 H6-1 \\
 \hline
@@ -302,7 +305,7 @@ User account credentials are compromised &
 Unauthorized access to personal accounts and records &
 Weak authentication; plaintext password storage; brute-force attempts &
 Require authentication; hash passwords with a salted algorithm; limit repeated
-attempts; log security-relevant events &
+attempts; log security-relevant events (Future; see Section 7) &
 \reqref{SR13}, \reqref{SR15}, \reqref{SR19}, \reqref{SR20} &
 H6-4 \\
 \hline
@@ -330,7 +333,7 @@ Network traffic or session credentials are intercepted or reused &
 Exposure of user data; unauthorized access to sessions &
 Unencrypted communication; session credentials not invalidated &
 Encrypt network communication; invalidate session credentials when a user leaves
-or a session expires &
+or a session expires (credential invalidation: Future; see Section 7) &
 \reqref{SR7}, \reqref{SR18} &
 H7-3 \\
 \hline
