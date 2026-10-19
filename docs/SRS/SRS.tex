@@ -1317,7 +1317,63 @@ can be claimed.
 
 \subsection{Assumptions}\label{e4}
 
-% TODO: Write your team's content for E.4 here.
+These premises delimit the intended operating and evaluation context.
+Each must be checked; its failure does not prove that FPVR satisfies the related
+requirement. Failure consequences identify where further acceptance or failure
+behaviour is needed rather than silently assuming ideal operation.
+
+\begingroup\small\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}
+                         >{\raggedright\arraybackslash}p{0.40\textwidth}
+                         >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\caption{Environmental assumptions, rationale and validation}
+\label{tab:e-assumptions}\\
+\toprule\textbf{Identifier} & \textbf{Premise and rationale} &
+\textbf{Check and consequence if false}\\\midrule\endfirsthead
+\toprule\textbf{Identifier} & \textbf{Premise and rationale} &
+\textbf{Check and consequence if false}\\\midrule\endhead
+\bottomrule\endfoot
+\phantomsection\label{ea-runtime}\textbf{E-A-01} &
+A selected configuration provides a compatible runtime and reports headset,
+input and session availability. This is necessary to attempt VR operation;
+it does not imply uninterrupted tracking or input. &
+Launch and exercise each proposed pairing in Table~\ref{tab:e-pairings}; record
+runtime/device versions and status changes. Missing or incompatible services
+block that pairing's acceptance under \hyperref[ec-hardware]{E-C-02}. \\
+\phantomsection\label{ea-space}\textbf{E-A-02} &
+The user or guardian can prepare a stationary activity space and consult the
+selected headset's instructions. This supports seated/standing interaction
+without requiring physical walking. &
+Review setup and exit tasks for \hyperref[sec:s2-interface]{FR-UI-06} and
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}. Inadequate clearance or user discomfort
+invalidates safe-use conditions; the software cannot certify the room as safe. \\
+\phantomsection\label{ea-course}\textbf{E-A-03} &
+A released course supplies a start, ordered required checkpoints, a finish,
+collision surfaces and usable recovery positions. Correct course content is
+needed to interpret progress and evaluate an attempt. &
+Inspect each released course and exercise ordered traversal and recovery,
+including recovery before the first checkpoint. Invalid or unreachable content
+blocks acceptance of \hyperref[sec:s2-checkpoints]{FR-CHK-01--08}; it cannot be
+counted as user failure. \\
+\phantomsection\label{ea-evaluation}\textbf{E-A-04} &
+Evaluation can access the claimed headset/controller configurations and
+representative free-flight/course content. This allows evidence for deployment,
+input, performance and recovery claims. &
+Record actual equipment and available content before testing. Missing equipment
+or content leaves the associated acceptance checks unverified; it does not
+justify marking an untested pairing as supported
+(\hyperref[sec:s2-nfr]{NFR-COMP-01, NFR-PERF-01}). \\
+\end{longtable}\endgroup
+
+The assumptions are intentionally limited. Continuous tracking/focus, reliable
+PCVR links, user compliance with every warning, universal VR tolerance,
+crash-free software, internet access and an available AI service are not
+assumed. Loss of input, tracking or focus, link interruption and unavailable
+optional analysis need explicit handling and acceptance criteria in
+\hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and \hyperref[s6]{S.6}; those sections
+are not completed by this Environment book. In particular, single-player scope
+alone does not establish an offline-operation requirement, and an absence of
+historical review does not establish a data-retention policy.
 
 \subsection{Effects}\label{e5}
 
