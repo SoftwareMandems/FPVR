@@ -97,6 +97,7 @@
     "docs/Common.text",
     "docs/Reflection.text",
     "docs/SRS/SRS.tex",
+    "docs/SRS/activityDiagram.png",
     "docs/SRS_Reflection.text"
   ],
   "docs/UserGuide/UserGuide.tex": [
