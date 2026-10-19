@@ -1223,11 +1223,97 @@ Table~\ref{tab:e-pairings}. Acceptance evidence must identify the headset,
 controller generation, runtime version, bindings and, for PCVR, host operating
 system/specifications and link configuration. An untested cell remains
 unconfirmed. The hardware uncertainties are constrained in
-\hyperref[e3]{E.3}.
+\hyperref[ec-hardware]{E-C-02}.
 
 \subsection{Constraints}\label{e3}
 
-% TODO: Write your team's content for E.3 here.
+These restrictions come from the existing scope, selected execution context,
+and platform conditions. They constrain a design without prescribing its
+internal modules or algorithms. Performance, scoring and input bindings remain
+owned by the requirements in \hyperref[s2]{S.2}.
+
+\begin{description}
+\item[E-C-01: Execution platforms.]\phantomsection\label{ec-platform}
+Both execution paths in Figure~\ref{fig:e-deployment} and the two controller
+types overall are required by \hyperref[sec:s2-interface]{FR-UI-01--03} and
+\hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01}.
+The \href{../DevelopmentPlan/DevelopmentPlan.tex}{Development Plan},
+``Expected Technology'', selects Unity as the development engine.
+\textit{Rationale:} these project choices preserve the intended immersive
+experience and available development approach. They do not select an engine
+version, runtime package or controller pairing.
+
+\item[E-C-02: Hardware qualification.]\phantomsection\label{ec-hardware}
+The supplied first draft identifies Quest 3S as the intended primary headset;
+the earlier Development Plan names Quest 3. The exact supported models,
+Xbox controller generations, host operating system and minimum specifications,
+and headset link remain \textbf{under review}. Table~\ref{tab:e-pairings} is not
+a declaration of compatibility. \textit{Rationale:} an intended device is not
+acceptance evidence; every claimed configuration needs the recorded
+configuration and checks described in \hyperref[e2]{E.2} and
+\hyperref[sec:s2-nfr]{NFR-COMP-01}.
+
+\item[E-C-03: Scope and fidelity.]\phantomsection\label{ec-scope}
+The exclusions in \hyperref[g6]{G.6} govern this specification. Wider
+possibilities in earlier planning documents do not extend that scope.
+\hyperref[sec:s2-flight]{FR-FLT-04} requires simulated gravity, while detailed
+physical accuracy remains under review. \textit{Rationale:} FPVR supports
+introductory practice; neither a chosen engine nor a numerical result establishes
+physical-drone equivalence or certified piloting ability.
+
+\item[E-C-04: Safe activity and intended audience.]\phantomsection\label{ec-safety}
+The operating context follows the selected headset model's current
+\hyperref[es-meta-safety]{manufacturer safety instructions}, including
+activity-space preparation, appropriate supervision and breaks. Suitability
+must be reviewed for the intended audience and region; the broad user profiles
+in \hyperref[g8]{G.8} do not remove platform eligibility conditions.
+\textit{Rationale:} simulated collisions remove aircraft damage but immersive
+imagery still affects a person in a physical space. Stationary interaction and
+an accessible exit are specified in \hyperref[sec:s2-interface]{FR-UI-06} and
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}; they are not assurances of universal comfort.
+
+\item[E-C-05: Release, licensing and data conditions.]\phantomsection\label{ec-release}
+If release through Meta's platform is pursued, its applicable
+\hyperref[es-meta-age]{age-group and distribution conditions} must be checked
+for the chosen release. Redistribution must respect the licences of the engine,
+runtime packages and third-party assets. Any proposed external analysis or data
+retention must first identify the data, recipients, purpose, user notice/consent,
+access, retention/deletion policy and applicable jurisdictional obligations.
+\textit{Rationale:} the optional feature in \hyperref[sec:s2-ai]{S.2} does not
+establish a cloud service or an approved data policy. These are release/design
+review conditions, not claims of completed compliance.
+
+\item[E-C-06: Resource envelope.]\phantomsection\label{ec-resources}
+Standalone operation depends on the selected headset's compute, memory, power
+and thermal limits; PCVR additionally depends on host capacity and link quality.
+\textit{Rationale:} these finite external resources affect responsive flight and
+presentation. The numerical target remains in
+\hyperref[sec:s2-nfr]{NFR-PERF-01}, where it is explicitly under review; no
+frame-rate, latency or minimum-host value is inferred from this draft.
+\end{description}
+
+\subsubsection*{Environment sources and unresolved release decisions}
+Internal scope and behaviour are cited at their existing definitions above.
+The following external references support the environmental restrictions; their
+applicability must be rechecked against the selected device and release.
+\begin{description}
+\item[Manufacturer safety guidance.]\phantomsection\label{es-meta-safety}
+Meta Platforms, Inc., \textit{Meta Quest Safety Center},
+\href{https://www.meta.com/quest/safety-center/}{model-specific safety guidance}.
+Accessed October 19, 2026. Used for \hyperref[ec-safety]{E-C-04} and
+physical-space preparation in \hyperref[e4]{E.4}.
+\item[Platform audience policy.]\phantomsection\label{es-meta-age}
+Meta Platforms, Inc., \textit{Age group self-certification policy},
+\href{https://developers.meta.com/vr/policy/age-groups/}{Meta Horizon OS developer policy}.
+Accessed October 19, 2026; see also the existing reference~\cite{metaAgeGroups}.
+Used for \hyperref[ec-release]{E-C-05}.
+\end{description}
+
+The target device/controller matrix, host specifications, performance threshold,
+comfort/accessibility acceptance criteria, release channel, target audience and
+any data-processing policy remain explicit review items. They require team
+confirmation and evidence before compatibility, safety or release compliance
+can be claimed.
 
 \subsection{Assumptions}\label{e4}
 
