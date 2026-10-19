@@ -137,7 +137,10 @@
 
 \pagenumbering{roman}
 
+\begingroup
+\setlength{\parskip}{0pt}
 \tableofcontents
+\endgroup
 
 \clearpage
 
@@ -159,9 +162,141 @@ Completed the Goals (G) section of the SRS. \\
 \bottomrule
 \end{tabularx}
 
-\newpage
+\clearpage
+
+\unumbered{Glossary}\label{sec:glossary}
+
+The definitions below apply throughout this specification. Links point to the
+existing introduction or the section that uses the term. Acronyms appearing in
+figures use these same meanings.
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+                         >{\raggedright\arraybackslash}p{0.71\textwidth}@{}}
+\caption{Domain glossary and abbreviations}\label{tab:e-glossary}\\
+\toprule
+\textbf{Term} & \textbf{Meaning and reference} \\
+\midrule\endfirsthead
+\multicolumn{2}{l}{\small\textit{Table \thetable\ continued}}\\
+\toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
+\midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
+\bottomrule\endlastfoot
+FPVR & The VR-based FPV drone training simulator specified here
+(\hyperref[g1]{G.1}). \\
+FPV & First-person view: presentation from the simulated drone's viewpoint
+(\hyperref[g1]{G.1}). \\
+VR & Virtual reality: an immersive presentation viewed through a headset
+(\hyperref[g1]{G.1}). \\
+SRS & Software requirements specification: this document's statement of the
+intended product and its acceptance expectations. \\
+AI & Artificial intelligence: the planned, feasibility-dependent intelligent
+flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
+XR & Extended reality: the umbrella term that includes VR; used in the
+runtime diagrams. It does not specify a particular integration API. \\
+PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
+computer and presents its VR view through a connected headset
+(\hyperref[e1]{E.1}). \\
+Runtime & The external platform software that provides headset presentation,
+tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
+Tracking / pose & Tracking reports a device's position and orientation (its
+pose) and whether that information is currently valid. \\
+Session focus & The runtime's indication of whether FPVR is the active
+application receiving interaction; visible imagery alone does not prove focus. \\
+Frames per second / hertz & Application frame-delivery rate / display refresh
+frequency (Hz). These quantities are distinct; the performance target remains
+under review in \hyperref[sec:s2-nfr]{S.2}. \\
+API & Application programming interface: a program-to-program interface.
+Mention of an external interface does not establish a public FPVR API
+(\hyperref[s3]{S.3}). \\
+FR / NFR & Functional requirement / non-functional requirement; prefixes of the
+existing requirement identifiers in \hyperref[s2]{S.2}. \\
+Throttle, pitch, roll, yaw & Flight commands for thrust, rotation about the
+lateral axis, rotation about the longitudinal axis, and rotation about the
+vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
+Virtual environment & A simulated setting containing flight space and scenery.
+Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
+Free flight & Practice without course checkpoints, timers, or scoring
+(\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
+Level / course & A selectable obstacle challenge with a start, an ordered
+checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
+Attempt & One course run from start or restart until completion or exit.
+Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
+Checkpoint / segment & A required ordered course gate / the part of a course
+between the start, successive gates, and the finish
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Collision / crash & Contact with a simulated obstacle or surface / a simulated
+collision that triggers the recovery interaction. Crash-counting details are
+specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
+\hyperref[sec:s2-performance]{FR-PER-07}. \\
+Respawn / restart & Resume the same attempt at its most recently completed checkpoint
+(or start if none) / begin a new attempt from the start
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Total / section time & Active-flight time for an attempt, including failed
+sections / time for the current segment. Checkpoint completion and respawn
+reset section time; respawn preserves total time, which pauses in crash-recovery
+menus (\hyperref[sec:s2-performance]{S.2}). \\
+Score / rating & A numerical performance result / a separate performance
+assessment. Their criteria remain under review
+(\hyperref[sec:s2-performance]{S.2}). \\
+Flight review & The current completed attempt's performance summary;
+a historical-session review interface is outside scope
+(\hyperref[sec:s2-review]{S.2}, \hyperref[g6]{G.6}). \\
+Telemetry & Flight and performance measurements used for evaluation. The term
+alone does not imply recording history or transmitting data
+(\hyperref[e4]{E.4}). \\
+Activity space / boundary & The user's physical space / a platform-provided
+virtual limit used to help the user remain within a prepared space.
+Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
+\end{longtable}
+\endgroup
 
 \clearpage
+\subsubsection*{Domain relationships}
+Figure~\ref{fig:e-domain} identifies domain concepts, rather than implementation
+classes. Each course uses one virtual environment and has at least one checkpoint;
+an attempt selects exactly
+one course, uses one simulated drone, and produces a review only on completion.
+The many possible attempts do not imply retained session history.
+
+\begin{figure}[H]
+\centering
+\begingroup\setlength{\unitlength}{1mm}\small
+\begin{picture}(160,128)
+\put(0,106){\framebox(48,18){Virtual environment}}
+\put(24,84){\line(0,1){22}}
+\put(27,102){1}\put(27,86){0..*}
+\put(29,94){setting for}
+\put(0,66){\framebox(48,18){\shortstack{Course\\start and finish}}}
+\put(112,66){\framebox(48,18){\shortstack{Checkpoint\\ordered gate}}}
+\put(0,20){\framebox(48,18){\shortstack{Attempt\\current course run}}}
+\put(112,35){\framebox(48,18){Simulated drone}}
+\put(112,0){\framebox(48,18){\shortstack{Flight review\\completed attempt}}}
+\put(48,75){\line(1,0){64}}
+\put(68,78){contains}
+\put(50,69){1}\put(101,69){1..*}
+\put(24,38){\line(0,1){28}}
+\put(27,61){1}\put(27,41){0..*}
+\put(29,51){selected by}
+\put(48,32){\line(1,0){32}}\put(80,32){\line(0,1){12}}
+\put(80,44){\line(1,0){32}}
+\put(59,36){uses}\put(50,26){0..*}\put(107,46){1}
+\put(48,24){\line(1,0){43}}\put(91,9){\line(0,1){15}}
+\put(91,9){\line(1,0){21}}
+\put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
+\end{picture}
+\endgroup
+\caption{Conceptual FPVR domain model. Lines denote associations, with the
+number of related instances at each end: 1 means exactly one, 0..1 means
+optional, and * means an unbounded multiplicity.}
+\label{fig:e-domain}
+\end{figure}
+
+The editable \href{models/environment-domain.puml}{PlantUML domain source}
+expresses these associations. The inline vector figure keeps the normal
+\LaTeX{} build self-contained; it requires no generated diagram image.
+The same convention is used for the context and deployment figures below.
 
 \clearpage
 
@@ -934,148 +1069,15 @@ and usage assumptions.
 
 \booksection{E}{Environment}
 
-This book follows the six Environment chapters of Meyer's template~\cite{BM22}.
-It defines the physical and virtual context of FPVR; software behaviour remains
+The glossary from Meyer's Environment template~\cite{BM22} is placed after
+Revision History, before the main books. The five sections below define the
+physical and virtual context of FPVR; software behaviour remains
 specified in \hyperref[s2]{S.2}. Identifiers prefixed \textbf{E-C}, \textbf{E-A},
 \textbf{E-F}, and \textbf{E-I} denote constraints, assumptions, effects, and
 invariants, respectively. An assumption is an operating premise to check, not
 a guarantee; an invariant is a property that FPVR must preserve.
 
-\subsection{Glossary}\label{e1}
-
-The definitions below apply throughout this specification. Links point to the
-existing introduction or the section that uses the term. Acronyms appearing in
-figures use these same meanings.
-
-\begingroup
-\small
-\renewcommand{\arraystretch}{1.12}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
-                         >{\raggedright\arraybackslash}p{0.71\textwidth}@{}}
-\caption{Domain glossary and abbreviations}\label{tab:e-glossary}\\
-\toprule
-\textbf{Term} & \textbf{Meaning and reference} \\
-\midrule\endfirsthead
-\multicolumn{2}{l}{\small\textit{Table \thetable\ continued}}\\
-\toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
-\midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
-\bottomrule\endlastfoot
-FPVR & The VR-based FPV drone training simulator specified here
-(\hyperref[g1]{G.1}). \\
-FPV & First-person view: presentation from the simulated drone's viewpoint
-(\hyperref[g1]{G.1}). \\
-VR & Virtual reality: an immersive presentation viewed through a headset
-(\hyperref[g1]{G.1}). \\
-SRS & Software requirements specification: this document's statement of the
-intended product and its acceptance expectations. \\
-AI & Artificial intelligence: the planned, feasibility-dependent intelligent
-flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
-XR & Extended reality: the umbrella term that includes VR; used in the
-runtime diagrams. It does not specify a particular integration API. \\
-PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
-computer and presents its VR view through a connected headset
-(\hyperref[e2]{E.2}). \\
-Runtime & The external platform software that provides headset presentation,
-tracking, input, and application-session services (\hyperref[e2]{E.2}). \\
-Tracking / pose & Tracking reports a device's position and orientation (its
-pose) and whether that information is currently valid. \\
-Session focus & The runtime's indication of whether FPVR is the active
-application receiving interaction; visible imagery alone does not prove focus. \\
-Frames per second / hertz & Application frame-delivery rate / display refresh
-frequency (Hz). These quantities are distinct; the performance target remains
-under review in \hyperref[sec:s2-nfr]{S.2}. \\
-API & Application programming interface: a program-to-program interface.
-Mention of an external interface does not establish a public FPVR API
-(\hyperref[s3]{S.3}). \\
-FR / NFR & Functional requirement / non-functional requirement; prefixes of the
-existing requirement identifiers in \hyperref[s2]{S.2}. \\
-Throttle, pitch, roll, yaw & Flight commands for thrust, rotation about the
-lateral axis, rotation about the longitudinal axis, and rotation about the
-vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
-Virtual environment & A simulated setting containing flight space and scenery.
-Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
-Free flight & Practice without course checkpoints, timers, or scoring
-(\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
-Level / course & A selectable obstacle challenge with a start, an ordered
-checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
-Attempt & One course run from start or restart until completion or exit.
-Respawn continues the same attempt (\hyperref[e6]{E.6}). \\
-Checkpoint / segment & A required ordered course gate / the part of a course
-between the start, successive gates, and the finish
-(\hyperref[sec:s2-checkpoints]{S.2}). \\
-Collision / crash & Contact with a simulated obstacle or surface / a simulated
-collision that triggers the recovery interaction. Crash-counting details are
-specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
-\hyperref[sec:s2-performance]{FR-PER-07}. \\
-Respawn / restart & Resume the same attempt at its most recently completed checkpoint
-(or start if none) / begin a new attempt from the start
-(\hyperref[sec:s2-checkpoints]{S.2}). \\
-Total / section time & Active-flight time for an attempt, including failed
-sections / time for the current segment. Checkpoint completion and respawn
-reset section time; respawn preserves total time, which pauses in crash-recovery
-menus (\hyperref[sec:s2-performance]{S.2}). \\
-Score / rating & A numerical performance result / a separate performance
-assessment. Their criteria remain under review
-(\hyperref[sec:s2-performance]{S.2}). \\
-Flight review & The current completed attempt's performance summary;
-a historical-session review interface is outside scope
-(\hyperref[sec:s2-review]{S.2}, \hyperref[g6]{G.6}). \\
-Telemetry & Flight and performance measurements used for evaluation. The term
-alone does not imply recording history or transmitting data
-(\hyperref[e5]{E.5}). \\
-Activity space / boundary & The user's physical space / a platform-provided
-virtual limit used to help the user remain within a prepared space.
-Neither is part of the simulated course (\hyperref[e3]{E.3}). \\
-\end{longtable}
-\endgroup
-
-\clearpage
-\subsubsection*{Domain relationships}
-Figure~\ref{fig:e-domain} identifies domain concepts, rather than implementation
-classes. Each course uses one virtual environment and has at least one checkpoint;
-an attempt selects exactly
-one course, uses one simulated drone, and produces a review only on completion.
-The many possible attempts do not imply retained session history.
-
-\begin{figure}[H]
-\centering
-\begingroup\setlength{\unitlength}{1mm}\small
-\begin{picture}(160,128)
-\put(0,106){\framebox(48,18){Virtual environment}}
-\put(24,84){\line(0,1){22}}
-\put(27,102){1}\put(27,86){0..*}
-\put(29,94){setting for}
-\put(0,66){\framebox(48,18){\shortstack{Course\\start and finish}}}
-\put(112,66){\framebox(48,18){\shortstack{Checkpoint\\ordered gate}}}
-\put(0,20){\framebox(48,18){\shortstack{Attempt\\current course run}}}
-\put(112,35){\framebox(48,18){Simulated drone}}
-\put(112,0){\framebox(48,18){\shortstack{Flight review\\completed attempt}}}
-\put(48,75){\line(1,0){64}}
-\put(68,78){contains}
-\put(50,69){1}\put(101,69){1..*}
-\put(24,38){\line(0,1){28}}
-\put(27,61){1}\put(27,41){0..*}
-\put(29,51){selected by}
-\put(48,32){\line(1,0){32}}\put(80,32){\line(0,1){12}}
-\put(80,44){\line(1,0){32}}
-\put(59,36){uses}\put(50,26){0..*}\put(107,46){1}
-\put(48,24){\line(1,0){43}}\put(91,9){\line(0,1){15}}
-\put(91,9){\line(1,0){21}}
-\put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
-\end{picture}
-\endgroup
-\caption{Conceptual FPVR domain model. Lines denote associations, with the
-number of related instances at each end: 1 means exactly one, 0..1 means
-optional, and * means an unbounded multiplicity.}
-\label{fig:e-domain}
-\end{figure}
-
-The editable \href{models/environment-domain.puml}{PlantUML domain source}
-expresses these associations. The inline vector figure keeps the normal
-\LaTeX{} build self-contained; it requires no generated diagram image.
-The same convention is used for the context and deployment figures below.
-
-\subsection{Components}\label{e2}
+\subsection{Components}\label{e1}
 
 FPVR is the software under specification. Its boundary contains simulated
 flight, virtual environments and courses, checkpoint/recovery state,
@@ -1228,7 +1230,7 @@ system/specifications and link configuration. An untested cell remains
 unconfirmed. The hardware uncertainties are constrained in
 \hyperref[ec-hardware]{E-C-02}.
 
-\subsection{Constraints}\label{e3}
+\subsection{Constraints}\label{e2}
 
 These restrictions come from the existing scope, selected execution context,
 and platform conditions. They constrain a design without prescribing its
@@ -1255,7 +1257,7 @@ Xbox controller generations, host operating system and minimum specifications,
 and headset link remain \textbf{under review}. Table~\ref{tab:e-pairings} is not
 a declaration of compatibility. \textit{Rationale:} an intended device is not
 acceptance evidence; every claimed configuration needs the recorded
-configuration and checks described in \hyperref[e2]{E.2} and
+configuration and checks described in \hyperref[e1]{E.1} and
 \hyperref[sec:s2-nfr]{NFR-COMP-01}.
 
 \item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
@@ -1310,7 +1312,7 @@ applicability must be rechecked against the selected device and release.
 Meta Platforms, Inc., \textit{Meta Quest Safety Center},
 \href{https://www.meta.com/quest/safety-center/}{model-specific safety guidance}.
 Accessed October 19, 2026. Used for \hyperref[ec-safety]{E-C-04} and
-physical-space preparation in \hyperref[e4]{E.4}.
+physical-space preparation in \hyperref[e3]{E.3}.
 \item[Platform audience policy.]\phantomsection\label{es-meta-age}
 Meta Platforms, Inc., \textit{Age group self-certification policy},
 \href{https://developers.meta.com/vr/policy/age-groups/}{Meta Horizon OS developer policy}.
@@ -1324,7 +1326,7 @@ any data-processing policy remain explicit review items. They require team
 confirmation and evidence before compatibility, safety or release compliance
 can be claimed.
 
-\subsection{Assumptions}\label{e4}
+\subsection{Assumptions}\label{e3}
 
 These premises delimit the intended operating and evaluation context.
 Each must be checked; its failure does not prove that FPVR satisfies the related
@@ -1381,10 +1383,10 @@ specified and checked in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
 \hyperref[s6]{S.6}. Single-player scope does not establish offline operation;
 historical-review exclusions do not define retention.
 
-\subsection{Effects}\label{e5}
+\subsection{Effects}\label{e4}
 
 Effects describe influences from FPVR onto its environment, complementing the
-inputs and dependencies in \hyperref[e2]{E.2}. They identify affected people,
+inputs and dependencies in \hyperref[e1]{E.1}. They identify affected people,
 resources and information without asserting that an unfinished implementation
 has already achieved a benefit or passed a safety evaluation.
 
@@ -1441,7 +1443,7 @@ protocol is approved by depicting that conditional dependency.
 Guardians, bystanders and the wider public (\hyperref[g7]{G.7}) are also affected
 by activity-space safety and interpretation of training claims.
 
-\subsection{Invariants}\label{e6}
+\subsection{Invariants}\label{e5}
 
 The following properties must remain true whenever the corresponding FPVR
 activity is available. They are obligations to preserve the domain and external
@@ -2100,7 +2102,7 @@ Section~\ref{s6}.
 
 \subsection{Interfaces}\label{s3}
 
-\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
+\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e1]{E.1}. \cite{BM22}}
 
 % TODO: Write your team's content for S.3 here.
 
