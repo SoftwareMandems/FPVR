@@ -1075,7 +1075,95 @@ The same convention is used for the context and deployment figures below.
 
 \subsection{Components}\label{e2}
 
-% TODO: Write your team's content for E.2 here.
+FPVR is the software under specification. Its boundary contains simulated
+flight, virtual environments and courses, checkpoint/recovery state,
+performance evaluation, and the VR interaction presented to the user. These
+responsibilities are inside FPVR even when the application executes on an
+external headset or computer. The simulated drone is a domain object, not an
+external aircraft. \hyperref[g6]{G.6} excludes physical-drone control,
+headset-free desktop play, multiplayer, pilot certification, and a historical
+session-review interface.
+
+The environment includes the user profiles in \hyperref[g8]{G.8}, their physical
+activity space, the headset and runtime, input devices, and the host/link used
+for PCVR. Guardians and nearby people are affected stakeholders
+(\hyperref[g7]{G.7}); they are not additional software operators or data services.
+Table~\ref{tab:e-external} defines the logical exchanges shown in
+Figure~\ref{fig:e-context}. A user-facing output is delivered through the
+headset/runtime; its direct arrow to the user expresses its recipient.
+
+\begingroup\small\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
+                         >{\raggedright\arraybackslash}p{0.35\textwidth}
+                         >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\caption{External components and logical boundary exchanges}
+\label{tab:e-external}\\
+\toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
+\textbf{Outputs from FPVR}\\\midrule\endfirsthead
+\toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
+\textbf{Outputs from FPVR}\\\midrule\endhead
+\bottomrule\endfoot
+User (F1) & Mode/level, menu, recovery and exit choices; flight actions via F3. &
+Flight view, instructions, progress, recovery choices and current results. \\
+Headset and runtime (F2) & Pose and validity, input availability, session focus,
+display timing and lifecycle status. & Imagery and interaction with external
+presentation/session services. \\
+Input options: Quest or compatible Xbox (F3) & Flight axes, buttons, device
+identity and connection status via input services. & Instructions and device
+feedback via F1; no haptic output is required here. \\
+PCVR host and headset link (F4) & Host resources, runtime/link availability
+and linked headset tracking/input. & PC-executed presentation conveyed to the
+headset; PCVR only. \\
+Optional analysis dependency (F5) & Conditional feedback or unavailable/error
+outcome. & Conditional analysis inputs; processing location, provider and
+payload remain undecided (\hyperref[sec:s2-ai]{S.2}). \\
+Physical activity space & Preparation, clearance and tracking conditions;
+no direct obstacle-sensing stream assumed. & Imagery affects attention and
+movement; FPVR cannot clear the room or guarantee obstacle detection. \\
+\end{longtable}\endgroup
+
+\clearpage
+\begin{figure}[H]
+\centering
+\begingroup\setlength{\unitlength}{1mm}\small
+\begin{picture}(160,136)
+\put(0,112){\framebox(40,22){\shortstack{Physical\\activity space}}}
+\put(0,53){\framebox(40,24){User}}
+\put(60,112){\framebox(45,22){\shortstack{Quest / Xbox\\input options}}}
+\put(60,49){\framebox(45,34){\shortstack{FPVR boundary\\flight and courses\\recovery and results\\VR interaction}}}
+\put(120,53){\framebox(40,24){\shortstack{Headset and\\runtime}}}
+\put(0,0){\framebox(60,24){\shortstack{PCVR host / link\\PCVR only}}}
+\put(100,0){\framebox(60,24){\shortstack{Optional analysis\\location undecided}}}
+\put(12,112){\vector(0,-1){35}}\put(0,96){\scriptsize clearance}
+\put(28,77){\vector(0,1){35}}\put(29,86){\scriptsize preparation}
+\put(40,70){\vector(1,0){20}}\put(60,59){\vector(-1,0){20}}
+\put(46,73){F1}\put(46,54){F1}
+\put(120,70){\vector(-1,0){15}}\put(105,59){\vector(1,0){15}}
+\put(108,73){F2}\put(108,54){F2}
+\put(82,112){\vector(0,-1){29}}\put(85,98){F3}
+\multiput(28,24)(0,4){4}{\line(0,1){2}}
+\multiput(28,40)(4,0){10}{\line(1,0){2}}
+\multiput(68,40)(0,4){3}{\line(0,1){2}}
+\put(68,48){\vector(0,1){1}}\put(28,26){\vector(0,-1){2}}
+\put(39,43){F4*}
+\multiput(94,25)(0,4){6}{\line(0,1){2}}
+\multiput(94,24)(4,0){10}{\line(1,0){2}}
+\put(94,47){\vector(0,1){2}}\put(132,26){\vector(0,-1){2}}
+\put(104,28){F5*}
+\end{picture}\endgroup
+\caption{FPVR system context. F1--F5 identify the exchanges in
+Table~\ref{tab:e-external}. Arrowheads show direction; solid lines show baseline
+interactions, dotted lines marked * show conditional dependencies. Physical
+space arrows show human influence rather than a software sensor interface.}
+\label{fig:e-context}
+\end{figure}
+
+The \href{models/environment-context.puml}{PlantUML context source} makes the
+same system boundary explicit. F4 is present only for PCVR. F5 does not mandate
+a server, account, internet connection, or transmission of telemetry. There is
+no physical-drone interface. Package versions, internal modules and concrete
+interface bindings belong to \hyperref[s1]{S.1}, \hyperref[s3]{S.3}, and
+\hyperref[p5]{P.5}, rather than this external context.
 
 \subsection{Constraints}\label{e3}
 

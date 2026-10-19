@@ -1,0 +1,55 @@
+@startuml environment-context
+' Editable source for the Environment context and information-flow boundary.
+' Sources: ../SRS.tex G.6, G.8 and S.2 (FR-FLT, FR-UI, FR-REV, FR-AI).
+' Draft reference: C:/Users/itari/Documents/SRS.tex E.2--E.5.
+' Render: java -jar plantuml.jar -tpdf environment-context.puml
+' Preview: java -jar plantuml.jar -tsvg environment-context.puml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam monochrome true
+skinparam wrapWidth 210
+title FPVR external context
+
+actor "User" as User
+rectangle "Physical activity space" as Space
+rectangle "Input options overall\nQuest motion controllers OR\ncompatible Xbox controller" as Input
+rectangle "Quest headset and XR runtime" as XR
+rectangle "PCVR host and headset link\n(PCVR mode only)" as Host
+rectangle "FPVR system boundary\nFlight simulation; courses and recovery;\nperformance evaluation; VR interaction" as FPVR
+rectangle "Optional analysis dependency\nLocation and interface undecided" as AI
+
+Space --> User : physical surroundings and clearance
+User --> Space : prepares stationary activity area
+User --> Input : flight axes and button actions
+Input --> FPVR : control values and device availability
+User --> FPVR : mode, level and recovery choices
+FPVR --> User : instructions, flight view and current results
+XR --> FPVR : pose/input availability and runtime status
+FPVR --> XR : rendered imagery and runtime interaction
+Host ..> FPVR : conditional host/link resources and availability
+FPVR ..> Host : conditional PC-executed application presentation
+FPVR ..> AI : conditional analysis inputs; payload unapproved
+AI ..> FPVR : conditional feedback or unavailable/error outcome
+
+note bottom of Space
+  Physical clearance is prepared by the user or guardian.
+  No direct FPVR sensor feed or obstacle detection is assumed.
+end note
+note bottom of Input
+  Both controller types are required overall.
+  Exact models and per-mode combinations remain under review.
+end note
+note bottom of AI
+  Intelligent feedback is conditional; standard review remains available.
+  An external service is only a possibility. No provider, network protocol,
+  transmitted payload or privacy decision is approved by this diagram.
+end note
+
+legend bottom
+  Solid arrow: baseline interaction; label names information or influence.
+  Dashed arrow: conditional dependency, not a mandatory connection.
+  Arrowheads indicate direction; arrows do not prescribe physical wiring.
+  No physical drone is connected to FPVR.
+endlegend
+@enduml
