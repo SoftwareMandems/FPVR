@@ -1475,43 +1475,392 @@ Section~\ref{s6}.
 
 \guidance{Main responsibilities in the project; required project staff and their needed qualifications. It defines the roles (as a human responsibility) involved in the project. \cite{BM22}}
 
-% TODO: Write your team's content for P.1 here.
+\begin{itemize}
+\item \textbf{Team Lead and Flight Physics Developer (Ibrahim Tariq)} --
+Tracks deadlines and keeps the project on schedule. Implements the flight
+model, gravity, and VR camera, and owns frame-rate performance.
+\item \textbf{Team Liaison and Hardware Integration Developer (John Cho)} --
+Main point of contact with the supervisor, teaching assistant, and
+instructor, and shares their updates with the team. Implements controller
+input and headset integration, and owns compatibility testing across headset
+and controller pairs.
+\item \textbf{Training Environments Lead (Sankalpa Chhetri Dhakal)} -- Builds
+the obstacle courses and virtual environments. Leads the investigation of the
+optional ML (machine learning)/AI flight feedback.
+\item \textbf{Game State Developer (Vikram Chandar)} -- Implements game state,
+checkpoints, crash recovery, and timing, and keeps course progress
+consistent across crashes and restarts.
+\item \textbf{Scoring and Flight Data Developer (Arjun Sasidaran)} --
+Implements scoring, ratings, flight data recording, and the post-flight
+review.
+\item \textbf{Supervisor (Dr.\ Douglas Down)} -- Provides guidance on project
+scope, the reference drone and realism goals, and milestone planning. The
+team meets with the supervisor every two weeks.
+\item \textbf{Teaching Assistant} -- Answers course-related questions and
+gives feedback on deliverables, reached through the team liaison.
+\end{itemize}
+
+In addition, every member takes turns as meeting chair, notetaker, and
+quality assurance (QA) reviewer; QA for a deliverable is never its main
+author, and every pull request is reviewed by a member other than its
+author.
 
 \subsection{Imposed technical choices}\label{p2}
 
 \guidance{Any a priori choices binding the project to specific tools, hardware, languages or other technical parameters. Not all technical choices in projects derive from a pure technical analysis; some result from company policies. While some project members may dislike non-strictly-technical decisions, they are a fact of project life and must be documented, in particular for the benefit of one of the quality factors for requirements: "requirements must be justified". \cite{BM22}}
 
-% TODO: Write your team's content for P.2 here.
+\begin{itemize}
+\item \textbf{Game engine} -- Unity, imposed by the confirmed project scope
+for its VR, input, and physics support.
+\item \textbf{Programming language} -- C\#, the Unity scripting language
+selected in the Development Plan.
+\item \textbf{VR headset} -- A supported Meta Quest headset, run both
+standalone and through PCVR (FR-UI-01, FR-UI-02); the exact supported models
+are an open decision (\hyperref[p7]{P.7}).
+\item \textbf{Controllers} -- Meta Quest motion controllers and compatible
+Xbox controllers (FR-UI-03).
+\item \textbf{XR integration} -- Unity's OpenXR Plugin and XR Interaction
+Toolkit; exact package versions are an open decision
+(\hyperref[p7]{P.7}).
+\item \textbf{Version control and review} -- Git and GitHub, with one branch
+per issue and pull-request review before merging.
+\item \textbf{Continuous integration} -- GitHub Actions, which builds the
+project documentation on every pull request.
+\item \textbf{Excluded} -- No network stack, database, or custom RF
+(radio-frequency) hardware is required by the single-player scope
+(G.6).
+\end{itemize}
 
 \subsection{Schedule and milestones}\label{p3}
 
 \guidance{List of tasks to be carried out and their scheduling. It defines the project's key dates. \cite{BM22}}
 
-% TODO: Write your team's content for P.3 here.
+Table~\ref{tab:milestones} lists the course milestones and their due dates
+from the capstone calendar.
+
+\begin{table}[H]\centering\small
+\caption{Project milestones and due dates}\label{tab:milestones}
+\begin{tabularx}{\textwidth}{@{}Yp{0.3\textwidth}@{}}
+\toprule
+Milestone & Due date \\\midrule
+Problem Statement, PoC Plan, Development Plan & Complete (Sept. 2026) \\
+SRS and Hazard Analysis & Oct. 19, 2026 \\
+SRS peer review issues & Oct. 22, 2026 \\
+VnV Plan & Nov. 2, 2026 \\
+VnV Plan peer review issues & Nov. 5, 2026 \\
+Design Document Rev $-1$ and CD-Fall & Nov. 16, 2026 \\
+Design Document Rev $-1$ peer review & Nov. 19, 2026 \\
+Proof of Concept (PoC) Demonstration & Nov. 23 -- Dec. 3, 2026 \\
+Design Documentation & Jan. 18, 2027 \\
+Module Implementation & Jan. 21, 2027 \\
+Design Documentation peer review & Jan. 25, 2027 \\
+Revision 0 Demonstration & Feb. 1 -- Feb. 11, 2027 \\
+V\&V Report and CD-Winter & Mar. 8, 2027 \\
+V\&V Report and CD-Winter peer review & Mar. 11, 2027 \\
+Final Demonstration (Revision 1) & Mar. 15 -- Mar. 21, 2027 \\
+Final Documentation (Revision 1) & Mar. 31, 2027 \\
+Capstone EXPO & Apr. 7, 2027 \\
+\bottomrule\end{tabularx}\end{table}
+
+Table~\ref{tab:phasein} gives the order in which requirements are phased in.
+Each phase builds on the ones before it: the core requirements that every
+later phase depends on come first, and the optional AI feedback (FR-AI) comes
+last. Core requirements are Must priority; the AI feedback is Could priority
+because S.2 marks it as optional. Each phase is due
+at a milestone in Table~\ref{tab:milestones}; phases 1 and 2 form the proof of
+concept, which the Development Plan defines as VR support, a
+simple flight model, and controller input. A phase is complete when its
+requirements are implemented and pass the verification cases specified in the
+VnV Plan.
+
+\begin{table}[H]\centering\small
+\caption{Requirement phase-in plan}\label{tab:phasein}
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}Yp{0.11\textwidth}p{0.22\textwidth}@{}}
+\toprule
+Phase & Requirements & Priority & Due date / milestone \\\midrule
+1. Deployment, input, and failure handling &
+FR-UI, NFR-INST-01, NFR-INST-02,
+NFR-COMP-01, NFR-SAFE-01 &
+Must &
+Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
+2. Free flight &
+FR-FLT, FR-LVL-01, FR-LVL-02, NFR-PERF-01 &
+Must &
+Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
+3. Ordered courses and recovery &
+FR-LVL-03 to FR-LVL-07, FR-CHK, NFR-REL-01 &
+Must &
+Jan. 21, 2027 (Module Implementation) \\
+4. Evaluation and review &
+FR-PER, FR-REV,
+NFR-USAB-01 &
+Must &
+Feb. 1 -- Feb. 11, 2027 (Revision 0 Demonstration) \\
+5. Optional AI feedback &
+FR-AI &
+Could &
+Mar. 15 -- Mar. 21, 2027 (Final Demonstration), only if feasibility is
+approved \\
+\bottomrule\end{tabularx}\end{table}
 
 \subsection{Tasks and deliverables}\label{p4}
 
 \guidance{This is the core of the Project book. It details the individual tasks listed under \hyperref[p3]{P.3} and their expected outcomes. It define the project's main activities and the results they must produce, associated with the milestone dates defined in \hyperref[p3]{P.3}. \cite{BM22}}
 
-% TODO: Write your team's content for P.4 here.
+Table~\ref{tab:deliverables} lists the tasks that produce each deliverable,
+with the milestone dates from Table~\ref{tab:milestones}. The team lead tracks
+the dates and the area leads in \hyperref[p1]{P.1} own the tasks in their
+areas.
+
+\begin{longtable}{@{}p{0.17\textwidth}p{0.46\textwidth}p{0.16\textwidth}p{0.12\textwidth}@{}}
+\caption{Tasks and deliverables}\label{tab:deliverables}\\
+\toprule Task & Description / steps & Deliverable & Due date
+\\\midrule\endfirsthead
+\toprule Task & Description / steps & Deliverable & Due date
+\\\midrule\endhead
+\bottomrule\endfoot
+Requirements and hazards & Write the Goals, Environment, System, and Project
+books; give every requirement a unique ID and rationale; identify hazards with
+an FMEA and derive safety and security requirements; trace each requirement
+to its goal, hazards, and verification. & SRS and Hazard Analysis &
+Oct. 19, 2026 \\
+SRS peer review & Review the assigned team's SRS against the rubric and raise
+more than five substantive GitHub issues; triage the issues raised on this
+SRS and assign each to an owner. & SRS peer review issues & Oct. 22, 2026 \\
+Verification planning & Write a test case for every requirement in
+S.2, with inputs, expected outputs, and pass criteria; write
+step-by-step procedures for phases 1 and 2; define how frame rate and input
+response are measured on the headset. & VnV Plan & Nov. 2, 2026 \\
+VnV peer review & Review the assigned team's VnV Plan and raise issues;
+address the issues raised on this plan. & VnV Plan peer review issues &
+Nov. 5, 2026 \\
+Architecture & Decompose the system into modules (input, flight model, course
+and checkpoint state, timing and scoring, review, user interface); define
+each module's secrets and interfaces; trace every Must requirement to a
+module. & Design Document Rev $-1$ and CD-Fall & Nov. 16, 2026 \\
+Design peer review & Review the assigned team's design document and raise
+issues; address the issues raised on this design. & Design Document
+Rev $-1$ peer review & Nov. 19, 2026 \\
+VR and controller integration (phase 1) & Set up the Unity project with
+OpenXR; build and launch on a Quest headset in standalone and PCVR modes; map
+throttle, pitch, roll, and yaw for the motion controllers and gamepad; add
+the pause menu, exit, and handling for controller disconnects and headset
+removal (FR-UI). & PoC Demonstration &
+Nov. 23 -- Dec. 3, 2026 \\
+Flight model (phase 2) & Implement four-axis flight with gravity, takeoff, and
+landing (FR-FLT); add the first-person camera;
+profile a free-flight session on the headset against the target frame rate
+and input-response budget; tune controller dead zones. & PoC Demonstration &
+Nov. 23 -- Dec. 3, 2026 \\
+Detailed design & Specify each module's interface, state variables, and
+behaviour, including the checkpoint, crash, and timer state transitions. &
+Design Documentation & Jan. 18, 2027 \\
+Courses and recovery (phase 3) & Build at least three obstacle
+courses in at least two environments
+(FR-LVL); place ordered checkpoints; detect
+crashes, respawn at the last checkpoint, and restart a course
+(FR-CHK); run repeated
+recovery tests in each mode. & Module Implementation & Jan. 21, 2027 \\
+Evaluation and review (phase 4) & Implement the course timer, crash count,
+score, and rating (FR-PER); record each
+attempt's flight data; build the post-flight review screen
+(FR-REV); integrate with phases 1--3 and rehearse
+the demonstration. & Revision 0 Demonstration & Feb. 1 -- Feb. 11, 2027 \\
+Verification & Run every test case from the VnV Plan on the declared
+hardware; record the configuration and observed results; log each failure as
+a GitHub issue and retest after the fix. & V\&V Report and CD-Winter &
+Mar. 8, 2027 \\
+Optional AI feedback (phase 5) and polish & If feasibility is approved,
+evaluate a pre-trained model on recorded flight data and add advisory
+feedback (FR-AI); otherwise, fix defects
+from verification and improve comfort and usability. & Final Demonstration
+(Revision 1) & Mar. 15 -- Mar. 21, 2027 \\
+Final documentation & Update the SRS, Hazard Analysis, VnV Plan and Report,
+and design documents to match the delivered system; write the user guide and
+installation instructions; complete the reflections. & Final Documentation
+(Revision 1) & Mar. 31, 2027 \\
+EXPO & Prepare the poster and a safe, supervised headset demonstration space;
+plan a short demonstration course for visitors. & Capstone EXPO &
+Apr. 7, 2027 \\
+\end{longtable}
+
+A requirement counts as met only when its test case has been run on
+supported hardware and the configuration and observed results are recorded.
 
 \subsection{Required technology elements}\label{p5}
 
 \guidance{External systems, hardware and software, expected to be necessary for building the system. It lists external technology elements, such as program libraries and hardware devices, that the project is expected to require. Although the actual use of such products belongs to design and implementation rather than requirements, it is part of the requirements task to identify elements whose availability is critical to the success of the project --- an important element of risk analysis (\hyperref[p6]{P.6}). \cite{BM22}}
 
-% TODO: Write your team's content for P.5 here.
+\begin{itemize}
+\item \textbf{VR Headset} -- A supported Meta Quest headset for both
+standalone and PCVR play.
+\item \textbf{Controllers} -- Meta Quest motion controllers and a compatible
+Xbox controller.
+\item \textbf{PCVR Host} -- A Windows PC and headset link able to run the
+PCVR mode.
+\item \textbf{Game Engine and Language} -- Unity with C\#, including its
+physics, input, and rendering systems.
+\item \textbf{XR Packages} -- OpenXR Plugin and XR Interaction Toolkit for
+headset and controller integration.
+\item \textbf{Profiling Tools} -- Unity Profiler and headset performance
+tools to measure frame rate, input response, and state transitions.
+\item \textbf{Version Control} -- GitHub for source code, issues, and pull
+requests.
+\item \textbf{Continuous Integration} -- GitHub Actions with a \LaTeX{}
+build for the project documents.
+\item \textbf{Test Space} -- A safe, clear, stationary area for headset
+testing.
+\item \textbf{AI Model (Optional)} -- A pre-trained model, such as Qwen2-VL,
+evaluated only if the optional AI feedback in phase 5 is approved.
+\end{itemize}
+
+Exact versions, PC specifications, and profiling equipment are open
+decisions listed in \hyperref[p7]{P.7}.
 
 \subsection{Risk and mitigation analysis}\label{p6}
 
 \guidance{Potential obstacles to meeting the schedule of \hyperref[p4]{P.4}, and measures for adapting the plan if they do arise. It is essential to be on the lookout for events that could derail the project, and devise mitigation strategies. It can include a SWOT analysis (Strengths, Weaknesses, Opportunities, Threats) for the project. \cite{BM22}}
 
-% TODO: Write your team's content for P.6 here.
+\begin{itemize}
+\item \textbf{Risk: VR or Controller Incompatibility}
+  \begin{itemize}
+  \item Description: A required headset, controller, or execution mode may
+  not launch or accept input.
+  \item Mitigation: Integrate the headset and controllers first (phase 1),
+  test the minimum supported pairs early, and record any unsupported
+  combinations (NFR-COMP-01). Responsible: John Cho.
+  \end{itemize}
+\item \textbf{Risk: VR Performance Shortfall}
+  \begin{itemize}
+  \item Description: A representative course may fall below the target frame
+  rate or exceed the input-response budget, causing discomfort.
+  \item Mitigation: Profile each phase on the headset, and cut optional
+  content before core features (NFR-PERF-01). Responsible: Ibrahim Tariq.
+  \end{itemize}
+\item \textbf{Risk: Unrealistic Flight Physics}
+  \begin{itemize}
+  \item Description: The flight model may not feel like a real FPV drone
+  because no reference drone has been chosen.
+  \item Mitigation: Agree on a reference drone with the supervisor and build
+  the flight model incrementally from gravity checks (FR-FLT).
+  Responsible: Ibrahim Tariq.
+  \end{itemize}
+\item \textbf{Risk: Inconsistent Game State}
+  \begin{itemize}
+  \item Description: Crashes, checkpoints, and timers may disagree, giving
+  wrong scores.
+  \item Mitigation: Define the checkpoint, crash, and timer state changes in
+  the detailed design and test each one directly (FR-CHK, FR-PER).
+  Responsible: Vikram Chandar and Arjun Sasidaran.
+  \end{itemize}
+\item \textbf{Risk: User Discomfort or Unsafe Play Space}
+  \begin{itemize}
+  \item Description: Motion sickness, collisions with real objects, or hard
+  to reach menus may harm testers.
+  \item Mitigation: Review the safety requirements in the Hazard Analysis
+  and platform guidance before any user trials, keep an exit available
+  without removing the headset (NFR-SAFE-01), and stop testing when a user
+  cannot continue safely. Responsible: rotating QA role.
+  \end{itemize}
+\item \textbf{Risk: Optional AI Scope Creep}
+  \begin{itemize}
+  \item Description: The AI feedback feature may take time away from core
+  features.
+  \item Mitigation: Keep AI feedback in phase 5 and only start it after the
+  Revision 0 demonstration (FR-AI). Responsible: Sankalpa Chhetri Dhakal.
+  \end{itemize}
+\item \textbf{Risk: Unrealistic Schedule or Workload}
+  \begin{itemize}
+  \item Description: Tasks may take longer than planned or workload may
+  become unbalanced.
+  \item Mitigation: Track all tasks on the GitHub Kanban board, review
+  progress at each weekly meeting, and reassign work as needed.
+  Responsible: Ibrahim Tariq.
+  \end{itemize}
+\end{itemize}
+
+Hazards to users are analysed separately in the
+Hazard Analysis.
 
 \subsection{Requirements process and report}\label{p7}
 
 \guidance{Initially, description of what the requirements process will be; later, report on its steps. It starts out as a plan for conducting the requirements elicitation process, but is meant to be updated as part of that process so that it includes the key lessons of elicitation. \cite{BM22}}
 
-% TODO: Write your team's content for P.7 here.
+\begin{itemize}
+\item \textbf{Initial Elicitation:} Requirements were gathered from the
+problem statement, the Development Plan, meetings with the supervisor,
+competing simulators, and Meta Quest documentation. Sources are listed in
+G.7.
+\item \textbf{Elicitation Plan:}
+  \begin{itemize}
+  \item Meetings: Weekly team meetings, in person or on Discord, and
+  supervisor meetings every two weeks; each has an agenda and notes in a
+  GitHub issue.
+  \item Communication: Discord for day-to-day discussion; the team liaison
+  handles communication with the supervisor, TA, and instructor.
+  \item Documentation: Tasks, decisions, and feedback are tracked as GitHub
+  Issues, and every change is made through a reviewed pull request.
+  \item Process Update: This section is updated as the project progresses to
+  record lessons learned, review feedback, and revisions. Each requirement
+  change records its source, rationale, affected IDs, and date.
+  \end{itemize}
+\item \textbf{Open Decisions:} These must be resolved before the affected
+requirements are accepted.
+  \begin{itemize}
+  \item Hardware: supported Quest models, controller pairings for each mode,
+  PC specifications, and Unity and package versions (NFR-COMP-01).
+  \item Performance: minimum frame rate, input-response budget, and how they
+  are measured (NFR-PERF-01).
+  \item Flight model: reference drone, accuracy targets, and controller dead
+  zones (FR-FLT).
+  \item Scoring: score formula, crash penalty, rating categories, and
+  per-course reference times (FR-PER).
+  \item Safety and comfort: the safety requirements from the Hazard Analysis,
+  comfort options, and procedures for testing with users (NFR-SAFE-01).
+  \item Optional AI: whether to build it, which model to use, and how flight
+  data is handled (FR-AI).
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{Likely changes}
+\begin{description}
+\item[LC-01: Device support.] Tested Quest models, controller bindings, and
+host requirements may change as integration testing progresses. Affects
+FR-UI-02, FR-UI-03, and NFR-COMP-01.
+\item[LC-02: Flight tuning.] The reference drone, takeoff behaviour, and
+gravity and control-response parameters may change after supervisor review.
+Affects the FR-FLT requirements and NFR-PERF-01.
+\item[LC-03: Evaluation tuning.] The score formula, course reference times,
+and rating boundaries may change after calibration and user feedback.
+Affects the FR-PER requirements.
+\item[LC-04: Content and comfort.] More courses, environments, and comfort or
+accessibility options may be added. The minimum content in FR-LVL-03 and
+FR-LVL-04 stays fixed. Affects the FR-LVL requirements.
+\item[LC-05: Optional AI.] Feasibility testing may add or defer the AI
+feedback. Affects the FR-AI requirements only; the core flight review does
+not depend on it.
+\end{description}
+These are feasible variation points to isolate in later design; no module
+architecture is prescribed here.
+
+\subsubsection*{Unlikely changes}
+\begin{description}
+\item[UC-01: Simulation boundary.] Physical-drone operation and certification
+are unlikely additions because they change the project's purpose and introduce
+different safety and regulatory responsibilities (G.6).
+\item[UC-02: Four-axis interaction.] Throttle, pitch, roll, and yaw remain the
+basic flight dimensions that the user controls on every candidate device
+(FR-FLT-02); changing them would undermine the stated FPV training goal.
+\item[UC-03: Recovery integrity.] Ordered progress, retained consequences on
+respawn, and a fresh attempt on Restart underpin meaningful repeatable
+practice (FR-CHK and
+FR-PER); weakening them would invalidate the
+evaluation model.
+\item[UC-04: Core scope.] Single-player, headset-required practice with
+independent standard review is unlikely to expand during this baseline because
+multiplayer, desktop-only play, and historical records add separate interfaces
+and data concerns without being needed for the confirmed training flow.
+\end{description}
 
 \clearpage
 
