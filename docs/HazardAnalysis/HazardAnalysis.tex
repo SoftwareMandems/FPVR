@@ -3,6 +3,12 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{array}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\srsreq}[1]{\href{../SRS/SRS.pdf\#req:#1}{\texttt{#1}}}
+\newcommand{\srsver}[1]{\href{../SRS/SRS.pdf\#ver:#1}{\texttt{#1}}}
+\newcommand{\hazref}[1]{\hyperlink{haz:#1}{\texttt{#1}}}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -32,13 +38,14 @@
 
 \begin{table}[hp]
 \caption{Revision History} \label{TblRevisionHistory}
-\begin{tabularx}{\textwidth}{llX}
+\begin{tabularx}{\textwidth}{p{2.1cm}p{2.8cm}X}
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 Date1 & Name(s) & Description of changes\\
 Date2 & Name(s) & Description of changes\\
 ... & ... & ...\\
+Oct 19, 2026 & AI-assisted draft & Completed the analysis and proposed safety requirements; team review and verification pending.\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -47,56 +54,917 @@ Date2 & Name(s) & Description of changes\\
 
 \tableofcontents
 
+\listoftables
+\listoffigures
+
 ~\newpage
 
 \pagenumbering{arabic}
 
-\wss{You are free to modify this template.}
-
 \section{Introduction}
 
-\wss{You can include your definition of what a hazard is here.}
+FPVR is a virtual reality (VR) first-person-view (FPV) drone training
+simulator. It provides single-player free flight and obstacle courses through
+a Meta Quest headset, using standalone or personal-computer VR (PCVR)
+execution. The software does not operate a physical drone. Its principal
+physical risks arise from immersive VR use; misleading training feedback,
+unavailable controls, corrupted results, and disclosure of flight data can
+also cause harm.
 
-\section{Scope and Purpose of Hazard Analysis}
+This report applies a preliminary Failure Mode and Effects Analysis (FMEA)
+to the requirements baseline in the Software Requirements Specification
+(SRS)~\cite{srs}. The analysis identifies unsafe conditions, possible losses,
+proposed controls, and evidence needed to evaluate those controls. It does
+not report completed user tests, measured failure frequencies, approved
+risk acceptance, or certification of safety.
 
-\wss{You should say what \textbf{loss} could be incurred because of the
-hazards.}
+The report follows the repository's capstone Hazard Analysis template. The
+existing section structure is retained, with a glossary, context figure,
+classification scheme, action register, and traceability tables added for
+clarity. The repository HA and SRS checklists and the supplied course rubric
+guide coverage~\cite{haChecklist,srsChecklist,rubric}. Section~\ref{sec:scope}
+defines losses; Section~\ref{sec:boundary} identifies the boundary;
+Section~\ref{sec:premises} records operating premises;
+Section~\ref{sec:fmea} develops failure cases and actions;
+Section~\ref{sec:safety} traces proposed requirements; and
+Section~\ref{sec:roadmap} describes review and implementation gates.
 
-\section{System Boundaries and Components}
+\subsection{Terms and notation}
+\label{sec:terms}
 
-\wss{Dividing the system into components will help you brainstorm the hazards.
-You shouldn't do a full design of the components, just get a feel for the major
-ones.  For projects that involve hardware, the components will typically include
-each individual piece of hardware.  If your software will have a database, or an
-important library, these are also potential components.}
+\begin{table}[htbp]
+\caption{Hazard-analysis terminology and acronyms}
+\label{tab:terms}
+\begin{tabularx}{\textwidth}{@{}p{2.6cm}Y@{}}
+\toprule
+\textbf{Term} & \textbf{Meaning in this report}\\
+\midrule
+Hazard & A system or operating condition that, together with an exposure or
+other contributing condition, could cause a loss. A hazard is not itself an
+observed injury.\\
+Failure mode & A way an element fails to provide its required behaviour;
+its cause, local effect, and possible system loss are considered separately.\\
+Loss & An adverse outcome to a user, bystander, property, information, or
+the usefulness and availability of training.\\
+Risk & The combination of possible consequence and its likelihood.
+Likelihood is unmeasured here; priority labels are proposed review priorities.\\
+FMEA & Failure Mode and Effects Analysis: a structured examination of
+element failures and their consequences.\\
+VR / FPV & Virtual reality / first-person view, as introduced above.\\
+PCVR & Personal-computer VR: the application runs on a computer and uses
+the headset for display and tracking.\\
+SRS / SR & Software Requirements Specification / proposed safety or
+security requirement; \texttt{SR-01}--\texttt{SR-08} are pending approval.\\
+AI & Artificial intelligence; optional post-flight feedback, excluded from
+the core acceptance baseline until separately approved.\\
+Runtime & Platform software responsible for the headset's session,
+rendering, tracking, and input services.\\
+Recovery & User-selected checkpoint respawn or full-level restart after a
+simulated crash; distinct from resuming a safety pause.\\
+Residual risk & Risk remaining after controls are implemented and
+evaluated. No residual risk is accepted by this draft.\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\section{Critical Assumptions}
+\section{Scope and Purpose of Hazard Analysis}\label{sec:scope}
 
-\wss{These assumptions that are made about the software or system.  You should
-minimize the number of assumptions that remove potential hazards.  For instance,
-you could assume a part will never fail, but it is generally better to include
-this potential failure mode.}
+The analysis covers installation, launch, initial instructions, input and
+tracking, simulated flight, course progression, crashes and recovery,
+timing and scoring, current-attempt review, pause and exit, and foreseeable
+interruption or misuse. Optional AI is analysed conditionally because it
+could introduce new failure and disclosure paths. Both seated and standing
+operation are required; physical walking is unnecessary. Beginners,
+recreational users, students, experienced pilots, parents or guardians,
+bystanders, and the project team may be affected.
 
-\section{Failure Mode and Effect Analysis}
+\begin{table}[htbp]
+\caption{Losses considered by the analysis}
+\label{tab:losses}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}Y@{}}
+\toprule
+\textbf{ID} & \textbf{Potential loss}\\
+\midrule
+L1 & Injury, fall, collision, nausea, visual discomfort, or distress to a
+user or nearby person during immersive use.\\
+L2 & Damage to the headset, controllers, computer, furniture, or other
+property after physical contact, a fall, or unsafe handling.\\
+L3 & Misleading training, unjustified confidence in real-world proficiency,
+frustration, or loss of trust caused by incorrect physics, results, or feedback.\\
+L4 & Loss of privacy or control of information through unintended retention,
+export, external-service transmission, or malicious modification.\\
+L5 & Loss of an attempt, unavailable training, avoidable installation effort,
+or rework caused by failed deployment, state corruption, or unavailable services.\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
-\wss{Include your FMEA table here. This is the most important part of this document.}
-\wss{The safety requirements in the table do not have to have the prefix SR.
-The most important thing is to show traceability to your SRS. You might trace to
-requirements you have already written, or you might need to add new
-requirements.}
-\wss{If no safety requirement can be devised, other mitigation strategies can be
-entered in the table, including strategies involving providing additional
-documentation, and/or test cases.}
+The intended benefit is safe introductory practice, not a guarantee that
+simulated performance transfers to physical flight. Physical-drone control,
+pilot certification, multiplayer, and desktop-only play are excluded.
+Dedicated FPV transmitters and historical-session review are not confirmed
+core features. Multiple environments and immediate access to all levels do
+not remove the need for usable instructions and recovery controls.
 
-\section{Safety and Security Requirements}
+The purpose is to reduce exposure to foreseeable harm and identify
+verifiable requirements before implementation decisions become difficult
+to change. The analysis also supports society's interest in responsible
+training, accessible interaction, age-appropriate VR use, and truthful
+claims. The headset manufacturer remains the authority on device operating
+and regional age restrictions; this report does not substitute for that
+guidance~\cite{metaSafety,metaAge}.
 
-\wss{Newly discovered requirements.  These should also be added to the SRS.  (A
-rationale design process how and why to fake it.)}
+\section{System Boundaries and Components}\label{sec:boundary}
 
-\section{Roadmap}
+The controlled software boundary contains the FPVR application, its
+configuration and course assets, and application-managed transient attempt
+data. Unity and its selected extended reality (XR)/input packages are execution dependencies.
+Headset displays, tracking sensors, controllers, the optional PC and link,
+operating systems, and the XR runtime lie outside the application's control
+but are included in the analysis as potential contributors. Platform boundary
+and pause facilities cannot be assumed to prevent every physical collision.
+Meta explicitly advises maintaining a clear activity space and recognises
+that boundary features may miss people or pets~\cite{metaSafety}.
 
-\wss{Which safety requirements will be implemented as part of the capstone timeline?
-Which requirements will be implemented in the future?}
+\begin{figure}[htbp]
+\centering
+\fbox{\begin{minipage}{0.92\textwidth}
+\centering
+\textbf{External user and physical surroundings}\\[0.4em]
+User actions, physical position, nearby people, furniture and equipment\\
+$\downarrow$ controller actions \hfill VR imagery, instructions and results $\uparrow$\\[0.5em]
+\textbf{External platform}\\
+Quest headset, motion/Xbox controller, optional PC/link, operating system,
+XR runtime and device power\\
+$\downarrow$ input, tracking, focus and device status
+\hfill display/audio commands $\uparrow$\\[0.5em]
+\fbox{\begin{minipage}{0.88\linewidth}
+\centering
+\textbf{FPVR application boundary}\\
+VR interface and controls $\rightarrow$ flight and collision simulation\\
+$\downarrow$\\
+Mode, checkpoint and recovery state $\rightarrow$ timing, score and review\\
+Course/configuration validation; transient current-attempt data\\
+Unity and selected input/XR packages support execution.\\
+Optional AI consumes a completed attempt; no authority over flight or scores.
+\end{minipage}}\\[0.5em]
+$\downarrow$ approved data only \hfill optional feedback $\uparrow$\\
+\textbf{Optional external AI service: separate, unapproved boundary}
+\end{minipage}}
+\caption{FPVR hazard-analysis context and control boundary. Arrows denote
+information flow, not physical drone control. The optional external-service
+path is conditional and is not part of the approved core.}
+\label{fig:boundary}
+\end{figure}
+
+The primary intended headset is the Meta Quest 3S or an equivalent
+compatible Quest device. Other Quest models, PC operating systems and
+minimum specifications, Xbox controller generations, and the execution-mode
+compatibility matrix remain to be reviewed. Required overall support for
+both controller types does not imply every combination is supported.
+No compatibility or installation test is asserted in this report.
+
+\begin{table}[htbp]
+\caption{Analysed elements and their interfaces}
+\label{tab:elements}
+\begin{tabularx}{\textwidth}{@{}p{3.0cm}Y@{}}
+\toprule
+\textbf{Element} & \textbf{Relevant input, output, or dependency}\\
+\midrule
+Physical VR use & User posture, surroundings, straps, display, boundary
+guidance and device power; bodily exposure remains outside software control.\\
+Tracking and controller integration & Pose, tracking validity, input freshness,
+device availability and session focus; outputs validated control requests.\\
+Flight and collisions & Throttle, pitch, roll and yaw, gravity and configured
+physics; outputs simulated pose and a single event per crash.\\
+Modes, courses and recovery & Level data, ordered checkpoint crossings and
+restart/respawn choices; outputs valid progression and recovered state.\\
+Timing, scoring and review & Active-flight intervals, checkpoints, crashes
+and approved evaluation parameters; outputs current-attempt results.\\
+VR interface & Menu selection, instructions, pause, recenter, recovery,
+resume and exit; outputs stable, understandable interactions.\\
+Attempt data & Current-attempt measurements and review; persistence,
+export and external transfer are not confirmed requirements.\\
+Optional AI & Completed-attempt measurements; advisory feedback or a
+failure indication, without changing the standard review or flight state.\\
+Deployment and dependencies & Unity, selected packages, supported operating
+system/runtime, installable builds, assets and configuration.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Earlier plans mention multiplayer, RF transmitter investigation and a
+desktop fallback~\cite{devplan}. Those are historical options and are not
+restored to scope by this analysis. The current SRS and the user's
+October 19 decisions govern this draft~\cite{srs,decisions}.
+
+\section{Critical Assumptions}\label{sec:premises}
+
+The following are documented operating premises for analysis and proposed
+verification, not claims that failures cannot occur. They must be reviewed
+when the supported configuration or intended use changes.
+
+\begin{table}[htbp]
+\caption{Critical operating premises and consequences if they do not hold}
+\label{tab:premises}
+\begin{tabularx}{\textwidth}{@{}p{0.8cm}p{4.7cm}Y@{}}
+\toprule
+\textbf{ID} & \textbf{Premise and status} & \textbf{Failure coverage}\\
+\midrule
+CP-01 & Confirmed: FPVR operates simulated drones only; no actuator or
+physical-drone interface exists in scope. & Real-world control would require
+a new analysis. Misleading proficiency claims remain covered by
+\hazref{HA-06}.\\
+CP-02 & Required operating condition: users follow applicable headset
+instructions, regional eligibility and supervision rules. Compliance is
+not guaranteed. & Inadequate guidance, unexpected physical movement and
+age/accessibility issues remain in \hazref{HA-01}--\hazref{HA-03}.\\
+CP-03 & Proposed test condition: a reviewed device/runtime/controller
+combination supplies status and input events. Its reliability is not assumed. &
+Invalid tracking, stale inputs, focus loss and power/link interruption are
+analysed in \hazref{HA-04}, \hazref{HA-05} and \hazref{HA-16}.\\
+CP-04 & Confirmed: performance measures for the current attempt are
+required. Proposed default: no retention or external transfer. & Data
+corruption and unapproved transmission remain in \hazref{HA-11} and
+\hazref{HA-13}.\\
+CP-05 & Confirmed: AI is optional and unvalidated. An external service is
+not approved merely because AI is planned. & Its output, latency, outage
+and disclosure paths remain in \hazref{HA-12} and \hazref{HA-13}.\\
+CP-06 & Proposed review condition: the physical play area and platform
+safety facilities are available and checked before supervised evaluation. &
+Software cannot guarantee a clear area, detect every bystander or prevent
+a fall; \hazref{HA-01} and \hazref{HA-18} remain open.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+No assumption removes hardware failures, novice mistakes, susceptibility
+to discomfort, malformed assets, malicious modification, or simultaneous
+failures. FMEA is primarily element-oriented; important combined paths
+such as lost input plus an unavailable pause menu are reviewed through
+\hazref{HA-04}, \hazref{HA-05} and \hazref{HA-18}. A more detailed
+interaction analysis is needed if implementation exposes additional
+interfaces or safety-critical shared state.
+
+\section{Failure Mode and Effect Analysis}\label{sec:fmea}
+
+\subsection{Method and preliminary classification}
+
+For each element in Table~\ref{tab:elements}, the analysis considers missing,
+incorrect, late, stale or malicious inputs; missing or incorrect outputs;
+and interruption during normal and recovery operation. Each failure is
+connected to a hazardous state and a possible loss, then to an avoidance,
+containment, recovery, warning, or procedural action. This is a requirements
+analysis, not a completed reliability assessment. The bottom-up structure
+is consistent with FMEA practice~\cite{nasaFmea}; it is not a claim of
+compliance with a safety standard.
+
+\begin{table}[htbp]
+\caption{Proposed qualitative classification scheme; all assignments preliminary}
+\label{tab:classification}
+\begin{tabularx}{\textwidth}{@{}p{1.4cm}Y@{}}
+\toprule
+\textbf{Label} & \textbf{Meaning and decision rule}\\
+\midrule
+S1 & Potential serious physical injury to a user or bystander, such as a
+fall or impact. Exposure conditions determine the eventual severity.\\
+S2 & Potential reversible discomfort, distress, property damage, privacy
+loss or material interruption; actual consequence may vary.\\
+S3 & Predominantly incorrect training feedback, lost attempt data,
+frustration or limited availability without an identified direct injury path.\\
+U & Likelihood unknown: no frequency, probability, exposure measurement,
+or detection-coverage evidence is available. Applies to every row.\\
+P1 & Proposed priority: establish controls and review evidence before
+exposing users to active-flight evaluation or releasing a data-transfer feature.\\
+P2 & Proposed priority: resolve before acceptance of the affected core
+functionality; conditional AI actions apply only if AI enters scope.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The severity label describes a plausible consequence, not its measured
+frequency. P1/P2 are proposed action priorities, not an accepted risk matrix.
+No numeric risk-priority number is calculated because occurrence and
+detection estimates would be invented. A lower-priority item is not
+declared safe. Every residual-risk disposition is pending implementation,
+verification and team review; the responsible team must record its
+decision and evidence before closing an action.
+
+\subsection{Failure register}
+
+Table~\ref{tab:fmea} identifies failure mechanisms, local/system effects and
+losses. Table~\ref{tab:actions} is the associated action register: together
+the two tables form the FMEA. Hazard IDs are stable across both documents.
+Requirement links open the SRS, where confirmed baseline requirements and
+new proposals are distinguished.
+
+\small
+\begin{longtable}{@{}p{0.15\textwidth}p{0.36\textwidth}p{0.41\textwidth}@{}}
+\caption{Preliminary FMEA failure register; likelihood U for every row}
+\label{tab:fmea}\\
+\toprule
+\textbf{ID / class} & \textbf{Element, failure mode and possible causes} &
+\textbf{Hazardous condition, effects and losses}\\
+\midrule
+\endfirsthead
+\caption[]{Preliminary FMEA failure register (continued)}\\
+\toprule
+\textbf{ID / class} & \textbf{Element, failure mode and possible causes} &
+\textbf{Hazardous condition, effects and losses}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\hypertarget{haz:HA-01}{}\textbf{HA-01}\newline S1 / P1 &
+Physical VR use: the user collides with surroundings or falls. Causes
+include obscured real-world vision, unexpected movement, an obstructed
+area, cables, or over-reliance on platform boundaries. &
+Virtual flight conceals an immediate physical obstacle or bystander.
+Injury and equipment/property damage are possible (L1, L2). No-walking
+controls reduce required movement but cannot eliminate movement.\\
+\addlinespace
+\hypertarget{haz:HA-02}{}\textbf{HA-02}\newline S2 / P1 &
+VR display/flight view: abrupt visual movement, sustained missed frame
+targets or unstable rendering. Causes include heavy scenes, rapid
+rotation, link degradation or unbounded computation. &
+Visual/vestibular conflict or poor presentation causes discomfort or
+disorientation (L1); continued use can contribute to HA-01.\\
+\addlinespace
+\hypertarget{haz:HA-03}{}\textbf{HA-03}\newline S2 / P1 &
+Instructions and access: eligibility/safety information is absent,
+inaccessible or misunderstood; controls are unusable for a user's abilities. &
+An unsuitable or unprepared user enters immersive flight, cannot understand
+controls, or continues despite discomfort (L1, L3, L5). No universal age
+or accessibility suitability is assumed.\\
+\addlinespace
+\hypertarget{haz:HA-04}{}\textbf{HA-04}\newline S2 / P1 &
+Tracking/focus: pose validity or application focus is lost while the last
+flight command continues; interruption status is ignored. Causes include
+occlusion, runtime transitions and device/link faults. &
+Control no longer corresponds to available tracked interaction while
+flight/timers advance. Disorientation, unintended crashes and unfair
+results are possible (L1, L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-05}{}\textbf{HA-05}\newline S2 / P1 &
+Input integration: disconnected, stale, non-finite, out-of-range or wrongly
+mapped controls are accepted. Causes include device changes, stuck inputs,
+incorrect mapping and validation defects. &
+Unexpected throttle/rotation or an unusable recovery command prevents
+predictable control, producing discomfort, crashes or lost practice
+(L1, L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-06}{}\textbf{HA-06}\newline S2 / P1 &
+Physics/model: invalid configuration or unstable calculations produce
+non-finite or implausible motion; simulated performance is presented as
+real-world qualification. &
+The view can jump or diverge; users may learn misleading responses or
+overestimate proficiency (L1, L3). Physical accuracy is not yet agreed.\\
+\addlinespace
+\hypertarget{haz:HA-07}{}\textbf{HA-07}\newline S3 / P2 &
+Collision/recovery: a crash is missed, duplicated or registered at initial
+ground contact; respawn/restart resets the wrong fields. Causes include
+contact callbacks and incorrect state transitions. &
+The drone continues through obstacles or recovery grants/loses progress,
+time or penalties. Training and results become misleading (L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-08}{}\textbf{HA-08}\newline S3 / P2 &
+Course state/assets: out-of-order crossings advance progress; a corrupted
+checkpoint sequence or spawn is accepted. Causes include malformed assets,
+missed crossing validation or conflicting events. &
+Users skip required sections, finish incorrectly or respawn into invalid
+locations; an attempt may be impossible to finish (L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-09}{}\textbf{HA-09}\newline S3 / P2 &
+Timers: wrong time source, pause handling or reset logic counts recovery
+menu time, omits failed attempts or retains an old attempt's elapsed time. &
+Scores and segment results no longer describe active-flight performance,
+undermining comparison and feedback (L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-10}{}\textbf{HA-10}\newline S3 / P2 &
+Evaluation/review: wrong parameters, stale data, duplicate events or
+undefined rating boundaries produce inconsistent scores/results. &
+Users receive misleading advice or cannot interpret performance.
+An extra crash could improperly improve the score (L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-11}{}\textbf{HA-11}\newline S2 / P1 &
+Attempt data: telemetry is unexpectedly logged, retained, exported or
+mixed between attempts; instrumentation includes unnecessary identifiers. &
+Data is exposed or reused beyond the current-attempt purpose; stale
+records also contaminate results (L4, L3). No history feature is required.\\
+\addlinespace
+\hypertarget{haz:HA-12}{}\textbf{HA-12}\newline S3 / P2 &
+Optional AI: fabricated, inappropriate or malformed advice is trusted;
+untrusted output is interpreted as instructions or changes game state. &
+Unreliable feedback misleads or discourages users and could corrupt the
+standard result if AI has authority over scoring (L3, L5).\\
+\addlinespace
+\hypertarget{haz:HA-13}{}\textbf{HA-13}\newline S2 / P1 &
+Optional external AI: unapproved telemetry transmission, unsuitable data
+handling, service outage or long response times. &
+Privacy/control of data is lost or core flight/review blocks on a service
+(L4, L5). An optional feature becomes an unintended dependency.\\
+\addlinespace
+\hypertarget{haz:HA-14}{}\textbf{HA-14}\newline S3 / P2 &
+Installation/compatibility: unsupported controller/runtime/build combinations
+are advertised, installed or accepted without testing. &
+The user cannot launch, control or recover the simulator and loses time
+or access to training (L5, L3). Headset equivalence is not proof of support.\\
+\addlinespace
+\hypertarget{haz:HA-15}{}\textbf{HA-15}\newline S2 / P1 &
+Dependencies/security: compromised packages, modified assets or unsafe
+diagnostic/network configuration enter a build. &
+Untrusted code/configuration alters control or data handling and can expose
+information or disable training (L4, L5; possible L1 via HA-02/05).\\
+\addlinespace
+\hypertarget{haz:HA-16}{}\textbf{HA-16}\newline S2 / P1 &
+Platform/power: headset or controller power, PC link, runtime or application
+terminates during flight. Causes include battery loss and platform faults. &
+The view or controls disappear unexpectedly; an attempt is lost and the
+user may be disoriented (L1, L5). Software cannot operate without power.\\
+\addlinespace
+\hypertarget{haz:HA-17}{}\textbf{HA-17}\newline S2 / P2 &
+Feedback/retry flow: discouraging language, prominent retry prompts or
+unclear exit encourage repeated attempts despite discomfort or frustration. &
+Users may continue beyond their comfort or feel pressured by ratings
+(L1, L3). Competitive pressure is possible even without multiplayer.\\
+\addlinespace
+\hypertarget{haz:HA-18}{}\textbf{HA-18}\newline S1 / P1 &
+Pause/recenter/exit: commands are inaccessible, dependent on failed input,
+or recover into a moving view without deliberate confirmation. &
+The user cannot promptly stop an uncomfortable or uncontrolled session;
+disorientation can contribute to physical impact (L1, L2, L5).\\
+\end{longtable}
+\normalsize
+
+\subsection{Recommended actions, ownership and verification}
+
+Action categories are avoidance (remove an unnecessary exposure),
+containment (prevent a failure from propagating), recovery, and
+warning/procedure. Warning alone does not eliminate physical exposure.
+Owners below are proposed assignments to the existing Development Plan
+roles~\cite{devplan}: \textbf{VR} = Ibrahim Tariq (flight physics/VR camera),
+\textbf{Input} = John Cho (controller/hardware integration),
+\textbf{Environment/AI} = Sankalpa Chhetri Dhakal,
+\textbf{State} = Vikram Chandar and Arjun Sasidaran (game state, scoring
+and flight data), and \textbf{QA} = the rotating quality-assurance reviewer.
+Assignment here is a proposal, not evidence that a member completed work.
+Each author needs an independent reviewer under the established workflow.
+
+\small
+\begin{longtable}{@{}p{0.12\textwidth}p{0.80\textwidth}@{}}
+\caption{FMEA action and verification register; all actions proposed and open}
+\label{tab:actions}\\
+\toprule
+\textbf{Case} & \textbf{Control, requirement link, verification, owner and disposition}\\
+\midrule
+\endfirsthead
+\caption[]{FMEA action and verification register (continued)}\\
+\toprule
+\textbf{Case} & \textbf{Control, requirement link, verification, owner and disposition}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\hazref{HA-01} &
+\textbf{Avoidance/warning:} retain seated/standing control without walking;
+provide clear-space, platform-boundary and safe-stop instructions
+(\srsreq{FR-UI-06}, \srsreq{SR-01}, \srsreq{SR-03}).
+\textbf{Verify:} inspect both posture workflows and instructions against
+current platform guidance; supervise initial physical-space evaluation.
+\textbf{Owner:} VR/Input + QA. \textbf{Disposition:} open; physical exposure
+remains even after instructions and requires explicit team review.\\
+\addlinespace
+\hazref{HA-02} &
+\textbf{Containment/recovery:} profile each supported configuration against
+the SRS's proposed performance target; provide a stable pause/recovery
+view and a persistent-degradation safeguard (\srsreq{NFR-PERF-01},
+\srsreq{SR-03}, \srsreq{SR-04}).
+\textbf{Verify:} load representative courses and introduce controlled
+rendering degradation; record frame timing, warning/pause behaviour and
+resume. \textbf{Owner:} VR/Environment + QA. \textbf{Disposition:} open;
+thresholds and safeguard trigger require review; comfort is not validated.\\
+\addlinespace
+\hazref{HA-03} &
+\textbf{Warning/usability:} provide accessible basic controls, applicable
+age/safety information, limitations and a means to leave training
+(\srsreq{FR-UI-04}, \srsreq{NFR-USAB-01}, \srsreq{NFR-SAFE-01},
+\srsreq{SR-01}, \srsreq{SR-03}).
+\textbf{Verify:} review text against current regional/device guidance;
+inspect instruction and exit access for both controller types and postures.
+\textbf{Owner:} Input/VR + QA. \textbf{Disposition:} open; representative-user
+accessibility evaluation remains pending.\\
+\addlinespace
+\hazref{HA-04} &
+\textbf{Containment/recovery:} on reported tracking/input/focus loss,
+neutralise controls, pause simulation/timers, and require acknowledgment
+before resuming (\srsreq{SR-02}, \srsreq{SR-03}). Runtime rendering remains
+under platform control~\cite{openxr}.
+\textbf{Verify:} inject each reported interruption separately and during
+recovery; confirm no unintended progress or timer advance.
+\textbf{Owner:} VR/Input/State + QA. \textbf{Disposition:} open; status
+coverage must be checked on the selected runtime.\\
+\addlinespace
+\hazref{HA-05} &
+\textbf{Containment:} validate bounded finite inputs; reject stale/unavailable
+control and use the pause/resume safeguard (\srsreq{FR-FLT-02},
+\srsreq{NFR-COMP-01}, \srsreq{SR-02}, \srsreq{SR-05}).
+\textbf{Verify:} disconnect/reconnect controllers, inject invalid values and
+test each approved mapping; attempt recovery with the alternative valid
+interface. \textbf{Owner:} Input/VR + QA. \textbf{Disposition:} open;
+supported combinations and freshness criteria need approval.\\
+\addlinespace
+\hazref{HA-06} &
+\textbf{Containment/warning:} reject invalid physics/configuration data;
+pause recoverably on invalid state; display simulator limitations
+(\srsreq{FR-FLT-01}, \srsreq{FR-FLT-03}, \srsreq{SR-01},
+\srsreq{SR-05}).
+\textbf{Verify:} test numeric boundaries and corrupted parameters; compare
+responses with a reviewed reference model once selected. Check that no
+certification/proficiency claim is made. \textbf{Owner:} VR + QA.
+\textbf{Disposition:} open; realistic behaviour needs an approved reference
+and tolerances, not a claim of demonstrated real-world transfer.\\
+\addlinespace
+\hazref{HA-07} &
+\textbf{Containment/recovery:} enforce a single crash event and distinct
+respawn/restart transitions (\srsreq{FR-FLT-04}, \srsreq{FR-FLT-05},
+\srsreq{FR-FLT-06}, \srsreq{FR-CHK-04}, \srsreq{FR-CHK-05},
+\srsreq{FR-CHK-06}, \srsreq{FR-CHK-07}, \srsreq{NFR-REL-01}).
+\textbf{Verify:} ground-start/takeoff/contact, repeated contact callbacks,
+crash before first checkpoint, respawn and restart with populated state.
+\textbf{Owner:} VR/State + QA. \textbf{Disposition:} open; takeoff detection
+proposal must be approved before final acceptance.\\
+\addlinespace
+\hazref{HA-08} &
+\textbf{Containment:} validate course/spawn data and ordered progress; reject
+invalid configurations without granting checkpoints
+(\srsreq{FR-CHK-01}, \srsreq{FR-CHK-02}, \srsreq{FR-CHK-03},
+\srsreq{FR-CHK-08}, \srsreq{SR-05}).
+\textbf{Verify:} valid sequence, skipped/repeated/out-of-order crossings,
+premature finish, missing checkpoint and invalid respawn data.
+\textbf{Owner:} Environment/State + QA. \textbf{Disposition:} open;
+configuration checks and state-transition evidence required.\\
+\addlinespace
+\hazref{HA-09} &
+\textbf{Containment:} preserve total active-flight time through failed
+attempts; exclude recovery-menu and proposed safety-pause intervals; reset
+section time at checkpoints/respawn (\srsreq{FR-PER-01},
+\srsreq{FR-PER-02}, \srsreq{FR-PER-03}, \srsreq{FR-PER-04},
+\srsreq{FR-PER-05}, \srsreq{FR-PER-06}, \srsreq{FR-PER-10},
+\srsreq{SR-02}, \srsreq{SR-03}).
+\textbf{Verify:} controlled event/time sequence covering crash, waiting,
+resume, respawn, restart and finish; confirm free flight introduces no
+timer or scoring. \textbf{Owner:} State + QA.
+\textbf{Disposition:} open; compare results to the SRS timing model.\\
+\addlinespace
+\hazref{HA-10} &
+\textbf{Containment:} calculate score/rating using the approved parameter
+set and consistent attempt data; keep AI independent
+(\srsreq{FR-PER-07}, \srsreq{FR-PER-08}, \srsreq{FR-PER-09},
+\srsreq{FR-REV-01}, \srsreq{FR-REV-02}, \srsreq{SR-05},
+\srsreq{SR-08}).
+\textbf{Verify:} boundary cases, equal inputs yielding equal results,
+additional-crash penalty and review fields against recorded inputs.
+\textbf{Owner:} State + QA. \textbf{Disposition:} open; score and rating
+proposals require review before acceptance.\\
+\addlinespace
+\hazref{HA-11} &
+\textbf{Avoidance/containment:} restrict core data to the current attempt,
+avoid account/network dependency and unapproved retention/export
+(\srsreq{FR-REV-05}, \srsreq{SR-06}, \srsreq{SR-07}).
+\textbf{Verify:} inspect storage, diagnostics and outbound connections;
+restart attempts/application and check no previous attempt enters a new
+review. \textbf{Owner:} State + QA. \textbf{Disposition:} open; data-flow
+and persistence inspection required, including development logging.\\
+\addlinespace
+\hazref{HA-12} &
+\textbf{Containment:} present labelled advisory AI output without granting
+authority over score, progression or standard review; tolerate failure
+(\srsreq{FR-REV-04}, \srsreq{FR-AI-01}, \srsreq{FR-AI-03},
+\srsreq{SR-08}).
+\textbf{Verify:} malformed, misleading and instruction-like model outputs,
+timeouts and missing results; compare standard score/state before and
+after AI. \textbf{Owner:} Environment/AI/State + QA.
+\textbf{Disposition:} conditional and open; exclude AI from acceptance
+until separately reviewed.\\
+\addlinespace
+\hazref{HA-13} &
+\textbf{Avoidance/containment:} keep core training offline-capable and
+external AI disabled until separate data/permission review and user opt-in
+(\srsreq{SR-06}, \srsreq{SR-07}, \srsreq{SR-08},
+\srsreq{FR-AI-03}).
+\textbf{Verify:} inspect approved transfer payloads and consent path;
+block network/service access and confirm standard review remains usable.
+\textbf{Owner:} Environment/AI/State + QA. \textbf{Disposition:} conditional
+and open; no service provider or transfer policy is approved here.\\
+\addlinespace
+\hazref{HA-14} &
+\textbf{Procedure/containment:} publish only reviewed execution/controller
+combinations and installation instructions; detect unavailable input
+(\srsreq{NFR-INST-01}, \srsreq{NFR-INST-02},
+\srsreq{NFR-COMP-01}, \srsreq{SR-02}).
+\textbf{Verify:} clean install, launch, control, pause and exit in each
+declared standalone/PCVR configuration. \textbf{Owner:} Input/VR + QA.
+\textbf{Disposition:} open; compatibility matrix remains to be reviewed;
+untested combinations must not be represented as supported.\\
+\addlinespace
+\hazref{HA-15} &
+\textbf{Procedure/containment:} review package provenance/versions and
+distribution integrity; validate external configuration and inspect
+diagnostic/network settings (\srsreq{SR-05}, \srsreq{SR-06},
+\srsreq{SR-07}). Dependency review is an additional proposed build-review
+action, not an assertion of immunity to compromise.
+\textbf{Verify:} inventory dependencies, review trusted origins, inject
+invalid assets and inspect release permissions/network behaviour.
+\textbf{Owner:} relevant component leads + independent QA.
+\textbf{Disposition:} open; external security findings require reassessment.\\
+\addlinespace
+\hazref{HA-16} &
+\textbf{Recovery/warning:} respond to interruption where status is
+available, require explicit resume after recovery, and explain how to stop
+safely using platform guidance (\srsreq{SR-01}, \srsreq{SR-02},
+\srsreq{SR-03}, \srsreq{NFR-REL-01}).
+\textbf{Verify:} controlled focus/link/device interruption and relaunch;
+confirm stale commands are not replayed and incomplete attempts are not
+shown as completed. \textbf{Owner:} VR/Input/State + QA.
+\textbf{Disposition:} open; complete power loss remains beyond application
+control and loss of the current attempt is permitted.\\
+\addlinespace
+\hazref{HA-17} &
+\textbf{Warning/usability:} make exit/pause accessible; review feedback
+language and present safety/stop reminders without implying certification
+(\srsreq{NFR-SAFE-01}, \srsreq{FR-REV-03}, \srsreq{SR-01},
+\srsreq{SR-03}, \srsreq{SR-08}).
+\textbf{Verify:} inspect retry/exit prominence and all score/AI messages;
+plan consented usability evaluation of comprehension and pressure.
+\textbf{Owner:} State/Environment/AI + QA.
+\textbf{Disposition:} open; psychological and comfort effects remain
+unmeasured, and no mandatory session-duration limit is invented.\\
+\addlinespace
+\hazref{HA-18} &
+\textbf{Containment/recovery:} supply pause, recenter, stable recovery/menu
+view and accessible exit, with acknowledgment before resuming flight
+(\srsreq{NFR-SAFE-01}, \srsreq{SR-02}, \srsreq{SR-03}).
+\textbf{Verify:} invoke controls during flight, crash menus and interrupted
+states, using each approved controller/posture combination; inspect that
+flight and timing remain paused. \textbf{Owner:} VR/Input/State + QA.
+\textbf{Disposition:} open; platform stop facilities supplement application
+controls when the application or input is unavailable.\\
+\end{longtable}
+\normalsize
+
+\section{Safety and Security Requirements}\label{sec:safety}
+
+The authoritative requirement wording and acceptance methods are in the
+SRS. Table~\ref{tab:safety} summarises the new \emph{proposed} requirements
+and provides reverse traceability to every affected failure case. These
+proposals supplement the confirmed baseline; none is represented as
+implemented, approved, tested or sufficient to accept residual risk.
+The distinction matters especially for performance thresholds, comfort
+controls, data handling and AI, whose details require review.
+
+\begin{longtable}{@{}p{0.14\textwidth}p{0.52\textwidth}p{0.26\textwidth}@{}}
+\caption{Proposed safety/security requirements and reverse hazard traceability}
+\label{tab:safety}\\
+\toprule
+\textbf{SRS proposal} & \textbf{Control objective and rationale} & \textbf{FMEA cases}\\
+\midrule
+\endfirsthead
+\caption[]{Proposed safety/security requirements (continued)}\\
+\toprule
+\textbf{SRS proposal} & \textbf{Control objective and rationale} & \textbf{FMEA cases}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\srsreq{SR-01} & Pre-session safety/age-eligibility instructions and a
+simulator-limitations notice. Users need understandable physical-space,
+stop-use and proficiency information; instructions cannot remove all exposure. &
+\hazref{HA-01}, \hazref{HA-03}, \hazref{HA-06},
+\hazref{HA-16}, \hazref{HA-17}\\
+\addlinespace
+\srsreq{SR-02} & Reported tracking/input/focus loss pauses simulation and
+timers, neutralises controls and requires explicit acknowledgment to resume.
+Stale commands must not become continuing flight. &
+\hazref{HA-04}, \hazref{HA-05}, \hazref{HA-09},
+\hazref{HA-14}, \hazref{HA-16}, \hazref{HA-18}\\
+\addlinespace
+\srsreq{SR-03} & User-controlled pause/recenter, a stable non-flight
+recovery/menu view and deliberate resume, supporting seated/standing use
+without walking. Users need a predictable way to interrupt exposure. &
+\hazref{HA-01}, \hazref{HA-02}, \hazref{HA-03},
+\hazref{HA-04}, \hazref{HA-09}, \hazref{HA-16},
+\hazref{HA-17}, \hazref{HA-18}\\
+\addlinespace
+\srsreq{SR-04} & Measure operation against the proposed frame-rate target;
+warn/pause to a stable view after persistent degradation. The trigger,
+measurement window and recovery conditions require approval. &
+\hazref{HA-02}\\
+\addlinespace
+\srsreq{SR-05} & Validate finite/bounded control, physics and course/configuration
+data; reject invalid state to a recoverable pause without awarding progress.
+Contain numeric and asset faults before they propagate. &
+\hazref{HA-05}, \hazref{HA-06}, \hazref{HA-08},
+\hazref{HA-10}, \hazref{HA-15}\\
+\addlinespace
+\srsreq{SR-06} & Core training and standard review remain offline-capable,
+without account/network dependency or outbound core telemetry. Avoid
+introducing external exposure into an otherwise local training task. &
+\hazref{HA-11}, \hazref{HA-13}, \hazref{HA-15}\\
+\addlinespace
+\srsreq{SR-07} & Keep data within the current attempt; no retention or
+export absent an explicitly reviewed scope change. Required immediate
+feedback does not itself justify historical records. &
+\hazref{HA-11}, \hazref{HA-13}, \hazref{HA-15}\\
+\addlinespace
+\srsreq{SR-08} & Optional external AI requires separate assessment and
+opt-in for network transfer. Label advice as non-authoritative, prevent
+changes to scores/state and preserve standard review when AI fails. &
+\hazref{HA-10}, \hazref{HA-12}, \hazref{HA-13},
+\hazref{HA-17}\\
+\end{longtable}
+
+OpenXR distinguishes visible and focused session states, and tracked pose
+status from merely valid pose data~\cite{openxr}. Consequently SR-02 must
+be evaluated against the selected runtime's actual status reporting; a
+last-known pose alone is not evidence of current tracking. The application
+must not prevent platform-managed head rendering or assume that it can
+recover a powered-off headset. Exact interruption detection and response
+latencies are pending platform integration review.
+
+Meta's platform guidance also calls for single-player pause when the
+headset is removed or the system menu opens, while focus-aware rendering
+continues under the runtime~\cite{metaVrc}. This informs the interruption
+proposal and must be checked on the selected release platform.
+
+Safety requirements also depend on the confirmed controller, flight,
+checkpoint, timing and review requirements identified in the action
+register. Verification must exercise their interactions: for example,
+tracking loss while a crash menu is visible must not create a new crash,
+restart a timer or advance a checkpoint. Invalid or unavailable AI output
+must leave the numerical score and ordinary results unchanged.
+
+Meta safety and age guidance inform operation and instructions, not an
+assertion that FPVR is certified or suitable for every user~\cite{metaSafety,metaAge}.
+Unity/XR package selection, PCVR platform requirements and distribution
+conditions must be checked when versions and supported configurations
+are chosen. If accounts, persistent data or external AI are approved
+later, privacy, regional age/data obligations and applicable service
+terms require a separate review before transfer is enabled. No current
+legal-compliance or accessibility certification is claimed.
+
+\begin{table}[htbp]
+\caption{Hazard coverage by SRS verification cases; execution pending}
+\label{tab:verification}
+\begin{tabularx}{\textwidth}{@{}p{4.2cm}Y@{}}
+\toprule
+\textbf{FMEA cases} & \textbf{Linked SRS verification cases}\\
+\midrule
+\hazref{HA-01}, \hazref{HA-03}, \hazref{HA-17}, \hazref{HA-18} &
+\srsver{V-09} instructions/exit; \srsver{V-12} interruption/recovery.\\
+\hazref{HA-02} & \srsver{V-15} rendering performance/latency.\\
+\hazref{HA-04}, \hazref{HA-05}, \hazref{HA-16} &
+\srsver{V-12} interruptions; \srsver{V-13} invalid data;
+\srsver{V-16} proposed mappings.\\
+\hazref{HA-06}, \hazref{HA-07} & \srsver{V-01} flight;
+\srsver{V-02} crashes; \srsver{V-05} recovery;
+\srsver{V-13} invalid data; \srsver{V-16} proposed takeoff/gravity criteria.\\
+\hazref{HA-08} & \srsver{V-04} course content;
+\srsver{V-05} progression/recovery; \srsver{V-13} invalid data.\\
+\hazref{HA-09} & \srsver{V-03} free flight; \srsver{V-06} timers.\\
+\hazref{HA-10} & \srsver{V-07} score/rating; \srsver{V-10} standard review.\\
+\hazref{HA-11} & \srsver{V-10} current-attempt review;
+\srsver{V-14} offline/privacy.\\
+\hazref{HA-12}, \hazref{HA-13} & \srsver{V-11} conditional AI;
+\srsver{V-14} offline/privacy.\\
+\hazref{HA-14}, \hazref{HA-15} & \srsver{V-08} install/compatibility;
+\srsver{V-13} invalid assets; \srsver{V-14} offline/privacy.
+Dependency provenance also requires the review in Table~\ref{tab:actions}.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Roadmap}\label{sec:roadmap}
+
+This roadmap concerns completion and review of the two requirements
+documents and the safety gates they establish. It is not a replacement
+for the whole project schedule. October 19, 2026 is the draft date;
+the dates below are proposed document-review targets, not course deadlines
+or completed team activities. No implementation date is invented.
+
+\begin{table}[htbp]
+\caption{Proposed document-phase safety review and later acceptance gates}
+\label{tab:roadmap}
+\begin{tabularx}{\textwidth}{@{}p{2.2cm}Y@{}}
+\toprule
+\textbf{Target / gate} & \textbf{Planned outcome and proposed responsibility}\\
+\midrule
+Oct 19, 2026\newline Draft recorded & AI-assisted SRS/HA draft distinguishes
+confirmed scope, open technical criteria and SR-01--SR-08 proposals.
+This entry records document preparation, not human approval.\\
+Proposed\newline Oct 23, 2026 & Component leads and independent QA review
+boundaries, deployment/input, every FMEA row, qualitative priorities and
+requirement links; review SR-01/02/03/05/06/07 and record open decisions.\\
+Proposed\newline Oct 30, 2026 & Team reviews flight, takeoff/gravity,
+rendering/latency and SR-04 proposals; accepts, revises or rejects them
+with rationale.\\
+Proposed\newline Nov 6, 2026 & Team reviews course/checkpoint/timer
+behaviour and proposed numerical scoring/rating criteria.\\
+Proposed\newline Nov 13, 2026 & Team reviews standard post-flight results
+and cross-document acceptance coverage. These dates may be adjusted;
+they are review checkpoints, not claims of implementation or course deadlines.\\
+Before active-flight user evaluation & Proposed P1 controls for physical
+use, view/input interruption, numeric validation, stop access and local data
+handling need implementation evidence and a documented team decision.
+Unresolved exposure limits the evaluation that can be authorised.\\
+Before core acceptance & Resolve P2 course, timer, score, review and
+installation actions; verify approved standalone/PCVR configurations and
+record remaining limitations. Current evidence is pending.\\
+Before optional AI release & Review SR-08 and HA-12/13 independently,
+including transfer consent and outage behaviour. If evidence is inadequate,
+defer AI while retaining the standard core review.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+SR-01--SR-07 are proposed for the core safety baseline because they address
+risks in confirmed functionality. SR-08 is conditional on AI inclusion.
+Additional headset/controller support, FPV transmitters, stored histories,
+external services, wind and a more accurate physical model require a
+change-impact review; multiplayer or physical-drone control would require
+a substantially revised boundary and hazard analysis. Deferred comfort or
+accessibility enhancements must not be described as already evaluated.
+
+Closing an action requires an approved requirement or documented
+alternative, a reproducible test/review record, its configuration and result,
+and an explicit team decision about remaining exposure. The draft's
+classifications must be revisited after integration and any significant
+scope or platform change. There is currently no accepted residual-risk
+record and no completed user-safety evaluation.
+
+\begin{thebibliography}{99}
+
+\bibitem{srs}
+FPVR Project Team. \emph{Software Requirements Specification}.
+Repository document, current working draft.
+\href{../SRS/SRS.pdf}{Compiled SRS}; source:
+\texttt{docs/SRS/SRS.tex}.
+
+\bibitem{devplan}
+FPVR Project Team. \emph{Development Plan}.
+Repository document, September 2026.
+\href{../DevelopmentPlan/DevelopmentPlan.pdf}{Compiled Development Plan};
+source: \texttt{docs/DevelopmentPlan/DevelopmentPlan.tex}.
+
+\bibitem{decisions}
+Project owner. \emph{FPVR scope and completion decisions}.
+Written clarification supplied in this editing session, October 19, 2026;
+not a user interview or completed validation study.
+
+\bibitem{haChecklist}
+Spencer Smith. \emph{HA Checklist}.
+Repository checklist, \href{../../pdfs/Checklists/HA-Checklist.pdf}{PDF};
+source: \texttt{docs/Checklists/HA-Checklist.tex}.
+
+\bibitem{srsChecklist}
+Spencer Smith. \emph{SRS Checklist}.
+Repository checklist, \href{../../pdfs/Checklists/SRS-Checklist.pdf}{PDF};
+source: \texttt{docs/Checklists/SRS-Checklist.tex}.
+
+\bibitem{rubric}
+SFWRENG 4G06A. \emph{Capstone SRS, Hazard Analysis and Learning Outcome Rubrics}.
+User-supplied transcription, \texttt{docs/SRS/message.txt}; Hazard Analysis
+criteria and associated learning outcomes.
+
+\bibitem{metaSafety}
+Meta. \emph{Meta Quest Safety Center}.
+\url{https://www.meta.com/quest/safety-center/}.
+Accessed October 19, 2026.
+
+\bibitem{metaAge}
+Meta. \emph{Age Group Self-Certification and Youth Requirements}.
+Meta Horizon developer policy.
+\url{https://developers.meta.com/vr/policy/age-groups/}.
+Accessed October 19, 2026.
+
+\bibitem{openxr}
+Khronos Group. \emph{OpenXR Specification}, version 1.0, session states and
+space-location validity/tracking flags.
+\url{https://registry.khronos.org/OpenXR/specs/1.0-khr/html/xrspec.html}.
+Accessed October 19, 2026.
+
+\bibitem{metaVrc}
+Meta. \emph{Common VRC Failures}. Meta Horizon developer documentation;
+functional pause, focus-aware rendering and seated-use guidance.
+\url{https://developers.meta.com/vr/resources/publish-common-vrc-failures/}.
+Accessed October 19, 2026.
+
+\bibitem{nasaFmea}
+NASA Goddard Space Flight Center. \emph{Guideline for Failure Modes and
+Effects Analysis and Risk Assessment}. GSFC-HDBK-8004, August 20, 2024.
+\url{https://standards.nasa.gov/standard/GSFC/GSFC-HDBK-8004}.
+Accessed October 19, 2026.
+
+\end{thebibliography}
 
 \newpage{}
 

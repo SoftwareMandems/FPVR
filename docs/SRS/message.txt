@@ -1,0 +1,752 @@
+================================================================================
+CAPSTONE RUBRICS - VERBATIM TRANSCRIPTION
+Course: SFWRENG 4G06A: Software Design IV - Capstone Design Project
+================================================================================
+
+Source files (repo root):
+  - srs_rurbic.pdf                    -> SRS                (8 pages, total /50)
+  - ha_rubric.pdf                     -> Hazard Analysis    (4 pages, total /29)
+  - lo_assumptions_rubric.pdf         -> LO_Assumptions     (1 page,  total /3)
+  - lo_extended_knowledge_rubric.pdf  -> LO_ExtKnowledge    (1 page,  total /3)
+  - lo_impact_rubric.pdf              -> LO_Impact          (1 page,  total /3)
+  - lo_reflect_rubric.pdf             -> LO_Reflect         (1 page,  total /3)
+  - lo_spec_math_rubric.pdf           -> LO_SpecMath        (1 page,  total /3)
+  - lo_standards_rubric.pdf           -> LO_Standards       (1 page,  total /3)
+
+Transcription notes:
+  - The PDFs are "Microsoft Print to PDF" exports of Avenue to Learn rubrics with
+    no text layer; text was transcribed from high-resolution page renders.
+  - Wording, punctuation, capitalization and the rubric authors' own typos are
+    kept exactly as printed (e.g. "Conventiosn", "refernece", "adquate",
+    "justifcation", "temot", "Inappropriatel y", "teams SRS"). Only line-wrap
+    hyphenation (e.g. "re-quirements") has been joined back into whole words.
+  - Criterion names were printed vertically one or two letters per line in the
+    PDFs; they are reconstructed here.
+  - Each criterion lists every level: Exceeds/Level 4, Meets/Level 3,
+    Marginal/Level 2, Below/Level 1.
+
+################################################################################
+#  1. SRS  (srs_rurbic.pdf)
+################################################################################
+
+Levels: Exceeds 2.1-3.0 points | Meets 1.1-2.0 points |
+        Marginal 0.1-1.0 points | Below 0.0 points
+
+--------------------------------------------------------------------------------
+SRS-1. Document Content and quality                                         / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Document contains all required elements or their equivalent (scope, context
+  diagram showing boundaries, symbolic constants (as appropriate), behaviour
+  overview, required behaviour, rationale where necessary, nonfunctional
+  requirements including performance requirements, normal operation, undesired
+  event handling, requirements that are likely/unlikely to change, references,
+  stakeholders identified, user characteristics); includes reflections. All
+  elements are of high quality.
+MEETS (1.1-2.0):
+  Document contains most of the required elements listed in the Exceeds
+  category.
+MARGINAL (0.1-1.0):
+  Document missing many of the required elements or many elements are clearly
+  deficient without reasonable explanations for the deficiencies.
+BELOW (0.0):
+  Majority of required elements are missing or obviously deficient.
+
+--------------------------------------------------------------------------------
+SRS-2. Document Organization                                                / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Identifies template; Follows template; if there are changes they are clearly
+  documented. Document is written so that: 1. Terms and acronyms are always
+  defined before first use and there is a list providing full expansion of all
+  acronyms with links to where they are defined in the text.  2. Information is
+  defined in only one place (i.e. no redundant information). 3. Each requirement
+  has a unique identifier associated with it to facilitate traceability.
+  4. Figures and tables are clearly readable and of sufficient resolution.
+MEETS (1.1-2.0):
+  Identifies template; Mostly follows it, but there are undocumented changes.
+  Document is written to follow the 4 items under Exceeds most of the time.
+MARGINAL (0.1-1.0):
+  Does not identify template; makes unexplained changes from existing
+  templates. Document often misses the 4 items listed under Exceeds.
+BELOW (0.0):
+  Does not identify template; major unexplained changes from existing
+  templates. Document fails to achieve almost all of the 4 items listed under
+  Exceeds.
+
+--------------------------------------------------------------------------------
+SRS-3. Formatting and style                                                 / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Document is well formatted with: 1. clear headings. 2. appropriate use of
+  formatting (i.e., italics, captions etc.). 3. correct grammar and spelling.
+  4. fully hyperlinked references to facilitate document navigation.
+  5. document perfectly targeted at an appropriate audience of team engineers
+  and other stakeholders and could be used to get new team members quickly up
+  to speed.  Provides pointers to key preferences where applicable;
+  Professional quality document.
+MEETS (1.1-2.0):
+  Document is generally well-formatted to follow the items listed under
+  Exceeds; Near professional quality. Good student quality.
+MARGINAL (0.1-1.0):
+  Document has a number of formatting issues with the items listed under
+  Exceeds mostly not being achieved.  Clearly a student document produced in a
+  rush.
+BELOW (0.0):
+  Document has major formatting issues and fails to achieve almost all of the
+  items listed under Exceeds.  Clearly a student document with little effort
+  invested.
+
+--------------------------------------------------------------------------------
+SRS-4. Notations and Conventions                                            / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  All notations and terms are precisely defined.  All figures have legends as
+  needed and/or notation section clearly define all graphical notations used.
+  For instance, the meaning of every arrow in a diagram is made clear.
+  Conventiosn used in the document are described and followed consistently.
+MEETS (1.1-2.0):
+  Most of the points listed under Exceeds are achieved.  For instance, most
+  notations and terms are precisely defined.  Inconsistent use of appropriate
+  notations.
+MARGINAL (0.1-1.0):
+  Some of the points listed under Exceeds are achieved.  For instance, some
+  notations are precisely defined.  No effort to use appropriate notation.
+BELOW (0.0):
+  Little to no effort to achieve the points listed under Exceeds. For instance,
+  little or no effort to define notations and terms are incorrectly defined.
+
+--------------------------------------------------------------------------------
+SRS-5. What not How (Abstract)                                              / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Requirements are a "black box" and are free from design decisions.  If design
+  decisions are externally imposed, they are documented as constraints, not
+  requirements.  The rational for constraints is given and makes sense in the
+  context of the project.
+MEETS (1.1-2.0):
+  Requirements are mostly free from design choices.  If design decisions are
+  externally imposed, they are usually documented as constraints, usually
+  accompanied by a rationale.
+MARGINAL (0.1-1.0):
+  Requirements have design choices without appropriate rational for these
+  design decisions.
+BELOW (0.0):
+  Requirements are often more of a design (the how rather than the what).
+
+--------------------------------------------------------------------------------
+SRS-6. Complete, Correct and Unambiguous                                    / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Requirements are complete and correct.  Wording is clear and precise.  All
+  requirements are unambiguous and provide domain coverage (say what needs to
+  be done for all possible inputs).  The TA can brainstorm a handful of obvious
+  requirements and find them all in the document.  A sample requirement to look
+  for is a nonfunctional requirement related to installability.
+MEETS (1.1-2.0):
+  Requirements are mostly complete and correct.  The wording is usually clear
+  and precise.  Most requirements are unambiguous and provide domain coverage
+  (say what needs to be done for all possible inputs).  The TA can find most of
+  their brainstormed requirements.
+MARGINAL (0.1-1.0):
+  Requirements are incomplete and/or contain numerous errors.   correct. The
+  wording is often confusing, ambiguous and imprecise.  Most requirements are
+  ambiguous and do not provide domain coverage. The TA has trouble finding
+  their brainstormed requirements.
+  [Transcriber note: the gap before "correct." is present in the source.]
+BELOW (0.0):
+  Requirements are obviously incomplete, with little evidence of effort to
+  capture them.  Wording is confused, ambiguous and imprecise.  Requirements
+  contain obvious ambiguities and do not provide domain coverage.  The TA
+  cannot find their brainstormed requirements.
+
+--------------------------------------------------------------------------------
+SRS-7. Traceable Requirements                                               / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Requirements numbered and/or labelled; bi-directional navigation through the
+  document is easy. (That is, if A depends on B, then the documentation of both
+  A and B will show the dependency information.  For instance, if a
+  nonfunctional safety requirement is satisfied by a functional requirement,
+  the traceability information appears with both the functional and
+  nonfunctional requirements.)  A diagram or table is provided to show the
+  traceability.
+MEETS (1.1-2.0):
+  Requirements are numbered and/or labelled.  Navigation is mostly easy, with
+  bi-directional information usually provided.  An incomplete diagram or table
+  for the traceability.
+MARGINAL (0.1-1.0):
+  Requirements are numbered and/or labelled, but navigation is not easy.  The
+  traceability information is often missing, and rarely bidirectional.  No
+  diagram or table showing traceability.
+BELOW (0.0):
+  Navigation is very difficult.  Traceability information is often lacking.
+  No diagram or table to show traceability.
+
+--------------------------------------------------------------------------------
+SRS-8. Verifiable Requirements                                              / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  All requirements are clearly verifiable; that is, there is some way to
+  measure/test that the requirement has been satisfied.  The system shall be
+  user friendly is not verifiable.  The device will never break is not
+  verifiable.
+MEETS (1.1-2.0):
+  Most requirements are verifiable.
+MARGINAL (0.1-1.0):
+  Some requirements are verifiable.
+BELOW (0.0):
+  A few requirements are verifiable, but most are not.
+
+--------------------------------------------------------------------------------
+SRS-9. Rationale                                                            / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Detailed rationale provided for all requirements that are not obvious.
+MEETS (1.1-2.0):
+  Rationale provided for the majority of requirements that need it.
+MARGINAL (0.1-1.0):
+  Rationale missing on many important, non-obvious requirements.  Lacks
+  appropriate justification of performance requirements.
+BELOW (0.0):
+  No rationale provided for the majority of requirements.  No justifcation of
+  specifics used in particular requirements.  For instance, "The system must
+  sample all inputs at 50kHz" without any explanation for where the 50 kHz
+  comes from.
+
+--------------------------------------------------------------------------------
+SRS-10. Focus on Users (Part of Enterprise Design Thinking)                 / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  User characteristics are clearly documented; All stakeholders identified and
+  documented; The requirements enable the users; The requirements show
+  specific and differentiable value (compared to other available options). The
+  thoughts, needs and feelings of the users were obviously taken into account
+  when drafting the requirements
+MEETS (1.1-2.0):
+  User characteristics are mostly documented; Most stakeholders are identified
+  and documented; The requirements mostly enable the users; The requirements
+  mostly show specific and differentiable value (compared to other available
+  options). The thoughts, needs and feelings of the users were mostly taken
+  into account when drafting the requirements
+MARGINAL (0.1-1.0):
+  User characteristics are poorly documented; Important stakeholders aren't
+  identified and documented; The requirements rarely enable the users; The
+  requirements do not show specific and differentiable value (compared to
+  other available options). The thoughts, needs and feelings of the users are
+  not taken into account when drafting the requirements.  Seems like team did
+  not consult any potential users.
+BELOW (0.0):
+  User characteristics are not identified; stakeholders are not identified;
+  Requirements do not enable users; Requirements show no differentiable value.
+  Feels like the users were not even considered when drafting the
+  requirements.
+
+--------------------------------------------------------------------------------
+SRS-11. Phase In Plan                                                       / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Priority requirements are identified. Clear and specific plan (timeline) for
+  the order in which requirements will be phased in.  Plan includes dates.
+MEETS (1.1-2.0):
+  Priority requirements are identified. Clear and specific plan for the order
+  in which requirements will be phased in, but dates are not included.
+MARGINAL (0.1-1.0):
+  Priority of requirements is not always given. Plan for phasing in
+  requirements is unclear.
+BELOW (0.0):
+  Priority of requirements information is lacking.  No plan for phasing in
+  requirements.
+
+--------------------------------------------------------------------------------
+SRS-12. Basis for Design                                                    / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Could give to someone outside of the team the document and they could
+  design, build and test the system; likely changes are documented; Document
+  identifies requirements that are unlikely to change and provides sound
+  justification for the identification.  Inputs and outputs are obvious.
+MEETS (1.1-2.0):
+  Could give to someone outside of the team the document and they could mostly
+  design, build and test the system; however, they would need some interaction
+  with the team.  Most likely and unlikely changes are documented; Rationale
+  for unlikely changes is usually given.  Inputs and outputs are mostly
+  obvious.
+MARGINAL (0.1-1.0):
+  Could give to someone outside of the team the document and they could start,
+  but not finish a design; they would need extensive interaction with the
+  team.  Just a few likely and unlikely changes are documented, without
+  rationale. Not clear on what is required for input and what outputs are
+  produced.
+BELOW (0.0):
+  Someone outside of the team couldn't even start designing a solution to
+  match the requirements.  No likely or unlikely changes are documented.
+  Inputs and outputs are a mystery.
+
+--------------------------------------------------------------------------------
+SRS-13. Issues Created for Another Team                                     / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  More than 5 high quality GitHub issues have been created critiquing the
+  assigned teams SRS.  High quality issues are not shallow issues, like typos
+  or formatting issues.  High quality issues cover the topics presented in
+  this rubric.
+MEETS (1.1-2.0):
+  At least 5 high quality issues, with high quality as defined in the Exceeds
+  column.
+MARGINAL (0.1-1.0):
+  Issues are created, but most aren't high quality.  The issues focus on
+  shallow details like formatting and typos.
+BELOW (0.0):
+  Zero or very few issues created and what is created is shallow.
+
+--------------------------------------------------------------------------------
+SRS-14. Issues created based on feedback on Prob State, PoC plan, Dev Plan
+        and Team Charter                                                    / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  All issues are created from feedback from the peer review team, the TA,
+  supervisor (if relevant), course instructor and from the team itself; issues
+  are unambiguous, include the relevant details, are actionable, describe
+  exactly what has to happen to close them, and are each an appropriate work
+  assignment for one person
+MEETS (1.1-2.0):
+  A small number of issues are missing or a few of the created issues aren't
+  up to the standards described in the exceeds expectations column
+MARGINAL (0.1-1.0):
+  Around half of the issues are missing, or all the created issues are of poor
+  quality.
+BELOW (0.0):
+  The task has not been completed, or only a handful of poor quality issues
+  have been created.
+
+--------------------------------------------------------------------------------
+SRS-15. Reflection                                                          / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Complete and deeply thoughtful reflection addressing the questions given in
+  the capTemplate
+  (https://github.com/smiths/capTemplate/blob/main/docs/SRS_Reflection.text.)
+MEETS (1.1-2.0):
+  Mostly complete and thoughtful, or complete, but parts are shallow.
+MARGINAL (0.1-1.0):
+  Incomplete and most of the discussion is shallow.
+BELOW (0.0):
+  Not completed, or poorly completed.
+
+--------------------------------------------------------------------------------
+SRS-16. Gen AI Use Disclosure                                               / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Detailed summary of the use of AI for the document.  The tools used and
+  their version numbers are given.  A detailed summary of how and  where the
+  tools were used is provided.  The steps taken to verify the AI-generated
+  content are reasonable. Enough information needs to be provided that a
+  reader will be convinced of the accuracy, completeness, consistency and
+  appropriateness of the document.
+MEETS (1.1-2.0):
+  A good attempt is made to achieve what is described in the excellent column,
+  but the summary falls a little short.
+MARGINAL (0.1-1.0):
+  An okay attempt is made to achieve what is described in the excellent
+  column, but the summary falls well short.
+BELOW (0.0):
+  Only a half-hearted attempt is made, very little detail is given, or the
+  required section is completely absent.
+
+--------------------------------------------------------------------------------
+SRS Present - Participation in Informal Presentation with TA                / 2
+--------------------------------------------------------------------------------
+TEAM PARTICIPATES (1-2 points):
+  Full team in attendance. Actively engaged in conversation.  Come prepared
+  with questions.  Eagerly accept feedback.
+NO PARTICIPATION (0 points):
+  Absent from meeting or entirely disengaged.
+
+SRS TOTAL: / 50
+SRS OVERALL SCORE:
+  Level 4: 29.25 points minimum
+  Level 3: 19.5 points minimum
+  Level 2: 9.75 points minimum
+  Level 1: 0 points minimum
+
+
+################################################################################
+#  2. HAZARD ANALYSIS  (ha_rubric.pdf)
+################################################################################
+
+Levels: Exceeds 2.1-3.0 points | Meets 1.1-2.0 points |
+        Marginal 0.1-1.0 points | Below 0.0 points
+
+--------------------------------------------------------------------------------
+HA-1. Content                                                               / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Has all required elements:
+  Title page, incl. names, Table of Contents. List of Figures, List of Tables.
+  All pages are numbered. Every figure has a caption and every table has a
+  heading. Revision History. Supporting Material - appendices, etc.
+  Introduction - Scope, purpose, background, roadmap
+MEETS (1.1-2.0):
+  Almost all of the above elements properly completed (1 or 2 missing or
+  incomplete)
+MARGINAL (0.1-1.0):
+  Missing or incomplete for 3-4 of the above.
+BELOW (0.0):
+  Missing or incomplete on the majority of the required items.
+
+--------------------------------------------------------------------------------
+HA-2. Spelling and grammar and style                                        / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Good paragraph structure, concise ideas, flow between sections, navigation
+  references, subsections logically organized.
+  Only a few spelling and grammar errors
+MEETS (1.1-2.0):
+  Good paragraph structure, concise ideas, flow between sections, navigation
+  references, subsections logically organized. Relatively few spelling and
+  grammar errors
+MARGINAL (0.1-1.0):
+  Some issues with paragraph structure, conciseness of ideas, flow between
+  sections, navigation references, subsections not always logically
+  organized. Enough spelling and grammar errors to be distracting.
+BELOW (0.0):
+  Numerous issues with paragraph structure, conciseness of ideas, flow between
+  sections, navigation references, subsections not logically organized.
+  Spelling and grammar errors actually confusing or cause problems in correct
+  understanding.
+
+--------------------------------------------------------------------------------
+HA-3. Boundary, Scope, Definitions and Assumptions                          / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  System boundary, scope of hazard analysis, definition of hazard, and
+  critical assumptions clearly and comprehensively identified.
+MEETS (1.1-2.0):
+  System boundary, scope of hazard analysis, definition of hazard, and
+  critical assumptions are relatively clear and comprehensive though might be
+  missing an assumption or similar issue.
+MARGINAL (0.1-1.0):
+  System boundary issues (missing a key input, dependencies, etc), definition
+  of hazard, scope of hazard analysis, or critical assumptions are unclear or
+  a few key assumptions not identified.
+BELOW (0.0):
+  System boundary not properly identified, scope of hazard analysis missing or
+  definition of hazard not appropriate or missing, or numerous critical
+  critical assumptions missing. Might also show a serious lack of effort or
+  understanding.
+
+--------------------------------------------------------------------------------
+HA-4. Method and its application                                            / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Proper application of an appropriate hazard analysis technique.
+MEETS (1.1-2.0):
+  Mostly proper application of an appropriate hazard analysis technique
+  applied in a relatively thorough fashion.
+MARGINAL (0.1-1.0):
+  Some attemot at application of an appropriate hazard analysis technique.
+  Not always correct or incomplete.
+BELOW (0.0):
+  Inappropriate method or appropriate hazard analysis technique improperly
+  applied. Might also show a serious lack of effort or understanding.
+
+--------------------------------------------------------------------------------
+HA-5. Hazard Identification                                                 / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Hazard identification appears to be complete.
+MEETS (1.1-2.0):
+  Hazard identification appears to be relatively complete - perhaps missing 1
+  or 2 significant issues or several minor issues.
+MARGINAL (0.1-1.0):
+  Hazard identification incomplete - missing a number of significant and minor
+  issues.
+BELOW (0.0):
+  Hazard identification incorrect - missing numerous obvious significant
+  issues and minor issues.
+
+--------------------------------------------------------------------------------
+HA-6. Recommended Actions                                                   / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Appropriately categorized and indication of proper elimination or
+  mitigation strategy leading to safety requirements.
+MEETS (1.1-2.0):
+  Generally, appropriately categorized and some indication of proper
+  mitigation strategy and safety requirements
+MARGINAL (0.1-1.0):
+  Incorrectly categorized or no adquate mitigation strategy.  Safety
+  requirements inadequate.
+BELOW (0.0):
+  Inappropriatel y categorized and no proper mitigation strategy. Does not
+  include safety requirements.
+
+--------------------------------------------------------------------------------
+HA-7. Issues Created for Another Team                                       / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  More than 5 high quality GitHub issues have been created critiquing the
+  assigned teams document.  High quality issues are not shallow issues, like
+  typos or formatting issues.  High quality issues cover the topics presented
+  in this rubric.
+MEETS (1.1-2.0):
+  At least 5 high quality issues, with high quality as defined in the Exceeds
+  column.
+MARGINAL (0.1-1.0):
+  Issues are created, but most aren't high quality.  The issues focus on
+  shallow details like formatting and typos.
+BELOW (0.0):
+  Very few issues created and they are all shallow.
+
+--------------------------------------------------------------------------------
+HA-8. Reflection                                                            / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Complete and deeply thoughtful reflection following capstone template
+  (https://github.com/smiths/capTemplate/blob/main/docs/HazardAnalysis/HazardAnalysis.tex)
+MEETS (1.1-2.0):
+  Mostly complete and thoughtful, or complete, but parts are shallow.
+MARGINAL (0.1-1.0):
+  Incomplete and most of the discussion is shallow.
+BELOW (0.0):
+  Not completed.
+
+--------------------------------------------------------------------------------
+HA-9. Gen AI Use Disclosure                                                 / 3
+--------------------------------------------------------------------------------
+EXCEEDS (2.1-3.0):
+  Detailed summary of the use of AI for the document.  The tools used and
+  their version numbers are given.  A detailed summary of how and  where the
+  tools were used is provided.  The steps taken to verify the AI-generated
+  content are reasonable. Enough information needs to be provided that a
+  reader will be convinced of the accuracy, completeness, consistency and
+  appropriateness of the document.
+MEETS (1.1-2.0):
+  A good attempt is made to achieve what is described in the excellent column,
+  but the summary falls a little short.
+MARGINAL (0.1-1.0):
+  An okay attempt is made to achieve what is described in the excellent
+  column, but the summary falls well short.
+BELOW (0.0):
+  Only a half-hearted attempt is made, very little detail is given, or the
+  required section is completely absent.
+
+--------------------------------------------------------------------------------
+HA Present - Participation in Informal Presentation with TA                 / 2
+--------------------------------------------------------------------------------
+TEAM PARTICIPATES (1-2 points):
+  Full team in attendance. Actively engaged in conversation.  Come prepared
+  with questions.  Eagerly accept feedback.
+NO PARTICIPATION (0 points):
+  Absent from meeting or entirely disengaged.
+
+HA TOTAL: / 29
+HA OVERALL SCORE:
+  Level 4: 23 points minimum
+  Level 3: 16 points minimum
+  Level 2: 12 points minimum
+  Level 1: 0 points minimum
+
+
+################################################################################
+#  3. LEARNING OUTCOME (LO) RUBRICS
+################################################################################
+
+Levels for every LO rubric: Level 4 2.1-3.0 points | Level 3 1.1-2.0 points |
+                            Level 2 0.1-1.0 points | Level 1 0.0 points
+Overall score for every LO rubric (total / 3):
+  Level 4: 3 points minimum | Level 3: 2 points minimum |
+  Level 2: 1 point minimum  | Level 1: 0 points minimum
+
+--------------------------------------------------------------------------------
+LO_Assumptions (lo_assumptions_rubric.pdf)
+Criterion: System context & System Boundaries; reasonable assumptions
+           (LO_Assumptions)                                                 / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  Document makes clear system and subsystem boundaries, provides a means of
+  determining a detailed review of part of the requirements from a subset of
+  inputs to a subset of outputs.  Refines scope further by identifying and
+  explicitly stating all necesssary assumptions.
+LEVEL 3 (1.1-2.0):
+  Document almost achieves the Exceeds category, but there are minor
+  ambiguities.  Identifies and states most of the necessary assumptions.
+  Some assumptions left ambiguous or implicit.
+LEVEL 2 (0.1-1.0):
+  Document falls far short of the exceeds category with serious ambiguities in
+  the system and subsystem boundaries.  Most assumptions are left ambiguous or
+  unstated.
+LEVEL 1 (0.0):
+  Document fails to define system boundaries.  Detailed review of part of the
+  requirements from a subset of inputs to a subset of outputs is impossible in
+  a reasonable amount of time.  No assumptions identified or stated.
+
+--------------------------------------------------------------------------------
+LO_ExtKnowledge (lo_extended_knowledge_rubric.pdf)
+Criterion: LO_ExtKnowledge                                                  / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  All appropriate external information is incorporated into the document.
+  This includes (as appropriate) information from the supervisor,
+  stakeholders, users, the literature, web-resources, etc. Complete and
+  consistently formatted references are provided and cited within the
+  document when needed.
+LEVEL 3 (1.1-2.0):
+  Most appropriate external information is incorporated into the document.
+  Most references are complete and consistently formatted.  Most references
+  and cited within the document when needed.
+LEVEL 2 (0.1-1.0):
+  Some of the appropriate external information is incorporated into the
+  document.  Only some of the references are complete and consistently
+  formatted. The referneces are not cited within the document when needed.
+LEVEL 1 (0.0):
+  External information is not incorporated into the document.  References are
+  not included.
+
+--------------------------------------------------------------------------------
+LO_Impact (lo_impact_rubric.pdf)
+Criterion: LO_Impact                                                        / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  Society is identified as a stakeholder as appropriate for the project.
+  Health, safety, cultural and other relevant factors are identified and
+  documented.
+LEVEL 3 (1.1-2.0):
+  Society is identified as a stakeholder as appropriate for the project but
+  not all health, safety, cultural and other relevant factors are identified
+  and documented.
+LEVEL 2 (0.1-1.0):
+  Society is not identified as a stakeholder, even though it would be
+  appropriate to do so.  Only a few health, safety, cultural and other
+  relevant factors are identified and documented.
+LEVEL 1 (0.0):
+  Society is not identified as a stakeholder, even though it should be.  No
+  relevant health, safety and cultural factors are identified or documented.
+
+--------------------------------------------------------------------------------
+LO_Reflect (lo_reflect_rubric.pdf)
+Criterion: LO_Reflect                                                       / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  Complete and deeply thoughtful reflection following the questions provided
+  in capTemplate in
+  https://github.com/smiths/capTemplate/blob/main/docs/SRS_Reflection.tex
+LEVEL 3 (1.1-2.0):
+  Mostly complete and thoughtful, or complete, but parts are shallow
+LEVEL 2 (0.1-1.0):
+  Incomplete and most of the discussion is shallow
+LEVEL 1 (0.0):
+  Not completed
+
+--------------------------------------------------------------------------------
+LO_SpecMath (lo_spec_math_rubric.pdf)
+Criterion: Important Parts Formalized (LO_SpecMath)                         / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  A critical portion of the document is formalized.  Correct mathematical
+  notation is used.  Mathematics are error free.  Options for formality
+  include using discrete math for a specification, finite state machines, Z
+  notation, etc.
+LEVEL 3 (1.1-2.0):
+  A critical portion of the document is formalized.  The mathematical
+  notation is mostly correct.  The mathematics are mostly error free.
+LEVEL 2 (0.1-1.0):
+  A portion of the document is formalized, but the notation is incorrect and
+  there are many errors.
+LEVEL 1 (0.0):
+  No attempt to formalize any portion of the document.
+
+--------------------------------------------------------------------------------
+LO_Standards (lo_standards_rubric.pdf)
+Criterion: LO_Standards                                                     / 3
+--------------------------------------------------------------------------------
+LEVEL 4 (2.1-3.0):
+  All appropriate standards, codes, legal and regulatory factors are
+  identified and documented.
+LEVEL 3 (1.1-2.0):
+  Most appropriate standards, codes, legal and regulatory factors are
+  identified and documented.
+LEVEL 2 (0.1-1.0):
+  Only a few of the appropriate standards, codes, legal and regulatory factors
+  are identified and documented.
+LEVEL 1 (0.0):
+  None of the appropriate standards, codes, legal and regulatory factors are
+  identified or documented.
+
+
+################################################################################
+#  4. CONSOLIDATED REQUIREMENTS CHECKLIST (derived, NOT verbatim)
+#     Top-level (Exceeds / Level 4) expectations from all rubrics above, in
+#     condensed form for quick cross-checking. The verbatim text above governs.
+################################################################################
+
+SRS document must:
+  [ ] Include: scope; context diagram showing boundaries; symbolic constants
+      (as appropriate); behaviour overview; required behaviour; rationale where
+      necessary; nonfunctional requirements incl. performance requirements;
+      normal operation; undesired event handling; likely/unlikely-to-change
+      requirements; references; stakeholders; user characteristics; reflection
+  [ ] Identify and follow the template; document any changes to it
+  [ ] Define terms/acronyms before first use; acronym list with links to
+      definitions in the text
+  [ ] Define information in only one place (no redundancy)
+  [ ] Give every requirement a unique identifier
+  [ ] Readable, sufficient-resolution figures and tables
+  [ ] Clear headings, appropriate formatting (italics, captions), correct
+      grammar/spelling, fully hyperlinked references; targeted at team
+      engineers/stakeholders; pointers to key "preferences" (sic, likely
+      "references"); professional quality
+  [ ] Precisely define all notations/terms; figure legends or notation section
+      (meaning of every arrow); conventions described and followed consistently
+  [ ] Requirements are black-box (what, not how); externally imposed design
+      decisions documented as constraints with rationale
+  [ ] Complete, correct, clear, precise, unambiguous; domain coverage for all
+      possible inputs; include an installability NFR
+  [ ] Bi-directional traceability (both sides show dependency, e.g. NFR <-> FR)
+      plus a traceability diagram or table
+  [ ] Every requirement verifiable/measurable
+  [ ] Detailed rationale for all non-obvious requirements (justify specific
+      numbers)
+  [ ] User characteristics, all stakeholders, requirements enable users,
+      specific/differentiable value vs. alternatives, users' thoughts/needs/
+      feelings considered (consult potential users)
+  [ ] Priority requirements identified; phase-in plan/timeline WITH dates
+  [ ] Sufficient for an outsider to design, build and test; likely and unlikely
+      changes documented with justification; inputs/outputs obvious
+  [ ] Reflection answering capTemplate docs/SRS_Reflection.tex questions
+  [ ] Gen AI disclosure: tools + versions, how/where used, verification steps
+  [ ] Formalize a critical portion with correct, error-free math notation
+      (discrete math, FSMs, Z, etc.)                           [LO_SpecMath]
+  [ ] Clear system/subsystem boundaries; all necessary assumptions stated
+      explicitly                                               [LO_Assumptions]
+  [ ] Incorporate external info (supervisor, stakeholders, users, literature,
+      web); complete, consistently formatted, cited references [LO_ExtKnowledge]
+  [ ] Society as a stakeholder where appropriate; health, safety, cultural and
+      other relevant factors documented                        [LO_Impact]
+  [ ] All appropriate standards, codes, legal and regulatory factors
+      documented                                               [LO_Standards]
+
+Hazard Analysis document must:
+  [ ] Title page incl. names; ToC; List of Figures; List of Tables; numbered
+      pages; captioned figures; headed tables; revision history; supporting
+      material/appendices; introduction (scope, purpose, background, roadmap)
+  [ ] Good paragraph structure, concise ideas, flow, navigation references,
+      logical subsections; minimal spelling/grammar errors
+  [ ] System boundary, scope of HA, definition of hazard, critical assumptions
+  [ ] Proper application of an appropriate hazard analysis technique
+  [ ] Complete hazard identification
+  [ ] Appropriate categorization + elimination/mitigation strategy leading to
+      safety requirements
+  [ ] Reflection per capTemplate docs/HazardAnalysis/HazardAnalysis.tex
+  [ ] Gen AI disclosure (as for SRS)
+
+Process / team activities:
+  [ ] >5 high-quality (non-typo/formatting) GitHub issues critiquing the
+      assigned team's SRS and HA, covering rubric topics
+  [ ] Issues created from feedback (peer team, TA, supervisor, instructor,
+      self) on Problem Statement, PoC plan, Dev Plan, Team Charter - each
+      unambiguous, detailed, actionable, clear close condition, one-person
+      sized
+  [ ] Full team attends, engages, brings questions, and accepts feedback in
+      the informal TA presentations (SRS and HA)
