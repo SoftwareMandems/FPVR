@@ -1497,27 +1497,59 @@ choices. Proposed safety/error interactions are subject to their SR status.
 
 \textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
 
-\textbf{Precondition:} FPVR is running with all necessary hardware, a supported
+\textbf{Precondition:} The application is running with all necessary hardware, a supported
 headset and controller are available, and the main menu is visible from the VR.
 
 \textbf{Main success scenario:}
 \begin{itemize}
-\item The pilot selects Free Flight, practises the four flight axes, and takes
-off.
-\item FPVR provides no course timer, checkpoints, or score.
-\item After a crash, the pilot resets the drone and continues practising.
-\item The pilot exits to the main menu.
+\item The pilot selects Free Flight from the main menu.
+\item The system loads the free-flight environment and places the drone at its
+starting position.
+\item The application initializes the controller inputs and displays the flight view.
+\item The pilot practises throttle, roll, pitch, and yaw in the open
+environment.
+\item The pilot takes off and manoeuvres the drone without course
+restrictions.
+\item The simulator provides no course timer, checkpoints, or score for the session.
+\item If the drone crashes, the pilot opens the recovery option and resets the
+drone.
+\item The system returns the drone to its grounded starting position and restores
+flight control.
+\item The pilot continues practising and may repeat the crash-and-reset cycle.
+\item The pilot selects Exit and the application returns to the main menu.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item If the pilot crashes repeatedly, each reset returns the drone to its grounded starting position.
-\item If the controller disconnects or application focus is lost, FPVR pauses
-flight state and timers without consuming stale axes. After reconnection or
-restored focus, the pilot applies neutral controls and explicitly confirms
-resumption.
-\item If the runtime closes the session, FPVR abandons the run without
-presenting a fabricated completion or score.
+\item If the pilot crashes repeatedly:
+\begin{enumerate}
+\item The pilot selects Reset after each crash.
+\item The system counts the contact as a crash and opens the recovery state.
+\item The system clears the active motion and returns the drone to its grounded
+starting position.
+\item The pilot confirms that the controls are neutral and resumes practice.
+\item The pilot repeats these steps for each subsequent crash; no course score
+or completion result is created.
+\end{enumerate}
+\item If the controller disconnects:
+\begin{enumerate}
+\item The application detects the loss of the controller connection.
+\item The system pauses flight input and prevents the last received axes from being
+applied continuously.
+\item The pilot reconnects or re-pairs the controller.
+\item The application reports that the controller is available and asks the pilot to
+place the controls in their neutral position.
+\item The pilot applies neutral controls and explicitly confirms Resume.
+\item The system restores flight control from the paused state.
+\end{enumerate}
+\item If an input axis is non-finite:
+\begin{enumerate}
+\item The application detects a non-finite input value.
+\item The system rejects the value instead of using it for flight or scoring.
+\item The application pauses the session when possible and asks the user to release and
+reapply the affected control.
+\item The user restores valid controller input and explicitly resumes.
+\end{enumerate}
 \end{itemize}
 
 \item[U-02: Running an Obstacle-Course Level]\mbox{}
@@ -1531,22 +1563,77 @@ finish is available, and the user is at the level-selection interface.
 
 \textbf{Main success scenario:}
 \begin{itemize}
-\item The user selects any available course.
-\item FPVR initializes the attempt.
-\item The user crosses each required checkpoint in order before reaching the
-finish.
-\item FPVR stops the timer and opens the current-attempt review.
+\item The user opens the level-selection interface.
+\item The application displays the available obstacle-course levels.
+\item The user selects an available course.
+\item The system loads the course and places the drone at the valid starting pose.
+\item The system initializes the attempt, checkpoint progress, collision count, and
+timer.
+\item The user takes off and flies toward the first required checkpoint.
+\item The user crosses each required checkpoint in the specified order.
+\item The system records each valid checkpoint crossing and advances the required
+checkpoint.
+\item The user reaches the finish after all required checkpoints are complete.
+\item The application validates the completed route, stops the timer, and opens the
+current-attempt review.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item Crossing a later or already-completed checkpoint does not advance the
-required checkpoint progress.
-\item If a checkpoint is missing, an input axis is non-finite, a recovery pose
-is invalid, or frame rate remains degraded, FPVR prevents the condition from
-becoming a valid gate or result and pauses the session when possible.
-\item If recovery is not possible, FPVR keeps the session invalid and makes
-Exit available without awarding completion or score.
+\item If the user crosses a later checkpoint before the required checkpoint:
+\begin{enumerate}
+\item The system detects the checkpoint trigger.
+\item The system compares the triggered checkpoint with the next required
+checkpoint.
+\item The system rejects the out-of-order crossing.
+\item The application leaves the required checkpoint unchanged and informs the user to
+return to the route.
+\item The user flies through the required checkpoint before continuing toward
+the later checkpoint.
+\end{enumerate}
+\item If the user crosses an already-completed checkpoint:
+\begin{enumerate}
+\item The system detects the repeated checkpoint trigger.
+\item The system identifies the checkpoint as already recorded.
+\item The system ignores the repeated trigger and preserves the existing progress.
+\item The user continues from the current required checkpoint.
+\end{enumerate}
+\item If the controller disconnects:
+\begin{enumerate}
+\item The application detects the loss of the controller connection.
+\item The system pauses flight input and prevents the last received axes from being
+applied continuously.
+\item The pilot reconnects or re-pairs the controller.
+\item The application reports that the controller is available and asks the pilot to
+place the controls in their neutral position.
+\item The pilot applies neutral controls and explicitly confirms Resume.
+\item The system restores flight control from the paused state.
+\end{enumerate}
+\item If a required checkpoint is missing:
+\begin{enumerate}
+\item The application detects that the course does not contain the required checkpoint.
+\item The system marks the attempt invalid and prevents a finish from becoming a
+valid completion.
+\item The system pauses the session when possible and informs the user of the
+missing course data.
+\item The user exits the invalid attempt or retries after the course data is
+corrected.
+\end{enumerate}
+\item If an input axis is non-finite:
+\begin{enumerate}
+\item The application detects a non-finite input value.
+\item The system rejects the value instead of using it for flight or scoring.
+\item The application pauses the session when possible and asks the user to release and
+reapply the affected control.
+\item The user restores valid controller input and explicitly resumes.
+\end{enumerate}
+\item If the drone position is out of bounds:
+\begin{enumerate}
+\item The system detects that the drone is outside the valid course
+area.
+\item FPVR informs the user that they are outside and must return to the main course
+\item After a prolonged period, the system will reset the drone to the last valid position or checkpoint.
+\end{enumerate}
 \end{itemize}
 
 \item[U-03: Recover from Crash during a Course.]\mbox{}
@@ -1560,24 +1647,80 @@ actively flying until they collide with an obstacle such as the ground, wall, or
 
 \textbf{Main success scenario:}
 \begin{itemize}
-\item The drone crashes, and FPVR displays the recovery menu.
-\item The user selects the option to restart.
-\item FPVR returns the drone to the most recently completed checkpoint or at the beginning if no checkpoints exist.
-\item FPVR resets the section timer while preserving total time and crash
+\item The user flies an active obstacle-course attempt.
+\item The drone collides with an obstacle, the ground, a wall, or a goal.
+\item The system detects the collision and stops active flight input.
+\item The system records one crash and displays the recovery menu.
+\item The user selects Restart.
+\item The application finds the most recently completed checkpoint, or the course start if
+no checkpoint has been completed.
+\item The system places the drone at the selected recovery position with a valid
+orientation.
+\item The system resets the section timer while preserving total time and crash
 penalties.
-\item The user resumes flight.
+\item The system restores the next required checkpoint and clears transient crash
+state.
+\item The user confirms neutral controls and resumes flight.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item Repeated contact while the recovery menu is shown counts as one crash.
-\item If the user selects Restart, FPVR begins a new attempt and resets
-progress, timers, collision count, and performance data.
-\item If external networking or the optional AI service is unavailable, FPVR
-still allows the user to practise, finish, and review using the standard
-flight and recovery behavior.
-\item Declined consent, timeout, or malformed AI output is reported as
-unavailable and does not delay the standard result or change its score.
+\item If the drone makes repeated contact while the recovery menu is shown:
+\begin{enumerate}
+\item The application detects the first collision and opens the recovery menu.
+\item The system marks the crash as handled and disables additional crash
+registration while the menu is displayed.
+\item The system ignores subsequent contact events during that recovery state.
+\item The user selects Restart or exits the attempt.
+\item The system records no more than one crash for that collision event.
+\end{enumerate}
+\item If the user selects Restart as a new attempt:
+\begin{enumerate}
+\item The user chooses New Attempt rather than recovery at the checkpoint.
+\item The application asks the user to confirm the restart.
+\item The user confirms the restart.
+\item The system creates a new attempt at the course start.
+\item The system resets checkpoint progress, timers, collision count, and
+performance data.
+\item The user begins the new flight.
+\end{enumerate}
+\item If external networking or the optional AI service is unavailable:
+\begin{enumerate}
+\item The application detects the unavailable service or failed connection.
+\item The system reports that the optional capability is unavailable.
+\item The application disables only the dependent optional feature.
+\item The user continues practising, recovering from crashes, and completing
+the course using standard local behavior.
+\item The system records and displays the standard result without waiting for the
+unavailable service.
+\end{enumerate}
+\item If the user declines consent for optional AI analysis:
+\begin{enumerate}
+\item The application requests consent before sending the required flight data.
+\item The user selects Decline.
+\item The system records that optional analysis is unavailable for this attempt and
+does not send the data.
+\item The application continues the standard flight, recovery, and review flow.
+\item The system displays the standard result without changing its score.
+\end{enumerate}
+\item If the optional AI request times out:
+\begin{enumerate}
+\item The application starts the optional request after consent is available.
+\item The system reaches the configured timeout without a valid response.
+\item The application cancels or abandons the optional request and reports the service as
+unavailable.
+\item The user continues to the standard result without waiting further.
+\item The system preserves the recorded score and rating.
+\end{enumerate}
+\item If the optional AI output is malformed:
+\begin{enumerate}
+\item The application receives the optional response.
+\item The system validates the response before displaying or applying it.
+\item The application rejects malformed output and reports that AI feedback is
+unavailable.
+\item The system displays the standard review and preserves the recorded score,
+rating, and other results.
+\end{enumerate}
 \end{itemize}
 
 \item[U-04: Replay and Analyze Flight Performance]\mbox{}
@@ -1593,26 +1736,88 @@ user has approved the data required for the optional analysis.
 
 \textbf{Main success scenario:}
 \begin{itemize}
-\item The user selects a flight recording on the menu and wants to replay the attempt.
-\item System loads the locally stored virtual telemetry data and footage and brings it up on the VR or screen
-\item The user can pause, rewind, and fast forward the replay to analyze their performance.
-\item FPVR displays the standard performance results, including completion
+\item The user opens the list of recorded flights.
+\item The application displays the locally stored recordings and their available results.
+\item The user selects a completed flight recording.
+\item The system loads the stored virtual telemetry data and footage.
+\item The application presents the recording in the VR or screen replay view.
+\item The user plays the recording and may pause, rewind, or fast-forward it.
+\item The system displays the standard performance results, including completion
 time, checkpoint results, collision count, numerical score, and performance
 rating.
-\item If the optional AI feedback capability is enabled, FPVR automatically
-analyzes the available flight-performance information and displays observations
-about the completed attempt within the review.
-\item The user can exit the replay and return to the main menu screen.
+\item If optional AI feedback is enabled and consent is available, the application sends
+the permitted performance information for analysis.
+\item The system displays the resulting observations within the review without
+changing the standard results.
+\item The user exits the replay and the application returns to the main menu.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item If the user selects a flight recording that is corrupted or missing, FPVR displays an error message and returns to the main menu.
-\item If the user attempts to replay a flight recording that is not compatible with the current version of FPVR, the system displays a warning and suggests updating the recording or the application.
-\item If AI feedback is unavailable, declined, times out, or fails to produce
-an analysis, FPVR displays the standard review without interruption.
-\item If the AI response is malformed, FPVR discards it and does not change the
-recorded score, rating, or other standard results.
+\item If the selected recording is corrupted:
+\begin{enumerate}
+\item The application attempts to read and validate the recording metadata and content.
+\item The system detects the corruption and stops loading the recording.
+\item The application displays an error explaining that the recording cannot be replayed.
+\item The user dismisses the error.
+\item The application returns the user to the recording list or main menu without changing
+the stored result.
+\end{enumerate}
+\item If the selected recording is missing:
+\begin{enumerate}
+\item The system looks up the selected recording and its referenced local files.
+\item The application detects that one or more required files are absent.
+\item The system displays an error and removes the unavailable item from the active
+replay view.
+\item The user dismisses the error and returns to the recording list or main
+menu.
+\end{enumerate}
+\item If the recording is incompatible with the current application version:
+\begin{enumerate}
+\item The application reads the recording version metadata.
+\item The system compares it with the current supported recording format.
+\item The application prevents incompatible data from being interpreted as a replay.
+\item The system displays a warning and suggests updating the recording or the
+application.
+\item The user returns to the recording list or updates before trying again.
+\end{enumerate}
+\item If AI feedback is unavailable:
+\begin{enumerate}
+\item The application checks whether the optional service is reachable and enabled.
+\item The system reports the unavailable capability.
+\item The application skips the optional request.
+\item The system displays the standard review and leaves the user in the replay
+flow.
+\end{enumerate}
+\item If the user declines AI consent:
+\begin{enumerate}
+\item The application requests consent before sending permitted flight-performance data.
+\item The user selects Decline.
+\item The system does not send the data for optional analysis.
+\item The application displays the standard review without optional observations.
+\end{enumerate}
+\item If AI feedback times out:
+\begin{enumerate}
+\item The application starts the optional analysis request.
+\item The system reaches the configured timeout without a usable response.
+\item The application stops waiting and marks the analysis unavailable.
+\item The system displays the standard review without interrupting replay controls.
+\end{enumerate}
+\item If the AI service fails to produce an analysis:
+\begin{enumerate}
+\item The application receives an empty or failed analysis result.
+\item The system reports that no optional feedback is available.
+\item The application keeps the standard performance results visible.
+\item The user continues or exits the replay normally.
+\end{enumerate}
+\item If the AI response is malformed:
+\begin{enumerate}
+\item The system validates the response before using it.
+\item The application discards the malformed response.
+\item The system records the optional analysis as unavailable.
+\item The application displays the standard review without changing the recorded score,
+rating, or other standard results.
+\end{enumerate}
 \end{itemize}
 
 \item[U-05: Connecting to Multiplayer Training Session (optional)]\mbox{}
@@ -1621,29 +1826,69 @@ recorded score, rating, or other standard results.
 
 \textbf{Stakeholders of interest:} FPV pilots
 
-\textbf{Precondition:} The user is running FPVR, has a stable internet
+\textbf{Precondition:} The user is running the application, has a stable internet
 connection, and has selected the optional multiplayer training mode. The application
 should be able to connect to an external database or server.
 
 \textbf{Main success scenario:}
 \begin{itemize}
 \item The user selects Multiplayer Training from the main menu.
-\item FPVR connects the user to an available training session.
-\item FPVR displays the participating users and the selected training course.
-\item The users complete the training session while FPVR maintains each
-participant's separate flight state and performance data.
-\item FPVR displays the session results and returns the user to the main menu
-when the session ends.
+\item The application verifies that the multiplayer option and network connection are
+available.
+\item The system requests a connection to an available training session.
+\item The application joins the session and receives its participant and course data.
+\item The system displays the participating users and selected training course.
+\item The application initializes the user's local flight state and performance data.
+\item The users complete the training session while the system synchronizes the
+session state.
+\item The system keeps each participant's flight state and performance data
+separate.
+\item The application detects the end of the session and validates the local result.
+\item The system displays the session results and returns the user to the main menu.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item If no training session is available, FPVR informs the user and allows
-them to return to the main menu or retry the connection.
-\item If the connection is lost during the session, FPVR pauses or ends the
-multiplayer session without fabricating a result and informs the user.
-\item If the multiplayer service is unavailable, the user can continue using
-the standard single-user training modes.
+\item If no training session is available:
+\begin{enumerate}
+\item The application searches for an available training session.
+\item The system finds no session that can accept the user.
+\item The application informs the user that no training session is available.
+\item The user selects Retry to search again or Exit to return to the main
+menu.
+\item The system performs the selected action without creating a partial
+multiplayer result.
+\end{enumerate}
+\item If the connection is lost before the session starts:
+\begin{enumerate}
+\item The application detects that the connection attempt failed.
+\item The system cancels the incomplete join operation.
+\item The application informs the user that the session could not be joined.
+\item The user selects Retry or returns to the main menu.
+\end{enumerate}
+\item If the connection is lost during the session:
+\begin{enumerate}
+\item The system detects the lost connection.
+\item The application pauses local multiplayer input and marks synchronization as
+invalid.
+\item The system attempts the supported reconnection behavior or waits for the
+session to end.
+\item If synchronization is restored, the application reports the restored state and the
+user explicitly resumes.
+\item If synchronization cannot be restored, the system ends the multiplayer
+session, informs the user, and does not fabricate a result.
+\item The user returns to the main menu or selects a single-user training
+mode.
+\end{enumerate}
+\item If the multiplayer service is unavailable:
+\begin{enumerate}
+\item The application detects that the service cannot be reached.
+\item The system informs the user that Multiplayer Training is unavailable.
+\item The application leaves the multiplayer attempt unstarted.
+\item The user returns to the main menu and selects Free Flight or an
+obstacle-course level.
+\item The system starts the selected single-user training mode normally.
+\end{enumerate}
 \end{itemize}
 \end{description}
 
