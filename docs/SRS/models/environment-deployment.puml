@@ -1,0 +1,50 @@
+@startuml environment-deployment
+' Editable source for the two required execution environments.
+' Sources: ../SRS.tex G.6 and S.2 (FR-UI-01--03, NFR-INST-01--02,
+' NFR-COMP-01); ../DevelopmentPlan/DevelopmentPlan.tex Expected Technology.
+' Draft reference: C:/Users/itari/Documents/SRS.tex E.2--E.4.
+' Render: java -jar plantuml.jar -tpdf environment-deployment.puml
+' Preview: java -jar plantuml.jar -tsvg environment-deployment.puml
+!pragma layout smetana
+left to right direction
+skinparam shadowing false
+skinparam monochrome true
+skinparam wrapWidth 200
+title FPVR alternative execution environments
+
+package "Standalone Quest mode" {
+  node "Supported Quest headset" as StandaloneHeadset {
+    artifact "FPVR application\nexecutes on headset" as StandaloneApp
+    rectangle "Compatible device runtime\nDisplay, tracking and input" as StandaloneXR
+    StandaloneApp --> StandaloneXR : imagery and runtime interaction
+    StandaloneXR --> StandaloneApp : pose/input and runtime status
+  }
+}
+
+package "PCVR mode" {
+  node "Supported host computer" as PC {
+    artifact "FPVR application\nexecutes on PC" as PCApp
+    rectangle "Compatible PCVR runtime" as PCXR
+    PCApp --> PCXR : imagery and runtime interaction
+    PCXR --> PCApp : pose/input and runtime status
+  }
+  node "Compatible Quest headset\nDisplay, tracking and input" as PCHeadset
+  PCXR --> PCHeadset : presentation through compatible headset link
+  PCHeadset --> PCXR : tracking/input and device status through link
+}
+
+rectangle "Controller support across the system\nQuest motion controllers\nCompatible Xbox controller" as Inputs
+note bottom of Inputs
+  A functional configuration is required for each type overall.
+  No pairing to either deployment mode is guaranteed here.
+  Device generations, bindings, host OS/specifications and
+  the per-mode compatibility matrix remain under review.
+end note
+
+legend bottom
+  The two packages are alternative execution paths, not simultaneous hosts.
+  Both paths use a VR headset; the standalone path needs no connected PC.
+  Arrows show directed information flow; no link protocol is prescribed.
+  Exact runtime/package versions and tested hardware remain unresolved.
+endlegend
+@enduml

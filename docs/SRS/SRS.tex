@@ -1165,6 +1165,66 @@ no physical-drone interface. Package versions, internal modules and concrete
 interface bindings belong to \hyperref[s1]{S.1}, \hyperref[s3]{S.3}, and
 \hyperref[p5]{P.5}, rather than this external context.
 
+\subsubsection*{Execution environments and compatibility}
+The following are alternative required deployment paths, rather than two copies
+of FPVR running together. \hyperref[sec:s2-nfr]{NFR-INST-01 and NFR-INST-02}
+define the corresponding installation/launch obligations.
+\begin{itemize}
+\item \textbf{Standalone Quest:} FPVR executes on the headset and uses its local
+runtime, display and tracking/input services; a connected computer is not
+required for execution.
+\item \textbf{PCVR:} FPVR executes on a host computer; a compatible runtime and
+headset link convey presentation to the Quest headset and return tracking/input.
+The link technology and host specifications remain to be selected and tested.
+\end{itemize}
+
+\begin{figure}[H]
+\centering\begingroup\setlength{\unitlength}{1mm}\small
+\begin{picture}(160,122)
+\put(0,72){\framebox(160,48){}}
+\put(4,115){\textbf{Standalone Quest}}
+\put(4,78){\framebox(152,31){}}
+\put(8,105){\scriptsize Quest headset: execution and presentation device}
+\put(10,83){\framebox(50,18){FPVR application}}
+\put(100,83){\framebox(50,18){\shortstack{Local runtime\\display / tracking}}}
+\put(60,96){\vector(1,0){40}}\put(70,99){\scriptsize rendered frames}
+\put(100,88){\vector(-1,0){40}}\put(65,81){\scriptsize pose / input / status}
+\put(0,0){\framebox(160,62){}}
+\put(4,56){\textbf{PCVR}}
+\put(4,10){\framebox(54,32){\shortstack{Host computer\\FPVR application\\and PCVR runtime}}}
+\put(112,10){\framebox(44,32){\shortstack{Quest headset\\display / tracking\\and input}}}
+\put(58,34){\vector(1,0){54}}\put(68,37){\scriptsize presentation via link}
+\put(112,18){\vector(-1,0){54}}\put(67,11){\scriptsize tracking / input / status}
+\end{picture}\endgroup
+\caption{Standalone and PCVR execution environments. Outer rectangles separate
+the alternative modes; the inner boxes identify execution/presentation sites
+and their responsibilities. Arrow labels state information flow, not a chosen
+transport protocol. Both modes use a headset.}
+\label{fig:e-deployment}
+\end{figure}
+
+The \href{models/environment-deployment.puml}{PlantUML deployment source}
+provides an editable version of these paths. The runtime remains an external
+dependency even when it shares a device with FPVR.
+
+\begin{table}[H]\centering\small
+\caption{Controller pairings requiring confirmation}\label{tab:e-pairings}
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}YY@{}}\toprule
+\textbf{Execution mode} & \textbf{Quest motion controllers} &
+\textbf{Compatible Xbox controller}\\\midrule
+Standalone Quest & Under review & Under review\\
+PCVR & Under review & Under review\\\bottomrule
+\end{tabularx}\end{table}
+
+\hyperref[sec:s2-interface]{FR-UI-02 and FR-UI-03}, together with
+\hyperref[sec:s2-nfr]{NFR-COMP-01}, require a working configuration for each
+controller type overall; they do not establish all four pairings in
+Table~\ref{tab:e-pairings}. Acceptance evidence must identify the headset,
+controller generation, runtime version, bindings and, for PCVR, host operating
+system/specifications and link configuration. An untested cell remains
+unconfirmed. The hardware uncertainties are constrained in
+\hyperref[e3]{E.3}.
+
 \subsection{Constraints}\label{e3}
 
 % TODO: Write your team's content for E.3 here.
