@@ -934,41 +934,114 @@ and usage assumptions.
 
 \booksection{E}{Environment}
 
-\guidance{The Environment book describes the application domain and external context, physical or virtual (or a mix), in which the system will operate. \cite{BM22}}
+This book follows the six Environment chapters of Meyer's template~\cite{BM22}.
+It defines the physical and virtual context of FPVR; software behaviour remains
+specified in \hyperref[s2]{S.2}. Identifiers prefixed \textbf{E-C}, \textbf{E-A},
+\textbf{E-F}, and \textbf{E-I} denote constraints, assumptions, effects, and
+invariants, respectively. An assumption is an operating premise to check, not
+a guarantee; an invariant is a property that FPVR must preserve.
 
 \subsection{Glossary}\label{e1}
 
-\guidance{Clear and precise definitions of all the vocabulary specific to the application domain, including technical terms, words from ordinary language used in a special meaning, and acronyms. It introduces the terminology of the project; not just of the environment in the strict sense, but of all its parts. \cite{BM22}}
+The definitions below apply throughout this specification. Links point to the
+existing introduction or the section that uses the term. Acronyms appearing in
+figures use these same meanings.
 
-% TODO: Write your team's content for E.1 here.
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+                         >{\raggedright\arraybackslash}p{0.71\textwidth}@{}}
+\caption{Domain glossary and abbreviations}\label{tab:e-glossary}\\
+\toprule
+\textbf{Term} & \textbf{Meaning and reference} \\
+\midrule\endfirsthead
+\multicolumn{2}{l}{\small\textit{Table \thetable\ continued}}\\
+\toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
+\midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
+\bottomrule\endlastfoot
+FPVR & The VR-based FPV drone training simulator specified here
+(\hyperref[g1]{G.1}). \\
+FPV & First-person view: presentation from the simulated drone's viewpoint
+(\hyperref[g1]{G.1}). \\
+VR & Virtual reality: an immersive presentation viewed through a headset
+(\hyperref[g1]{G.1}). \\
+SRS & Software requirements specification: this document's statement of the
+intended product and its acceptance expectations. \\
+AI & Artificial intelligence: the planned, feasibility-dependent intelligent
+flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
+PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
+computer and presents its VR view through a connected headset
+(\hyperref[e2]{E.2}). \\
+Runtime & The external platform software that provides headset presentation,
+tracking, input, and application-session services (\hyperref[e2]{E.2}). \\
+Tracking / pose & Tracking reports a device's position and orientation (its
+pose) and whether that information is currently valid. \\
+Session focus & The runtime's indication of whether FPVR is the active
+application receiving interaction; visible imagery alone does not prove focus. \\
+Frames per second / hertz & Application frame-delivery rate / display refresh
+frequency (Hz). These quantities are distinct; the performance target remains
+under review in \hyperref[sec:s2-nfr]{S.2}. \\
+API & Application programming interface: a program-to-program interface.
+Mention of an external interface does not establish a public FPVR API
+(\hyperref[s3]{S.3}). \\
+FR / NFR & Functional requirement / non-functional requirement; prefixes of the
+existing requirement identifiers in \hyperref[s2]{S.2}. \\
+Throttle, pitch, roll, yaw & Flight commands for thrust, rotation about the
+lateral axis, rotation about the longitudinal axis, and rotation about the
+vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
+Virtual environment & A simulated setting containing flight space and scenery.
+Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
+Free flight & Practice without course checkpoints, timers, or scoring
+(\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
+Level / course & A selectable obstacle challenge with a start, an ordered
+checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
+Attempt & One course run from start or restart until completion or exit.
+Respawn continues the same attempt (\hyperref[e6]{E.6}). \\
+Checkpoint / segment & A required ordered course gate / the part of a course
+between the start, successive gates, and the finish
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Collision / crash & Contact with a simulated obstacle or surface / a simulated
+collision that triggers the recovery interaction. Crash-counting details are
+specified by \hyperref[sec:s2-checkpoints]{S.2}. \\
+Respawn / restart & Resume the same attempt at its last reached checkpoint
+(or start if none) / begin a new attempt from the start
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Total / section time & Elapsed time for an attempt, including failed sections /
+time for the current segment; respawn resets section time, while total time
+continues (\hyperref[sec:s2-performance]{S.2}). \\
+Score / rating & A numerical performance result / a separate performance
+assessment. Their criteria remain under review
+(\hyperref[sec:s2-performance]{S.2}). \\
+Flight review & The current completed attempt's performance summary;
+a historical-session review interface is outside scope
+(\hyperref[sec:s2-review]{S.2}, \hyperref[g6]{G.6}). \\
+Telemetry & Flight and performance measurements used for evaluation. The term
+alone does not imply recording history or transmitting data
+(\hyperref[e5]{E.5}). \\
+Activity space / boundary & The user's physical space / a platform-provided
+virtual limit used to help the user remain within a prepared space.
+Neither is part of the simulated course (\hyperref[e3]{E.3}). \\
+\end{longtable}
+\endgroup
 
 \subsection{Components}\label{e2}
-
-\guidance{List of elements of the environment that may affect or be affected by the system and project. It includes other systems to which the system must be interfaced. These components may include existing systems, particularly software systems, with which the system will interact --- by using their APIs (program interfaces), or by providing APIs to them, or both. These are interfaces provided to the system from the outside world. They are distinct from both: interfaces provided by the system to the outside world (\hyperref[s3]{S.3}); and technology elements that the system's development will require (\hyperref[p5]{P.5}). \cite{BM22}}
 
 % TODO: Write your team's content for E.2 here.
 
 \subsection{Constraints}\label{e3}
 
-\guidance{Obligations and limits imposed on the project and system by the environment. This chapter defines non-negotiable restrictions coming from the environment (business rules, physical laws, engineering decisions), which the development will have to take into account. \cite{BM22}}
-
 % TODO: Write your team's content for E.3 here.
 
 \subsection{Assumptions}\label{e4}
-
-\guidance{Properties of the environment that may be assumed, with the goal of facilitating the project and simplifying the system. It defines properties that are not imposed by the environment (like those in \hyperref[e3]{E.3}) but assumed to hold, as an explicit decision meant to facilitate the system's construction. \cite{BM22}}
 
 % TODO: Write your team's content for E.4 here.
 
 \subsection{Effects}\label{e5}
 
-\guidance{Elements and properties of the environment that the system will affect. It defines effects of the system's operations on properties of the environment. Where the previous two categories (\hyperref[e3]{E.3}, \hyperref[e4]{E.4}) defined influences of the environment on the system, effects are influences in the reverse direction. \cite{BM22}}
-
 % TODO: Write your team's content for E.5 here.
 
 \subsection{Invariants}\label{e6}
-
-\guidance{Properties of the environment that the system's operation must preserve, i.e., properties of the environment that operations of the system may assume to hold when they start, and must maintain. \cite{BM22}}
 
 % TODO: Write your team's content for E.6 here.
 
