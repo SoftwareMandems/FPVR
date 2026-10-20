@@ -1023,7 +1023,7 @@ and usage assumptions.
 
 \booksection{E}{Environment}
 
-This book describes where FPVR runs and how it interacts with people and
+This section describes where FPVR runs and how it interacts with people and
 hardware. It follows Meyer's Environment template~\cite{BM22}, with the glossary
 placed after Revision History. Detailed software behaviour is defined in
 \hyperref[s2]{S.2}.
@@ -1049,41 +1049,11 @@ classes or stored flight history.
 
 \begin{figure}[H]
 \centering
-\begingroup\setlength{\unitlength}{1mm}\small
-\begin{picture}(160,128)
-\put(0,106){\framebox(48,18){Virtual environment}}
-\put(24,84){\line(0,1){22}}
-\put(27,102){1}\put(27,86){0..*}
-\put(29,94){setting for}
-\put(0,66){\framebox(48,18){\shortstack{Course\\start and finish}}}
-\put(112,66){\framebox(48,18){\shortstack{Checkpoint\\ordered gate}}}
-\put(0,20){\framebox(48,18){\shortstack{Attempt\\current course run}}}
-\put(112,35){\framebox(48,18){Simulated drone}}
-\put(112,0){\framebox(48,18){\shortstack{Flight review\\completed attempt}}}
-\put(48,75){\line(1,0){64}}
-\put(68,78){contains}
-\put(50,69){1}\put(101,69){1..*}
-\put(24,38){\line(0,1){28}}
-\put(27,61){1}\put(27,41){0..*}
-\put(29,51){selected by}
-\put(48,32){\line(1,0){32}}\put(80,32){\line(0,1){12}}
-\put(80,44){\line(1,0){32}}
-\put(59,36){uses}\put(50,26){0..*}\put(107,46){1}
-\put(48,24){\line(1,0){43}}\put(91,9){\line(0,1){15}}
-\put(91,9){\line(1,0){21}}
-\put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
-\end{picture}
-\endgroup
-\caption[FPVR training concepts]{FPVR training concepts. Each line names a relationship. End labels
-show how many items may be related: 1 means one, 0..1 means zero or one, 0..*
-means zero or more, and 1..* means one or more.}
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-domain.png}
+\caption[FPVR training concepts]{FPVR training concepts. Read from top to bottom;
+each arrow names the relationship between the connected concepts.}
 \label{fig:e-domain}
 \end{figure}
-
-Editable diagram code is available in the
-\href{models/environment-domain.puml}{PlantUML domain source}. The figure is
-included directly in this document, so building the SRS needs no separate image.
-The context and deployment figures use the same approach.
 
 \subsubsection*{External components}
 Users, their physical space, input devices, and the headset/runtime affect
@@ -1124,32 +1094,7 @@ attention and movement; FPVR cannot clear the physical space. \\
 \clearpage
 \begin{figure}[H]
 \centering
-\begingroup\setlength{\unitlength}{1mm}\small
-\begin{picture}(160,136)
-\put(0,112){\framebox(40,22){\shortstack{Physical\\activity space}}}
-\put(0,53){\framebox(40,24){User}}
-\put(60,112){\framebox(45,22){\shortstack{Quest / Xbox\\input options}}}
-\put(60,49){\framebox(45,34){\shortstack{FPVR boundary\\flight and courses\\recovery and results\\VR interaction}}}
-\put(120,53){\framebox(40,24){\shortstack{Headset and\\runtime}}}
-\put(0,0){\framebox(60,24){\shortstack{PCVR host / link\\PCVR only}}}
-\put(100,0){\framebox(60,24){\shortstack{Optional analysis\\location undecided}}}
-\put(12,112){\vector(0,-1){35}}\put(0,96){\scriptsize clearance}
-\put(28,77){\vector(0,1){35}}\put(29,86){\scriptsize preparation}
-\put(40,70){\vector(1,0){20}}\put(60,59){\vector(-1,0){20}}
-\put(46,73){F1}\put(46,54){F1}
-\put(120,70){\vector(-1,0){15}}\put(105,59){\vector(1,0){15}}
-\put(108,73){F2}\put(108,54){F2}
-\put(82,112){\vector(0,-1){29}}\put(85,98){F3}
-\multiput(28,24)(0,4){4}{\line(0,1){2}}
-\multiput(28,40)(4,0){10}{\line(1,0){2}}
-\multiput(68,40)(0,4){3}{\line(0,1){2}}
-\put(68,48){\vector(0,1){1}}\put(28,26){\vector(0,-1){2}}
-\put(39,43){F4*}
-\multiput(94,25)(0,4){6}{\line(0,1){2}}
-\multiput(94,24)(4,0){10}{\line(1,0){2}}
-\put(94,47){\vector(0,1){2}}\put(132,26){\vector(0,-1){2}}
-\put(104,28){F5*}
-\end{picture}\endgroup
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-context.png}
 \caption[FPVR system context]{FPVR system context. F1--F5 refer to Table~\ref{tab:e-external}.
 Arrowheads show direction. Solid arrows show normal interactions; dotted arrows
 marked * apply only to PCVR or optional analysis. Arrows between the user and
@@ -1157,8 +1102,7 @@ physical space show preparation and physical influence, not a sensor connection.
 \label{fig:e-context}
 \end{figure}
 
-The \href{models/environment-context.puml}{PlantUML context source} shows the
-same boundary. User-facing images and results pass through the headset.
+User-facing images and results pass through the headset.
 F4 applies only to PCVR. F5 is a possible analysis connection; it does not
 require a server or internet access. Detailed interfaces belong in
 \hyperref[s3]{S.3}.
@@ -1175,32 +1119,14 @@ link send images to the Quest headset and return tracking and input data.
 \end{itemize}
 
 \begin{figure}[H]
-\centering\begingroup\setlength{\unitlength}{1mm}\small
-\begin{picture}(160,122)
-\put(0,72){\framebox(160,48){}}
-\put(4,115){\textbf{Standalone Quest}}
-\put(4,78){\framebox(152,31){}}
-\put(8,105){\scriptsize Quest headset: execution and presentation device}
-\put(10,83){\framebox(50,18){FPVR application}}
-\put(100,83){\framebox(50,18){\shortstack{Local runtime\\display / tracking}}}
-\put(60,96){\vector(1,0){40}}\put(70,99){\scriptsize rendered frames}
-\put(100,88){\vector(-1,0){40}}\put(65,81){\scriptsize pose / input / status}
-\put(0,0){\framebox(160,62){}}
-\put(4,56){\textbf{PCVR}}
-\put(4,10){\framebox(54,32){\shortstack{Host computer\\FPVR application\\and PCVR runtime}}}
-\put(112,10){\framebox(44,32){\shortstack{Quest headset\\display / tracking\\and input}}}
-\put(58,34){\vector(1,0){54}}\put(68,37){\scriptsize presentation via link}
-\put(112,18){\vector(-1,0){54}}\put(67,11){\scriptsize tracking / input / status}
-\end{picture}\endgroup
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-deployment.png}
 \caption[Standalone and PCVR modes]{Standalone and PCVR modes. Outer boxes separate the modes; inner
 boxes show where FPVR runs and where images are displayed. Arrows show the
 named information flows. Both modes use a headset; the link technology is
 still to be chosen.}
 \label{fig:e-deployment}
 \end{figure}
-
-Editable diagram code is in the
-\href{models/environment-deployment.puml}{PlantUML deployment source}.
 
 \begin{table}[H]\centering\small
 \caption{Controller pairings requiring confirmation}\label{tab:e-pairings}
@@ -1583,8 +1509,8 @@ because they protect the simulator's scope and core training experience
 \textbf{Authoring disclosure.} Codex (GPT-6; exact build unknown) helped draft
 and simplify this book and prepare the existing PlantUML sources. Content was
 checked against the rubric, Problem Statement, Development Plan and existing
-Goals/S.2 requirements. Earlier diagram checks used PlantUML 1.2026.9; this edit
-kept those source files unchanged. The document was compiled and its pages
+Goals/S.2 requirements. PlantUML 1.2026.9 was used to render and check the
+diagrams. The document was compiled and its pages
 visually checked. A file comparison checked that edits stayed within Environment.
 These document checks do not claim completed software, user or safety tests.
 
