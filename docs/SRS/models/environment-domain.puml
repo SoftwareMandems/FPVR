@@ -1,0 +1,23 @@
+@startuml environment-domain
+' Conceptual overview of the training domain.
+' Render: java -jar plantuml.jar -tpng environment-domain.puml
+!pragma layout smetana
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam dpi 200
+skinparam ranksep 35
+skinparam roundcorner 8
+
+top to bottom direction
+
+rectangle "Virtual environment\nThe setting for a course" as Environment
+rectangle "Course\nStart, ordered checkpoints and finish" as Course
+rectangle "Attempt\nOne course run using a simulated drone" as Attempt
+rectangle "Flight review\nResults of a completed attempt" as Review
+
+Environment -down-> Course : contains
+Course -down-> Attempt : selected for
+Attempt -down-> Review : produces on completion
+@enduml

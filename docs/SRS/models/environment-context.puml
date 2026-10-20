@@ -1,0 +1,46 @@
+@startuml environment-context
+' F1--F8 match the external-component table and caption in SRS.tex.
+' Render: java -jar plantuml.jar -tpng environment-context.puml
+!pragma layout smetana
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam dpi 200
+skinparam nodesep 35
+skinparam ranksep 40
+top to bottom direction
+
+actor "User" as User
+rectangle "Physical space" as Space
+rectangle "Quest / Xbox\ninput options" as Input
+rectangle "Headset and\nruntime" as XR
+rectangle "FPVR system boundary\nFlight and courses\nRecovery and results\nAccounts and leaderboards\nVR interaction" as FPVR
+rectangle "PCVR computer / link\nPCVR only" as Host
+rectangle "Optional analysis\nLocation under review" as AI
+rectangle "Authentication\nservice" as Auth
+rectangle "Cloud database\nAccounts and flight results" as Cloud
+rectangle "Online leaderboard\nservice" as Leaderboard
+
+Space <-right-> User : setup / clearance
+User -right-> Input : controls
+User <-down-> FPVR : F1
+Input -down-> FPVR : F3
+XR <-right-> FPVR : F2
+FPVR <.down.> Host : F4*
+FPVR <.right.> AI : F5*
+FPVR <-down-> Auth : F6
+FPVR <-down-> Cloud : F7
+FPVR <-down-> Leaderboard : F8
+
+Host -[hidden]right-> Auth
+Auth -[hidden]right-> Cloud
+Cloud -[hidden]right-> Leaderboard
+
+legend bottom
+  F1--F8: information flows defined in the SRS table.
+  Solid arrows: normal interactions.
+  Dashed arrows marked *: PCVR or optional analysis.
+  Physical-space arrows show human influence, not sensor data.
+endlegend
+@enduml
