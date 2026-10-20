@@ -1085,42 +1085,40 @@ Editable diagram code is available in the
 included directly in this document, so building the SRS needs no separate image.
 The context and deployment figures use the same approach.
 
-The environment includes the user profiles in \hyperref[g8]{G.8}, their physical
-activity space, the headset and runtime, input devices, and the host/link used
-for PCVR. Guardians and nearby people are affected stakeholders
-(\hyperref[g7]{G.7}); they are not additional software operators or data services.
-Table~\ref{tab:e-external} defines the logical exchanges shown in
-Figure~\ref{fig:e-context}. A user-facing output is delivered through the
-headset/runtime; its direct arrow to the user expresses its recipient.
+\subsubsection*{External components}
+Users, their physical space, input devices, and the headset/runtime affect
+FPVR. PCVR also uses a computer and a headset link. Guardians and nearby people
+are affected stakeholders (\hyperref[g7]{G.7}); user profiles are in
+\hyperref[g8]{G.8}. Table~\ref{tab:e-external} explains the exchanges labelled
+F1--F5 in Figure~\ref{fig:e-context}.
 
 \begingroup\small\renewcommand{\arraystretch}{1.15}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
                          >{\raggedright\arraybackslash}p{0.35\textwidth}
                          >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
-\caption{External components and logical boundary exchanges}
+\caption{External components and information exchanged}
 \label{tab:e-external}\\
 \toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
 \textbf{Outputs from FPVR}\\\midrule\endfirsthead
 \toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
 \textbf{Outputs from FPVR}\\\midrule\endhead
 \bottomrule\endfoot
-User (F1) & Mode/level, menu, recovery and exit choices; flight actions via F3. &
+User (F1) & Mode, level, menu, recovery and exit choices; flight controls via F3. &
 Flight view, instructions, progress, recovery choices and current results. \\
-Headset and runtime (F2) & Pose and validity, input availability, session focus,
-display timing and lifecycle status. & Imagery and interaction with external
-presentation/session services. \\
-Input options: Quest or compatible Xbox (F3) & Flight axes, buttons, device
-identity and connection status via input services. & Instructions and device
-feedback via F1; no haptic output is required here. \\
-PCVR host and headset link (F4) & Host resources, runtime/link availability
-and linked headset tracking/input. & PC-executed presentation conveyed to the
-headset; PCVR only. \\
-Optional analysis dependency (F5) & Conditional feedback or unavailable/error
-outcome. & Conditional analysis inputs; processing location, provider and
-payload remain undecided (\hyperref[sec:s2-ai]{S.2}). \\
-Physical activity space & Preparation, clearance and tracking conditions;
-no direct obstacle-sensing stream assumed. & Imagery affects attention and
-movement; FPVR cannot clear the room or guarantee obstacle detection. \\
+Headset and runtime (F2) & Device position/orientation (pose), tracking validity,
+input availability, session focus, display timing and session status. &
+Rendered images and responses to runtime services. \\
+Quest or compatible Xbox controller (F3) & Controller type, flight axes,
+buttons and connection state. & Instructions and device feedback shown to the
+user through F1. \\
+PCVR computer and headset link (F4) & Computer resources, runtime/link status
+and headset tracking/input. & PC-rendered images sent to the headset; PCVR only. \\
+Optional analysis (F5) & Additional feedback or a failure/unavailable result. &
+Flight data for analysis, if included. Data and processing location remain
+under review (\hyperref[sec:s2-ai]{S.2}). \\
+Physical space & Room clearance, user preparation and conditions for headset
+tracking. No direct obstacle-sensing input is assumed. & VR images affect user
+attention and movement; FPVR cannot clear the physical space. \\
 \end{longtable}\endgroup
 
 \clearpage
@@ -1152,19 +1150,18 @@ movement; FPVR cannot clear the room or guarantee obstacle detection. \\
 \put(94,47){\vector(0,1){2}}\put(132,26){\vector(0,-1){2}}
 \put(104,28){F5*}
 \end{picture}\endgroup
-\caption{FPVR system context. F1--F5 identify the exchanges in
-Table~\ref{tab:e-external}. Arrowheads show direction; solid lines show baseline
-interactions, dotted lines marked * show conditional dependencies. Physical
-space arrows show human influence rather than a software sensor interface.}
+\caption{FPVR system context. F1--F5 refer to Table~\ref{tab:e-external}.
+Arrowheads show direction. Solid arrows show normal interactions; dotted arrows
+marked * apply only to PCVR or optional analysis. Arrows between the user and
+physical space show preparation and physical influence, not a sensor connection.}
 \label{fig:e-context}
 \end{figure}
 
-The \href{models/environment-context.puml}{PlantUML context source} makes the
-same system boundary explicit. F4 is present only for PCVR. F5 does not mandate
-a server, account, internet connection, or transmission of telemetry. There is
-no physical-drone interface. Package versions, internal modules and concrete
-interface bindings belong to \hyperref[s1]{S.1}, \hyperref[s3]{S.3}, and
-\hyperref[p5]{P.5}, rather than this external context.
+The \href{models/environment-context.puml}{PlantUML context source} shows the
+same boundary. User-facing images and results pass through the headset.
+F4 applies only to PCVR. F5 is a possible analysis connection; it does not
+require a server or internet access. Detailed interfaces belong in
+\hyperref[s3]{S.3}.
 
 \clearpage
 \subsubsection*{Execution environments and compatibility}
