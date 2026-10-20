@@ -38,8 +38,8 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
+Sept 30 & Sankalpa Chhetri Dhakal & Completed Introduction\\
+Oct 6 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
 ... & ... & ...\\
 \bottomrule
 \end{tabularx}
@@ -61,44 +61,119 @@ Date2 & Name(s) & Description of changes\\
 
 \section{Scope and Purpose of Hazard Analysis}
 
-The purpose of this Hazard Analysis is to identify potential failure modes of
-the FPV drone training system, understand their possible effects, and determine
-ways to reduce or prevent these risks.
+\section{System Boundaries and Components}
 
-The analysis considers hazards related to:
+The system boundary includes the software and hardware directly involved in
+running and interacting with the FPV drone training simulator. This includes
+the VR headset, input devices, host computer, Unity application, drone
+simulation, training functionality, user interface, and locally stored data.
+The user and their physical surroundings interact with the system and are
+considered when identifying hazards, but they are not components of the
+software system itself. Real FPV drones and real-world drone operation are
+outside the system boundary.
+
+The system consists of several major software and hardware components. These
+components are considered independently during hazard identification because a
+failure in one component may affect the safety or correctness of the overall
+system.
+
+\subsection{VR Headset}
+
+The VR headset, expected to be a \textbf{Meta Quest 3S}, provides the user's
+visual representation of the simulated environment and tracks the position and
+orientation of the user's head.
+
+Potential hazards associated with this component include loss of tracking,
+visual latency, incorrect orientation, poor headset fit, and the user becoming
+unaware of their physical surroundings.
+
+\subsection{Controller Thumbsticks, Triggers, Buttons, and Input Connection}
+
+Controller thumbsticks and triggers provide axis values that are mapped to
+drone throttle, pitch, roll, and yaw. Buttons provide discrete commands such as
+pause, restart, and respawn. Depending on the final implementation, these
+controls may be provided by VR controllers, a game controller, or an external
+FPV-style radio controller. The controller connection carries these values and
+button events to the application.
+
+Failures may include thumbstick drift, where a centred stick reports an input
+and causes unintended drone movement; a stuck thumbstick or trigger,
+which maintains a control value after release; or a stuck or unresponsive
+button, which repeats or prevents a command. Incorrect axis mappings, inverted
+axis directions, or incorrect centre, range, or dead-zone calibration may
+produce unintended throttle or steering responses. A disconnected controller,
+dropped input updates, or delayed input delivery may cause loss of control,
+continued use of a stale control value, or a delayed response to a pilot command.
+
+\subsection{Host Computer}
+
+A computer executes the Unity application and associated simulation software.
+
+Failures may include insufficient hardware performance, overheating, loss of
+power, driver issues, or resource exhaustion.
+
+\subsection{Unity Application}
+
+Unity provides the primary execution environment for the game.
+
+This component is responsible for scene management, game logic, user
+interaction, rendering, and communication between major software modules.
+
+\subsection{Drone Physics Simulation}
+
+The drone physics subsystem models properties such as:
 
 \begin{itemize}
-    \item VR headset operation
-    \item interaction with the user's physical surroundings
-    \item drone physics and flight simulation
-    \item user controls and input devices
-    \item visual and audio feedback
-    \item training and scoring features
-    \item application performance
-    \item misuse of the training system 
-    \item security and integrity of the application
+    \item thrust;
+    \item gravity;
+    \item acceleration;
+    \item angular velocity;
+    \item momentum;
+    \item collisions; and
+    \item drone response to pilot input.
 \end{itemize}
 
-Possible losses caused by these hazards include:
+Incorrect behaviour in this component represents an important hazard because
+users are expected to learn flying behaviour from the simulator.
+
+\subsection{VR Rendering and XR Subsystem}
+
+This subsystem renders the virtual environment and communicates with the VR
+headset.
+
+Failures may result in visual artifacts, low frame rate, latency, incorrect
+camera movement, or loss of tracking.
+
+\subsection{Training and Scoring System}
+
+The training subsystem may contain tutorials, objectives, checkpoints, scoring
+metrics, crash detection, and user performance feedback.
+
+Incorrect scoring or feedback could indicate that unsafe or incorrect flying
+behaviour is acceptable.
+
+\subsection{User Interface}
+
+The interface includes menus, settings, warnings, calibration options, pause
+controls, and training instructions.
+
+Poor interface design could prevent the user from understanding warnings or
+exiting the simulation quickly.
+
+\subsection{Data Storage}
+
+The system may locally store information such as:
 
 \begin{itemize}
-    \item physical injury from colliding with furniture, walls, or other people
-    while using the VR headset
-    \item nausea, dizziness, eye strain, or other discomfort caused by VR use
-    \item damage to the VR headset, controllers, computer, or nearby property
-    \item loss of user progress or settings
-    \item application crashes or interruptions during training
-    \item incorrect or unrealistic drone behaviour that could teach the user
-    improper flying techniques
-    \item an incorrect understanding of how a real FPV drone behaves
-    \item users becoming overconfident in their real-world flying ability based
-    only on their simulator performance
+    \item user settings;
+    \item controller configuration;
+    \item training progress;
+    \item scores; and
+    \item application configuration.
 \end{itemize}
 
-This analysis focuses on hazards related to the simulator itself and its use.
-The simulator is intended to be a training tool and does not guarantee safe
-operation of a real FPV drone or reproduce every condition that may occur
-during real-world flight.
+Data corruption or unauthorized modification could affect system operation or
+training results.
 
 \section{System Boundaries and Components}
 
