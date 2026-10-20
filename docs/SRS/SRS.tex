@@ -1074,7 +1074,7 @@ classes or stored flight history.
 \put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
 \end{picture}
 \endgroup
-\caption{FPVR training concepts. Each line names a relationship. End labels
+\caption[FPVR training concepts]{FPVR training concepts. Each line names a relationship. End labels
 show how many items may be related: 1 means one, 0..1 means zero or one, 0..*
 means zero or more, and 1..* means one or more.}
 \label{fig:e-domain}
@@ -1150,7 +1150,7 @@ attention and movement; FPVR cannot clear the physical space. \\
 \put(94,47){\vector(0,1){2}}\put(132,26){\vector(0,-1){2}}
 \put(104,28){F5*}
 \end{picture}\endgroup
-\caption{FPVR system context. F1--F5 refer to Table~\ref{tab:e-external}.
+\caption[FPVR system context]{FPVR system context. F1--F5 refer to Table~\ref{tab:e-external}.
 Arrowheads show direction. Solid arrows show normal interactions; dotted arrows
 marked * apply only to PCVR or optional analysis. Arrows between the user and
 physical space show preparation and physical influence, not a sensor connection.}
@@ -1192,7 +1192,7 @@ link send images to the Quest headset and return tracking and input data.
 \put(58,34){\vector(1,0){54}}\put(68,37){\scriptsize presentation via link}
 \put(112,18){\vector(-1,0){54}}\put(67,11){\scriptsize tracking / input / status}
 \end{picture}\endgroup
-\caption{Standalone and PCVR modes. Outer boxes separate the modes; inner
+\caption[Standalone and PCVR modes]{Standalone and PCVR modes. Outer boxes separate the modes; inner
 boxes show where FPVR runs and where images are displayed. Arrows show the
 named information flows. Both modes use a headset; the link technology is
 still to be chosen.}
@@ -1268,7 +1268,7 @@ for every user.
 \item[{\hyperref[et-release]{E-C-05}:}]\phantomsection\label{ec-release}
 \textbf{Release and data rules.}
 A Meta release must meet the applicable
-\hyperref[es-meta-age]{audience and distribution rules}. Distribution must also
+\hyperref[es-meta-age]{audience rules}. Distribution must also
 respect engine, runtime and asset licences. Before adding data retention or
 external analysis, define what data is used, why, who receives it, how long it
 is kept, how it is deleted, user notice/consent and applicable legal duties.
@@ -1280,8 +1280,8 @@ define a data policy. These checks are required before release or new data use.
 Standalone flight depends on headset processing power, memory, battery and heat
 limits. PCVR also depends on the computer and headset link.
 \textit{Reason:} these limits affect smooth, responsive flight. The frame-rate
-target and minimum hardware remain under review in
-\hyperref[sec:s2-nfr]{NFR-PERF-01}.
+target remains under review in \hyperref[sec:s2-nfr]{NFR-PERF-01}; minimum
+hardware is also unresolved in \hyperref[ec-hardware]{E-C-02}.
 \end{description}
 
 \subsubsection*{External sources}
@@ -1350,8 +1350,9 @@ must remain available as explained in \hyperref[ei-review]{E-I-04}.
 
 \subsection{Effects}\label{e4}
 
-Effects describe how FPVR changes what users see, the results they receive,
-and the resources used by their equipment.
+Effects describe how FPVR affects users and equipment. They also concern
+guardians, bystanders and the wider public (\hyperref[g7]{G.7}) through
+activity-space safety and training claims.
 
 \begin{description}
 \item[{\hyperref[et-safety]{E-F-01}:}]\phantomsection\label{ef-attention}
@@ -1389,9 +1390,7 @@ The standard review stays available without this analysis
 (\hyperref[ei-review]{E-I-04}).
 \end{description}
 
-These effects also concern guardians, bystanders and the wider public
-(\hyperref[g7]{G.7}), through activity-space safety and training claims.
-
+\clearpage
 \subsection{Invariants}\label{e5}
 
 An invariant is a rule that must stay true while FPVR operates. Values such as
@@ -1444,11 +1443,11 @@ then gives $k=2$ and $P=\langle C_1,C_2\rangle$. The user must still pass $C_3$
 and reach the finish. These numbers illustrate the rule; they do not set the
 number of checkpoints in every course.
 
+\par\noindent\begin{minipage}{\linewidth}
 \textbf{Crash recovery.} Respawn continues the current attempt; restart starts
 again from the beginning. Table~\ref{tab:e-recovery} shows exactly what is kept
 or reset (\hyperref[sec:s2-checkpoints]{FR-CHK-05--07}).
 
-\par\noindent\begin{minipage}{\linewidth}
 \small\captionsetup{hypcap=false}
 \captionof{table}{Respawn and restart}\label{tab:e-recovery}
 \begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}YY@{}}\toprule
@@ -1510,93 +1509,84 @@ and retry the course (\hyperref[sec:s2-review]{FR-REV-01--05},
 \textit{Reason:} an optional feature must not block the core training experience.
 \end{description}
 
-\subsubsection*{Traceability and intended checks}
-Every linked Environment identifier leads to its check row below; the row links
-back to the canonical statements. Links to S.2 identify the governing existing
-requirements. These are planned review/acceptance checks, not evidence that
-software or user testing has already been performed.
+\subsubsection*{Traceability and checks}
+Each Environment ID links to a check below, and each row links back to the rule.
+The middle column links to the related scope or requirement. These are planned
+checks, not completed software or user tests.
 
 \begingroup\small\renewcommand{\arraystretch}{1.15}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}
                          >{\raggedright\arraybackslash}p{0.23\textwidth}
                          >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
-\caption{Environment traceability and verification routes}\label{tab:e-trace}\\
-\toprule\textbf{Environment statements} & \textbf{Existing scope / requirements} &
-\textbf{Intended check}\\\midrule\endfirsthead
-\toprule\textbf{Environment statements} & \textbf{Existing scope / requirements} &
-\textbf{Intended check}\\\midrule\endhead
+\caption{Environment traceability and planned checks}\label{tab:e-trace}\\
+\toprule\textbf{Rule IDs} & \textbf{Related scope / requirement} &
+\textbf{Planned check}\\\midrule\endfirsthead
+\toprule\textbf{Rule IDs} & \textbf{Related scope / requirement} &
+\textbf{Planned check}\\\midrule\endhead
 \bottomrule\endfoot
 \phantomsection\label{et-platform}
 \hyperref[ec-platform]{E-C-01}, \hyperref[ec-hardware]{E-C-02},
 \hyperref[ea-runtime]{E-A-01}, \hyperref[ea-evaluation]{E-A-04} &
 \hyperref[sec:s2-interface]{FR-UI-01--03};
 \hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01} &
-Launch both deployment paths and exercise each claimed controller pairing;
-record exact hardware/software/link configuration and unsupported/untested
-pairings. Inspect the selected engine in build configuration. \\
+Launch both modes and test each claimed controller pairing. Record hardware,
+runtime, mapping and PCVR link details. Mark untested pairings and check the
+chosen engine in the build. \\
 \phantomsection\label{et-scope}
 \hyperref[ec-scope]{E-C-03}, \hyperref[ef-training]{E-F-02},
 \hyperref[ei-boundary]{E-I-01} &
 \hyperref[g3]{G.3}, \hyperref[g6]{G.6};
 \hyperref[sec:s2-flight]{FR-FLT-03} &
-Inspect the interface/output inventory for physical-drone commands and review
-result wording for certification or unvalidated skill-transfer claims. Evaluate
-simulated gravity using the eventual approved fidelity criteria. \\
+Check outputs for physical-drone commands and result text for certification or
+unverified training claims. Check simulated gravity against approved criteria. \\
 \phantomsection\label{et-safety}
 \hyperref[ec-safety]{E-C-04}, \hyperref[ea-space]{E-A-02},
 \hyperref[ef-attention]{E-F-01}, \hyperref[ei-stationary]{E-I-03} &
 \hyperref[sec:s2-interface]{FR-UI-06};
-\hyperref[sec:s2-nfr]{NFR-SAFE-01}; manufacturer guidance &
-Review selected-model setup and exercise menus, flight control, recovery
-and exit while seated and standing without walking. Document comfort and
-accessibility observations and unresolved criteria. \\
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}; headset guidance &
+Review headset setup. Try flight, menus, recovery and exit while seated and
+standing without walking. Record comfort and accessibility issues. \\
 \phantomsection\label{et-release}
 \hyperref[ec-release]{E-C-05}, \hyperref[ef-data]{E-F-03} &
 \hyperref[g6]{G.6}; \hyperref[sec:s2-review]{FR-REV-05};
 \hyperref[sec:s2-ai]{S.2 optional analysis} &
-Inspect data creation, retention and outbound flows; review third-party licences,
-release audience and applicable platform policies. Resolve data-policy decisions
-before adding persistence or external processing. \\
+Review stored/shared data, licences and audience rules. Document the data policy
+before adding retention or external processing. \\
 \phantomsection\label{et-resources}
 \hyperref[ec-resources]{E-C-06} &
 \hyperref[sec:s2-nfr]{NFR-PERF-01} &
-Measure frame delivery and resource/link behaviour on selected supported
-configurations once a numerical target and repeatable workload are approved. \\
+Once the frame-rate target is set, measure frame delivery and hardware/link
+behaviour on supported devices using a repeatable course workload. \\
 \phantomsection\label{et-course}
 \hyperref[ea-course]{E-A-03}, \hyperref[ei-course]{E-I-02} &
 \hyperref[sec:s2-checkpoints]{FR-CHK-01--08};
 \hyperref[sec:s2-performance]{FR-PER-01--07, FR-PER-10} &
-Exercise next, repeated and out-of-order gates, early finish, and crashes
-before/after a checkpoint. Compare respawn/restart fields and total-time
-pause in the recovery menu. \\
+Try ordered, repeated and skipped gates, early finish and gate passage while
+crashed. Crash before and after a checkpoint; check Table~\ref{tab:e-recovery},
+menu-time exclusion and the completion timer. \\
 \phantomsection\label{et-review}
 \hyperref[ef-analysis]{E-F-04}, \hyperref[ei-review]{E-I-04} &
 \hyperref[sec:s2-review]{FR-REV-01--05};
 \hyperref[sec:s2-ai]{FR-AI-03} &
-Complete a course with feedback omitted, available, unavailable and failed;
-confirm that the current-attempt standard review remains available in every case.
-Conditional outcomes apply only if the feature is included. \\
+Complete a course without optional feedback. If implemented, also try
+available, unavailable and failed feedback. Check the standard review and retry
+option in each case. \\
 \end{longtable}\endgroup
 
-\clearpage
-\textbf{Change outlook.} Exact devices, runtime/link configurations, performance
-limits and optional analysis/data-processing choices are likely to change as
-compatibility and feasibility are investigated (\hyperref[ec-hardware]{E-C-02},
-\hyperref[ec-release]{E-C-05}, \hyperref[ec-resources]{E-C-06}).
-The physical-drone exclusion, ordered-course integrity, stationary interaction
-and independent core review are expected to remain stable: they directly
-preserve the scoped simulator and its safe, repeatable practice goals
+\textbf{Likely changes.} Supported devices, runtime/link choices, performance
+limits and optional data processing may change as they are tested
+(\hyperref[ec-hardware]{E-C-02}, \hyperref[ec-release]{E-C-05},
+\hyperref[ec-resources]{E-C-06}). The four invariants are expected to stay stable
+because they protect the simulator's scope and core training experience
 (\hyperref[ei-boundary]{E-I-01}--\hyperref[ei-review]{E-I-04}).
 
-\textbf{Environment authoring disclosure.} Codex (model identification provided
-in this session: GPT-6; exact build identifier unavailable) assisted with
-adapting the supplied draft, comparing the rubric and reference project,
-writing this Environment content, and producing the three PlantUML sources.
-Verification compared the content with the existing Goals and S.2 requirements,
-checked that edits stayed within this book and its diagram sources, validated
-and rendered the sources with PlantUML 1.2026.9, and compiled and visually
-reviewed the Environment pages. These document checks do not constitute
-stakeholder validation, software acceptance tests or completed safety analysis.
+\textbf{Authoring disclosure.} Codex (GPT-6; exact build unknown) helped draft
+and simplify this book and prepare the existing PlantUML sources. Content was
+checked against the rubric, Problem Statement, Development Plan and existing
+Goals/S.2 requirements. Earlier diagram checks used PlantUML 1.2026.9; this edit
+kept those source files unchanged. The document was compiled and its pages
+visually checked. A file comparison checked that edits stayed within Environment.
+These document checks do not claim completed software, user or safety tests.
 
 \booksection{S}{System}
 
