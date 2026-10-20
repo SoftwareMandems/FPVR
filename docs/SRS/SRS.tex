@@ -2665,9 +2665,9 @@ Table~\ref{tab:phasein} gives the order in which requirements are phased in.
 Each phase builds on the ones before it: the offline training flow that every
 later phase depends on comes first, the online account and result features
 come after it, and the Low-priority intelligent feedback (FR-AI) comes last.
-The priorities shown are those assigned in \hyperref[s5]{S.5}; a phase listed
-as ``High, Medium'' contains requirements of both priorities, and its Medium
-requirements are the first to be deferred if the phase runs late. Each phase is
+Each requirement's priority is given in \hyperref[s5]{S.5}; within a phase,
+Medium-priority requirements are the first to be deferred if the phase runs
+late. Each phase is
 due at a milestone in Table~\ref{tab:milestones}; phases 1 and 2 form the proof
 of concept, which the Development Plan defines as VR support, a simple flight
 model, and controller input. A phase is complete when its requirements are
@@ -2675,35 +2675,29 @@ implemented and pass the verification cases specified in the VnV Plan.
 
 \begin{table}[H]\centering\small
 \caption{Requirement phase-in plan}\label{tab:phasein}
-\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}Yp{0.11\textwidth}p{0.22\textwidth}@{}}
+\begin{tabularx}{\textwidth}{@{}p{0.22\textwidth}Yp{0.25\textwidth}@{}}
 \toprule
-Phase & Requirements & Priority & Due date / milestone \\\midrule
+Phase & Requirements & Due date / milestone \\\midrule
 1. Deployment, input, and safety &
 FR-UI-01 to FR-UI-06, NFR-INST-01, NFR-INST-02, NFR-COMP-01, NFR-SAFE-01,
 NFR-SAFE-02 &
-High &
 Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
 2. Free flight &
 FR-FLT-01 to FR-FLT-06, FR-LVL-01, FR-LVL-02, NFR-PERF-01, NFR-PERF-02 &
-High &
 Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
 3. Ordered courses and recovery &
 FR-LVL-03 to FR-LVL-07, FR-CHK-01 to FR-CHK-08, NFR-REL-01 &
-High, Medium &
 Jan. 21, 2027 (Module Implementation) \\
 4. Evaluation, review, and local results &
 FR-PER-01 to FR-PER-10, FR-REV-01 to FR-REV-04, FR-DAT-01, FR-DAT-04,
 FR-DAT-06, FR-DAT-07, NFR-USAB-01, NFR-OFF-01 &
-High, Medium &
 Feb. 1 -- Feb. 11, 2027 (Revision 0 Demonstration) \\
 5. Accounts and online results &
 FR-ACC-01 to FR-ACC-05, FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08 to
 FR-DAT-10, FR-REV-05, NFR-SEC-01, NFR-SEC-02, NFR-DAT-01 &
-High, Medium &
 Mar. 8, 2027 (V\&V Report) \\
 6. Intelligent feedback &
 FR-AI-01 to FR-AI-03 &
-Low &
 Mar. 15 -- Mar. 21, 2027 (Final Demonstration); dropped first if the schedule
 slips \\
 \bottomrule\end{tabularx}\end{table}
