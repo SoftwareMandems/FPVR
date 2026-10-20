@@ -196,9 +196,9 @@ XR & Extended reality: the umbrella term that includes VR; used in the
 runtime diagrams. It does not specify a particular integration API. \\
 PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
 computer and presents its VR view through a connected headset
-(\hyperref[e2]{E.2}). \\
+(\hyperref[e1]{E.1}). \\
 Runtime & The external platform software that provides headset presentation,
-tracking, input, and application-session services (\hyperref[e2]{E.2}). \\
+tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
 Tracking / pose & Tracking reports a device's position and orientation (its
 pose) and whether that information is currently valid. \\
 Session focus & The runtime's indication of whether FPVR is the active
@@ -221,7 +221,7 @@ Free flight & Practice without course checkpoints, timers, or scoring
 Level / course & A selectable obstacle challenge with a start, an ordered
 checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
 Attempt & One course run from start or restart until completion or exit.
-Respawn continues the same attempt (\hyperref[e6]{E.6}). \\
+Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
 Checkpoint / segment & A required ordered course gate / the part of a course
 between the start, successive gates, and the finish
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
@@ -239,15 +239,15 @@ menus (\hyperref[sec:s2-performance]{S.2}). \\
 Score / rating & A numerical performance result / a separate performance
 assessment. Their criteria remain under review
 (\hyperref[sec:s2-performance]{S.2}). \\
-Flight review & The current completed attempt's performance summary;
-a historical-session review interface is outside scope
-(\hyperref[sec:s2-review]{S.2}, \hyperref[g6]{G.6}). \\
+Flight review & A completed attempt's performance summary. Registered users
+can save results to the cloud and retrieve previous results
+(\hyperref[ef-data]{E-F-03}). \\
 Telemetry & Flight and performance measurements used for evaluation. The term
 alone does not imply recording history or transmitting data
-(\hyperref[e5]{E.5}). \\
+(\hyperref[e4]{E.4}). \\
 Activity space / boundary & The user's physical space / a platform-provided
 virtual limit used to help the user remain within a prepared space.
-Neither is part of the simulated course (\hyperref[e3]{E.3}). \\
+Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 \end{longtable}
 \endgroup
 
@@ -1031,26 +1031,21 @@ Identifiers beginning with \textbf{E-C}, \textbf{E-A}, \textbf{E-F}, and
 \textbf{E-I} identify constraints, assumptions, effects, and invariants.
 Assumptions must be checked; invariants are rules FPVR must always preserve.
 
-\subsection{Glossary}\label{e1}
-
-The glossary has been moved to the beginning of this document, immediately
-after Revision History (see \hyperref[sec:glossary]{Glossary}). This subsection
-is otherwise empty.
-
-\subsection{Components}\label{e2}
+\subsection{Components}\label{e1}
 
 FPVR includes the simulated drone, flight spaces and courses, crash recovery,
-performance results, and VR controls. The headset, controllers and any connected
-computer are outside the software boundary, even when they run FPVR.
-\hyperref[g6]{G.6} defines the features outside the project's scope.
+performance results, player accounts, global leaderboards and VR controls. The
+headset, controllers, connected computer, authentication service, cloud database
+and online leaderboard service are outside the software boundary.
+\hyperref[g6]{G.6} describes the simulation limits.
 
 \clearpage
 \subsubsection*{Domain relationships}
 Figure~\ref{fig:e-domain} shows the main training concepts. A course takes place
 in one virtual environment and contains ordered checkpoints. Each attempt uses
 one course and one simulated drone. Completing the attempt produces a flight
-review. The diagram describes these relationships; it does not specify software
-classes or stored flight history.
+review. Registered users can save and retrieve completed results. The diagram
+shows one course run; it does not specify software classes.
 
 \begin{figure}[H]
 \centering
@@ -1062,10 +1057,11 @@ each arrow names the relationship between the connected concepts.}
 
 \subsubsection*{External components}
 Users, their physical space, input devices, and the headset/runtime affect
-FPVR. PCVR also uses a computer and a headset link. Guardians and nearby people
+FPVR. PCVR also uses a computer and a headset link. Authentication, cloud storage
+and online leaderboard services support accounts and saved results. Guardians and nearby people
 are affected stakeholders (\hyperref[g7]{G.7}); user profiles are in
 \hyperref[g8]{G.8}. Table~\ref{tab:e-external} explains the exchanges labelled
-F1--F5 in Figure~\ref{fig:e-context}.
+F1--F8 in Figure~\ref{fig:e-context}.
 
 \begingroup\small\renewcommand{\arraystretch}{1.15}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
@@ -1078,8 +1074,8 @@ F1--F5 in Figure~\ref{fig:e-context}.
 \toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
 \textbf{Outputs from FPVR}\\\midrule\endhead
 \bottomrule\endfoot
-User (F1) & Mode, level, menu, recovery and exit choices; flight controls via F3. &
-Flight view, instructions, progress, recovery choices and current results. \\
+User (F1) & Account, mode, level, menu, recovery and exit choices; flight controls via F3. &
+Flight view, instructions, recovery choices, current and saved results, and rankings. \\
 Headset and runtime (F2) & Device position/orientation (pose), tracking validity,
 input availability, session focus, display timing and session status. &
 Rendered images and responses to runtime services. \\
@@ -1091,6 +1087,12 @@ and headset tracking/input. & PC-rendered images sent to the headset; PCVR only.
 Optional analysis (F5) & Additional feedback or a failure/unavailable result. &
 Flight data for analysis, if included. Data and processing location remain
 under review (\hyperref[sec:s2-ai]{S.2}). \\
+Authentication service (F6) & Registration/login outcomes and authenticated
+session state. & Account details, login credentials and sign-in/sign-out requests. \\
+Cloud database (F7) & Saved flight results and save/retrieval status. &
+Completed flight results linked to the user account, and requests for previous results. \\
+Online leaderboard service (F8) & Global rankings and score-submission status. &
+Course scores, player identifiers and ranking requests. \\
 Physical space & Room clearance, user preparation and conditions for headset
 tracking. No direct obstacle-sensing input is assumed. & VR images affect user
 attention and movement; FPVR cannot clear the physical space. \\
@@ -1100,7 +1102,7 @@ attention and movement; FPVR cannot clear the physical space. \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-context.png}
-\caption[FPVR system context]{FPVR system context. F1--F5 refer to Table~\ref{tab:e-external}.
+\caption[FPVR system context]{FPVR system context. F1--F8 refer to Table~\ref{tab:e-external}.
 Arrowheads show direction. Solid arrows show normal interactions; dotted arrows
 marked * apply only to PCVR or optional analysis. Arrows between the user and
 physical space show preparation and physical influence, not a sensor connection.}
@@ -1108,9 +1110,10 @@ physical space show preparation and physical influence, not a sensor connection.
 \end{figure}
 
 User-facing images and results pass through the headset.
-F4 applies only to PCVR. F5 is a possible analysis connection; it does not
-require a server or internet access. Detailed interfaces belong in
-\hyperref[s3]{S.3}.
+F4 applies only to PCVR. F5 is optional analysis; F6--F8 are required online
+services for accounts, saved results and global leaderboards. These online
+features need internet access in either execution mode. Detailed interfaces
+belong in \hyperref[s3]{S.3}.
 
 \clearpage
 \subsubsection*{Execution environments and compatibility}
@@ -1150,7 +1153,7 @@ controller, runtime and control mapping; PCVR also needs the computer operating
 system, hardware and link details. Untested pairings remain under review
 (\hyperref[ec-hardware]{E-C-02}).
 
-\subsection{Constraints}\label{e3}
+\subsection{Constraints}\label{e2}
 
 Constraints are limits the project must follow. The items below come from the
 project scope, chosen platforms and release conditions.
@@ -1159,7 +1162,7 @@ project scope, chosen platforms and release conditions.
 \item[{\hyperref[et-platform]{E-C-01}:}]\phantomsection\label{ec-platform}
 \textbf{Platforms and engine.}
 FPVR must support the two modes and controller types described in
-\hyperref[e2]{E.2} (\hyperref[sec:s2-interface]{FR-UI-01--03},
+\hyperref[e1]{E.1} (\hyperref[sec:s2-interface]{FR-UI-01--03},
 \hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01}).
 The \href{../DevelopmentPlan/DevelopmentPlan.tex}{Development Plan},
 ``Expected Technology'', selects Unity.
@@ -1171,13 +1174,13 @@ hardware and development tools.
 The draft targets Quest 3S; the earlier Development Plan names Quest 3.
 Supported headset models, Xbox controller versions, computer requirements and
 headset links remain \textbf{under review}. Record tested configurations as
-explained in \hyperref[e2]{E.2} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
+explained in \hyperref[e1]{E.1} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
 \textit{Reason:} choosing a device does not prove that FPVR works on it.
 
 \item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
 \textbf{Scope and flight accuracy.}
-\hyperref[g6]{G.6} sets the current scope. Earlier planning ideas do not add
-features to it. Simulated gravity is required by
+The simulation limits in \hyperref[g6]{G.6} still apply. Player accounts,
+cloud-backed results and global leaderboards are required. Simulated gravity is required by
 \hyperref[sec:s2-flight]{FR-FLT-03}; the required level of physical accuracy is
 still under review.
 \textit{Reason:} the
@@ -1200,11 +1203,17 @@ for every user.
 \textbf{Release and data rules.}
 A Meta release must meet the applicable
 \hyperref[es-meta-age]{audience rules}. Distribution must also
-respect engine, runtime and asset licences. Before adding data retention or
-external analysis, define what data is used, why, who receives it, how long it
-is kept, how it is deleted, user notice/consent and applicable legal duties.
-\textit{Reason:} optional feedback (\hyperref[sec:s2-ai]{S.2}) does not by itself
-define a data policy. These checks are required before release or new data use.
+respect engine, runtime and asset licences. Account data, completed flight
+results and leaderboard entries require persistent cloud storage. Protect
+credentials and stored data, encrypt service connections, and restrict access
+to private records to their owner and authorised services. Define the data
+collected, its purpose, recipients, retention period, deletion process and user
+notice/consent and applicable legal duties before release. Explain which
+leaderboard details are public.
+Optional AI processing must have a separate data-use policy; storing results
+does not authorise sending them or credentials to an AI service.
+\textit{Reason:} required storage supports accounts, previous results and global
+rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate purpose.
 
 \item[{\hyperref[et-resources]{E-C-06}:}]\phantomsection\label{ec-resources}
 \textbf{Hardware limits.}
@@ -1231,7 +1240,7 @@ Accessed October 19, 2026; see also~\cite{metaAgeGroups}.
 Supports \hyperref[ec-release]{E-C-05}.
 \end{description}
 
-\subsection{Assumptions}\label{e4}
+\subsection{Assumptions}\label{e3}
 
 These assumptions describe the conditions needed for use and testing.
 Each row explains how to check the assumption and what happens if it fails.
@@ -1278,8 +1287,11 @@ Tracking, focus and PCVR links can fail. Their failure handling still needs
 specification and checks in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
 \hyperref[s6]{S.6}. An available AI service is not assumed; the standard review
 must remain available as explained in \hyperref[ei-review]{E-I-04}.
+Account login, cloud save/retrieval and leaderboard requests depend on internet
+access and their services. Check service failures and rejected credentials;
+show unsuccessful requests clearly and do not report failed saves as saved.
 
-\subsection{Effects}\label{e5}
+\subsection{Effects}\label{e4}
 
 Effects describe how FPVR affects users and equipment. They also concern
 guardians, bystanders and the wider public (\hyperref[g7]{G.7}) through
@@ -1306,10 +1318,12 @@ needs separate evaluation (\hyperref[g6]{G.6}).
 \textbf{Flight data and equipment use.}
 FPVR updates the selected course, checkpoint progress, timers, crash count,
 score, rating and current review (\hyperref[sec:s2-performance]{FR-PER-01--10},
-\hyperref[sec:s2-review]{FR-REV-02, FR-REV-05}). It also uses device processing
-power, memory, display and battery; PCVR uses the computer and link
-(\hyperref[ec-resources]{E-C-06}). Keeping or sharing flight data requires the
-review in \hyperref[ec-release]{E-C-05}. No history interface is included.
+\hyperref[sec:s2-review]{FR-REV-02}). Registered users can save completed results
+to persistent cloud storage and retrieve previous results. Account-linked
+records and public leaderboard entries create privacy and access-control
+obligations under \hyperref[ec-release]{E-C-05}. FPVR also uses device processing
+power, memory, display, battery and network access; PCVR uses the computer and
+link (\hyperref[ec-resources]{E-C-06}).
 
 \item[{\hyperref[et-review]{E-F-04}:}]\phantomsection\label{ef-analysis}
 \textbf{Optional analysis.}
@@ -1322,7 +1336,7 @@ The standard review stays available without this analysis
 \end{description}
 
 \clearpage
-\subsection{Invariants}\label{e6}
+\subsection{Invariants}\label{e5}
 
 An invariant is a rule that must stay true while FPVR operates. Values such as
 elapsed time and checkpoint count can change, but they must change according
@@ -1435,7 +1449,7 @@ After successful completion, the user must receive the current attempt's time,
 checkpoint results, crash count, score and rating. This review remains available
 whether intelligent feedback is not included, succeeds, is unavailable or fails.
 For example, an analysis error must still allow the user to review the results
-and retry the course (\hyperref[sec:s2-review]{FR-REV-01--05},
+and retry the course (\hyperref[sec:s2-review]{FR-REV-01--04},
 \hyperref[sec:s2-ai]{FR-AI-03}).
 \textit{Reason:} an optional feature must not block the core training experience.
 \end{description}
@@ -1479,10 +1493,11 @@ Review headset setup. Try flight, menus, recovery and exit while seated and
 standing without walking. Record comfort and accessibility issues. \\
 \phantomsection\label{et-release}
 \hyperref[ec-release]{E-C-05}, \hyperref[ef-data]{E-F-03} &
-\hyperref[g6]{G.6}; \hyperref[sec:s2-review]{FR-REV-05};
-\hyperref[sec:s2-ai]{S.2 optional analysis} &
-Review stored/shared data, licences and audience rules. Document the data policy
-before adding retention or external processing. \\
+\hyperref[s2]{S.2}; \hyperref[sec:s2-ai]{Optional analysis} &
+Test registration/login, cloud save/retrieval of previous results and global
+rankings (F6--F8), including service failures. Check access to another user's
+private results is denied. Review encryption, retention/deletion, public
+leaderboard fields, separate AI data use, licences and audience rules. \\
 \phantomsection\label{et-resources}
 \hyperref[ec-resources]{E-C-06} &
 \hyperref[sec:s2-nfr]{NFR-PERF-01} &
@@ -1497,7 +1512,7 @@ crashed. Crash before and after a checkpoint; check Table~\ref{tab:e-recovery},
 menu-time exclusion and the completion timer. \\
 \phantomsection\label{et-review}
 \hyperref[ef-analysis]{E-F-04}, \hyperref[ei-review]{E-I-04} &
-\hyperref[sec:s2-review]{FR-REV-01--05};
+\hyperref[sec:s2-review]{FR-REV-01--04};
 \hyperref[sec:s2-ai]{FR-AI-03} &
 Complete a course without optional feedback. If implemented, also try
 available, unavailable and failed feedback. Check the standard review and retry
@@ -1983,7 +1998,7 @@ Section~\ref{s6}.
 
 \subsection{Interfaces}\label{s3}
 
-\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e3]{E.3}. \cite{BM22}}
+\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e1]{E.1}. \cite{BM22}}
 
 % TODO: Write your team's content for S.3 here.
 
