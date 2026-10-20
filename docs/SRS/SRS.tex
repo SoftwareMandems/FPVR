@@ -1023,32 +1023,29 @@ and usage assumptions.
 
 \booksection{E}{Environment}
 
-The glossary from Meyer's Environment template~\cite{BM22} is placed after
-Revision History, before the main books. The five sections below define the
-physical and virtual context of FPVR; software behaviour remains
-specified in \hyperref[s2]{S.2}. Identifiers prefixed \textbf{E-C}, \textbf{E-A},
-\textbf{E-F}, and \textbf{E-I} denote constraints, assumptions, effects, and
-invariants, respectively. An assumption is an operating premise to check, not
-a guarantee; an invariant is a property that FPVR must preserve.
+This book describes where FPVR runs and how it interacts with people and
+hardware. It follows Meyer's Environment template~\cite{BM22}, with the glossary
+placed after Revision History. Detailed software behaviour is defined in
+\hyperref[s2]{S.2}.
+
+Identifiers beginning with \textbf{E-C}, \textbf{E-A}, \textbf{E-F}, and
+\textbf{E-I} identify constraints, assumptions, effects, and invariants.
+Assumptions must be checked; invariants are rules FPVR must always preserve.
 
 \subsection{Components}\label{e1}
 
-FPVR is the software under specification. Its boundary contains simulated
-flight, virtual environments and courses, checkpoint/recovery state,
-performance evaluation, and the VR interaction presented to the user. These
-responsibilities are inside FPVR even when the application executes on an
-external headset or computer. The simulated drone is a domain object, not an
-external aircraft. \hyperref[g6]{G.6} excludes physical-drone control,
-headset-free desktop play, multiplayer, pilot certification, and a historical
-session-review interface.
+FPVR includes the simulated drone, flight spaces and courses, crash recovery,
+performance results, and VR controls. The headset, controllers and any connected
+computer are outside the software boundary, even when they run FPVR.
+\hyperref[g6]{G.6} defines the features outside the project's scope.
 
 \clearpage
 \subsubsection*{Domain relationships}
-Figure~\ref{fig:e-domain} identifies domain concepts, rather than implementation
-classes. Each course uses one virtual environment and has at least one checkpoint;
-an attempt selects exactly
-one course, uses one simulated drone, and produces a review only on completion.
-The many possible attempts do not imply retained session history.
+Figure~\ref{fig:e-domain} shows the main training concepts. A course takes place
+in one virtual environment and contains ordered checkpoints. Each attempt uses
+one course and one simulated drone. Completing the attempt produces a flight
+review. The diagram describes these relationships; it does not specify software
+classes or stored flight history.
 
 \begin{figure}[H]
 \centering
@@ -1077,16 +1074,16 @@ The many possible attempts do not imply retained session history.
 \put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
 \end{picture}
 \endgroup
-\caption{Conceptual FPVR domain model. Lines denote associations, with the
-number of related instances at each end: 1 means exactly one, 0..1 means
-optional, and * means an unbounded multiplicity.}
+\caption{FPVR training concepts. Each line names a relationship. End labels
+show how many items may be related: 1 means one, 0..1 means zero or one, 0..*
+means zero or more, and 1..* means one or more.}
 \label{fig:e-domain}
 \end{figure}
 
-The editable \href{models/environment-domain.puml}{PlantUML domain source}
-expresses these associations. The inline vector figure keeps the normal
-\LaTeX{} build self-contained; it requires no generated diagram image.
-The same convention is used for the context and deployment figures below.
+Editable diagram code is available in the
+\href{models/environment-domain.puml}{PlantUML domain source}. The figure is
+included directly in this document, so building the SRS needs no separate image.
+The context and deployment figures use the same approach.
 
 The environment includes the user profiles in \hyperref[g8]{G.8}, their physical
 activity space, the headset and runtime, input devices, and the host/link used
