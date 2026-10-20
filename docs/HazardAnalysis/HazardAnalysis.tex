@@ -838,19 +838,6 @@ Claude Opus 5.5 and GPT Astra 6.1.
 \section*{Vikram -- Reflection}
 
 \begin{enumerate}
-    \item What went well while writing this deliverable? 
-    \item What pain points did you experience during this deliverable, and how
-    did you resolve them?
-    \item Which of your listed risks had your team thought of before this
-    deliverable, and which did you think of while doing this deliverable? For
-    the latter ones (ones you thought of while doing the Hazard Analysis), how
-    did they come about?
-    \item Other than the risk of physical harm (some projects may not have any
-    appreciable risks of this form), list at least 2 other types of risk in
-    software products. Why are they important to consider?
-\end{enumerate}
-
-\begin{enumerate}
 
     \item \textbf{What went well while writing this deliverable?}
 
@@ -879,180 +866,6 @@ Claude Opus 5.5 and GPT Astra 6.1.
     We addressed this by providing rationales for each requirement
     and identifying system behaviours that could be verified during
     testing.
-
-    \item \textbf{How many of your requirements were inspired by
-    speaking to your clients or their proxies, such as peers,
-    stakeholders, and potential users?}
-
-   Several requirements were informed by discussions with stakeholders and potential users, including drone enthusiasts and members of the McMaster MARS Rover team. For example, the requirement for responsive and realistic drone controls was motivated by the need to provide an authentic FPV flying experience that would be useful for both beginners and experienced drone operators. Another example is the requirement to provide multiple flight courses with varying levels of difficulty, which reflects the need to accommodate users with different levels of flying experience and allow them to progressively improve their skills. These discussions helped ensure that the system's requirements reflected the needs and expectations of its intended users.
-
-    \item \textbf{Which courses have you taken, or are currently
-    taking, that will help your team succeed with the capstone project?}
-
-    Several courses provide relevant knowledge for developing FPVR.
-    Course 4HC3, Human Interface Design, will help the team design
-    intuitive VR interactions, controller mappings, menus, and
-    accessible interfaces. Its concepts will also support usability
-    evaluation and improving user comfort.
-
-    Course 4AA4, Control Systems, will help the team understand
-    the relationship between controller inputs and simulated drone
-    movement. Control systems concepts will support the development
-    of responsive flight behaviour and the evaluation of the
-    simulation's control model.
-
-    Course 2AA4, Software Design, will help the team structure the
-    application into modular components with clearly defined
-    responsibilities and interfaces. This will be important when
-    integrating VR interactions, flight physics, course management,
-    multiplayer functionality, and performance evaluation.
-
-    Additionally, programming and software engineering courses
-    provide a foundation in object-oriented programming, requirements
-    analysis, testing, debugging, and collaborative development.
-    These skills will help the team implement the simulation,
-    verify its requirements, and integrate its components reliably.
-
-    \item \textbf{What knowledge and skills will the team collectively
-    need to acquire to successfully complete this capstone project?}
-
-    The team will need to acquire knowledge and skills in several
-    areas to complete FPVR successfully:
-
-    \begin{itemize}
-        \item \textbf{VR development and hardware integration:}
-        The team will need to learn Unity, C\#, OpenXR, and the
-        XR Interaction Toolkit to implement VR interactions,
-        integrate supported headsets and controllers, and handle
-        tracking information.
-
-        \item \textbf{Drone simulation and control systems:}
-        The team will need to understand drone movement, flight
-        dynamics, controller mappings, and how user inputs affect
-        simulated flight behaviour.
-
-        \item \textbf{Performance optimization:}
-        The team will need to learn how to profile Unity applications,
-        identify rendering and processing bottlenecks, and optimize
-        frame rate and input latency for a responsive VR experience.
-
-        \item \textbf{Software testing and user evaluation:}
-        The team will need to develop test cases for gameplay,
-        controller responsiveness, hardware compatibility, and
-        recovery from interruptions. It will also need to evaluate
-        usability, immersion, and user comfort through structured
-        testing.
-
-        \item \textbf{Data analysis and training evaluation:}
-        The team will need to learn how to record and interpret
-        flight performance data, including completion times,
-        crashes, control consistency, and unnecessary corrections.
-        This knowledge will support performance summaries and the
-        potential AI-based feedback feature.
-
-        \item \textbf{Version control and collaboration:}
-        The team will need to use Git, feature branches, pull
-        requests, and code reviews effectively. Consistent coding
-        conventions and clearly defined component interfaces
-        will help reduce integration problems.
-
-        \item \textbf{Technical documentation and communication:}
-        The team will need to document implementation decisions,
-        testing procedures, and design changes. Clear communication
-        will also be necessary for coordinating work, resolving
-        disagreements, and presenting the completed project.
-    \end{itemize}
-
-    These areas can be distributed among team members according
-    to their existing experience and responsibilities. Testing,
-    documentation, and collaboration will remain shared
-    responsibilities across the team.
-
-    \item \textbf{For each knowledge area and skill identified above,
-    what are at least two approaches to acquiring the knowledge or
-    mastering the skill? Which approaches will each team member
-    pursue, and why?}
-
-    The team will combine structured learning with practical
-    implementation. Tutorials and documentation will provide
-    foundational knowledge, while prototypes and testing will
-    allow team members to apply that knowledge to FPVR.
-
-    \begin{itemize}
-        \item \textbf{VR development and hardware integration:}
-        One approach is to complete official Unity, OpenXR, and
-        XR Interaction Toolkit tutorials. A second approach is
-        to develop a prototype that supports headset tracking,
-        controller input, and basic VR interactions. The team
-        member responsible for VR integration will pursue both
-        approaches because tutorials provide a structured
-        introduction, while prototyping reveals practical
-        hardware and integration issues.
-
-        \item \textbf{Drone simulation and control systems:}
-        One approach is to review control systems course material
-        and introductory resources on drone flight dynamics.
-        A second approach is to implement a basic flight model
-        and iteratively test how controller inputs affect movement.
-        The team member responsible for flight simulation will
-        combine theoretical study with experimentation to
-        understand the underlying principles and tune the
-        simulation's response.
-
-        \item \textbf{Performance optimization:}
-        One approach is to study Unity profiling tools and
-        official VR optimization documentation. A second
-        approach is to profile the application during gameplay,
-        identify bottlenecks, and measure performance before
-        and after changes. The team member responsible for
-        performance will use both approaches to ensure that
-        optimization decisions are based on measured results.
-
-        \item \textbf{Software testing and user evaluation:}
-        One approach is to study software testing techniques
-        and usability evaluation methods. A second approach
-        is to create test cases and conduct structured trials
-        with representative users. The team member responsible
-        for testing will combine these methods to identify
-        both functional defects and usability issues.
-
-        \item \textbf{Data analysis and training evaluation:}
-        One approach is to study performance metrics and
-        methods for evaluating control efficiency and
-        consistency. A second approach is to build a prototype
-        that records flight behaviour and generates feedback
-        using measurable performance indicators. The team
-        member responsible for performance evaluation will
-        start with interpretable metrics before exploring
-        more advanced AI-based approaches, allowing the
-        evaluation feature to be validated incrementally.
-
-        \item \textbf{Version control and collaboration:}
-        One approach is to review Git documentation and
-        collaborative development practices. A second approach
-        is to apply feature branches, pull requests, and code
-        reviews in the project repository. All team members
-        will practise these workflows because consistent
-        collaboration is necessary to integrate independently
-        developed components.
-
-        \item \textbf{Technical documentation and communication:}
-        One approach is to study examples of technical
-        documentation and practise writing concise design
-        descriptions and test reports. A second approach is
-        to maintain project documentation and present progress
-        during team meetings and project reviews. All team
-        members will participate so that implementation
-        decisions remain documented and project knowledge
-        is shared.
-    \end{itemize}
-
-    The responsibilities described above are organized by
-    technical area rather than by individual name. The team
-    will assign specific owners based on members' experience,
-    interests, and workload. This approach allows each member
-    to develop a particular area of expertise while contributing
-    to the team's overall progress.
 
     \item \textbf{Which of your listed risks had your team thought
     of before this deliverable, and which did you think of while
@@ -1139,10 +952,12 @@ Claude Opus 5.5 and GPT Astra 6.1.
 
 \end{enumerate}
 
-\subsection*{Arjun Sasidaran}
+\section*{Arjun -- Reflection}
 
 \begin{enumerate}
-    \item % What went well while writing this deliverable?
+
+    \item \textbf{What went well while writing this deliverable?}
+
     Organizing the FMEA by system component worked well. Working through the
     flight simulation, VR headset, controllers, checkpoints, scoring, data,
     network, and feedback components one at a time made it much easier to
@@ -1154,7 +969,9 @@ Claude Opus 5.5 and GPT Astra 6.1.
     with a justification for each requirement, made our priorities much
     clearer than a single list would have.
 
-    \item % What pain points did you experience, and how did you resolve them?
+    \item \textbf{What pain points did you experience during this
+    deliverable, and how did you resolve them?}
+
     The main pain point was deciding which safety and security requirements
     belong in the capstone timeline. Several requirements depend on
     multiplayer, user accounts, or database storage of flight records, which
@@ -1166,7 +983,10 @@ Claude Opus 5.5 and GPT Astra 6.1.
     wide for a portrait page, so I moved it to landscape pages, which then
     required extra work to keep the page numbers and column text readable.
 
-    \item % Which risks did the team think of before vs. during this deliverable?
+    \item \textbf{Which of your listed risks had your team thought of before
+    this deliverable, and which did you think of while doing this
+    deliverable? For the latter ones, how did they come about?}
+
     Before this deliverable, we had already thought about the physical risks
     that are common to VR, such as motion sickness, colliding with objects in
     the room, and losing headset tracking, as well as basic performance risks
@@ -1181,7 +1001,10 @@ Claude Opus 5.5 and GPT Astra 6.1.
     drone. The last risk came from our own SRS, which already states that
     performance in FPVR is not proof of real-world flight ability.
 
-    \item % At least 2 other types of risk in software products, and why they matter.
+    \item \textbf{Other than the risk of physical harm, list at least two
+    other types of risk in software products. Why are they important to
+    consider?}
+
     One type of risk is security and privacy risk, such as unauthorized access
     to user data, intercepted network traffic, or compromised credentials.
     These matter because they can harm users even when the software works
