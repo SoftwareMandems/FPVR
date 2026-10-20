@@ -1,0 +1,35 @@
+@startuml environment-deployment
+' Render: java -jar plantuml.jar -tpng environment-deployment.puml
+skinparam shadowing false
+skinparam monochrome true
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam dpi 200
+skinparam nodesep 35
+skinparam ranksep 40
+top to bottom direction
+
+package "Standalone Quest" as Standalone {
+  node "Quest headset" as LocalHeadset {
+    artifact "FPVR application" as LocalApp
+    rectangle "Local runtime\nDisplay / tracking" as LocalRuntime
+    LocalApp <-down-> LocalRuntime : images\n/ data
+  }
+}
+
+package "PCVR" as PCVRMode {
+  node "Host computer" as PC {
+    artifact "FPVR application\nand PCVR runtime" as PCApp
+  }
+  node "Quest headset\nDisplay / tracking / input" as LinkedHeadset
+  PCApp <-down-> LinkedHeadset : images\n/ data
+}
+Standalone -[hidden]right-> PCVRMode
+
+legend bottom
+  Alternative modes; both use a headset.
+  Down: images. Up: pose, input and status.
+  PCVR uses the headset link; no protocol is selected.
+  Hardware and controller pairings remain under review.
+endlegend
+@enduml
