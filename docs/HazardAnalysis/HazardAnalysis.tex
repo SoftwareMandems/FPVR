@@ -3,6 +3,8 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -36,8 +38,8 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
+Sept 30 & Sankalpa Chhetri Dhakal & Completed Introduction\\
+Oct 6 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
 ... & ... & ...\\
 \bottomrule
 \end{tabularx}
@@ -59,8 +61,119 @@ Date2 & Name(s) & Description of changes\\
 
 \section{Scope and Purpose of Hazard Analysis}
 
-\wss{You should say what \textbf{loss} could be incurred because of the
-hazards.}
+\section{System Boundaries and Components}
+
+The system boundary includes the software and hardware directly involved in
+running and interacting with the FPV drone training simulator. This includes
+the VR headset, input devices, host computer, Unity application, drone
+simulation, training functionality, user interface, and locally stored data.
+The user and their physical surroundings interact with the system and are
+considered when identifying hazards, but they are not components of the
+software system itself. Real FPV drones and real-world drone operation are
+outside the system boundary.
+
+The system consists of several major software and hardware components. These
+components are considered independently during hazard identification because a
+failure in one component may affect the safety or correctness of the overall
+system.
+
+\subsection{VR Headset}
+
+The VR headset, expected to be a \textbf{Meta Quest 3S}, provides the user's
+visual representation of the simulated environment and tracks the position and
+orientation of the user's head.
+
+Potential hazards associated with this component include loss of tracking,
+visual latency, incorrect orientation, poor headset fit, and the user becoming
+unaware of their physical surroundings.
+
+\subsection{Controller Thumbsticks, Triggers, Buttons, and Input Connection}
+
+Controller thumbsticks and triggers provide axis values that are mapped to
+drone throttle, pitch, roll, and yaw. Buttons provide discrete commands such as
+pause, restart, and respawn. Depending on the final implementation, these
+controls may be provided by VR controllers, a game controller, or an external
+FPV-style radio controller. The controller connection carries these values and
+button events to the application.
+
+Failures may include thumbstick drift, where a centred stick reports an input
+and causes unintended drone movement; a stuck thumbstick or trigger,
+which maintains a control value after release; or a stuck or unresponsive
+button, which repeats or prevents a command. Incorrect axis mappings, inverted
+axis directions, or incorrect centre, range, or dead-zone calibration may
+produce unintended throttle or steering responses. A disconnected controller,
+dropped input updates, or delayed input delivery may cause loss of control,
+continued use of a stale control value, or a delayed response to a pilot command.
+
+\subsection{Host Computer}
+
+A computer executes the Unity application and associated simulation software.
+
+Failures may include insufficient hardware performance, overheating, loss of
+power, driver issues, or resource exhaustion.
+
+\subsection{Unity Application}
+
+Unity provides the primary execution environment for the game.
+
+This component is responsible for scene management, game logic, user
+interaction, rendering, and communication between major software modules.
+
+\subsection{Drone Physics Simulation}
+
+The drone physics subsystem models properties such as:
+
+\begin{itemize}
+    \item thrust;
+    \item gravity;
+    \item acceleration;
+    \item angular velocity;
+    \item momentum;
+    \item collisions; and
+    \item drone response to pilot input.
+\end{itemize}
+
+Incorrect behaviour in this component represents an important hazard because
+users are expected to learn flying behaviour from the simulator.
+
+\subsection{VR Rendering and XR Subsystem}
+
+This subsystem renders the virtual environment and communicates with the VR
+headset.
+
+Failures may result in visual artifacts, low frame rate, latency, incorrect
+camera movement, or loss of tracking.
+
+\subsection{Training and Scoring System}
+
+The training subsystem may contain tutorials, objectives, checkpoints, scoring
+metrics, crash detection, and user performance feedback.
+
+Incorrect scoring or feedback could indicate that unsafe or incorrect flying
+behaviour is acceptable.
+
+\subsection{User Interface}
+
+The interface includes menus, settings, warnings, calibration options, pause
+controls, and training instructions.
+
+Poor interface design could prevent the user from understanding warnings or
+exiting the simulation quickly.
+
+\subsection{Data Storage}
+
+The system may locally store information such as:
+
+\begin{itemize}
+    \item user settings;
+    \item controller configuration;
+    \item training progress;
+    \item scores; and
+    \item application configuration.
+\end{itemize}
+
+Data corruption or unauthorized modification could affect system operation or
+training results.
 
 \section{System Boundaries and Components}
 
@@ -72,10 +185,26 @@ important library, these are also potential components.}
 
 \section{Critical Assumptions}
 
-\wss{These assumptions that are made about the software or system.  You should
-minimize the number of assumptions that remove potential hazards.  For instance,
-you could assume a part will never fail, but it is generally better to include
-this potential failure mode.}
+\begin{enumerate}
+    \item \textbf{Stable Internet Connection:} Users have access to a sufficiently stable internet connection for online features, including forms, multiplayer elements, and reviews.\\
+    \textbf{Rationale:} Online features require reliable network connectivity to transmit user input, synchronize multiplayer gameplay, and submit or retrieve reviews. This assumption allows the system to be designed around the availability of network connectivity.
+
+    \item \textbf{Honest User Feedback:} Users provide honest gameplay reviews and feedback, and accurately report their experiences with the game.\\
+    \textbf{Rationale:} Honest feedback helps ensure that reviews and user evaluations accurately represent gameplay experiences, allowing developers to identify issues and measure goals accurately without accounting for fake comments.
+
+    \item \textbf{Available Storage Capacity:} Users have sufficient available storage space on their systems to install the game and store any locally saved gameplay data.\\
+    \textbf{Rationale:} The game requires storage for its installation files, course assets, and locally saved data. Insufficient storage may prevent installation, updates, or the saving of gameplay progress. It may require additional storage after progressing through levels such as save states and leaderboards, this storage should be available for the simulation to use.
+
+    \item \textbf{Basic Gaming Familiarity:} Users have basic familiarity with video games and standard user interface elements, including start screens, settings menus, and navigation controls.\\
+    \textbf{Rationale:} This familiarity allows users to navigate the application and access gameplay features without requiring extensive introductory instruction, reducing the complexity of the user interface design.
+
+    \item \textbf{Suitable Hardware Performance:} Users have VR equipment that meets the minimum hardware requirements for running the game.\\
+    \textbf{Rationale:} Meeting the minimum hardware requirements helps ensure that the system can maintain acceptable performance, provide a responsive VR experience, and execute the simulation as intended.
+
+    \item \textbf{Accurate Self-Reported Drone Experience:} Users who identify themselves as competent or experienced drone operators accurately represent their level of drone operating experience.\\
+    \textbf{Rationale:} The system may rely on users' self-reported experience to understand their familiarity with drone operation and interpret their training results. Assuming these claims are accurate helps ensure that user classifications and performance evaluations are based on their stated level of experience.
+
+\end{enumerate}
 
 \section{Failure Mode and Effect Analysis}
 
@@ -92,6 +221,134 @@ documentation, and/or test cases.}
 
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
 rationale design process how and why to fake it.)}
+
+\```latex
+\subsection{Functional Requirements}
+
+\noindent
+\textbf{SR1:} The system shall provide users with a safety notice before their first VR session, reminding them to clear their physical play area of obstacles and remain aware of their surroundings.\\
+\textbf{Rationale:} Users may collide with nearby objects while immersed in the virtual environment, potentially causing injury or damaging equipment.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR2:} The system shall allow users to pause or exit gameplay at any time during a VR session.\\
+\textbf{Rationale:} Users may experience motion sickness, dizziness, or discomfort that requires them to stop playing immediately.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR3:} The system shall suspend active gameplay when the VR platform reports a headset disconnection or loss of tracking that prevents reliable interaction.\\
+\textbf{Rationale:} Continuing gameplay when tracking is unreliable may cause unexpected interactions and increase user disorientation.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR4:} The system shall verify that required VR hardware is detected and initialized before allowing users to begin a flight session.\\
+\textbf{Rationale:} Missing or improperly initialized hardware may prevent reliable controller input and compromise gameplay.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR5:} The system shall validate controller input values before applying them to the drone simulation and reject values outside supported input ranges.\\
+\textbf{Rationale:} Invalid controller inputs may produce unintended drone movements or unpredictable simulation behaviour.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR6:} The system shall verify connectivity to required external services before enabling features that depend on them.\\
+\textbf{Rationale:} Service connectivity failures may prevent multiplayer sessions or cause dependent features to behave incorrectly.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR9:} The system shall validate data received from multiplayer clients before accepting it for gameplay state updates or performance record storage.\\
+\textbf{Rationale:} Malformed or manipulated network messages may cause inconsistent multiplayer behaviour or compromise recorded statistics.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR11:} The system shall notify users when a network interruption prevents access to multiplayer functionality.\\
+\textbf{Rationale:} Users may otherwise be unaware that multiplayer functionality is unavailable or their session has been interrupted.\\
+\textbf{Risk:} Low\\[1em]
+
+\noindent
+\textbf{SR12:} The system shall disclose what gameplay data is collected, how it is used, and whether it is transmitted to external services before collecting user-associated data.\\
+\textbf{Rationale:} Users need to understand how their gameplay information is handled to make informed decisions about their privacy.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR13:} The system shall require users to authenticate before accessing personal accounts or user-specific gameplay records, if account functionality is implemented.\\
+\textbf{Rationale:} Authentication helps prevent unauthorized users from accessing personal information and saved progress.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR14:} The system shall enforce authorization checks before allowing users to view, modify, or delete stored gameplay records.\\
+\textbf{Rationale:} Authorization prevents users from accessing or modifying records belonging to other users.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR16:} The system shall validate and sanitize user-provided data before processing or storing it.\\
+\textbf{Rationale:} Improperly handled input may enable injection attacks, corrupt stored records, or cause unexpected system behaviour.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR18:} The system shall terminate or invalidate multiplayer session credentials when a user leaves a session or the session expires.\\
+\textbf{Rationale:} Invalidating expired session credentials reduces the risk of unauthorized reuse or continued access to multiplayer sessions.\\
+\textbf{Risk:} Medium
+
+
+\noindent
+\textbf{SR7:} The system shall use encrypted communication when transmitting user data or multiplayer session information over a network.\\
+\textbf{Rationale:} Unencrypted network traffic may expose user information or session data to unauthorized parties.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR8:} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
+\textbf{Rationale:} Unauthorized access may expose private information or allow gameplay records to be modified.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR10:} The system shall preserve previously saved gameplay records when unexpected software errors or network interruptions occur.\\
+\textbf{Rationale:} Unexpected failures may otherwise result in corrupted records or the loss of user progress.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR15:} The system shall securely store authentication credentials and shall not store passwords in plaintext. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
+\textbf{Rationale:} Plaintext passwords may be exposed if stored data is accessed by an unauthorized party.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{SR17:} The system shall prevent unauthorized modification of stored gameplay records and verify data integrity when records are retrieved or updated.\\
+\textbf{Rationale:} Tampered performance records may produce inaccurate results and undermine the reliability of user progress tracking.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR19:} The system shall limit repeated authentication attempts within a defined period.\\
+\textbf{Rationale:} Limiting repeated attempts helps reduce automated password-guessing and brute-force attacks.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\textbf{SR20:} The system shall record security-relevant events, including failed authentication attempts and unauthorized access attempts, without unnecessarily logging sensitive user information.\\
+\textbf{Rationale:} Security logs support the investigation of suspicious activity while minimizing the exposure of sensitive data.\\
+\textbf{Risk:} Medium
+
+\section{Non-Functional Requirements}
+\noindent
+\textbf{NFR1:} The system shall maintain a frame rate of at least 30 frames per second during standard single-player gameplay on the minimum supported VR hardware.\\
+\textbf{Rationale:} Maintaining a consistent frame rate helps reduce visual discomfort and supports an immersive VR experience.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\textbf{NFR2:} The system shall respond to valid controller inputs within 50 milliseconds under normal operating conditions.\\
+\textbf{Rationale:} Low input latency supports precise drone control and provides a more realistic flight simulation experience.\\
+\textbf{Risk:} High\\[1em]
+
+
+\noindent
+\textbf{NFR3:} The system shall operate correctly on all VR headsets, controllers, and operating system configurations explicitly listed as supported in the system documentation.\\
+\textbf{Rationale:} Defining supported configurations ensures consistent operation and reduces hardware compatibility issues.\\
+\textbf{Risk:} Medium\\[1em]
+
+
+\noindent
+\textbf{NFR4:} The system shall restore access to the main menu within 10 seconds of recovering from a recoverable VR tracking or network interruption, provided that the required hardware and services are available.\\
+\textbf{Rationale:} Prompt recovery minimizes disruption and reduces the need to restart the application.\\
+\textbf{Risk:} Medium
+
 
 \section{Roadmap}
 
