@@ -1708,8 +1708,54 @@ because they protect the simulator's scope and core training experience
 
 \subsection{Components}\label{s1}
 
+The following are logical responsibilities for specifying behaviour, not a
+module design: (1) drone flight and collision; (2) training modes and level
+selection; (3) checkpoint progression and recovery; (4) timing and evaluation;
+(5) VR interfaces and controller input; (6) post-flight review; (7) account
+registration and leaderboard access; and (8) optional intelligent feedback.
+Each has a corresponding subsection of \hyperref[s2]{S.2}. The first seven
+comprise the core. The eighth is conditional on a separate feasibility and
+scope decision. Safety, validation, and deployment properties apply across
+these responsibilities.
 
-% TODO: Write your team's content for S.1 here.
+\begin{table}[htbp]\centering\small
+\caption{Logical responsibilities and observable contracts}\label{tab:logical}
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}YY@{}}\toprule
+Responsibility & Observed inputs & Observed outputs \\ \midrule
+Flight/collision & Flight axes, gravity, contact, current pose & Drone view,
+movement, one latched crash event \\
+Modes/levels & Practice/course selection, exit/restart & Selected environment,
+initialized or ended attempt \\
+Progress/recovery & Gate crossing, finish, recovery choice & Ordered prefix,
+recovery pose, completion state \\
+Timing/evaluation & Active interval, checkpoint/crash/completion events & Total
+and segment time, crash count, score/rating \\
+VR interfaces & Pose/focus/input availability and user action & Instructions,
+menus, flight/review presentation \\
+Review/optional AI & Final current-attempt result, optional analysis outcome &
+Standard review, optional labelled feedback or fallback \\
+Accounts/leaderboards & Registration, sign-in, saved result, ranking request &
+Account status, local ranking, global ranking or availability status \\
+\bottomrule\end{tabularx}\end{table}
+
+The FPVR system is a VR-based first-person-view (FPV) drone simulation game.
+Its major components are the VR interface, the flight simulation, the virtual
+environment, the training and scenario manager, and the telemetry and feedback
+module, together with account and leaderboard services. The user operates the
+simulated drone through the VR interface. The flight simulation combines
+control input with the drone and environment models, while the training and
+scenario manager configures the exercise and the telemetry and feedback module
+presents the resulting flight information. Account and leaderboard services
+support registration, saved performance results, local rankings, and optional
+global rankings through the online service.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{FPVRComponentDiagram.png}
+\caption{FPVR Logical Component Diagram}
+\label{fig:fpvr-components}
+\end{figure}
+
 
 \subsection{Functionality}\label{s2}
 
