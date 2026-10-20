@@ -2046,385 +2046,8 @@ This section states, for every requirement in S.2, how it will be
 \textbf{verified} (confirming FPVR was built correctly against the
 requirement) and how it will be \textbf{validated} (confirming the
 requirement meets the real training need). Each requirement identifier
-links to the S.2 subsection that defines it. Validation is by user
+links to the requirement that defines it in S.2. Validation is by user
 evaluation sessions, supervisor/owner review, or expert review.
-
-\begingroup
-\sloppy
-
-\subsubsection{Drone Flight Simulation}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-01}}\par
- \textbf{Verification:} Move and rotate the drone in a test scene and
- confirm the headset view matches drone position and orientation, with no
- offset or lag between them.\par
- \textbf{Validation:} Users report the view feels like sitting in a real FPV drone.
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-02}}\par
- \textbf{Verification:} Apply each of throttle, pitch, roll, and yaw in
- isolation and in combination, and check that the drone's state responds in
- the correct axis and direction.\par
- \textbf{Validation:} Users with FPV experience confirm that the control
- response matches expectations.
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-03}}\par
- \textbf{Verification:} Run the zero-thrust drop fixture in
- \hyperref[sec:proposed-performance]{PR-FLT-02} and compare the displacement with
- $gt^2/2$. Check that the drone falls when thrust is below hover level.\par
- \textbf{Validation:} Supervisor review of whether the flight feel is adequate
- for training.
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-04}}\par
- \textbf{Verification:} Fly into every obstacle type and ground surface in
- each environment and confirm contact is detected. Fly close to obstacles and
- confirm there are no false detections.\par
- \textbf{Validation:} Users confirm that crashes occur where they visually expect them.
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-05}}\par
- \textbf{Verification:} Sit on the ground, then take off, and confirm no
- crash is registered. After takeoff, touch the ground and then an obstacle,
- and confirm a crash is registered each time.\par
- \textbf{Validation:} Users confirm that takeoff and landing feel natural, with
- no accidental crashes at takeoff.
-\item \textbf{\hyperref[sec:s2-flight]{FR-FLT-06}}\par
- \textbf{Verification:} Trigger a crash and confirm exactly one crash event
- is recorded, flight input is blocked, and flight resumes only after a
- recovery action.\par
- \textbf{Validation:} Users confirm that the crash response is clear and fair.
-\end{itemize}
-
-\subsubsection{Training Mode and Level Management}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-01}}\par
- \textbf{Verification:} Enter free flight and confirm no checkpoints,
- timer, or score are shown or computed.\par
- \textbf{Validation:} Novice users confirm free flight gives low-pressure practice.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-02}}\par
- \textbf{Verification:} Crash repeatedly in free flight and confirm reset
- restores a flyable drone each time.\par
- \textbf{Validation:} Users confirm they can practise without frustration after a crash.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-03}}\par
- \textbf{Verification:} Count the selectable obstacle-course levels
- (at least \texttt{MIN\_LEVELS}) and inspect their configurations. Check that
- each loads and is completable.\par
- \textbf{Validation:} Users rank the levels by difficulty, and the ranking is
- compared with the intended difficulty.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-04}}\par
- \textbf{Verification:} Load each environment and confirm at least
- \texttt{MIN\_ENVIRONMENTS} distinct environments exist.\par
- \textbf{Validation:} Users confirm that the environments look and feel different.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-05}}\par
- \textbf{Verification:} On a fresh install, select every level in turn
- without completing any other level.\par
- \textbf{Validation:} Users confirm they can pick any level freely.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-06}}\par
- \textbf{Verification:} Exit an active session to the main menu from free
- flight and from every level, and confirm the application does not restart or crash.\par
- \textbf{Validation:} Users confirm that exiting is easy to find and quick.
-\item \textbf{\hyperref[sec:s2-levels]{FR-LVL-07}}\par
- \textbf{Verification:} Complete or abandon an attempt, start a new one, and
- inspect checkpoint progress, timers, collision count, and performance data
- for reset values.\par
- \textbf{Validation:} Supervisor review confirms that attempts are independent.
-\end{itemize}
-
-\subsubsection{Checkpoint and Crash Recovery}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-01}}\par
- \textbf{Verification:} Inspect each course definition for an ordered,
- non-empty checkpoint sequence.\par
- \textbf{Validation:} Users confirm that the checkpoint order is understandable.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-02}}\par
- \textbf{Verification:} Fly through checkpoints in order and confirm
- progress advances by exactly one each time.\par
- \textbf{Validation:} Users confirm that checkpoint progress matches what they experience.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-03}}\par
- \textbf{Verification:} Fly through checkpoints out of order and confirm
- progress does not change.\par
- \textbf{Validation:} Users confirm that the course cannot be skipped and that
- guidance makes the next checkpoint clear.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-04}}\par
- \textbf{Verification:} Crash during a course and confirm both the restart
- and respawn options are offered.\par
- \textbf{Validation:} Users confirm that the options are clear.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-05}}\par
- \textbf{Verification:} Respawn after crashing before the first checkpoint,
- after checkpoint $n$, and at the last checkpoint. Check that the drone
- returns to the start or the last completed checkpoint.\par
- \textbf{Validation:} Users confirm that respawn lets them resume without confusion.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-06}}\par
- \textbf{Verification:} Respawn and confirm completed checkpoints, total
- time, and collision penalties are all preserved.\par
- \textbf{Validation:} Supervisor review confirms respawn carries a fair penalty.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-07}}\par
- \textbf{Verification:} Restart the level and confirm checkpoint progress,
- total time, section time, collision count, and score are all reset.\par
- \textbf{Validation:} Users confirm that restart gives a clean attempt.
-\item \textbf{\hyperref[sec:s2-checkpoints]{FR-CHK-08}}\par
- \textbf{Verification:} Reach the finish with all checkpoints completed in
- order, and again with a missed or out-of-order checkpoint. Only the first
- case may complete the level.\par
- \textbf{Validation:} Users confirm that completion feels earned and consistent.
-\end{itemize}
-
-\subsubsection{Timing, Scoring, and Performance Evaluation}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-01}}\par
- \textbf{Verification:} Run an attempt and compare the total timer with an
- independent stopwatch.\par
- \textbf{Validation:} Users confirm that the timer is visible and trustworthy.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-02}}\par
- \textbf{Verification:} Crash during a section and confirm that the time
- spent in that section is included in the total.\par
- \textbf{Validation:} Supervisor review confirms that failed sections should count.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-03}}\par
- \textbf{Verification:} Confirm the section timer starts from the beginning
- of each checkpoint segment and runs independently of the total timer.\par
- \textbf{Validation:} Users find per-section times useful for improving their flying.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-04}}\par
- \textbf{Verification:} Confirm the section timer resets on checkpoint
- completion and on respawn.\par
- \textbf{Validation:} Users confirm that the section timer reflects the current section.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-05}}\par
- \textbf{Verification:} Record the total time before and after respawn and
- confirm it does not drop.\par
- \textbf{Validation:} Supervisor review confirms respawn keeps time consequences.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-06}}\par
- \textbf{Verification:} Open the crash-recovery menu, wait a known
- duration, and confirm total time stays frozen and resumes when flight continues.\par
- \textbf{Validation:} Users confirm that menu time does not affect performance.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-07}}\par
- \textbf{Verification:} Cause a known number of crashes and confirm the
- collision count increases by one per crash.\par
- \textbf{Validation:} Users confirm the collision count matches their experience.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-08}}\par
- \textbf{Verification:} Confirm the score matches the formula in
- \hyperref[sec:proposed-performance]{PR-SCORE-01} for given time and crash inputs,
- and that each added crash lowers the score.\par
- \textbf{Validation:} Supervisor and user review of whether the score reflects
- flying quality.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-09}}\par
- \textbf{Verification:} Confirm the rating is computed from defined
- criteria separately from the score, including boundary cases.\par
- \textbf{Validation:} User evaluation of whether the rating labels are meaningful.
-\item \textbf{\hyperref[sec:s2-performance]{FR-PER-10}}\par
- \textbf{Verification:} Finish a course and confirm the displayed completion
- time equals the final total timer value and does not change afterwards.\par
- \textbf{Validation:} Users confirm the final time is trustworthy.
-\end{itemize}
-
-\subsubsection{VR User Interface and Controller Input}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-01}}\par
- \textbf{Verification:} Run the complete training experience on a compatible
- Meta Quest headset.\par
- \textbf{Validation:} Users complete a session wearing the headset, and their
- feedback is recorded.
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-02}}\par
- \textbf{Verification:} Run the same core scenarios in standalone Quest
- mode and in PC-based VR mode, and compare behaviour.\par
- \textbf{Validation:} Users confirm that both modes are usable.
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-03}}\par
- \textbf{Verification:} Fly the same scenario with Quest motion controllers
- and with an Xbox controller, and confirm all four flight inputs work for each.\par
- \textbf{Validation:} Users try both and confirm either can be used to fly.
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-04}}\par
- \textbf{Verification:} Confirm the control instructions list every flight
- input and its function, and that they appear before the first flight.\par
- \textbf{Validation:} New users fly their first flight after reading the
- instructions, and we observe whether they understand the controls.
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-05}}\par
- \textbf{Verification:} Use the menus to select each training mode,
- select each level, and navigate back to the main menu.\par
- \textbf{Validation:} Users navigate the menus without help.
-\item \textbf{\hyperref[sec:s2-interface]{FR-UI-06}}\par
- \textbf{Verification:} Complete all activities while seated and while
- standing in place, with no physical locomotion required.\par
- \textbf{Validation:} Seated and standing users confirm comfort and reachability.
-\end{itemize}
-
-\subsubsection{Post-Flight Review}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-review]{FR-REV-01}}\par
- \textbf{Verification:} Complete a level and confirm the review screen
- appears. Fail or exit a level and confirm the review does not appear.\par
- \textbf{Validation:} Users confirm that the review appears at a useful moment.
-\item \textbf{\hyperref[sec:s2-review]{FR-REV-02}}\par
- \textbf{Verification:} Confirm the review shows total completion time,
- checkpoint results, collision count, score, and rating, and that they match
- recorded values.\par
- \textbf{Validation:} Users confirm that the review content is sufficient for
- judging their performance.
-\item \textbf{\hyperref[sec:s2-review]{FR-REV-03}}\par
- \textbf{Verification:} From the review, retry the level and also choose
- another activity.\par
- \textbf{Validation:} Users confirm that the next step is obvious.
-\item \textbf{\hyperref[sec:s2-review]{FR-REV-04}}\par
- \textbf{Verification:} Disable or disconnect the intelligent feedback and
- confirm the standard review is still displayed in full.\par
- \textbf{Validation:} Supervisor review confirms the core review does not depend
- on the optional feature.
-\item \textbf{\hyperref[sec:s2-review]{FR-REV-05}}\par
- \textbf{Verification:} Confirm the review is produced from the current
- attempt only and that no historical session-review interface exists.\par
- \textbf{Validation:} Owner review confirms this matches the agreed scope.
-\end{itemize}
-
-\subsubsection{Intelligent Feedback (Planned)}
-Verification of these requirements applies only if the feature is formally
-included in scope.
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-ai]{FR-AI-01}}\par
- \textbf{Verification:} Run attempts with known performance data and
- confirm the generated observations are consistent with the data.\par
- \textbf{Validation:} Expert and user review of whether the observations are
- accurate and useful.
-\item \textbf{\hyperref[sec:s2-ai]{FR-AI-02}}\par
- \textbf{Verification:} Complete a level and confirm the feedback appears in
- the review without any user request.\par
- \textbf{Validation:} Users confirm the automatic presentation is acceptable.
-\item \textbf{\hyperref[sec:s2-ai]{FR-AI-03}}\par
- \textbf{Verification:} Simulate a failure, timeout, or unavailability of the
- feedback and confirm the standard review still displays without interruption.\par
- \textbf{Validation:} Supervisor review confirms graceful degradation.
-\end{itemize}
-
-\subsubsection{Non-Functional Requirements}
-\begin{itemize}
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-INST-01}}\par
- \textbf{Verification:} Install and launch FPVR on a supported standalone
- Quest headset with no computer connected, starting from a clean device.\par
- \textbf{Validation:} An independent evaluator installs the application using
- only the documentation.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-INST-02}}\par
- \textbf{Verification:} Launch FPVR in PCVR mode on a supported computer
- with a compatible Quest headset.\par
- \textbf{Validation:} An independent evaluator launches it using only the documentation.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-COMP-01}}\par
- \textbf{Verification:} Confirm a functional flight-control configuration
- exists and works for each of the two controller types, and record the tested
- combinations.\par
- \textbf{Validation:} Users confirm that each controller is usable for flight.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-PERF-01}}\par
- \textbf{Verification:} Run the performance workload defined in
- \hyperref[sec:proposed-performance]{PR-PERF-01} on supported hardware and measure
- frame rate. Pass/fail depends on the numerical threshold once approved.\par
- \textbf{Validation:} Users report whether the visuals feel smooth and comfortable.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-REL-01}}\par
- \textbf{Verification:} Run a soak test of repeated crash-and-recovery cycles
- and confirm the application neither restarts nor degrades.\par
- \textbf{Validation:} Users practise extended sessions and report any instability.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-USAB-01}}\par
- \textbf{Verification:} Confirm the instructions are reachable before the
- first flight. Observe new users finding them.\par
- \textbf{Validation:} First-time users are timed and observed to see whether they
- understand the controls.
-\item \textbf{\hyperref[sec:s2-nfr]{NFR-SAFE-01}}\par
- \textbf{Verification:} While in each activity, leave using the controller
- only, without taking off the headset.\par
- \textbf{Validation:} Users confirm they can stop and exit quickly when uncomfortable.
-\end{itemize}
-
-\subsubsection{Proposed Quantitative and Interaction Specifications}
-All of these remain PROPOSED. Their verification is defined now so the cases
-are ready if they are approved.
-\begin{itemize}
-\item \textbf{\hyperref[sec:proposed-performance]{PR-PERF-01}}\par
- \textbf{Verification:} Run the \texttt{PERF\_RUN\_SECONDS} workload after
- \texttt{WARMUP\_SECONDS} of warm-up on every declared device, mode, and
- controller configuration and all released courses, including crashes, menus,
- and reviews. Check that the average frame rate is at least
- \texttt{MIN\_NATIVE\_FPS} and that \texttt{ON\_TIME\_FRAME\_FRACTION} of frame
- deadlines are met. Report synthetic frames separately.\par
- \textbf{Validation:} Users report comfort in sessions, and the threshold is
- reviewed by the supervisor. Platform release testing remains separate.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-PERF-02}}\par
- \textbf{Verification:} Measure the interval from application receipt of
- input to the visible flight response during the same workload. Check that the
- \texttt{LATENCY\_PERCENTILE} percentile does not exceed
- \texttt{INPUT\_RESPONSE\_MS}, and report maxima and invalid samples.\par
- \textbf{Validation:} Users report whether controls feel responsive. Hardware
- and PCVR-link validation follow.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-FLT-01}}\par
- \textbf{Verification:} Hover near the clearance threshold of
- \texttt{TAKEOFF\_CLEARANCE\_M} and confirm airborne latches when it is first
- reached and does not clear when returning below it. Check respawn and restart
- initialize it correctly.\par
- \textbf{Validation:} Users confirm that takeoff feels natural. The clearance is
- checked against the drone size and course scale.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-FLT-02}}\par
- \textbf{Verification:} Run the zero-thrust, zero-drag, zero-velocity
- fixture for \texttt{GRAVITY\_TEST\_SECONDS} and compare the displacement with
- $gt^2/2$ using \texttt{REFERENCE\_GRAVITY} within
- \texttt{GRAVITY\_REL\_ERROR}. Document the fixture's initial pose and
- velocity.\par
- \textbf{Validation:} Supervisor review of the reference drone and realism
- tolerances, which remain TO BE REVIEWED.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-CTL-01}}\par
- \textbf{Verification:} For each approved controller and mode
- combination, confirm each proposed controller action produces the stated
- action, and that unsupported or reserved buttons are not advertised.\par
- \textbf{Validation:} Users with each controller confirm that the mapping is learnable.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-SCORE-01}}\par
- \textbf{Verification:} Compute $S$ for sample times and crash counts and
- compare with independent hand calculations. Confirm negative scores are kept,
- each added crash lowers $S$ by $P$, and rounding affects the display only.\par
- \textbf{Validation:} Users and the supervisor judge whether the score ranks
- attempts sensibly. The reference times $T_r$ are reviewed per course.
-\item \textbf{\hyperref[sec:proposed-performance]{PR-SCORE-02}}\par
- \textbf{Verification:} Test boundary inputs for Clean, Steady, and
- Practice, including equality at $T=T_r$ and $T=\rho T_r$, $c=0$, and
- $c=\gamma$. Confirm incomplete attempts receive no rating.\par
- \textbf{Validation:} Users evaluate whether the rating labels and cutoffs are meaningful.
-\end{itemize}
-
-\subsubsection{Proposed Safety, Security, and Failure Behaviour}
-All of these remain PROPOSED. Their verification is defined now so the cases
-are ready if they are approved.
-\begin{itemize}
-\item \textbf{\hyperref[sec:safety-proposals]{SR-01}}\par
- \textbf{Verification:} Confirm the safety, age, space, posture, and
- discomfort information appears before the first flight and that no unsupported
- medical or room claims are made.\par
- \textbf{Validation:} Expert review of the wording and user comprehension checks.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-02}}\par
- \textbf{Verification:} Simulate loss of tracking, input, focus, and
- controller connection. Confirm that flight and both timers stop, stale
- controls are discarded, and resume requires available input, neutral controls,
- and explicit confirmation.\par
- \textbf{Validation:} Users experience the pause and report it as clear and safe.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-03}}\par
- \textbf{Verification:} In seated and standing modes, reach pause,
- recenter, and exit. Confirm that flight and timers freeze and that no menu
- requires walking or reaching the floor.\par
- \textbf{Validation:} Seated and standing users evaluate comfort and reachability.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-04}}\par
- \textbf{Verification:} Induce sustained frame-rate drops. Confirm that after
- \texttt{PERFORMANCE\_FAILURE\_SECONDS} below target over the
- \texttt{PERFORMANCE\_WINDOW\_SECONDS} window, FPVR pauses, explains why, and
- resumes only with confirmation.\par
- \textbf{Validation:} Comfort effectiveness is PENDING VERIFICATION through user trials.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-05}}\par
- \textbf{Verification:} Inject non-finite or out-of-range inputs, invalid
- checkpoint orders, and intersecting recovery poses. Confirm invalid
- configuration is rejected before flight, runtime faults enter a recoverable
- error state, and progress, scores, and stale controls are unaffected.\par
- \textbf{Validation:} Supervisor review of the failure behaviour.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-06}}\par
- \textbf{Verification:} After installation, run core training, scoring,
- and review with networking disabled and no FPVR account. Inspect network
- traffic to confirm no core telemetry is sent.\par
- \textbf{Validation:} Owner review confirms the offline default is appropriate.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-07}}\par
- \textbf{Verification:} Confirm that attempt data is discarded when a new
- attempt starts or the review is left, and that nothing is persisted or
- exported. Inspect the storage used by the application.\par
- \textbf{Validation:} Owner review of retention scope.
-\item \textbf{\hyperref[sec:safety-proposals]{SR-08}}\par
- \textbf{Verification:} If external AI is proposed, review provider,
- privacy, retention, and opt-in. Confirm that feedback is labelled advisory,
- cannot change checkpoint, timer, crash, score, or rating state, and that
- timeout, error, or declined consent leaves the standard review intact.\par
- \textbf{Validation:} Supervisor and owner approval before any transfer is enabled.
-\end{itemize}
-
-\endgroup
 
 \begingroup
 \sloppy
@@ -2699,10 +2322,11 @@ included in scope.
 \end{itemize}
 
 \subsubsection{Proposed Quantitative and Interaction Specifications}
+\label{sec:proposed-performance}
 All of these remain PROPOSED. Their verification is defined now so the cases
 are ready if they are approved.
 \begin{itemize}
-\item \hyperlink{req:PR-PERF-01}{\textbf{PR-PERF-01}}\par
+\item \hypertarget{req:PR-PERF-01}{}\textbf{PR-PERF-01}\par
  \textbf{Verification:} Run the \texttt{PERF\_RUN\_SECONDS} workload after
  \texttt{WARMUP\_SECONDS} of warm-up on every declared device, mode, and
  controller configuration and all released courses, including crashes, menus,
@@ -2711,21 +2335,21 @@ are ready if they are approved.
  deadlines are met. Report synthetic frames separately.\par
  \textbf{Validation:} Users report comfort in sessions, and the threshold is
  reviewed by the supervisor. Platform release testing remains separate.
-\item \hyperlink{req:PR-PERF-02}{\textbf{PR-PERF-02}}\par
+\item \hypertarget{req:PR-PERF-02}{}\textbf{PR-PERF-02}\par
  \textbf{Verification:} Measure the interval from application receipt of
  input to the visible flight response during the same workload. Check that the
  \texttt{LATENCY\_PERCENTILE} percentile does not exceed
  \texttt{INPUT\_RESPONSE\_MS}, and report maxima and invalid samples.\par
  \textbf{Validation:} Users report whether controls feel responsive. Hardware
  and PCVR-link validation follow.
-\item \hyperlink{req:PR-FLT-01}{\textbf{PR-FLT-01}}\par
+\item \hypertarget{req:PR-FLT-01}{}\textbf{PR-FLT-01}\par
  \textbf{Verification:} Hover near the clearance threshold of
  \texttt{TAKEOFF\_CLEARANCE\_M} and confirm airborne latches when it is first
  reached and does not clear when returning below it. Check respawn and restart
  initialize it correctly.\par
  \textbf{Validation:} Users confirm that takeoff feels natural. The clearance is
  checked against the drone size and course scale.
-\item \hyperlink{req:PR-FLT-02}{\textbf{PR-FLT-02}}\par
+\item \hypertarget{req:PR-FLT-02}{}\textbf{PR-FLT-02}\par
  \textbf{Verification:} Run the zero-thrust, zero-drag, zero-velocity
  fixture for \texttt{GRAVITY\_TEST\_SECONDS} and compare the displacement with
  $gt^2/2$ using \texttt{REFERENCE\_GRAVITY} within
@@ -2733,18 +2357,18 @@ are ready if they are approved.
  velocity.\par
  \textbf{Validation:} Supervisor review of the reference drone and realism
  tolerances, which remain TO BE REVIEWED.
-\item \hyperlink{req:PR-CTL-01}{\textbf{PR-CTL-01}}\par
+\item \hypertarget{req:PR-CTL-01}{}\textbf{PR-CTL-01}\par
  \textbf{Verification:} For each approved controller and mode
  combination, confirm each proposed controller action produces the stated
  action, and that unsupported or reserved buttons are not advertised.\par
  \textbf{Validation:} Users with each controller confirm that the mapping is learnable.
-\item \hyperlink{req:PR-SCORE-01}{\textbf{PR-SCORE-01}}\par
+\item \hypertarget{req:PR-SCORE-01}{}\textbf{PR-SCORE-01}\par
  \textbf{Verification:} Compute $S$ for sample times and crash counts and
  compare with independent hand calculations. Confirm negative scores are kept,
  each added crash lowers $S$ by $P$, and rounding affects the display only.\par
  \textbf{Validation:} Users and the supervisor judge whether the score ranks
  attempts sensibly. The reference times $T_r$ are reviewed per course.
-\item \hyperlink{req:PR-SCORE-02}{\textbf{PR-SCORE-02}}\par
+\item \hypertarget{req:PR-SCORE-02}{}\textbf{PR-SCORE-02}\par
  \textbf{Verification:} Test boundary inputs for Clean, Steady, and
  Practice, including equality at $T=T_r$ and $T=\rho T_r$, $c=0$, and
  $c=\gamma$. Confirm incomplete attempts receive no rating.\par
@@ -2752,48 +2376,49 @@ are ready if they are approved.
 \end{itemize}
 
 \subsubsection{Proposed Safety, Security, and Failure Behaviour}
+\label{sec:safety-proposals}
 All of these remain PROPOSED. Their verification is defined now so the cases
 are ready if they are approved.
 \begin{itemize}
-\item \hyperlink{req:SR-01}{\textbf{SR-01}}\par
+\item \hypertarget{req:SR-01}{}\textbf{SR-01}\par
  \textbf{Verification:} Confirm the safety, age, space, posture, and
  discomfort information appears before the first flight and that no unsupported
  medical or room claims are made.\par
  \textbf{Validation:} Expert review of the wording and user comprehension checks.
-\item \hyperlink{req:SR-02}{\textbf{SR-02}}\par
+\item \hypertarget{req:SR-02}{}\textbf{SR-02}\par
  \textbf{Verification:} Simulate loss of tracking, input, focus, and
  controller connection. Confirm that flight and both timers stop, stale
  controls are discarded, and resume requires available input, neutral controls,
  and explicit confirmation.\par
  \textbf{Validation:} Users experience the pause and report it as clear and safe.
-\item \hyperlink{req:SR-03}{\textbf{SR-03}}\par
+\item \hypertarget{req:SR-03}{}\textbf{SR-03}\par
  \textbf{Verification:} In seated and standing modes, reach pause,
  recenter, and exit. Confirm that flight and timers freeze and that no menu
  requires walking or reaching the floor.\par
  \textbf{Validation:} Seated and standing users evaluate comfort and reachability.
-\item \hyperlink{req:SR-04}{\textbf{SR-04}}\par
+\item \hypertarget{req:SR-04}{}\textbf{SR-04}\par
  \textbf{Verification:} Induce sustained frame-rate drops. Confirm that after
  \texttt{PERFORMANCE\_FAILURE\_SECONDS} below target over the
  \texttt{PERFORMANCE\_WINDOW\_SECONDS} window, FPVR pauses, explains why, and
  resumes only with confirmation.\par
  \textbf{Validation:} Comfort effectiveness is PENDING VERIFICATION through user trials.
-\item \hyperlink{req:SR-05}{\textbf{SR-05}}\par
+\item \hypertarget{req:SR-05}{}\textbf{SR-05}\par
  \textbf{Verification:} Inject non-finite or out-of-range inputs, invalid
  checkpoint orders, and intersecting recovery poses. Confirm invalid
  configuration is rejected before flight, runtime faults enter a recoverable
  error state, and progress, scores, and stale controls are unaffected.\par
  \textbf{Validation:} Supervisor review of the failure behaviour.
-\item \hyperlink{req:SR-06}{\textbf{SR-06}}\par
+\item \hypertarget{req:SR-06}{}\textbf{SR-06}\par
  \textbf{Verification:} After installation, run core training, scoring,
  and review with networking disabled and no FPVR account. Inspect network
  traffic to confirm no core telemetry is sent.\par
  \textbf{Validation:} Owner review confirms the offline default is appropriate.
-\item \hyperlink{req:SR-07}{\textbf{SR-07}}\par
+\item \hypertarget{req:SR-07}{}\textbf{SR-07}\par
  \textbf{Verification:} Confirm that attempt data is discarded when a new
  attempt starts or the review is left, and that nothing is persisted or
  exported. Inspect the storage used by the application.\par
  \textbf{Validation:} Owner review of retention scope.
-\item \hyperlink{req:SR-08}{\textbf{SR-08}}\par
+\item \hypertarget{req:SR-08}{}\textbf{SR-08}\par
  \textbf{Verification:} If external AI is proposed, review provider,
  privacy, retention, and opt-in. Confirm that feedback is labelled advisory,
  cannot change checkpoint, timer, crash, score, or rating state, and that
