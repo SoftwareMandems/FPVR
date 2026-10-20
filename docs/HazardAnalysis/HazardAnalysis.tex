@@ -3,6 +3,8 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -36,8 +38,8 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Date1 & Name(s) & Description of changes\\
-Date2 & Name(s) & Description of changes\\
+Sept 30 & Sankalpa Chhetri Dhakal & Completed Introduction\\
+Oct 6 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
 ... & ... & ...\\
 \bottomrule
 \end{tabularx}
@@ -55,12 +57,136 @@ Date2 & Name(s) & Description of changes\\
 
 \section{Introduction}
 
-\wss{You can include your definition of what a hazard is here.}
+This document presents the Hazard Analysis for the VR-Based FPV Drone Operator
+Training Game. The purpose of the project is to provide users with a virtual
+environment where they can learn and practice FPV drone operation before flying
+a real drone. The system is intended to support both new users who are learning basic 
+FPV controls and more experienced drone operators who want to practice manoeuvres, test 
+their skills, or become familiar with different training scenarios in a low-risk environment.
+
+For this project, a hazard is defined as a system condition, failure, or
+interaction that could result in harm or loss. This may include physical injury
+to the user, damage to equipment, loss of data, system failure, or incorrect
+training caused by unrealistic simulator behaviour. Although the system is 
+primarily a software simulation, hazards may still arise from the use of VR 
+hardware, software failures, inaccurate drone physics, or incorrect user 
+interaction with the system.
 
 \section{Scope and Purpose of Hazard Analysis}
 
-\wss{You should say what \textbf{loss} could be incurred because of the
-hazards.}
+\section{System Boundaries and Components}
+
+The system boundary includes the software and hardware directly involved in
+running and interacting with the FPV drone training simulator. This includes
+the VR headset, input devices, host computer, Unity application, drone
+simulation, training functionality, user interface, and locally stored data.
+The user and their physical surroundings interact with the system and are
+considered when identifying hazards, but they are not components of the
+software system itself. Real FPV drones and real-world drone operation are
+outside the system boundary.
+
+The system consists of several major software and hardware components. These
+components are considered independently during hazard identification because a
+failure in one component may affect the safety or correctness of the overall
+system.
+
+\subsection{VR Headset}
+
+The VR headset, expected to be a \textbf{Meta Quest 3S}, provides the user's
+visual representation of the simulated environment and tracks the position and
+orientation of the user's head.
+
+Potential hazards associated with this component include loss of tracking,
+visual latency, incorrect orientation, poor headset fit, and the user becoming
+unaware of their physical surroundings.
+
+\subsection{Controller Thumbsticks, Triggers, Buttons, and Input Connection}
+
+Controller thumbsticks and triggers provide axis values that are mapped to
+drone throttle, pitch, roll, and yaw. Buttons provide discrete commands such as
+pause, restart, and respawn. Depending on the final implementation, these
+controls may be provided by VR controllers, a game controller, or an external
+FPV-style radio controller. The controller connection carries these values and
+button events to the application.
+
+Failures may include thumbstick drift, where a centred stick reports an input
+and causes unintended drone movement; a stuck thumbstick or trigger,
+which maintains a control value after release; or a stuck or unresponsive
+button, which repeats or prevents a command. Incorrect axis mappings, inverted
+axis directions, or incorrect centre, range, or dead-zone calibration may
+produce unintended throttle or steering responses. A disconnected controller,
+dropped input updates, or delayed input delivery may cause loss of control,
+continued use of a stale control value, or a delayed response to a pilot command.
+
+\subsection{Host Computer}
+
+A computer executes the Unity application and associated simulation software.
+
+Failures may include insufficient hardware performance, overheating, loss of
+power, driver issues, or resource exhaustion.
+
+\subsection{Unity Application}
+
+Unity provides the primary execution environment for the game.
+
+This component is responsible for scene management, game logic, user
+interaction, rendering, and communication between major software modules.
+
+\subsection{Drone Physics Simulation}
+
+The drone physics subsystem models properties such as:
+
+\begin{itemize}
+    \item thrust;
+    \item gravity;
+    \item acceleration;
+    \item angular velocity;
+    \item momentum;
+    \item collisions; and
+    \item drone response to pilot input.
+\end{itemize}
+
+Incorrect behaviour in this component represents an important hazard because
+users are expected to learn flying behaviour from the simulator.
+
+\subsection{VR Rendering and XR Subsystem}
+
+This subsystem renders the virtual environment and communicates with the VR
+headset.
+
+Failures may result in visual artifacts, low frame rate, latency, incorrect
+camera movement, or loss of tracking.
+
+\subsection{Training and Scoring System}
+
+The training subsystem may contain tutorials, objectives, checkpoints, scoring
+metrics, crash detection, and user performance feedback.
+
+Incorrect scoring or feedback could indicate that unsafe or incorrect flying
+behaviour is acceptable.
+
+\subsection{User Interface}
+
+The interface includes menus, settings, warnings, calibration options, pause
+controls, and training instructions.
+
+Poor interface design could prevent the user from understanding warnings or
+exiting the simulation quickly.
+
+\subsection{Data Storage}
+
+The system may locally store information such as:
+
+\begin{itemize}
+    \item user settings;
+    \item controller configuration;
+    \item training progress;
+    \item scores; and
+    \item application configuration.
+\end{itemize}
+
+Data corruption or unauthorized modification could affect system operation or
+training results.
 
 \section{System Boundaries and Components}
 
@@ -246,44 +372,60 @@ Which requirements will be implemented in the future?}
 
 \section{Appendix --- Generative AI Use Disclosure}
 
-\wss{ChatGPT (version 5) was used to brainstorm ideas for the template for this disclose section.}
-
 \subsection{AI Tools Used}
 
-\wss{Give the name of the AI tool(s) used and the version.}
+Claude Opus 5.5 and GPT Astra 6.1.
 
 \subsection{How and Where Used}
 
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
+\begin{enumerate}
+    \item \textbf{How were the AI tools used?}
 
-\wss{For each of the uses, identify which parts of the document were affected.}
+    ChatGPT was used to brainstorm potential hazards for the FPVR drone flight simulation system, suggest safety and security requirements, and improve the clarity and organization of technical writing. It was also used to help identify potential risks that could be overlooked during manual analysis, including VR tracking loss, invalid controller inputs, network interruptions, unauthorized access, and corruption or loss of gameplay records. Additionally, ChatGPT assisted in developing rationales for proposed requirements and explaining why particular hazards could affect users or system functionality.
 
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
+    \item \textbf{Which parts of the document were affected by AI assistance?}
 
+    AI assistance contributed to several sections of the Hazard Analysis document:
+    \begin{itemize}
+        \item \textbf{Scope and Purpose of Hazard Analysis:} Assistance with organizing explanations of the purpose of identifying and mitigating hazards in the FPVR system.
+        \item \textbf{System Boundaries and Components:} Assistance with considering potential sources of hazards associated with VR hardware, controller inputs, networking, and gameplay data.
+        \item \textbf{Critical Assumptions:} Assistance with clarifying assumptions concerning internet connectivity, available storage, minimum hardware capabilities, gaming familiarity, and users' self-reported drone experience.
+        \item \textbf{Failure Mode and Effect Analysis:} Assistance with brainstorming potential failure scenarios, their effects, and possible mitigation strategies.
+        \item \textbf{Safety and Security Requirements:} Assistance with drafting and refining proposed requirements concerning VR safety, controller input validation, hardware initialization, network reliability, authentication, data privacy, and gameplay record integrity.
+        \item \textbf{Non-Functional Requirements:} Assistance with expressing proposed performance, responsiveness, compatibility, and recovery targets in measurable terms.
+    \end{itemize}
+
+    AI-generated suggestions were used as drafting and brainstorming aids rather than accepted automatically. The team remained responsible for reviewing the content and ensuring that the final document accurately reflected the FPVR project's scope, requirements, and design decisions.
+\end{enumerate}
 \subsection{Verification of AI-Generated Content}
 
-\wss{\begin{itemize}
-    \item Describe how the team checked AI-generated or AI-assisted material
-    before including it in the document.
-    \item In particular, verify factual claims, technical assertions,
-    requirements, calculations, references, and other information for which an
-    AI system may produce incorrect or fabricated results.
-    \item \textbf{The team is responsible for the accuracy, completeness,
-consistency, and appropriateness of the submitted document, regardless of
-whether material was generated by a human or an AI system.}
-\end{itemize}}
+\begin{enumerate}
+    \item \textbf{How did the team check AI-generated or AI-assisted material before including it in the document?}
+
+    The team treated AI-generated content as a starting point for brainstorming and drafting rather than accepting it without review. Suggestions were evaluated against the FPVR project's objectives, intended functionality, and existing requirements. For example, AI assistance was used to identify potential hazards associated with VR headset tracking loss, invalid controller inputs, and network interruptions. The team considered whether these scenarios were relevant to the system and whether the proposed mitigations addressed the associated risks. AI-assisted wording was also reviewed for clarity, consistency, and relevance before being included in the document.
+
+    \item \textbf{How did the team verify factual claims, technical assertions, requirements, calculations, and references?}
+
+    Technical claims and proposed requirements were reviewed in the context of the FPVR system and the team's understanding of VR development and software engineering. For example, the proposed requirement to maintain at least 30 frames per second (NFR1) and the target of responding to controller inputs within 50 milliseconds (NFR2) were treated as design targets rather than confirmed system capabilities. These targets would need to be validated through performance testing on supported VR hardware. Similarly, proposed security requirements concerning encrypted communication, authentication, and gameplay record integrity were considered in relation to the system's planned networking and data-storage functionality.
+
+    The team also reviewed requirement identifiers, rationales, and risk ratings for consistency and considered whether each proposed mitigation addressed its associated hazard. AI-generated suggestions were not treated as proof that a feature had been implemented or tested. Any factual claims, technical details, calculations, or external references used in the final document must be checked against reliable documentation or independent calculations where applicable. Where implementation details or test results were unavailable, the document distinguished proposed requirements from verified outcomes.
+
+    \item \textbf{Who is responsible for the accuracy, completeness, consistency, and appropriateness of the submitted document?}
+
+    The team is ultimately responsible for the accuracy, completeness, consistency, and appropriateness of the submitted Hazard Analysis, regardless of whether material was written by team members or generated with AI assistance. AI tools can support brainstorming, drafting, and identifying potential omissions, but their suggestions may be inaccurate, incomplete, or unsuitable for the project's scope. Therefore, the team must critically evaluate AI-assisted content and ensure that the final document accurately represents the FPVR system, its hazards, and its proposed mitigations.
+\end{enumerate}
+
+
 
 \newpage{}
 
 \section{Appendix --- Reflection}
 
-\wss{Not required for CAS 741}
+
 
 \input{../Reflection.text}
+
+\section*{Vikram -- Reflection}
 
 \begin{enumerate}
     \item What went well while writing this deliverable? 
@@ -296,6 +438,295 @@ whether material was generated by a human or an AI system.}
     \item Other than the risk of physical harm (some projects may not have any
     appreciable risks of this form), list at least 2 other types of risk in
     software products. Why are they important to consider?
+\end{enumerate}
+
+\begin{enumerate}
+
+    \item \textbf{What went well while writing this deliverable?}
+
+    The team was able to identify potential hazards associated with
+    FPVR, our VR drone flight simulation game, and consider how they
+    could affect users, gameplay, and system reliability. Examining
+    the system component by component helped us identify potential
+    failures involving VR hardware, controller inputs, the flight
+    simulation, multiplayer functionality, and stored gameplay records.
+    Translating these hazards into safety and security requirements
+    also helped us define specific system behaviours that could be
+    verified through testing.
+
+    \item \textbf{What pain points did you experience during this
+    deliverable, and how did you resolve them?}
+
+    One challenge was distinguishing general software defects from
+    hazards that could affect user safety, data integrity, or system
+    reliability. For example, a VR tracking failure could affect both
+    gameplay and user comfort, while a network interruption could
+    cause multiplayer issues or lost progress. We addressed these
+    challenges by examining the possible causes and consequences of
+    each failure and identifying appropriate mitigation strategies.
+    Another challenge was determining suitable risk classifications
+    and writing requirements that were specific enough to test.
+    We addressed this by providing rationales for each requirement
+    and identifying system behaviours that could be verified during
+    testing.
+
+    \item \textbf{How many of your requirements were inspired by
+    speaking to your clients or their proxies, such as peers,
+    stakeholders, and potential users?}
+
+   Several requirements were informed by discussions with stakeholders and potential users, including drone enthusiasts and members of the McMaster MARS Rover team. For example, the requirement for responsive and realistic drone controls was motivated by the need to provide an authentic FPV flying experience that would be useful for both beginners and experienced drone operators. Another example is the requirement to provide multiple flight courses with varying levels of difficulty, which reflects the need to accommodate users with different levels of flying experience and allow them to progressively improve their skills. These discussions helped ensure that the system's requirements reflected the needs and expectations of its intended users.
+
+    \item \textbf{Which courses have you taken, or are currently
+    taking, that will help your team succeed with the capstone project?}
+
+    Several courses provide relevant knowledge for developing FPVR.
+    Course 4HC3, Human Interface Design, will help the team design
+    intuitive VR interactions, controller mappings, menus, and
+    accessible interfaces. Its concepts will also support usability
+    evaluation and improving user comfort.
+
+    Course 4AA4, Control Systems, will help the team understand
+    the relationship between controller inputs and simulated drone
+    movement. Control systems concepts will support the development
+    of responsive flight behaviour and the evaluation of the
+    simulation's control model.
+
+    Course 2AA4, Software Design, will help the team structure the
+    application into modular components with clearly defined
+    responsibilities and interfaces. This will be important when
+    integrating VR interactions, flight physics, course management,
+    multiplayer functionality, and performance evaluation.
+
+    Additionally, programming and software engineering courses
+    provide a foundation in object-oriented programming, requirements
+    analysis, testing, debugging, and collaborative development.
+    These skills will help the team implement the simulation,
+    verify its requirements, and integrate its components reliably.
+
+    \item \textbf{What knowledge and skills will the team collectively
+    need to acquire to successfully complete this capstone project?}
+
+    The team will need to acquire knowledge and skills in several
+    areas to complete FPVR successfully:
+
+    \begin{itemize}
+        \item \textbf{VR development and hardware integration:}
+        The team will need to learn Unity, C\#, OpenXR, and the
+        XR Interaction Toolkit to implement VR interactions,
+        integrate supported headsets and controllers, and handle
+        tracking information.
+
+        \item \textbf{Drone simulation and control systems:}
+        The team will need to understand drone movement, flight
+        dynamics, controller mappings, and how user inputs affect
+        simulated flight behaviour.
+
+        \item \textbf{Performance optimization:}
+        The team will need to learn how to profile Unity applications,
+        identify rendering and processing bottlenecks, and optimize
+        frame rate and input latency for a responsive VR experience.
+
+        \item \textbf{Software testing and user evaluation:}
+        The team will need to develop test cases for gameplay,
+        controller responsiveness, hardware compatibility, and
+        recovery from interruptions. It will also need to evaluate
+        usability, immersion, and user comfort through structured
+        testing.
+
+        \item \textbf{Data analysis and training evaluation:}
+        The team will need to learn how to record and interpret
+        flight performance data, including completion times,
+        crashes, control consistency, and unnecessary corrections.
+        This knowledge will support performance summaries and the
+        potential AI-based feedback feature.
+
+        \item \textbf{Version control and collaboration:}
+        The team will need to use Git, feature branches, pull
+        requests, and code reviews effectively. Consistent coding
+        conventions and clearly defined component interfaces
+        will help reduce integration problems.
+
+        \item \textbf{Technical documentation and communication:}
+        The team will need to document implementation decisions,
+        testing procedures, and design changes. Clear communication
+        will also be necessary for coordinating work, resolving
+        disagreements, and presenting the completed project.
+    \end{itemize}
+
+    These areas can be distributed among team members according
+    to their existing experience and responsibilities. Testing,
+    documentation, and collaboration will remain shared
+    responsibilities across the team.
+
+    \item \textbf{For each knowledge area and skill identified above,
+    what are at least two approaches to acquiring the knowledge or
+    mastering the skill? Which approaches will each team member
+    pursue, and why?}
+
+    The team will combine structured learning with practical
+    implementation. Tutorials and documentation will provide
+    foundational knowledge, while prototypes and testing will
+    allow team members to apply that knowledge to FPVR.
+
+    \begin{itemize}
+        \item \textbf{VR development and hardware integration:}
+        One approach is to complete official Unity, OpenXR, and
+        XR Interaction Toolkit tutorials. A second approach is
+        to develop a prototype that supports headset tracking,
+        controller input, and basic VR interactions. The team
+        member responsible for VR integration will pursue both
+        approaches because tutorials provide a structured
+        introduction, while prototyping reveals practical
+        hardware and integration issues.
+
+        \item \textbf{Drone simulation and control systems:}
+        One approach is to review control systems course material
+        and introductory resources on drone flight dynamics.
+        A second approach is to implement a basic flight model
+        and iteratively test how controller inputs affect movement.
+        The team member responsible for flight simulation will
+        combine theoretical study with experimentation to
+        understand the underlying principles and tune the
+        simulation's response.
+
+        \item \textbf{Performance optimization:}
+        One approach is to study Unity profiling tools and
+        official VR optimization documentation. A second
+        approach is to profile the application during gameplay,
+        identify bottlenecks, and measure performance before
+        and after changes. The team member responsible for
+        performance will use both approaches to ensure that
+        optimization decisions are based on measured results.
+
+        \item \textbf{Software testing and user evaluation:}
+        One approach is to study software testing techniques
+        and usability evaluation methods. A second approach
+        is to create test cases and conduct structured trials
+        with representative users. The team member responsible
+        for testing will combine these methods to identify
+        both functional defects and usability issues.
+
+        \item \textbf{Data analysis and training evaluation:}
+        One approach is to study performance metrics and
+        methods for evaluating control efficiency and
+        consistency. A second approach is to build a prototype
+        that records flight behaviour and generates feedback
+        using measurable performance indicators. The team
+        member responsible for performance evaluation will
+        start with interpretable metrics before exploring
+        more advanced AI-based approaches, allowing the
+        evaluation feature to be validated incrementally.
+
+        \item \textbf{Version control and collaboration:}
+        One approach is to review Git documentation and
+        collaborative development practices. A second approach
+        is to apply feature branches, pull requests, and code
+        reviews in the project repository. All team members
+        will practise these workflows because consistent
+        collaboration is necessary to integrate independently
+        developed components.
+
+        \item \textbf{Technical documentation and communication:}
+        One approach is to study examples of technical
+        documentation and practise writing concise design
+        descriptions and test reports. A second approach is
+        to maintain project documentation and present progress
+        during team meetings and project reviews. All team
+        members will participate so that implementation
+        decisions remain documented and project knowledge
+        is shared.
+    \end{itemize}
+
+    The responsibilities described above are organized by
+    technical area rather than by individual name. The team
+    will assign specific owners based on members' experience,
+    interests, and workload. This approach allows each member
+    to develop a particular area of expertise while contributing
+    to the team's overall progress.
+
+    \item \textbf{Which of your listed risks had your team thought
+    of before this deliverable, and which did you think of while
+    doing the Hazard Analysis? For the latter risks, how did they
+    come about?}
+
+    Before completing the Hazard Analysis, the team had already
+    considered risks related to VR performance, controller
+    responsiveness, hardware compatibility, and user discomfort.
+    These risks were closely related to the project's objective
+    of providing an immersive, responsive, and usable drone
+    flight simulation experience.
+
+    The Hazard Analysis encouraged us to examine additional
+    scenarios, including loss of VR tracking, invalid controller
+    inputs, unexpected hardware disconnections, network
+    interruptions, unauthorized access to gameplay records,
+    and corruption or loss of saved progress. Some of these
+    risks may have been recognized informally earlier, but
+    the analysis helped us identify their causes and consequences
+    more explicitly.
+
+    These risks emerged by examining each system component
+    and considering what could happen if it failed, received
+    invalid data, or interacted incorrectly with another
+    component. For example, examining controller inputs
+    highlighted the possibility of unexpected drone movements.
+    Examining multiplayer communication raised concerns about
+    manipulated messages and inconsistent gameplay states.
+    Finally, examining data storage highlighted the possibility
+    of unauthorized access and the loss of saved records.
+    This process demonstrated that risks extend beyond the
+    simulation itself to include network communication,
+    user information, and the reliability of stored data.
+
+    \item \textbf{Other than physical harm, list at least two
+    other types of risk in software products. Why are they
+    important to consider?}
+
+    Several non-physical risks are relevant to FPVR.
+
+    \textbf{Security and privacy risks:}
+    Unauthorized access to accounts or gameplay records could
+    expose user information or allow stored results to be
+    modified. These risks are important because users need
+    to trust that their information is protected and that
+    access to personal records is appropriately restricted.
+
+    \textbf{Data integrity and reliability risks:}
+    Software errors, unexpected shutdowns, or network
+    interruptions could corrupt gameplay records or cause
+    users to lose progress. These risks are important because
+    training evaluation and performance tracking depend on
+    accurate and consistent data.
+
+    \textbf{Performance and usability risks:}
+    Low frame rates, delayed controller responses, or confusing
+    interactions could reduce immersion and make the simulation
+    difficult to use effectively. These risks are especially
+    important in VR because responsiveness and consistent
+    visual feedback contribute to a comfortable and usable
+    experience.
+
+    \textbf{Compatibility risks:}
+    Differences between supported headsets, controllers, and
+    operating system configurations could cause features to
+    fail or behave inconsistently. Considering these risks
+    helps the team define supported configurations and plan
+    appropriate compatibility tests.
+
+    \textbf{Project and integration risks:}
+    Poor coordination, incompatible components, or delays in
+    integrating individual contributions could prevent the
+    team from completing planned features within the capstone
+    timeline. These risks are important because components
+    that work independently may still fail when combined
+    into the complete application.
+
+    Identifying these risks early allows the team to prioritize
+    mitigations, make informed design decisions, and establish
+    appropriate tests. Addressing them throughout development
+    will help ensure that FPVR is reliable, secure, usable,
+    and feasible to deliver within the available time.
+
 \end{enumerate}
 
 \end{document}
