@@ -2239,6 +2239,101 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Seated and standing users confirm comfort and reachability.
 \end{itemize}
 
+\subsubsection{Player Accounts and Authentication}
+\begin{itemize}
+\item \hyperlink{req:FR-ACC-01}{\textbf{FR-ACC-01}}\par
+ \textbf{Verification:} With network connectivity, register a new account with
+ an unused username and a valid password, then confirm the account exists on
+ the online service and can be used to sign in.\par
+ \textbf{Validation:} New users register without help and report whether the
+ process is clear.
+\item \hyperlink{req:FR-ACC-02}{\textbf{FR-ACC-02}}\par
+ \textbf{Verification:} Attempt registration with an existing username, and
+ with passwords of 11 and 12 characters. Confirm the first two are rejected
+ with an explanatory message and the 12-character password is accepted.\par
+ \textbf{Validation:} Users confirm the rejection messages tell them how to fix
+ the problem.
+\item \hyperlink{req:FR-ACC-03}{\textbf{FR-ACC-03}}\par
+ \textbf{Verification:} Sign in with valid credentials, then with a wrong
+ password and with an unknown username. Confirm both failures show the same
+ message and do not reveal which field was wrong.\par
+ \textbf{Validation:} Supervisor review confirms the messages do not expose
+ account information.
+\item \hyperlink{req:FR-ACC-04}{\textbf{FR-ACC-04}}\par
+ \textbf{Verification:} Sign out, then confirm that leaderboard submission and
+ stored-result access require signing in again on that installation.\par
+ \textbf{Validation:} Users sharing a headset confirm they can hand it over
+ without acting under another player's account.
+\item \hyperlink{req:FR-ACC-05}{\textbf{FR-ACC-05}}\par
+ \textbf{Verification:} Without signing in, complete free flight and an
+ obstacle course. Then attempt a global leaderboard submission and confirm it
+ is refused until the user signs in.\par
+ \textbf{Validation:} Users confirm they can practise without creating an
+ account.
+\end{itemize}
+
+\subsubsection{Result Storage and Leaderboards}
+\begin{itemize}
+\item \hyperlink{req:FR-DAT-01}{\textbf{FR-DAT-01}}\par
+ \textbf{Verification:} Complete an attempt and inspect the saved local record.
+ Confirm it contains the level identifier, completion timestamp, total time,
+ crash count, score, rating, and local player identifier, matching the
+ post-flight review.\par
+ \textbf{Validation:} Users confirm their saved results match what they
+ achieved.
+\item \hyperlink{req:FR-DAT-02}{\textbf{FR-DAT-02}}\par
+ \textbf{Verification:} While signed in and online, complete an attempt and
+ confirm the result appears on the online service under that player's
+ account.\par
+ \textbf{Validation:} Users confirm their online results are correctly
+ attributed to them.
+\item \hyperlink{req:FR-DAT-03}{\textbf{FR-DAT-03}}\par
+ \textbf{Verification:} Disconnect the network, complete an attempt, and
+ confirm the result is kept locally. Reconnect, retry synchronization, and
+ confirm the result reaches the online service.\par
+ \textbf{Validation:} Users confirm no completed attempt is lost after a
+ network failure.
+\item \hyperlink{req:FR-DAT-04}{\textbf{FR-DAT-04}}\par
+ \textbf{Verification:} Save results for two levels on one installation and
+ confirm each level's local leaderboard shows only that level's results.\par
+ \textbf{Validation:} Users confirm the local leaderboard is useful for
+ comparing their own attempts.
+\item \hyperlink{req:FR-DAT-05}{\textbf{FR-DAT-05}}\par
+ \textbf{Verification:} Submit results from two accounts and confirm each
+ level's global leaderboard shows only results accepted by the online
+ service.\par
+ \textbf{Validation:} Users confirm the global leaderboard helps them compare
+ against other players.
+\item \hyperlink{req:FR-DAT-06}{\textbf{FR-DAT-06}}\par
+ \textbf{Verification:} Insert results with different scores, equal scores
+ with different times, and equal scores and times with different timestamps.
+ Confirm both leaderboards order them by score, then time, then timestamp.\par
+ \textbf{Validation:} Users confirm the ranking order seems fair.
+\item \hyperlink{req:FR-DAT-07}{\textbf{FR-DAT-07}}\par
+ \textbf{Verification:} With at least eleven results for a level, confirm each
+ leaderboard shows the top ten with rank, display name, score, completion time,
+ and crash count.\par
+ \textbf{Validation:} Users confirm the shown fields are enough to understand
+ the rankings.
+\item \hyperlink{req:FR-DAT-08}{\textbf{FR-DAT-08}}\par
+ \textbf{Verification:} Make the online service unreachable, open the global
+ leaderboard, and confirm an availability message appears while the local
+ leaderboard and training modes still work.\par
+ \textbf{Validation:} Users confirm the message explains why the global
+ leaderboard is missing.
+\item \hyperlink{req:FR-DAT-09}{\textbf{FR-DAT-09}}\par
+ \textbf{Verification:} Synchronize results on one installation, sign in to the
+ same account on a second supported installation, and confirm the same results
+ are retrieved.\par
+ \textbf{Validation:} Users who switch devices confirm their history follows
+ them.
+\item \hyperlink{req:FR-DAT-10}{\textbf{FR-DAT-10}}\par
+ \textbf{Verification:} Create one result offline and one online, and confirm
+ the display marks the first as local only and the second as synchronized.\par
+ \textbf{Validation:} Users correctly identify which results are on the global
+ leaderboard.
+\end{itemize}
+
 \subsubsection{Post-Flight Review}
 \begin{itemize}
 \item \hyperlink{req:FR-REV-01}{\textbf{FR-REV-01}}\par
@@ -2261,9 +2356,12 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Supervisor review confirms the core review does not depend
  on the optional feature.
 \item \hyperlink{req:FR-REV-05}{\textbf{FR-REV-05}}\par
- \textbf{Verification:} Confirm the review is produced from the current
- attempt only and that no historical session-review interface exists.\par
- \textbf{Validation:} Owner review confirms this matches the agreed scope.
+ \textbf{Verification:} Sign in as a registered player with results from
+ earlier sessions and confirm those results can be viewed, each showing at
+ least the fields listed in
+ \hyperlink{req:FR-DAT-01}{FR-DAT-01}.\par
+ \textbf{Validation:} Users confirm the past results help them track their
+ improvement.
 \end{itemize}
 
 \subsubsection{Intelligent Feedback (Planned)}
@@ -2306,6 +2404,12 @@ included in scope.
  \hyperlink{req:PR-PERF-01}{PR-PERF-01} on supported hardware and measure
  frame rate. Pass/fail depends on the numerical threshold once approved.\par
  \textbf{Validation:} Users report whether the visuals feel smooth and comfortable.
+\item \hyperlink{req:NFR-PERF-02}{\textbf{NFR-PERF-02}}\par
+ \textbf{Verification:} In the reference test environment, log the timestamp of
+ 100 flight-control input events and of the first simulated state update for
+ each. Confirm at least 95 of them are within 100 ms.\par
+ \textbf{Validation:} Users report whether the drone responds to the controls
+ without noticeable delay.
 \item \hyperlink{req:NFR-REL-01}{\textbf{NFR-REL-01}}\par
  \textbf{Verification:} Run a soak test of repeated crash-and-recovery cycles
  and confirm the application neither restarts nor degrades.\par
@@ -2319,6 +2423,35 @@ included in scope.
  \textbf{Verification:} While in each activity, leave using the controller
  only, without taking off the headset.\par
  \textbf{Validation:} Users confirm they can stop and exit quickly when uncomfortable.
+\item \hyperlink{req:NFR-SAFE-02}{\textbf{NFR-SAFE-02}}\par
+ \textbf{Verification:} Perform every core flight, menu, and recovery action
+ while seated and while standing in one marked spot, and confirm none requires
+ leaving it.\par
+ \textbf{Validation:} Users confirm they never feel the need to move around
+ the play area.
+\item \hyperlink{req:NFR-SEC-01}{\textbf{NFR-SEC-01}}\par
+ \textbf{Verification:} Capture network traffic during registration and
+ sign-in and confirm credentials are only sent over encrypted connections.
+ Inspect device storage and the online service's account records and confirm
+ no password is stored in plaintext.\par
+ \textbf{Validation:} Supervisor review of the credential handling.
+\item \hyperlink{req:NFR-SEC-02}{\textbf{NFR-SEC-02}}\par
+ \textbf{Verification:} Without signing in, request another player's
+ non-public account data and submit a result using another player's account
+ identifier. Confirm both are rejected.\par
+ \textbf{Validation:} Supervisor review confirms leaderboard results cannot be
+ spoofed.
+\item \hyperlink{req:NFR-DAT-01}{\textbf{NFR-DAT-01}}\par
+ \textbf{Verification:} Synchronize a result, sign out, restart FPVR, sign in
+ again, and confirm the result is still retrievable.\par
+ \textbf{Validation:} Users confirm their synchronized results are never
+ lost.
+\item \hyperlink{req:NFR-OFF-01}{\textbf{NFR-OFF-01}}\par
+ \textbf{Verification:} Disable the network or make the online service
+ unavailable, then run free flight, an obstacle course, crash recovery, local
+ result saving, and the standard review. Confirm each works.\par
+ \textbf{Validation:} Users confirm they can train normally without a
+ connection.
 \end{itemize}
 
 \subsubsection{Proposed Quantitative and Interaction Specifications}
