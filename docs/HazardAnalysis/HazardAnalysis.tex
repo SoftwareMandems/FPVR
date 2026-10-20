@@ -3,6 +3,8 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -59,8 +61,44 @@ Date2 & Name(s) & Description of changes\\
 
 \section{Scope and Purpose of Hazard Analysis}
 
-\wss{You should say what \textbf{loss} could be incurred because of the
-hazards.}
+The purpose of this Hazard Analysis is to identify potential failure modes of
+the FPV drone training system, understand their possible effects, and determine
+ways to reduce or prevent these risks.
+
+The analysis considers hazards related to:
+
+\begin{itemize}
+    \item VR headset operation
+    \item interaction with the user's physical surroundings
+    \item drone physics and flight simulation
+    \item user controls and input devices
+    \item visual and audio feedback
+    \item training and scoring features
+    \item application performance
+    \item misuse of the training system 
+    \item security and integrity of the application
+\end{itemize}
+
+Possible losses caused by these hazards include:
+
+\begin{itemize}
+    \item physical injury from colliding with furniture, walls, or other people
+    while using the VR headset
+    \item nausea, dizziness, eye strain, or other discomfort caused by VR use
+    \item damage to the VR headset, controllers, computer, or nearby property
+    \item loss of user progress or settings
+    \item application crashes or interruptions during training
+    \item incorrect or unrealistic drone behaviour that could teach the user
+    improper flying techniques
+    \item an incorrect understanding of how a real FPV drone behaves
+    \item users becoming overconfident in their real-world flying ability based
+    only on their simulator performance
+\end{itemize}
+
+This analysis focuses on hazards related to the simulator itself and its use.
+The simulator is intended to be a training tool and does not guarantee safe
+operation of a real FPV drone or reproduce every condition that may occur
+during real-world flight.
 
 \section{System Boundaries and Components}
 
