@@ -1394,46 +1394,55 @@ These effects also concern guardians, bystanders and the wider public
 
 \subsection{Invariants}\label{e5}
 
-The following properties must remain true whenever the corresponding FPVR
-activity is available. They are obligations to preserve the domain and external
-boundary, not claims that the implementation already satisfies them. Referenced
-requirements remain the authoritative behavioural definitions.
+An invariant is a rule that must stay true while FPVR operates. Values such as
+elapsed time and checkpoint count can change, but they must change according
+to these rules. The rules below explain the required behaviour and link to the
+requirements that define it.
 
 \begin{description}
 \item[{\hyperref[et-scope]{E-I-01}:}]\phantomsection\label{ei-boundary}
-\textbf{Physical and training boundary.}
-No FPVR action sends a control command to a physical drone; no simulator score
-or rating constitutes pilot certification (\hyperref[g6]{G.6}). Formally, let
-$O(a)$ be the set of outputs of application action $a$ and $D$ the set of
-physical-drone control messages. The preserved boundary is
-\[
-  \forall a,\qquad O(a)\cap D=\varnothing.
-\]
-\textit{Rationale:} presentation and virtual-state changes stay within the
-simulator's scope, including after crashes, restarts and optional analysis.
+\textbf{Simulated flight only.}
+FPVR controls a simulated drone. No action, including moving the throttle or
+recovering from a crash, may send a command to a physical aircraft. A score or
+rating also does not certify real-world piloting ability (\hyperref[g6]{G.6}).
+\textit{Reason:} users need to understand the limits of simulator practice.
 
 \item[{\hyperref[et-course]{E-I-02}:}]
 \phantomsection\label{ei-course}
-\textbf{Ordered course progress and attempt integrity.}
-Let the positive integer $n$ be the number of required checkpoints in a course,
-and write its ordered sequence as
-$\langle C_1,\ldots,C_n\rangle$. Let $k$ be the number completed in the current
-attempt, and $P$ the completed sequence. The course invariant is
+\textbf{Checkpoint order and recovery.}
+Completed checkpoints must always form the beginning of the course's required
+sequence, with none skipped. Respawn keeps progress in the same attempt;
+restart begins a new attempt.
+
+\textbf{Checkpoint order.} Let $n$ be the positive number of required checkpoints,
+listed in order as $\langle C_1,\ldots,C_n\rangle$. Let $k$ count the completed
+checkpoints and $P$ list them. Then
 \[
   k\in\{0,\ldots,n\},\qquad P=\langle C_1,\ldots,C_k\rangle.
 \]
-When $k=0$, $P$ is empty. For a checkpoint-passage observation $e$, progress
-updates according to
+This says that $k$ cannot be below zero or above $n$, and $P$ contains exactly
+the first $k$ checkpoints. Before the first checkpoint, $k=0$ and $P$ is empty.
+
+During active flight, when no crash awaits recovery, let $e$ be a checkpoint
+passage. A prime ($'$) means the value just after that event:
 \[
  k'=\begin{cases}
  k+1, & k<n\ \text{and }e\text{ is passage through }C_{k+1},\\
  k, & \text{otherwise}.
  \end{cases}
 \]
-A prime denotes the value immediately after the stated event. Completion is
-permitted only when $k=n$ and the finish is reached. An out-of-order or repeated
-gate therefore cannot advance progress or establish completion
-(\hyperref[sec:s2-checkpoints]{FR-CHK-01--03, FR-CHK-08}).
+Only the next required checkpoint increases progress. Repeated or out-of-order
+checkpoints do not count, and progress cannot advance while a crash awaits
+recovery (\hyperref[sec:s2-flight]{FR-FLT-06},
+\hyperref[sec:s2-checkpoints]{FR-CHK-01--03}). Reaching the finish counts as
+completion only after all $n$ checkpoints are complete
+(\hyperref[sec:s2-checkpoints]{FR-CHK-08}).
+
+\textit{Example, using three checkpoints:} after $C_1$, $k=1$ and
+$P=\langle C_1\rangle$. Passing $C_3$ next changes neither value. Passing $C_2$
+then gives $k=2$ and $P=\langle C_1,C_2\rangle$. The user must still pass $C_3$
+and reach the finish. These numbers illustrate the rule; they do not set the
+number of checkpoints in every course.
 
 Let $\mathbb N_0$ denote non-negative integers and $\mathbb R_{\geq0}$
 non-negative real numbers. Let $\alpha$ identify the attempt,
