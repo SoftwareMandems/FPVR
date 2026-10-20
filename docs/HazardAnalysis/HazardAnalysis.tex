@@ -63,7 +63,7 @@
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
 Sept 30, 2026 & Sankalpa Chhetri Dhakal & Completed Introduction\\
-Oct 6,2026 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
+Oct 6, 2026 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
 Oct 19, 2026 & Vikram Chandar & Critical Assumption, Gen AI disclosure and assisted with other sections\\
 Oct 19, 2026 & Arjun Sasidaran & Added FMEA (Section 5), user well-being
 hazards and SR21--SR24, and the roadmap (Section 7); restructured safety
@@ -75,7 +75,12 @@ multiplayer, user account, and database requirements as stretch goals\\
 
 ~\newpage
 
+\enlargethispage{6\baselineskip}
 \tableofcontents
+
+~\newpage
+
+\listoftables
 
 ~\newpage
 
@@ -95,10 +100,20 @@ interaction that could result in harm or loss. This may include physical injury
 to the user, damage to equipment, loss of data, system failure, or incorrect
 training caused by unrealistic simulator behaviour. Although the system is 
 primarily a software simulation, hazards may still arise from the use of VR 
-hardware, software failures, inaccurate drone physics, or incorrect user 
+hardware, software failures, inaccurate drone physics, or incorrect user
 interaction with the system.
 
-\section{Scope and Purpose of Hazard Analysis}
+The rest of this document is organized as follows.
+Section~\ref{sec:scope} states the scope and purpose of the analysis.
+Section~\ref{sec:boundaries} defines the system boundary and the components
+examined. Section~\ref{sec:assumptions} lists the critical assumptions.
+Section~\ref{sec:fmea} presents the Failure Mode and Effect Analysis.
+Section~\ref{sec:safety-reqs} gives the safety and security requirements
+derived from it, and Section~\ref{sec:roadmap} states which of those
+requirements will be implemented within the capstone timeline. The appendices
+contain the generative AI use disclosure and the team's reflections.
+
+\section{Scope and Purpose of Hazard Analysis}\label{sec:scope}
 
 The purpose of this Hazard Analysis is to identify potential failure modes of
 the FPV drone training system, understand their possible effects, and determine
@@ -139,7 +154,7 @@ The simulator is intended to be a training tool and does not guarantee safe
 operation of a real FPV drone or reproduce every condition that may occur
 during real-world flight.
 
-\section{System Boundaries and Components}
+\section{System Boundaries and Components}\label{sec:boundaries}
 
 The system boundary includes the software and hardware directly involved in
 running and interacting with the FPV drone training simulator. This includes
@@ -253,7 +268,7 @@ The system may locally store information such as:
 Data corruption or unauthorized modification could affect system operation or
 training results.
 
-\section{Critical Assumptions}
+\section{Critical Assumptions}\label{sec:assumptions}
 
 \begin{enumerate}
     \item \textbf{Stable Internet Connection:} Users have access to a sufficiently stable internet connection for online features, including forms, multiplayer elements, and reviews.\\
@@ -276,7 +291,7 @@ training results.
 
 \end{enumerate}
 
-\section{Failure Mode and Effect Analysis}
+\section{Failure Mode and Effect Analysis}\label{sec:fmea}
 
 The following Failure Mode and Effect Analysis (FMEA) identifies how each major
 component of the system may fail, the effects and causes of each failure, and
@@ -553,7 +568,7 @@ H9-4 \\
 \end{landscape}
 \global\landscapefooterfalse
 
-\section{Safety and Security Requirements}
+\section{Safety and Security Requirements}\label{sec:safety-reqs}
 
 \subsection{Functional Requirements}
 
@@ -702,7 +717,7 @@ H9-4 \\
 \textbf{Risk:} Medium
 
 
-\section{Roadmap}
+\section{Roadmap}\label{sec:roadmap}
 
 The following roadmap outlines which of the safety and security requirements
 from Section 6 will be implemented within the capstone timeline and which will
