@@ -69,8 +69,7 @@
   "docs/HazardAnalysis/HazardAnalysis.tex": [
     "docs/Comments.text",
     "docs/Common.text",
-    "docs/HazardAnalysis/HazardAnalysis.tex",
-    "docs/Reflection.text"
+    "docs/HazardAnalysis/HazardAnalysis.tex"
   ],
   "docs/ProblemStatementAndGoals/ProblemStatement.tex": [
     "docs/Comments.text",
@@ -95,14 +94,12 @@
   "docs/SRS/SRS.tex": [
     "docs/Comments.text",
     "docs/Common.text",
-    "docs/Reflection.text",
     "docs/SRS/FPVRComponentDiagram.png",
     "docs/SRS/SRS.tex",
     "docs/SRS/activityDiagram.png",
     "docs/SRS/models/environment-context.png",
     "docs/SRS/models/environment-deployment.png",
-    "docs/SRS/models/environment-domain.png",
-    "docs/SRS_Reflection.text"
+    "docs/SRS/models/environment-domain.png"
   ],
   "docs/UserGuide/UserGuide.tex": [
     "docs/Comments.text",
