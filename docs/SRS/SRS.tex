@@ -2100,14 +2100,16 @@ evaluation sessions, supervisor/owner review, or expert review.
  restores a flyable drone each time.\par
  \textbf{Validation:} Users confirm they can practise without frustration after a crash.
 \item \hyperlink{req:FR-LVL-03}{\textbf{FR-LVL-03}}\par
- \textbf{Verification:} Count the selectable obstacle-course levels
- (at least \texttt{MIN\_LEVELS}) and inspect their configurations. Check that
- each loads and is completable.\par
+ \textbf{Verification:} Confirm at least three obstacle-course levels are
+ selectable, labelled introductory, intermediate, and advanced, each with a
+ distinct obstacle or checkpoint arrangement. Check that each loads and is
+ completable.\par
  \textbf{Validation:} Users rank the levels by difficulty, and the ranking is
  compared with the intended difficulty.
 \item \hyperlink{req:FR-LVL-04}{\textbf{FR-LVL-04}}\par
- \textbf{Verification:} Load each environment and confirm at least
- \texttt{MIN\_ENVIRONMENTS} distinct environments exist.\par
+ \textbf{Verification:} Load each environment and confirm at least two
+ visually distinct environments exist, each with at least one playable
+ obstacle-course level.\par
  \textbf{Validation:} Users confirm that the environments look and feel different.
 \item \hyperlink{req:FR-LVL-05}{\textbf{FR-LVL-05}}\par
  \textbf{Verification:} On a fresh install, select every level in turn
@@ -2127,8 +2129,8 @@ evaluation sessions, supervisor/owner review, or expert review.
 \subsubsection{Checkpoint and Crash Recovery}
 \begin{itemize}
 \item \hyperlink{req:FR-CHK-01}{\textbf{FR-CHK-01}}\par
- \textbf{Verification:} Inspect each course definition for an ordered,
- non-empty checkpoint sequence.\par
+ \textbf{Verification:} Inspect each course definition for an ordered
+ sequence of at least two checkpoints followed by a finish location.\par
  \textbf{Validation:} Users confirm that the checkpoint order is understandable.
 \item \hyperlink{req:FR-CHK-02}{\textbf{FR-CHK-02}}\par
  \textbf{Verification:} Fly through checkpoints in order and confirm
@@ -2187,21 +2189,24 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Supervisor review confirms respawn keeps time consequences.
 \item \hyperlink{req:FR-PER-06}{\textbf{FR-PER-06}}\par
  \textbf{Verification:} Open the crash-recovery menu, wait a known
- duration, and confirm total time stays frozen and resumes when flight continues.\par
+ duration, and confirm both the total and section timers stay frozen and
+ resume when flight continues.\par
  \textbf{Validation:} Users confirm that menu time does not affect performance.
 \item \hyperlink{req:FR-PER-07}{\textbf{FR-PER-07}}\par
  \textbf{Verification:} Cause a known number of crashes and confirm the
  collision count increases by one per crash.\par
  \textbf{Validation:} Users confirm the collision count matches their experience.
 \item \hyperlink{req:FR-PER-08}{\textbf{FR-PER-08}}\par
- \textbf{Verification:} Confirm the score matches the formula in
- \hyperlink{req:PR-SCORE-01}{PR-SCORE-01} for given time and crash inputs,
- and that each added crash lowers the score.\par
+ \textbf{Verification:} For sample inputs, compare the score with a hand
+ calculation of $\max(0,1000-\lfloor T\rfloor-100C)$, for example $T=95.7$,
+ $C=2$ gives 705. Confirm each added crash lowers the score by 100 and that
+ a result that would be negative is shown as 0.\par
  \textbf{Validation:} Supervisor and user review of whether the score reflects
  flying quality.
 \item \hyperlink{req:FR-PER-09}{\textbf{FR-PER-09}}\par
- \textbf{Verification:} Confirm the rating is computed from defined
- criteria separately from the score, including boundary cases.\par
+ \textbf{Verification:} Test the band boundaries, scores of 0, 399, 400,
+ 599, 600, 799, 800, and 1000, and confirm they map to Needs Improvement,
+ Bronze, Silver, and Gold as specified.\par
  \textbf{Validation:} User evaluation of whether the rating labels are meaningful.
 \item \hyperlink{req:FR-PER-10}{\textbf{FR-PER-10}}\par
  \textbf{Verification:} Finish a course and confirm the displayed completion
@@ -2212,18 +2217,21 @@ evaluation sessions, supervisor/owner review, or expert review.
 \subsubsection{VR User Interface and Controller Input}
 \begin{itemize}
 \item \hyperlink{req:FR-UI-01}{\textbf{FR-UI-01}}\par
- \textbf{Verification:} Run the complete training experience on a compatible
- Meta Quest headset.\par
+ \textbf{Verification:} Run the complete training experience, including the
+ flight view and all menus, on a Meta Quest 3S headset.\par
  \textbf{Validation:} Users complete a session wearing the headset, and their
  feedback is recorded.
 \item \hyperlink{req:FR-UI-02}{\textbf{FR-UI-02}}\par
- \textbf{Verification:} Run the same core scenarios in standalone Quest
- mode and in PC-based VR mode, and compare behaviour.\par
+ \textbf{Verification:} Run the same core scenarios standalone on the
+ Quest 3S and in PCVR mode with the Quest 3S connected to a Windows 11
+ computer, and compare behaviour.\par
  \textbf{Validation:} Users confirm that both modes are usable.
 \item \hyperlink{req:FR-UI-03}{\textbf{FR-UI-03}}\par
- \textbf{Verification:} Fly the same scenario with Quest motion controllers
- and with an Xbox controller, and confirm all four flight inputs work for each.\par
- \textbf{Validation:} Users try both and confirm either can be used to fly.
+ \textbf{Verification:} Fly the same scenario with the Quest 3S motion
+ controllers in standalone mode and with an Xbox-compatible gamepad in PCVR
+ mode, and confirm throttle, pitch, roll, and yaw work in each.\par
+ \textbf{Validation:} Users try both configurations and confirm either can be
+ used to fly.
 \item \hyperlink{req:FR-UI-04}{\textbf{FR-UI-04}}\par
  \textbf{Verification:} Confirm the control instructions list every flight
  input and its function, and that they appear before the first flight.\par
@@ -2364,9 +2372,9 @@ evaluation sessions, supervisor/owner review, or expert review.
  improvement.
 \end{itemize}
 
-\subsubsection{Intelligent Feedback (Planned)}
-Verification of these requirements applies only if the feature is formally
-included in scope.
+\subsubsection{Intelligent Feedback}
+These requirements are Low priority (\hyperref[s5]{S.5}) and are verified in
+phase 6 of the phase-in plan (\hyperref[p3]{P.3}).
 \begin{itemize}
 \item \hyperlink{req:FR-AI-01}{\textbf{FR-AI-01}}\par
  \textbf{Verification:} Run attempts with known performance data and
@@ -2386,23 +2394,24 @@ included in scope.
 \subsubsection{Non-Functional Requirements}
 \begin{itemize}
 \item \hyperlink{req:NFR-INST-01}{\textbf{NFR-INST-01}}\par
- \textbf{Verification:} Install and launch FPVR on a supported standalone
- Quest headset with no computer connected, starting from a clean device.\par
+ \textbf{Verification:} Install and launch FPVR on a Quest 3S with no
+ computer connected, starting from a clean device.\par
  \textbf{Validation:} An independent evaluator installs the application using
  only the documentation.
 \item \hyperlink{req:NFR-INST-02}{\textbf{NFR-INST-02}}\par
- \textbf{Verification:} Launch FPVR in PCVR mode on a supported computer
- with a compatible Quest headset.\par
+ \textbf{Verification:} Launch FPVR in PCVR mode on a Windows 11 computer
+ connected to a Quest 3S using a supported PCVR connection method.\par
  \textbf{Validation:} An independent evaluator launches it using only the documentation.
 \item \hyperlink{req:NFR-COMP-01}{\textbf{NFR-COMP-01}}\par
- \textbf{Verification:} Confirm a functional flight-control configuration
- exists and works for each of the two controller types, and record the tested
- combinations.\par
+ \textbf{Verification:} Confirm the Quest 3S motion controllers control all
+ four flight axes in standalone mode and an Xbox-compatible gamepad controls
+ all four in PCVR mode, and record the tested combinations.\par
  \textbf{Validation:} Users confirm that each controller is usable for flight.
 \item \hyperlink{req:NFR-PERF-01}{\textbf{NFR-PERF-01}}\par
- \textbf{Verification:} Run the performance workload defined in
- \hyperlink{req:PR-PERF-01}{PR-PERF-01} on supported hardware and measure
- frame rate. Pass/fail depends on the numerical threshold once approved.\par
+ \textbf{Verification:} On the Quest 3S in standalone mode, fly normally for
+ 120 continuous seconds in each of the two required environments and confirm
+ the average frame rate is at least 72 FPS. Record frame-time spikes for
+ review.\par
  \textbf{Validation:} Users report whether the visuals feel smooth and comfortable.
 \item \hyperlink{req:NFR-PERF-02}{\textbf{NFR-PERF-02}}\par
  \textbf{Verification:} In the reference test environment, log the timestamp of
@@ -2411,12 +2420,13 @@ included in scope.
  \textbf{Validation:} Users report whether the drone responds to the controls
  without noticeable delay.
 \item \hyperlink{req:NFR-REL-01}{\textbf{NFR-REL-01}}\par
- \textbf{Verification:} Run a soak test of repeated crash-and-recovery cycles
- and confirm the application neither restarts nor degrades.\par
+ \textbf{Verification:} Run 20 consecutive crash-and-respawn cycles in each
+ required obstacle-course environment and confirm the application does not
+ terminate and checkpoint progress stays consistent.\par
  \textbf{Validation:} Users practise extended sessions and report any instability.
 \item \hyperlink{req:NFR-USAB-01}{\textbf{NFR-USAB-01}}\par
- \textbf{Verification:} Confirm the instructions are reachable before the
- first flight. Observe new users finding them.\par
+ \textbf{Verification:} Confirm the control guide is reachable from the main
+ menu and is shown before the first flight of a newly launched session.\par
  \textbf{Validation:} First-time users are timed and observed to see whether they
  understand the controls.
 \item \hyperlink{req:NFR-SAFE-01}{\textbf{NFR-SAFE-01}}\par
@@ -2457,24 +2467,13 @@ included in scope.
 \subsubsection{Proposed Quantitative and Interaction Specifications}
 \label{sec:proposed-performance}
 All of these remain PROPOSED. Their verification is defined now so the cases
-are ready if they are approved.
+are ready if they are approved. Earlier frame-rate, input-response, score,
+and rating proposals are now specified directly by
+\hyperlink{req:NFR-PERF-01}{NFR-PERF-01},
+\hyperlink{req:NFR-PERF-02}{NFR-PERF-02},
+\hyperlink{req:FR-PER-08}{FR-PER-08}, and
+\hyperlink{req:FR-PER-09}{FR-PER-09}, and are verified there.
 \begin{itemize}
-\item \hypertarget{req:PR-PERF-01}{}\textbf{PR-PERF-01}\par
- \textbf{Verification:} Run the \texttt{PERF\_RUN\_SECONDS} workload after
- \texttt{WARMUP\_SECONDS} of warm-up on every declared device, mode, and
- controller configuration and all released courses, including crashes, menus,
- and reviews. Check that the average frame rate is at least
- \texttt{MIN\_NATIVE\_FPS} and that \texttt{ON\_TIME\_FRAME\_FRACTION} of frame
- deadlines are met. Report synthetic frames separately.\par
- \textbf{Validation:} Users report comfort in sessions, and the threshold is
- reviewed by the supervisor. Platform release testing remains separate.
-\item \hypertarget{req:PR-PERF-02}{}\textbf{PR-PERF-02}\par
- \textbf{Verification:} Measure the interval from application receipt of
- input to the visible flight response during the same workload. Check that the
- \texttt{LATENCY\_PERCENTILE} percentile does not exceed
- \texttt{INPUT\_RESPONSE\_MS}, and report maxima and invalid samples.\par
- \textbf{Validation:} Users report whether controls feel responsive. Hardware
- and PCVR-link validation follow.
 \item \hypertarget{req:PR-FLT-01}{}\textbf{PR-FLT-01}\par
  \textbf{Verification:} Hover near the clearance threshold of
  \texttt{TAKEOFF\_CLEARANCE\_M} and confirm airborne latches when it is first
@@ -2495,17 +2494,6 @@ are ready if they are approved.
  combination, confirm each proposed controller action produces the stated
  action, and that unsupported or reserved buttons are not advertised.\par
  \textbf{Validation:} Users with each controller confirm that the mapping is learnable.
-\item \hypertarget{req:PR-SCORE-01}{}\textbf{PR-SCORE-01}\par
- \textbf{Verification:} Compute $S$ for sample times and crash counts and
- compare with independent hand calculations. Confirm negative scores are kept,
- each added crash lowers $S$ by $P$, and rounding affects the display only.\par
- \textbf{Validation:} Users and the supervisor judge whether the score ranks
- attempts sensibly. The reference times $T_r$ are reviewed per course.
-\item \hypertarget{req:PR-SCORE-02}{}\textbf{PR-SCORE-02}\par
- \textbf{Verification:} Test boundary inputs for Clean, Steady, and
- Practice, including equality at $T=T_r$ and $T=\rho T_r$, $c=0$, and
- $c=\gamma$. Confirm incomplete attempts receive no rating.\par
- \textbf{Validation:} Users evaluate whether the rating labels and cutoffs are meaningful.
 \end{itemize}
 
 \subsubsection{Proposed Safety, Security, and Failure Behaviour}
@@ -2542,14 +2530,17 @@ are ready if they are approved.
  error state, and progress, scores, and stale controls are unaffected.\par
  \textbf{Validation:} Supervisor review of the failure behaviour.
 \item \hypertarget{req:SR-06}{}\textbf{SR-06}\par
- \textbf{Verification:} After installation, run core training, scoring,
- and review with networking disabled and no FPVR account. Inspect network
- traffic to confirm no core telemetry is sent.\par
- \textbf{Validation:} Owner review confirms the offline default is appropriate.
+ \textbf{Verification:} With no account signed in, run core training,
+ scoring, and review and inspect network traffic to confirm no attempt data
+ is sent. Then sign in and confirm only the result fields in
+ \hyperlink{req:FR-DAT-01}{FR-DAT-01} are sent to the online service.\par
+ \textbf{Validation:} Owner review confirms that only the data needed for
+ online results leaves the device.
 \item \hypertarget{req:SR-07}{}\textbf{SR-07}\par
- \textbf{Verification:} Confirm that attempt data is discarded when a new
- attempt starts or the review is left, and that nothing is persisted or
- exported. Inspect the storage used by the application.\par
+ \textbf{Verification:} Inspect the storage used by the application after
+ several attempts. Confirm that only the result records in
+ \hyperlink{req:FR-DAT-01}{FR-DAT-01} are kept, and that other attempt data
+ is discarded when a new attempt starts or the review is left.\par
  \textbf{Validation:} Owner review of retention scope.
 \item \hypertarget{req:SR-08}{}\textbf{SR-08}\par
  \textbf{Verification:} If external AI is proposed, review provider,
