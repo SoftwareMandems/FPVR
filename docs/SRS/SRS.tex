@@ -166,12 +166,106 @@ Completed the Goals (G) section of the SRS. \\
 Oct 19, 2026 & John Cho &
 Added initial content for System Interfaces and Use Cases (S.3, S.4) \\
 
+\addlinespace
+
+Oct 19, 2026 & Arjun &
+Updated the multiplayer limitation to identify
+multiplayer as a stretch goal. \\
+
 \bottomrule
 \end{tabularx}
 
 \newpage
 
 \clearpage
+
+\unumbered{Glossary}\label{sec:glossary}
+
+The definitions below apply throughout this specification. Links point to the
+existing introduction or the section that uses the term. Acronyms appearing in
+figures use these same meanings.
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+                         >{\raggedright\arraybackslash}p{0.71\textwidth}@{}}
+\caption{Domain glossary and abbreviations}\label{tab:e-glossary}\\
+\toprule
+\textbf{Term} & \textbf{Meaning and reference} \\
+\midrule\endfirsthead
+\multicolumn{2}{l}{\small\textit{Table \thetable\ continued}}\\
+\toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
+\midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
+\bottomrule\endlastfoot
+FPVR & The VR-based FPV drone training simulator specified here
+(\hyperref[g1]{G.1}). \\
+FPV & First-person view: presentation from the simulated drone's viewpoint
+(\hyperref[g1]{G.1}). \\
+VR & Virtual reality: an immersive presentation viewed through a headset
+(\hyperref[g1]{G.1}). \\
+SRS & Software requirements specification: this document's statement of the
+intended product and its acceptance expectations. \\
+AI & Artificial intelligence: the planned, feasibility-dependent intelligent
+flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
+XR & Extended reality: the umbrella term that includes VR; used in the
+runtime diagrams. It does not specify a particular integration API. \\
+PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
+computer and presents its VR view through a connected headset
+(\hyperref[e1]{E.1}). \\
+Runtime & The external platform software that provides headset presentation,
+tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
+Tracking / pose & Tracking reports a device's position and orientation (its
+pose) and whether that information is currently valid. \\
+Session focus & The runtime's indication of whether FPVR is the active
+application receiving interaction; visible imagery alone does not prove focus. \\
+Frames per second / hertz & Application frame-delivery rate / display refresh
+frequency (Hz). These quantities are distinct; the performance target remains
+under review in \hyperref[sec:s2-nfr]{S.2}. \\
+API & Application programming interface: a program-to-program interface.
+Mention of an external interface does not establish a public FPVR API
+(\hyperref[s3]{S.3}). \\
+FR / NFR & Functional requirement / non-functional requirement; prefixes of the
+existing requirement identifiers in \hyperref[s2]{S.2}. \\
+Throttle, pitch, roll, yaw & Flight commands for thrust, rotation about the
+lateral axis, rotation about the longitudinal axis, and rotation about the
+vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
+Virtual environment & A simulated setting containing flight space and scenery.
+Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
+Free flight & Practice without course checkpoints, timers, or scoring
+(\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
+Level / course & A selectable obstacle challenge with a start, an ordered
+checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
+Attempt & One course run from start or restart until completion or exit.
+Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
+Checkpoint / segment & A required ordered course gate / the part of a course
+between the start, successive gates, and the finish
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Collision / crash & Contact with a simulated obstacle or surface / a simulated
+collision that triggers the recovery interaction. Crash-counting details are
+specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
+\hyperref[sec:s2-performance]{FR-PER-07}. \\
+Respawn / restart & Resume the same attempt at its most recently completed checkpoint
+(or start if none) / begin a new attempt from the start
+(\hyperref[sec:s2-checkpoints]{S.2}). \\
+Total / section time & Active-flight time for an attempt, including failed
+sections / time for the current segment. Checkpoint completion and respawn
+reset section time; respawn preserves total time, which pauses in crash-recovery
+menus (\hyperref[sec:s2-performance]{S.2}). \\
+Score / rating & A numerical performance result / a separate performance
+assessment. Their criteria remain under review
+(\hyperref[sec:s2-performance]{S.2}). \\
+Flight review & A completed attempt's performance summary. Registered users
+can save results to the cloud and retrieve previous results
+(\hyperref[ef-data]{E-F-03}). \\
+Telemetry & Flight and performance measurements used for evaluation. The term
+alone does not imply recording history or transmitting data
+(\hyperref[e4]{E.4}). \\
+Activity space / boundary & The user's physical space / a platform-provided
+virtual limit used to help the user remain within a prepared space.
+Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
+\end{longtable}
+\endgroup
 
 \clearpage
 
@@ -688,10 +782,10 @@ of real-world drone operation. \\
 \addlinespace
 
 Multiplayer Functionality &
-The core system is limited to single-player training.
-Multiplayer racing, cooperative flight, and shared
-online training sessions are stretch goals and are not
-part of the core requirements (LC-08). \\
+The core FPVR system is limited to single-player training.
+Multiplayer flight, in which multiple users operate drones
+in a shared virtual environment, is a stretch goal and
+will be implemented only if development time permits (LC-08). \\
 
 \addlinespace
 
@@ -1100,43 +1194,514 @@ and usage assumptions.
 
 \booksection{E}{Environment}
 
-\guidance{The Environment book describes the application domain and external context, physical or virtual (or a mix), in which the system will operate. \cite{BM22}}
+This section describes where FPVR runs and how it interacts with people and
+hardware. It follows Meyer's Environment template~\cite{BM22}, with the glossary
+placed after Revision History. Detailed software behaviour is defined in
+\hyperref[s2]{S.2}.
 
-\subsection{Glossary}\label{e1}
+Identifiers beginning with \textbf{E-C}, \textbf{E-A}, \textbf{E-F}, and
+\textbf{E-I} identify constraints, assumptions, effects, and invariants.
+Assumptions must be checked; invariants are rules FPVR must always preserve.
 
-\guidance{Clear and precise definitions of all the vocabulary specific to the application domain, including technical terms, words from ordinary language used in a special meaning, and acronyms. It introduces the terminology of the project; not just of the environment in the strict sense, but of all its parts. \cite{BM22}}
+\subsection{Components}\label{e1}
 
-% TODO: Write your team's content for E.1 here.
+FPVR includes the simulated drone, flight spaces and courses, crash recovery,
+performance results, player accounts, global leaderboards and VR controls. The
+headset, controllers, connected computer, authentication service, cloud database
+and online leaderboard service are outside the software boundary.
+\hyperref[g6]{G.6} describes the simulation limits.
 
-\subsection{Components}\label{e2}
+\clearpage
+\subsubsection*{Domain relationships}
+Figure~\ref{fig:e-domain} shows the main training concepts. A course takes place
+in one virtual environment and contains ordered checkpoints. Each attempt uses
+one course and one simulated drone. Completing the attempt produces a flight
+review. Registered users can save and retrieve completed results. The diagram
+shows one course run; it does not specify software classes.
 
-\guidance{List of elements of the environment that may affect or be affected by the system and project. It includes other systems to which the system must be interfaced. These components may include existing systems, particularly software systems, with which the system will interact --- by using their APIs (program interfaces), or by providing APIs to them, or both. These are interfaces provided to the system from the outside world. They are distinct from both: interfaces provided by the system to the outside world (\hyperref[s3]{S.3}); and technology elements that the system's development will require (\hyperref[p5]{P.5}). \cite{BM22}}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-domain.png}
+\caption[FPVR training concepts]{FPVR training concepts. Read from top to bottom;
+each arrow names the relationship between the connected concepts.}
+\label{fig:e-domain}
+\end{figure}
 
-% TODO: Write your team's content for E.2 here.
+\subsubsection*{External components}
+Users, their physical space, input devices, and the headset/runtime affect
+FPVR. PCVR also uses a computer and a headset link. Authentication, cloud storage
+and online leaderboard services support accounts and saved results. Guardians and nearby people
+are affected stakeholders (\hyperref[g7]{G.7}); user profiles are in
+\hyperref[g8]{G.8}. Table~\ref{tab:e-external} explains the exchanges labelled
+F1--F8 in Figure~\ref{fig:e-context}.
 
-\subsection{Constraints}\label{e3}
+\begingroup\small\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}
+                         >{\raggedright\arraybackslash}p{0.35\textwidth}
+                         >{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\caption{External components and information exchanged}
+\label{tab:e-external}\\
+\toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
+\textbf{Outputs from FPVR}\\\midrule\endfirsthead
+\toprule\textbf{Component / flow} & \textbf{Inputs to FPVR} &
+\textbf{Outputs from FPVR}\\\midrule\endhead
+\bottomrule\endfoot
+User (F1) & Account, mode, level, menu, recovery and exit choices; flight controls via F3. &
+Flight view, instructions, recovery choices, current and saved results, and rankings. \\
+Headset and runtime (F2) & Device position/orientation (pose), tracking validity,
+input availability, session focus, display timing and session status. &
+Rendered images and responses to runtime services. \\
+Quest or compatible Xbox controller (F3) & Controller type, flight axes,
+buttons and connection state. & Instructions and device feedback shown to the
+user through F1. \\
+PCVR computer and headset link (F4) & Computer resources, runtime/link status
+and headset tracking/input. & PC-rendered images sent to the headset; PCVR only. \\
+Optional analysis (F5) & Additional feedback or a failure/unavailable result. &
+Flight data for analysis, if included. Data and processing location remain
+under review (\hyperref[sec:s2-ai]{S.2}). \\
+Authentication service (F6) & Registration/login outcomes and authenticated
+session state. & Account details, login credentials and sign-in/sign-out requests. \\
+Cloud database (F7) & Saved flight results and save/retrieval status. &
+Completed flight results linked to the user account, and requests for previous results. \\
+Online leaderboard service (F8) & Global rankings and score-submission status. &
+Course scores, player identifiers and ranking requests. \\
+Physical space & Room clearance, user preparation and conditions for headset
+tracking. No direct obstacle-sensing input is assumed. & VR images affect user
+attention and movement; FPVR cannot clear the physical space. \\
+\end{longtable}\endgroup
 
-\guidance{Obligations and limits imposed on the project and system by the environment. This chapter defines non-negotiable restrictions coming from the environment (business rules, physical laws, engineering decisions), which the development will have to take into account. \cite{BM22}}
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-context.png}
+\caption[FPVR system context]{FPVR system context. F1--F8 refer to Table~\ref{tab:e-external}.
+Arrowheads show direction. Solid arrows show normal interactions; dotted arrows
+marked * apply only to PCVR or optional analysis. Arrows between the user and
+physical space show preparation and physical influence, not a sensor connection.}
+\label{fig:e-context}
+\end{figure}
 
-% TODO: Write your team's content for E.3 here.
+User-facing images and results pass through the headset.
+F4 applies only to PCVR. F5 is optional analysis; F6--F8 are required online
+services for accounts, saved results and global leaderboards. These online
+features need internet access in either execution mode. Detailed interfaces
+belong in \hyperref[s3]{S.3}.
 
-\subsection{Assumptions}\label{e4}
+\clearpage
+\subsubsection*{Execution environments and compatibility}
+FPVR must support both modes below. A session uses one mode at a time
+(\hyperref[sec:s2-nfr]{NFR-INST-01--02}).
+\begin{itemize}
+\item \textbf{Standalone Quest:} FPVR runs on the headset and uses its display,
+tracking and input services. No connected computer is needed during play.
+\item \textbf{PCVR:} FPVR runs on a computer. A compatible runtime and headset
+link send images to the Quest headset and return tracking and input data.
+\end{itemize}
 
-\guidance{Properties of the environment that may be assumed, with the goal of facilitating the project and simplifying the system. It defines properties that are not imposed by the environment (like those in \hyperref[e3]{E.3}) but assumed to hold, as an explicit decision meant to facilitate the system's construction. \cite{BM22}}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{models/environment-deployment.png}
+\caption[Standalone and PCVR modes]{Standalone and PCVR modes. Outer boxes separate the modes; inner
+boxes show where FPVR runs and where images are displayed. Arrows show the
+named information flows. Both modes use a headset; the link technology is
+still to be chosen.}
+\label{fig:e-deployment}
+\end{figure}
 
-% TODO: Write your team's content for E.4 here.
+\begin{table}[H]\centering\small
+\caption{Controller support for Quest 3S}\label{tab:e-pairings}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}YY@{}}\toprule
+\textbf{Controller type} & \textbf{Support commitment} &
+\textbf{Execution-mode compatibility}\\\midrule
+Quest motion controllers & Required & Standalone/PCVR pairings to validate\\
+Xbox-compatible controllers & Required & Standalone/PCVR pairings to validate\\\bottomrule
+\end{tabularx}\end{table}
 
-\subsection{Effects}\label{e5}
+\hyperref[sec:s2-interface]{FR-UI-02--03} and
+\hyperref[sec:s2-nfr]{NFR-COMP-01} require a working configuration for each
+controller type across the system on the confirmed Quest 3S target.
+Table~\ref{tab:e-pairings} records these commitments; individual standalone and
+PCVR pairings still need validation. For each tested pairing, record the
+controller, runtime and control mapping; PCVR also needs the computer operating
+system, hardware and link details (\hyperref[ec-hardware]{E-C-02}).
 
-\guidance{Elements and properties of the environment that the system will affect. It defines effects of the system's operations on properties of the environment. Where the previous two categories (\hyperref[e3]{E.3}, \hyperref[e4]{E.4}) defined influences of the environment on the system, effects are influences in the reverse direction. \cite{BM22}}
+\subsection{Constraints}\label{e2}
 
-% TODO: Write your team's content for E.5 here.
+Constraints are limits the project must follow. The items below come from the
+project scope, chosen platforms and release conditions.
 
-\subsection{Invariants}\label{e6}
+\begin{description}
+\item[{\hyperref[et-platform]{E-C-01}:}]\phantomsection\label{ec-platform}
+\textbf{Platforms and engine.}
+FPVR must support the two modes and controller types described in
+\hyperref[e1]{E.1} (\hyperref[sec:s2-interface]{FR-UI-01--03},
+\hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01}).
+The \href{../DevelopmentPlan/DevelopmentPlan.tex}{Development Plan},
+``Expected Technology'', selects Unity.
+\textit{Reason:} these choices support immersive practice using the planned
+hardware and development tools.
 
-\guidance{Properties of the environment that the system's operation must preserve, i.e., properties of the environment that operations of the system may assume to hold when they start, and must maintain. \cite{BM22}}
+\item[{\hyperref[et-platform]{E-C-02}:}]\phantomsection\label{ec-hardware}
+\textbf{Supported hardware.}
+Quest 3S is the finalized target headset. Support for Quest motion controllers
+and Xbox-compatible controllers is required overall. Specific Xbox controller
+versions, computer requirements, headset links and execution-mode pairings still
+need validation. Record tested configurations as explained in
+\hyperref[e1]{E.1} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
+\textit{Reason:} choosing a device does not prove that FPVR works on it.
 
-% TODO: Write your team's content for E.6 here.
+\item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
+\textbf{Scope and flight accuracy.}
+The simulation limits in \hyperref[g6]{G.6} still apply. Player accounts,
+cloud-backed results and global leaderboards are required. Simulated gravity is required by
+\hyperref[sec:s2-flight]{FR-FLT-03}; the required level of physical accuracy is
+still under review.
+\textit{Reason:} the
+\href{../ProblemStatementAndGoals/ProblemStatement.tex}{Problem Statement}
+aims at safe introductory practice. Simulator results alone cannot establish
+real-world piloting ability.
+
+\item[{\hyperref[et-safety]{E-C-04}:}]\phantomsection\label{ec-safety}
+\textbf{Safety and intended users.}
+Use must follow the selected headset's
+\hyperref[es-meta-safety]{safety instructions}, including space preparation,
+appropriate supervision and breaks. Age and regional eligibility must be
+reviewed for the users described in \hyperref[g8]{G.8}.
+\textit{Reason:} VR affects a person in a real room. Stationary controls and an
+accessible exit (\hyperref[sec:s2-interface]{FR-UI-06},
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}) support safer use but cannot ensure comfort
+for every user.
+
+\item[{\hyperref[et-release]{E-C-05}:}]\phantomsection\label{ec-release}
+\textbf{Release and data rules.}
+A Meta release must meet the applicable
+\hyperref[es-meta-age]{audience rules}. Distribution must also
+respect engine, runtime and asset licences. Account data, completed flight
+results and leaderboard entries require persistent cloud storage. Protect
+credentials and stored data, encrypt service connections, and restrict access
+to private records to their owner and authorised services. Define the data
+collected, its purpose, recipients, retention period, deletion process and user
+notice/consent and applicable legal duties before release. Explain which
+leaderboard details are public.
+Optional AI processing must have a separate data-use policy; storing results
+does not authorise sending them or credentials to an AI service.
+\textit{Reason:} required storage supports accounts, previous results and global
+rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate purpose.
+
+\item[{\hyperref[et-resources]{E-C-06}:}]\phantomsection\label{ec-resources}
+\textbf{Hardware limits.}
+Standalone flight depends on headset processing power, memory, battery and heat
+limits. PCVR also depends on the computer and headset link.
+The proposed minimum rendering target is 72 frames per second during normal
+flight and obstacle-course operation on supported hardware
+(\hyperref[sec:s2-nfr]{NFR-PERF-01}).
+\textit{Reason:} these limits affect smooth, responsive flight. The target needs
+validation on Quest 3S and the supported PCVR configurations; computer requirements
+remain unresolved in \hyperref[ec-hardware]{E-C-02}.
+\end{description}
+
+\subsubsection*{External sources}
+The following sources support the safety and release constraints. Check the
+current guidance for the selected headset and release.
+\begin{description}
+\item[Headset safety.]\phantomsection\label{es-meta-safety}
+Meta Platforms, Inc., \textit{Meta Quest Safety Center},
+\href{https://www.meta.com/quest/safety-center/}{model-specific safety guidance}.
+Accessed October 19, 2026. Supports \hyperref[ec-safety]{E-C-04} and
+\hyperref[ea-space]{E-A-02}.
+\item[Audience policy.]\phantomsection\label{es-meta-age}
+Meta Platforms, Inc., \textit{Age group self-certification policy},
+\href{https://developers.meta.com/vr/policy/age-groups/}{Meta Horizon OS developer policy}.
+Accessed October 19, 2026; see also~\cite{metaAgeGroups}.
+Supports \hyperref[ec-release]{E-C-05}.
+\end{description}
+
+\subsection{Assumptions}\label{e3}
+
+These assumptions describe the conditions needed for use and testing.
+Each row explains how to check the assumption and what happens if it fails.
+
+\begingroup\small\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}
+                         >{\raggedright\arraybackslash}p{0.40\textwidth}
+                         >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\caption{Assumptions and how to check them}\label{tab:e-assumptions}\\
+\toprule\textbf{Identifier} & \textbf{Assumption and reason} &
+\textbf{Check and result if false}\\\midrule\endfirsthead
+\toprule\textbf{Identifier} & \textbf{Assumption and reason} &
+\textbf{Check and result if false}\\\midrule\endhead
+\bottomrule\endfoot
+\phantomsection\label{ea-runtime}\hyperref[et-platform]{\textbf{E-A-01}} &
+The chosen hardware has a compatible runtime that reports headset, controller
+and session status. FPVR needs these services to run in VR. &
+Launch and use proposed pairings of the controller types in
+Table~\ref{tab:e-pairings}; record
+versions and status changes. A pairing with missing or incompatible services
+cannot be accepted (\hyperref[ec-hardware]{E-C-02}). \\
+\phantomsection\label{ea-space}\hyperref[et-safety]{\textbf{E-A-02}} &
+The user or guardian can prepare a suitable stationary space using the
+headset instructions. This allows seated or standing use. &
+Review setup and try the stationary controls and exit
+(\hyperref[sec:s2-interface]{FR-UI-06},
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}). Poor clearance or discomfort means safe-use
+conditions are not met; FPVR cannot certify that the room is safe. \\
+\phantomsection\label{ea-course}\hyperref[et-course]{\textbf{E-A-03}} &
+Each released course has a valid start, ordered checkpoints, finish, collision
+surfaces and usable recovery positions. These make progress and recovery
+meaningful. &
+Inspect and fly each course, including recovery before the first checkpoint.
+Invalid or unreachable course content must be corrected before acceptance
+(\hyperref[sec:s2-checkpoints]{FR-CHK-01--08}). \\
+\phantomsection\label{ea-evaluation}\hyperref[et-platform]{\textbf{E-A-04}} &
+Tests can access the claimed hardware pairings and representative free-flight
+and course content. These are needed to check compatibility and performance. &
+Record the equipment and courses used. Missing equipment or content leaves
+its checks unverified and its pairing unconfirmed
+(\hyperref[sec:s2-nfr]{NFR-COMP-01, NFR-PERF-01}). \\
+\end{longtable}\endgroup
+
+Tracking, focus and PCVR links can fail. Their failure handling still needs
+specification and checks in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
+\hyperref[s6]{S.6}. An available AI service is not assumed; the standard review
+must remain available as explained in \hyperref[ei-review]{E-I-04}.
+Account login, cloud save/retrieval and leaderboard requests depend on internet
+access and their services. Check service failures and rejected credentials;
+show unsuccessful requests clearly and do not report failed saves as saved.
+
+\subsection{Effects}\label{e4}
+
+Effects describe how FPVR affects users and equipment. They also concern
+guardians, bystanders and the wider public (\hyperref[g7]{G.7}) through
+activity-space safety and training claims.
+
+\begin{description}
+\item[{\hyperref[et-safety]{E-F-01}:}]\phantomsection\label{ef-attention}
+\textbf{Comfort and attention.}
+The moving drone view can cause discomfort or reduce attention to nearby
+people and objects. The user remains in a physical room even though the drone
+and its collisions are simulated. Safety guidance, space preparation and an
+accessible exit address these concerns (\hyperref[ec-safety]{E-C-04},
+\hyperref[ea-space]{E-A-02}, \hyperref[sec:s2-nfr]{NFR-SAFE-01}).
+
+\item[{\hyperref[et-scope]{E-F-02}:}]\phantomsection\label{ef-training}
+\textbf{Practice and feedback.}
+Repeated challenges and flight results are intended to help users recognize
+mistakes (\hyperref[g3]{G.3}, \hyperref[sec:s2-review]{FR-REV-01--03}).
+A high score may also give a user too much confidence about real flying.
+Results describe simulator performance; any improvement in real-world skill
+needs separate evaluation (\hyperref[g6]{G.6}).
+
+\item[{\hyperref[et-release]{E-F-03}:}]\phantomsection\label{ef-data}
+\textbf{Flight data and equipment use.}
+FPVR updates the selected course, checkpoint progress, timers, crash count,
+score, rating and current review (\hyperref[sec:s2-performance]{FR-PER-01--10},
+\hyperref[sec:s2-review]{FR-REV-02}). Registered users can save completed results
+to persistent cloud storage and retrieve previous results. Account-linked
+records and public leaderboard entries create privacy and access-control
+obligations under \hyperref[ec-release]{E-C-05}. FPVR also uses device processing
+power, memory, display, battery and network access; PCVR uses the computer and
+link (\hyperref[ec-resources]{E-C-06}).
+
+\item[{\hyperref[et-review]{E-F-04}:}]\phantomsection\label{ef-analysis}
+\textbf{Optional analysis.}
+If included, intelligent analysis adds observations about the completed attempt.
+It may run locally or use an external service; this choice is still under
+review. An external service would add the F5 connection in
+Figure~\ref{fig:e-context}, subject to \hyperref[ec-release]{E-C-05}.
+The standard review stays available without this analysis
+(\hyperref[ei-review]{E-I-04}).
+\end{description}
+
+\clearpage
+\subsection{Invariants}\label{e5}
+
+An invariant is a rule that must stay true while FPVR operates. Values such as
+elapsed time and checkpoint count can change, but they must change according
+to these rules. The rules below explain the required behaviour and link to the
+requirements that define it.
+
+\begin{description}
+\item[{\hyperref[et-scope]{E-I-01}:}]\phantomsection\label{ei-boundary}
+\textbf{Simulated flight only.}
+FPVR controls a simulated drone. No action, including moving the throttle or
+recovering from a crash, may send a command to a physical aircraft. A score or
+rating also does not certify real-world piloting ability (\hyperref[g6]{G.6}).
+\textit{Reason:} users need to understand the limits of simulator practice.
+
+\item[{\hyperref[et-course]{E-I-02}:}]
+\phantomsection\label{ei-course}
+\textbf{Checkpoint order and recovery.}
+Completed checkpoints must always form the beginning of the course's required
+sequence, with none skipped. Respawn keeps progress in the same attempt;
+restart begins a new attempt.
+
+\textbf{Checkpoint order.} Let $n$ be the number of required checkpoints (a positive integer),
+listed in order as $\langle C_1,\ldots,C_n\rangle$. Let $k$ count the completed
+checkpoints and $P$ list them. Then
+\[
+  k\in\{0,\ldots,n\},\qquad P=\langle C_1,\ldots,C_k\rangle.
+\]
+This says that $k$ cannot be below zero or above $n$, and $P$ contains exactly
+the first $k$ checkpoints. Before the first checkpoint, $k=0$ and $P$ is empty.
+
+During active flight, when no crash awaits recovery, let $e$ be a checkpoint
+passage. A prime ($'$) means the value just after that event:
+\[
+ k'=\begin{cases}
+ k+1, & k<n\ \text{and }e\text{ is passage through }C_{k+1},\\
+ k, & \text{otherwise}.
+ \end{cases}
+\]
+Only the next required checkpoint increases progress. Repeated or out-of-order
+checkpoints do not count, and progress cannot advance while a crash awaits
+recovery (\hyperref[sec:s2-flight]{FR-FLT-06},
+\hyperref[sec:s2-checkpoints]{FR-CHK-01--03}). Reaching the finish counts as
+completion only after all $n$ checkpoints are complete
+(\hyperref[sec:s2-checkpoints]{FR-CHK-08}).
+
+\textit{Example, using three checkpoints:} after $C_1$, $k=1$ and
+$P=\langle C_1\rangle$. Passing $C_3$ next changes neither value. Passing $C_2$
+then gives $k=2$ and $P=\langle C_1,C_2\rangle$. The user must still pass $C_3$
+and reach the finish. These numbers illustrate the rule; they do not set the
+number of checkpoints in every course.
+
+\par\noindent\begin{minipage}{\linewidth}
+\textbf{Crash recovery.} Respawn continues the current attempt; restart starts
+again from the beginning. Table~\ref{tab:e-recovery} shows exactly what is kept
+or reset (\hyperref[sec:s2-checkpoints]{FR-CHK-05--07}).
+
+\small\captionsetup{hypcap=false}
+\captionof{table}{Respawn and restart}\label{tab:e-recovery}
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}YY@{}}\toprule
+\textbf{Item} & \textbf{Respawn} & \textbf{Restart}\\\midrule
+Attempt & Continue the same attempt & Begin a new attempt\\
+Completed checkpoints & Keep $k$ and $P$ & Set $k=0$ and clear $P$\\
+Drone position & Last completed checkpoint; start if $k=0$ & Course start\\
+Total flight time & Keep accumulated time & Reset to zero\\
+Current section time & Reset to zero & Reset to zero\\
+Crashes and scoring & Keep crash count and recorded penalties & Reset crash
+count and performance score\\\bottomrule
+\end{tabularx}
+\end{minipage}
+
+\textit{Example:} checkpoints $C_1$ and $C_2$ are complete, total flight time is
+42 seconds, and one crash has been counted. Respawn returns the drone to $C_2$
+and keeps both checkpoints, the 42 seconds, the crash count and its penalty.
+The current section timer resets to zero. These values illustrate recovery;
+they are not performance targets.
+
+\textbf{Timing.} Failed flight still counts toward total time. Time spent in
+the crash-recovery menu does not. Let $T$ be total flight time and $\Delta t$
+be a non-negative elapsed interval, both measured in seconds. The total after
+that interval is $T'$:
+\[
+ T'=\begin{cases}
+ T+\Delta t, & \text{during active flight},\\
+ T, & \text{while the crash-recovery menu is displayed}.
+ \end{cases}
+\]
+For example, spending ten seconds in that menu does not add ten seconds to
+$T$. Respawn keeps $T$; restart resets it. The section timer resets when the
+next checkpoint is completed or the drone respawns. Each new crash adds one to
+the crash count (\hyperref[sec:s2-performance]{FR-PER-01--07}). Total time
+stops at successful completion (\hyperref[sec:s2-performance]{FR-PER-10}).
+\textit{Reason:} respawn must not erase failed-flight time or crash penalties;
+restart begins a new attempt.
+These course rules do not apply to free flight, which has no checkpoints,
+timers or score.
+
+\item[{\hyperref[et-safety]{E-I-03}:}]\phantomsection\label{ei-stationary}
+\textbf{Stationary interaction.}
+Users must be able to control flight, use menus, recover and exit while seated
+or standing. Flying through a virtual course must not require walking through
+the physical room. Exit must be accessible without removing the headset
+(\hyperref[sec:s2-interface]{FR-UI-06},
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}).
+\textit{Reason:} the controls must suit the prepared stationary space, including
+after a simulated crash.
+
+\item[{\hyperref[et-review]{E-I-04}:}]\phantomsection\label{ei-review}
+\textbf{Standard review without optional analysis.}
+After successful completion, the user must receive the current attempt's time,
+checkpoint results, crash count, score and rating. This review remains available
+whether intelligent feedback is not included, succeeds, is unavailable or fails.
+For example, an analysis error must still allow the user to review the results
+and retry the course (\hyperref[sec:s2-review]{FR-REV-01--04},
+\hyperref[sec:s2-ai]{FR-AI-03}).
+\textit{Reason:} an optional feature must not block the core training experience.
+\end{description}
+
+\subsubsection*{Traceability and checks}
+Each Environment ID links to a check below, and each row links back to the rule.
+The middle column links to the related scope or requirement. These are planned
+checks, not completed software or user tests.
+
+\begingroup\small\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}
+                         >{\raggedright\arraybackslash}p{0.23\textwidth}
+                         >{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\caption{Environment traceability and planned checks}\label{tab:e-trace}\\
+\toprule\textbf{Rule IDs} & \textbf{Related scope / requirement} &
+\textbf{Planned check}\\\midrule\endfirsthead
+\toprule\textbf{Rule IDs} & \textbf{Related scope / requirement} &
+\textbf{Planned check}\\\midrule\endhead
+\bottomrule\endfoot
+\phantomsection\label{et-platform}
+\hyperref[ec-platform]{E-C-01}, \hyperref[ec-hardware]{E-C-02},
+\hyperref[ea-runtime]{E-A-01}, \hyperref[ea-evaluation]{E-A-04} &
+\hyperref[sec:s2-interface]{FR-UI-01--03};
+\hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01} &
+Launch both modes and test each claimed controller pairing. Record hardware,
+runtime, mapping and PCVR link details. Mark untested pairings and check the
+chosen engine in the build. \\
+\phantomsection\label{et-scope}
+\hyperref[ec-scope]{E-C-03}, \hyperref[ef-training]{E-F-02},
+\hyperref[ei-boundary]{E-I-01} &
+\hyperref[g3]{G.3}, \hyperref[g6]{G.6};
+\hyperref[sec:s2-flight]{FR-FLT-03} &
+Check outputs for physical-drone commands and result text for certification or
+unverified training claims. Check simulated gravity against approved criteria. \\
+\phantomsection\label{et-safety}
+\hyperref[ec-safety]{E-C-04}, \hyperref[ea-space]{E-A-02},
+\hyperref[ef-attention]{E-F-01}, \hyperref[ei-stationary]{E-I-03} &
+\hyperref[sec:s2-interface]{FR-UI-06};
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}; headset guidance &
+Review headset setup. Try flight, menus, recovery and exit while seated and
+standing without walking. Record comfort and accessibility issues. \\
+\phantomsection\label{et-release}
+\hyperref[ec-release]{E-C-05}, \hyperref[ef-data]{E-F-03} &
+\hyperref[s2]{S.2}; \hyperref[sec:s2-ai]{Optional analysis} &
+Test registration/login, cloud save/retrieval of previous results and global
+rankings (F6--F8), including service failures. Check access to another user's
+private results is denied. Review encryption, retention/deletion, public
+leaderboard fields, separate AI data use, licences and audience rules. \\
+\phantomsection\label{et-resources}
+\hyperref[ec-resources]{E-C-06} &
+\hyperref[sec:s2-nfr]{NFR-PERF-01} &
+Measure frame delivery against the proposed 72 FPS minimum and record
+hardware/link behaviour on supported configurations using a repeatable course workload. \\
+\phantomsection\label{et-course}
+\hyperref[ea-course]{E-A-03}, \hyperref[ei-course]{E-I-02} &
+\hyperref[sec:s2-checkpoints]{FR-CHK-01--08};
+\hyperref[sec:s2-performance]{FR-PER-01--07, FR-PER-10} &
+Try ordered, repeated and skipped gates, early finish and gate passage while
+crashed. Crash before and after a checkpoint; check Table~\ref{tab:e-recovery},
+menu-time exclusion and the completion timer. \\
+\phantomsection\label{et-review}
+\hyperref[ef-analysis]{E-F-04}, \hyperref[ei-review]{E-I-04} &
+\hyperref[sec:s2-review]{FR-REV-01--04};
+\hyperref[sec:s2-ai]{FR-AI-03} &
+Complete a course without optional feedback. If implemented, also try
+available, unavailable and failed feedback. Check the standard review and retry
+option in each case. \\
+\end{longtable}\endgroup
+
+\textbf{Likely changes.} Supported devices, runtime/link choices, performance
+limits and optional data processing may change as they are tested
+(\hyperref[ec-hardware]{E-C-02}, \hyperref[ec-release]{E-C-05},
+\hyperref[ec-resources]{E-C-06}). The four invariants are expected to stay stable
+because they protect the simulator's scope and core training experience
+(\hyperref[ei-boundary]{E-I-01}--\hyperref[ei-review]{E-I-04}).
 
 \booksection{S}{System}
 
