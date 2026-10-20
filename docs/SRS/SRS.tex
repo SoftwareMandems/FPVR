@@ -253,52 +253,6 @@ Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 \endgroup
 
 \clearpage
-\subsubsection*{Domain relationships}
-Figure~\ref{fig:e-domain} identifies domain concepts, rather than implementation
-classes. Each course uses one virtual environment and has at least one checkpoint;
-an attempt selects exactly
-one course, uses one simulated drone, and produces a review only on completion.
-The many possible attempts do not imply retained session history.
-
-\begin{figure}[H]
-\centering
-\begingroup\setlength{\unitlength}{1mm}\small
-\begin{picture}(160,128)
-\put(0,106){\framebox(48,18){Virtual environment}}
-\put(24,84){\line(0,1){22}}
-\put(27,102){1}\put(27,86){0..*}
-\put(29,94){setting for}
-\put(0,66){\framebox(48,18){\shortstack{Course\\start and finish}}}
-\put(112,66){\framebox(48,18){\shortstack{Checkpoint\\ordered gate}}}
-\put(0,20){\framebox(48,18){\shortstack{Attempt\\current course run}}}
-\put(112,35){\framebox(48,18){Simulated drone}}
-\put(112,0){\framebox(48,18){\shortstack{Flight review\\completed attempt}}}
-\put(48,75){\line(1,0){64}}
-\put(68,78){contains}
-\put(50,69){1}\put(101,69){1..*}
-\put(24,38){\line(0,1){28}}
-\put(27,61){1}\put(27,41){0..*}
-\put(29,51){selected by}
-\put(48,32){\line(1,0){32}}\put(80,32){\line(0,1){12}}
-\put(80,44){\line(1,0){32}}
-\put(59,36){uses}\put(50,26){0..*}\put(107,46){1}
-\put(48,24){\line(1,0){43}}\put(91,9){\line(0,1){15}}
-\put(91,9){\line(1,0){21}}
-\put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
-\end{picture}
-\endgroup
-\caption{Conceptual FPVR domain model. Lines denote associations, with the
-number of related instances at each end: 1 means exactly one, 0..1 means
-optional, and * means an unbounded multiplicity.}
-\label{fig:e-domain}
-\end{figure}
-
-The editable \href{models/environment-domain.puml}{PlantUML domain source}
-expresses these associations. The inline vector figure keeps the normal
-\LaTeX{} build self-contained; it requires no generated diagram image.
-The same convention is used for the context and deployment figures below.
-
-\clearpage
 
 \listoftables
 
@@ -1087,6 +1041,52 @@ external headset or computer. The simulated drone is a domain object, not an
 external aircraft. \hyperref[g6]{G.6} excludes physical-drone control,
 headset-free desktop play, multiplayer, pilot certification, and a historical
 session-review interface.
+
+\clearpage
+\subsubsection*{Domain relationships}
+Figure~\ref{fig:e-domain} identifies domain concepts, rather than implementation
+classes. Each course uses one virtual environment and has at least one checkpoint;
+an attempt selects exactly
+one course, uses one simulated drone, and produces a review only on completion.
+The many possible attempts do not imply retained session history.
+
+\begin{figure}[H]
+\centering
+\begingroup\setlength{\unitlength}{1mm}\small
+\begin{picture}(160,128)
+\put(0,106){\framebox(48,18){Virtual environment}}
+\put(24,84){\line(0,1){22}}
+\put(27,102){1}\put(27,86){0..*}
+\put(29,94){setting for}
+\put(0,66){\framebox(48,18){\shortstack{Course\\start and finish}}}
+\put(112,66){\framebox(48,18){\shortstack{Checkpoint\\ordered gate}}}
+\put(0,20){\framebox(48,18){\shortstack{Attempt\\current course run}}}
+\put(112,35){\framebox(48,18){Simulated drone}}
+\put(112,0){\framebox(48,18){\shortstack{Flight review\\completed attempt}}}
+\put(48,75){\line(1,0){64}}
+\put(68,78){contains}
+\put(50,69){1}\put(101,69){1..*}
+\put(24,38){\line(0,1){28}}
+\put(27,61){1}\put(27,41){0..*}
+\put(29,51){selected by}
+\put(48,32){\line(1,0){32}}\put(80,32){\line(0,1){12}}
+\put(80,44){\line(1,0){32}}
+\put(59,36){uses}\put(50,26){0..*}\put(107,46){1}
+\put(48,24){\line(1,0){43}}\put(91,9){\line(0,1){15}}
+\put(91,9){\line(1,0){21}}
+\put(59,18){produces}\put(50,19){1}\put(100,11){0..1}
+\end{picture}
+\endgroup
+\caption{Conceptual FPVR domain model. Lines denote associations, with the
+number of related instances at each end: 1 means exactly one, 0..1 means
+optional, and * means an unbounded multiplicity.}
+\label{fig:e-domain}
+\end{figure}
+
+The editable \href{models/environment-domain.puml}{PlantUML domain source}
+expresses these associations. The inline vector figure keeps the normal
+\LaTeX{} build self-contained; it requires no generated diagram image.
+The same convention is used for the context and deployment figures below.
 
 The environment includes the user profiles in \hyperref[g8]{G.8}, their physical
 activity space, the headset and runtime, input devices, and the host/link used
