@@ -62,8 +62,9 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-Sept 30 & Sankalpa Chhetri Dhakal & Completed Introduction\\
-Oct 6 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
+Sept 30, 2026 & Sankalpa Chhetri Dhakal & Completed Introduction\\
+Oct 6,2026 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
+Oct 19, 2026 & Vikram Chandar & Critical Assumption, Gen AI disclosure and assisted with other sections\\
 Oct 19, 2026 & Arjun Sasidaran & Added FMEA (Section 5), user well-being
 hazards and SR21--SR24, and the roadmap (Section 7); restructured safety
 requirements into functional and non-functional subsections; marked
@@ -100,6 +101,45 @@ hardware, software failures, inaccurate drone physics, or incorrect user
 interaction with the system.
 
 \section{Scope and Purpose of Hazard Analysis}
+
+The purpose of this Hazard Analysis is to identify potential failure modes of
+the FPV drone training system, understand their possible effects, and determine
+ways to reduce or prevent these risks.
+
+The analysis considers hazards related to:
+
+\begin{itemize}
+    \item VR headset operation
+    \item interaction with the user's physical surroundings
+    \item drone physics and flight simulation
+    \item user controls and input devices
+    \item visual and audio feedback
+    \item training and scoring features
+    \item application performance
+    \item misuse of the training system 
+    \item security and integrity of the application
+\end{itemize}
+
+Possible losses caused by these hazards include:
+
+\begin{itemize}
+    \item physical injury from colliding with furniture, walls, or other people
+    while using the VR headset
+    \item nausea, dizziness, eye strain, or other discomfort caused by VR use
+    \item damage to the VR headset, controllers, computer, or nearby property
+    \item loss of user progress or settings
+    \item application crashes or interruptions during training
+    \item incorrect or unrealistic drone behaviour that could teach the user
+    improper flying techniques
+    \item an incorrect understanding of how a real FPV drone behaves
+    \item users becoming overconfident in their real-world flying ability based
+    only on their simulator performance
+\end{itemize}
+
+This analysis focuses on hazards related to the simulator itself and its use.
+The simulator is intended to be a training tool and does not guarantee safe
+operation of a real FPV drone or reproduce every condition that may occur
+during real-world flight.
 
 \section{System Boundaries and Components}
 
@@ -1194,6 +1234,109 @@ Claude Opus 5.5 and GPT Astra 6.1.
     are lost or recorded incorrectly. In a training tool like FPVR, inaccurate
     scores or lost progress would give users misleading feedback about their
     skills.
+
 \end{enumerate}
+    
+\subsection*{Sankalpa Chhetri Dhakal}
+
+\begin{enumerate}
+
+    \item % What went well while writing this deliverable?
+    One thing that went well was developing a clearer understanding
+    of the system boundary and identifying where potential hazards
+    could arise. While working on the introduction, scope, and
+    system boundary, I realized that even though FPVR does not
+    operate a physical drone, it can still introduce risks through
+    VR discomfort, loss of spatial awareness, and unexpected system
+    behaviour. Separating the simulated environment from the user's
+    physical surroundings helped me understand which hazards the
+    software can control and which require additional precautions.
+
+    Connecting the Hazard Analysis to our SRS also helped clarify
+    the project's requirements. Instead of discussing safety in
+    general terms, we identified specific behaviours such as
+    handling controller failures, allowing users to recover from
+    simulated crashes, and ensuring that performance feedback
+    does not imply real-world piloting competence.
+
+
+    \item % What pain points did you experience, and how did you resolve them?
+    One of the biggest challenges was determining how much realism
+    our drone simulation should provide. During our supervisor
+    discussion, we were encouraged to consider using an existing
+    drone model rather than creating flight behaviour without a
+    realistic reference. This made me realize that inaccurate
+    simulation behaviour could mislead users about how a physical
+    drone operates. We addressed this by distinguishing our
+    intended realistic flight behaviour from claims of validated
+    real-world accuracy.
+
+    Another challenge was identifying hazards while our project
+    scope was still evolving, particularly around controller
+    compatibility, intelligent feedback, and data storage.
+    We addressed this by separating confirmed functionality
+    from potential features and documenting risks that would
+    require further evaluation.
+
+
+    \item % Which risks were considered before the Hazard Analysis,
+          % and which were identified during it?
+    Before starting the Hazard Analysis, our team had already
+    considered risks involving VR motion sickness, collisions
+    with physical surroundings, controller responsiveness,
+    and hardware compatibility. These were relatively apparent
+    because FPVR involves controlling a moving virtual drone
+    while wearing a headset that limits awareness of the
+    physical environment.
+
+    During the analysis, I began considering less obvious risks
+    involving system reliability and the interpretation of
+    simulator results. For example, incorrect checkpoint
+    detection or crash recovery could produce misleading
+    performance measurements. Similarly, inconsistent flight
+    physics could create unrealistic expectations about
+    physical drone operation.
+
+    The addition of registered accounts and persistent
+    performance records also introduced risks involving
+    unauthorized access, data loss, and inaccurate leaderboard
+    results. These risks became clearer as we examined the
+    interactions between system components and considered
+    how changes in project scope could introduce new hazards.
+
+
+    \item % Other than physical harm, identify at least two
+          % other types of software risks and explain their importance.
+    Security and privacy risks are important because software
+    may collect and store information that users expect to
+    remain protected. In FPVR, registered accounts and saved
+    performance records introduce the possibility of unauthorized
+    access, exposed credentials, and unintended disclosure
+    of personal information. Addressing these risks is necessary
+    to maintain user trust.
+
+    Data integrity and reliability risks involve incorrect,
+    corrupted, or lost information. Failures involving completion
+    times, collision counts, or checkpoint progress could produce
+    inaccurate scores and leaderboard rankings. Since performance
+    evaluation is a major part of FPVR, users need to trust
+    that their results accurately represent their simulated flights.
+
+    Usability and psychological risks are also relevant.
+    Confusing controls, inconsistent feedback, or repeated
+    failures without clear explanations could frustrate
+    beginners and discourage continued practice. These risks
+    matter because the simulator is intended to support
+    learning rather than create unnecessary confusion
+    or false confidence.
+
+    Overall, this analysis helped me recognize that software
+    hazards extend beyond physical injuries to include
+    privacy, reliability, user experience, and the ways
+    software can influence users' expectations.
+
+\end{enumerate}
+
+
 
 \end{document}
