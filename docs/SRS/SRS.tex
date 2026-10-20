@@ -196,7 +196,19 @@ Learning to operate a first-person-view (FPV) drone presents challenges for begi
 
 FPVR is a virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
 
-The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, checkpoints, and performance evaluation. Users will receive feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. An optional intelligent feedback component may provide further analysis of user performance.
+The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, checkpoints, and performance evaluation. Users will receive 
+feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. 
+An intelligent feedback component may provide further analysis of user performance.
+
+FPVR will also support registered player accounts,
+persistent performance records, and local and global
+leaderboards. Users will be able to practise without
+signing in, while registered players can save their
+completed results to an online service, review
+previous attempts, and compare their performance
+with other players. These features extend the
+training experience beyond individual sessions
+by providing measurable records of progress.
 
 
 
@@ -247,6 +259,19 @@ attempting structured challenges.
 
 \medskip
 
+\hypertarget{goal:G5}{}\textbf{Persistent Progress and
+Performance Comparison (G5):}
+FPVR will allow registered users to retain
+their completed flight results across sessions
+and access them from supported installations.
+Local and global leaderboards will provide
+opportunities to compare performance on
+individual obstacle-course levels, encouraging
+users to revisit challenges and track their
+improvement over time.
+
+\medskip
+
 These benefits concern the intended training experience.
 Any claim that FPVR improves actual physical-drone piloting
 ability will require separate validation and is not assumed
@@ -257,20 +282,27 @@ by this specification.
 FPVR will provide the following capabilities to support
 its goals.
 
-\begin{table}[htbp]
-\centering
-\small
-\caption{FPVR Functionality Overview}
-\label{tab:functionality-overview}
 
-\begin{tabularx}{\textwidth}{
-    @{}p{4.0cm} X p{2.4cm}@{}
+% Keep the overview in document order and allow it to span pages.
+\begingroup
+\small
+\begin{longtable}{
+    @{}p{4.0cm} p{\dimexpr\textwidth-6.4cm-4\tabcolsep\relax} p{2.4cm}@{}
 }
+\caption{FPVR Functionality Overview}
+\label{tab:functionality-overview} \\
 \toprule
 \textbf{Functionality} &
 \textbf{Description} &
 \textbf{Initial Scope} \\
 \midrule
+\endfirsthead
+\toprule
+\textbf{Functionality} &
+\textbf{Description} &
+\textbf{Initial Scope} \\
+\midrule
+\endhead
 
 VR Flight Experience &
 First-person simulated drone flight through a virtual
@@ -355,9 +387,41 @@ Supports drone control using Meta Quest controllers
 or a compatible Xbox controller. &
 Core \\
 
+\addlinespace
+
+Player Accounts &
+Allows users to register, sign in, and sign out
+using a username and password. Users may continue
+basic flight training without an account. &
+Core \\
+
+\addlinespace
+
+Cloud Result Storage &
+Stores completed flight results for registered
+players, allowing synchronized results to be
+accessed across supported installations. &
+Core \\
+
+\addlinespace
+
+Local and Global Leaderboards &
+Provides level-specific rankings using locally
+saved results and results submitted by registered
+players to the online service. &
+Core \\
+
+\addlinespace
+
+Performance History &
+Allows registered users to review results from
+previously completed obstacle-course attempts. &
+Core \\
+
+
 \bottomrule
-\end{tabularx}
-\end{table}
+\end{longtable}
+\endgroup
 
 The exact scoring and rating criteria, controller mappings,
 checkpoint and respawn behaviour, and requirements for
@@ -505,6 +569,63 @@ obstacle-course training workflow. Swimlanes
 identify the responsible user or system
 component, while arrows indicate the sequence
 of activities.
+
+
+\subsubsection{Scenario 6: Account Registration
+and Performance Tracking}
+
+A user launches FPVR and chooses to register
+a player account using a username and password.
+After successfully registering or signing in,
+the user selects an obstacle-course level and
+completes a flight challenge.
+
+Upon completion, FPVR presents the standard
+post-flight review, including the completion
+time, collision count, numerical score, and
+performance rating. The result is saved locally
+and, when the online service is available,
+synchronized with the user's registered account.
+
+The user may later sign in on another supported
+installation to retrieve previously synchronized
+results and review their performance over
+multiple attempts.
+
+This scenario supports G3 and G5 by enabling
+persistent performance records and allowing
+users to monitor their improvement over time.
+
+
+\subsubsection{Scenario 7: Viewing and Comparing
+Leaderboard Results}
+
+After completing an obstacle-course level,
+a user opens the leaderboard for that level.
+
+FPVR displays a local leaderboard containing
+results saved on the current installation.
+When the online service is available, the
+user can also view a global leaderboard
+containing results submitted by registered
+players.
+
+The leaderboards rank results according to
+numerical score, with completion time and
+completion timestamp used to resolve ties.
+Users can compare their performance with
+other recorded attempts and repeat the level
+to improve their ranking.
+
+If the online service is unavailable, the
+local leaderboard remains accessible, and
+the user can continue training normally.
+
+This scenario supports G3 and G5 by providing
+measurable performance comparisons and
+encouraging repeated practice.
+
+
 \subsection{Limitations and Exclusions}\label{g6}
 
 FPVR is intended to provide an introductory virtual reality
@@ -582,10 +703,15 @@ will be evaluated during development. \\
 
 \addlinespace
 
-Historical Flight Records &
-FPVR will provide performance reviews after completing
-obstacle-course levels but will not include functionality
-for accessing or reviewing previously completed sessions. \\
+
+Online Service Dependency &
+Account registration, global leaderboards, and
+cloud synchronization require network connectivity
+and an available online service. Core training
+activities, local result storage, and standard
+post-flight reviews remain available without
+these online services. \\
+
 
 \addlinespace
 
@@ -696,6 +822,18 @@ Indirect stakeholders interested in safer introductory
 drone training, responsible technology use,
 accessibility, and the management of VR-related
 health and safety concerns. \\
+
+
+\addlinespace
+
+Registered Players &
+Users who create accounts to preserve completed
+flight results, review their performance history,
+and participate in global leaderboards. Their
+interests include reliable result storage,
+account security, and access to synchronized
+performance information. \\
+
 
 \bottomrule
 \end{tabularx}
@@ -859,6 +997,11 @@ As confidence improves, the user may select
 obstacle-course levels of increasing difficulty.
 Progression is voluntary, as all levels are
 available without prerequisite completion.
+The user may initially practise without creating
+an account. If they choose to register, they
+can preserve their completed results and review
+previous attempts to evaluate their progress
+over time.
 
 
 \subsubsection{Casual Gamer or Technology Enthusiast}
@@ -884,7 +1027,14 @@ The user explores free-flight environments
 and attempts obstacle-course challenges for
 recreation and exploration. The user may
 repeat levels to improve completion times,
-scores, and performance ratings.
+scores, and performance ratings. 
+The user may also create an account to
+participate in global leaderboards and compare
+their results with other players. Local
+leaderboards provide an additional way to
+compare attempts recorded on the same
+installation.
+
 
 
 \subsubsection{Experienced FPV Pilot or Technical Evaluator}
@@ -915,6 +1065,13 @@ behaviour with prior experience and identify
 areas for improvement. The required accuracy
 of the underlying flight model remains
 under review.
+Registered experienced users may also review
+historical results and compare their performance
+across repeated attempts. These comparisons
+may support evaluation of the simulator's
+consistency, but do not establish real-world
+flight proficiency.
+
 
 
 \subsubsection{General User Considerations}
