@@ -129,7 +129,7 @@
 
 \begin{document}
 
-\title{Software Requirements Specification\\\progname}
+\title{\hypertarget{gl:SRS}{}Software Requirements Specification\\\progname}
 
 \author{\authname}
 
@@ -190,8 +190,8 @@ Completed the Environment (E) section of the SRS. \\
 
 \unumbered{Glossary}\label{sec:glossary}
 
-The definitions below apply throughout this specification. Links point to the
-existing introduction or the section that uses the term. Acronyms appearing in
+The definitions below apply throughout this specification. Each term links to
+its first use in the text. Acronyms appearing in
 figures use these same meanings.
 
 \begingroup
@@ -207,70 +207,70 @@ figures use these same meanings.
 \toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
 \midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
 \bottomrule\endlastfoot
-\hyperref[g1]{FPVR} & The VR-based FPV drone training simulator specified here
+\hyperlink{gl:FPVR}{FPVR} & The VR-based FPV drone training simulator specified here
 (\hyperref[g1]{G.1}). \\
-\hyperref[sec:s2-flight]{FPV} & First-person view: presentation from the simulated drone's viewpoint
+\hyperlink{gl:FPV}{FPV} & First-person view: presentation from the simulated drone's viewpoint
 (\hyperref[g1]{G.1}). \\
-\hyperref[g1]{VR} & Virtual reality: an immersive presentation viewed through a headset
+\hyperlink{gl:VR}{VR} & Virtual reality: an immersive presentation viewed through a headset
 (\hyperref[g1]{G.1}). \\
-\hyperref[s2]{SRS} & Software requirements specification: this document's statement of the
+\hyperlink{gl:SRS}{SRS} & Software requirements specification: this document's statement of the
 intended product and its acceptance expectations. \\
-\hyperref[sec:s2-ai]{AI} & Artificial intelligence: the planned, feasibility-dependent intelligent
+\hyperlink{gl:AI}{AI} & Artificial intelligence: the planned, feasibility-dependent intelligent
 flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
-\hyperref[e1]{XR} & Extended reality: the umbrella term that includes VR; used in the
+\hyperlink{gl:XR}{XR} & Extended reality: the umbrella term that includes VR; used in the
 runtime diagrams. It does not specify a particular integration API. \\
-\hyperref[e1]{PC / PCVR} & Personal computer / PC-based virtual reality: FPVR executes on a
+\hyperlink{gl:PCVR}{PC / PCVR} & Personal computer / PC-based virtual reality: FPVR executes on a
 computer and presents its VR view through a connected headset
 (\hyperref[e1]{E.1}). \\
-\hyperref[e1]{Runtime} & The external platform software that provides headset presentation,
+\hyperlink{gl:Runtime}{Runtime} & The external platform software that provides headset presentation,
 tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
-\hyperref[e1]{Tracking / pose} & Tracking reports a device's position and orientation (its
+\hyperlink{gl:Tracking}{Tracking / pose} & Tracking reports a device's position and orientation (its
 pose) and whether that information is currently valid. \\
-\hyperref[e1]{Session focus} & The runtime's indication of whether FPVR is the active
+\hyperlink{gl:Focus}{Session focus} & The runtime's indication of whether FPVR is the active
 application receiving interaction; visible imagery alone does not prove focus. \\
-\hyperref[sec:s2-nfr]{Frames per second / hertz} & Application frame-delivery rate / display refresh
+\hyperlink{gl:FPS}{Frames per second / hertz} & Application frame-delivery rate / display refresh
 frequency (Hz). These quantities are distinct; the rendering target is specified
 in \hyperref[sec:s2-nfr]{S.2}. \\
-\hyperref[s3]{API} & Application programming interface: a program-to-program interface.
+\hyperlink{gl:API}{API} & Application programming interface: a program-to-program interface.
 Mention of an external interface does not establish a public FPVR API
 (\hyperref[s3]{S.3}). \\
-\hyperref[s2]{FR / NFR} & Functional requirement / non-functional requirement; prefixes of the
+\hyperlink{req:FR-FLT-01}{FR / NFR} & Functional requirement / non-functional requirement; prefixes of the
 existing requirement identifiers in \hyperref[s2]{S.2}. \\
-\hyperref[sec:s2-flight]{Throttle, pitch, roll, yaw} & Flight commands for thrust, rotation about the
+\hyperlink{gl:Throttle}{Throttle, pitch, roll, yaw} & Flight commands for thrust, rotation about the
 lateral axis, rotation about the longitudinal axis, and rotation about the
 vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
-\hyperref[sec:s2-levels]{Virtual environment} & A simulated setting containing flight space and scenery.
+\hyperlink{gl:Environment}{Virtual environment} & A simulated setting containing flight space and scenery.
 Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
-\hyperref[sec:s2-levels]{Free flight} & Practice without course checkpoints, timers, or scoring
+\hyperlink{gl:FreeFlight}{Free flight} & Practice without course checkpoints, timers, or scoring
 (\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
-\hyperref[sec:s2-levels]{Level / course} & A selectable obstacle challenge with a start, an ordered
+\hyperlink{gl:Level}{Level / course} & A selectable obstacle challenge with a start, an ordered
 checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperref[ei-course]{Attempt} & One course run from start or restart until completion or exit.
+\hyperlink{gl:Attempt}{Attempt} & One course run from start or restart until completion or exit.
 Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
-\hyperref[sec:s2-checkpoints]{Checkpoint / segment} & A required ordered course gate / the part of a course
+\hyperlink{gl:Checkpoint}{Checkpoint / segment} & A required ordered course gate / the part of a course
 between the start, successive gates, and the finish
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperref[sec:s2-flight]{Collision / crash} & Contact with a simulated obstacle or surface / a simulated
+\hyperlink{gl:Crash}{Collision / crash} & Contact with a simulated obstacle or surface / a simulated
 collision that triggers the recovery interaction. Crash-counting details are
 specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
 \hyperref[sec:s2-performance]{FR-PER-07}. \\
-\hyperref[sec:s2-checkpoints]{Respawn / restart} & Resume the same attempt at its most recently completed checkpoint
+\hyperlink{gl:Respawn}{Respawn / restart} & Resume the same attempt at its most recently completed checkpoint
 (or start if none) / begin a new attempt from the start
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperref[sec:s2-performance]{Total / section time} & Active-flight time for an attempt, including failed
+\hyperlink{gl:TotalTime}{Total / section time} & Active-flight time for an attempt, including failed
 sections / time for the current segment. Checkpoint completion and respawn
 reset section time; respawn preserves total time, which pauses in crash-recovery
 menus (\hyperref[sec:s2-performance]{S.2}). \\
-\hyperref[sec:s2-performance]{Score / rating} & A numerical performance result / a separate performance
+\hyperlink{gl:Score}{Score / rating} & A numerical performance result / a separate performance
 assessment. The scoring formula and rating thresholds are specified
 (\hyperref[sec:s2-performance]{S.2}). \\
-\hyperref[sec:s2-review]{Flight review} & A completed attempt's performance summary. Registered users
+\hyperlink{gl:FlightReview}{Flight review} & A completed attempt's performance summary. Registered users
 can save results to the cloud and retrieve previous results
 (\hyperref[ef-data]{E-F-03}). \\
-\hyperref[ef-data]{Telemetry} & Flight and performance measurements used for evaluation. The term
+\hyperlink{gl:Telemetry}{Telemetry} & Flight and performance measurements used for evaluation. The term
 alone does not imply recording history or transmitting data
 (\hyperref[e4]{E.4}). \\
-\hyperref[ec-safety]{Activity space / boundary} & The user's physical space / a platform-provided
+\hyperlink{gl:ActivitySpace}{Activity space / boundary} & The user's physical space / a platform-provided
 virtual limit used to help the user remain within a prepared space.
 Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 \end{longtable}
@@ -294,11 +294,11 @@ Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 
 \subsection{Context and Overall Objectives}\label{g1}
 
-Learning to operate a first-person-view (FPV) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
+Learning to operate a \hypertarget{gl:FPV}{}first-person-view (FPV) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
 
-FPVR is a virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
+\hypertarget{gl:FPVR}{}FPVR is a \hypertarget{gl:VR}{}virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
 
-The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, checkpoints, and performance evaluation. Users will receive 
+The training environment will include \hypertarget{gl:FreeFlight}{}free-flight practice, multiple \hypertarget{gl:Level}{}obstacle-course levels, distinct \hypertarget{gl:Environment}{}virtual environments, \hypertarget{gl:Checkpoint}{}checkpoints, and performance evaluation. Users will receive 
 feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. 
 An intelligent feedback component may provide further analysis of user performance.
 
@@ -307,7 +307,7 @@ persistent performance records, and local and global
 leaderboards. Users will be able to practise without
 signing in, while registered players can save their
 completed results to an online service, review
-previous attempts, and compare their performance
+\hypertarget{gl:Attempt}{}previous attempts, and compare their performance
 with other players. These features extend the
 training experience beyond individual sessions
 by providing measurable records of progress.
@@ -331,7 +331,7 @@ The intended contribution of FPVR is therefore not the introduction of drone sim
 \textbf{Safe and Repeatable Practice (G1):}
 FPVR will allow users to practice drone operation without exposing
 a real drone or surrounding property to collision-related damage.
-Users can recover from simulated crashes and repeat exercises
+Users can recover from \hypertarget{gl:Crash}{}simulated crashes and repeat exercises
 without the costs associated with damaging physical equipment.
 
 \medskip
@@ -446,14 +446,14 @@ Core \\
 
 Crash Recovery &
 Following a simulated crash, users can choose to
-restart the level or respawn at the most recently
+restart the level or \hypertarget{gl:Respawn}{}respawn at the most recently
 reached checkpoint. &
 Core \\
 
 \addlinespace
 
 Timing and Scoring &
-Records completion time and calculates a score
+Records completion time and calculates \hypertarget{gl:Score}{}a score
 based on defined performance measures during
 obstacle-course challenges. &
 Core \\
@@ -477,7 +477,7 @@ Core \\
 \addlinespace
 
 Intelligent Feedback &
-Potential AI-based analysis of flight performance
+Potential \hypertarget{gl:AI}{}AI-based analysis of flight performance
 to provide additional observations and recommendations,
 subject to feasibility evaluation. &
 Planned \\
@@ -571,7 +571,7 @@ to their experience and preferences.
 
 Each level contains obstacles and a sequence of checkpoints
 that must be completed in the designated order. The system
-tracks the user's progression, total elapsed time, and time
+tracks the user's progression, \hypertarget{gl:TotalTime}{}total elapsed time, and time
 spent navigating between checkpoints. Upon reaching a
 checkpoint, the current section timer resets while the
 total elapsed time continues accumulating.
@@ -617,7 +617,7 @@ performance consequences.
 \subsubsection{Scenario 4: Reviewing Flight Performance}
 
 After successfully completing an obstacle-course level,
-the user receives a flight review summarizing their
+the user receives \hypertarget{gl:FlightReview}{}a flight review summarizing their
 performance.
 
 The review includes the total completion time, checkpoint
@@ -1237,8 +1237,8 @@ each arrow names the relationship between the connected concepts.}
 \end{figure}
 
 \subsubsection*{External components}
-Users, their physical space, input devices, and the headset/runtime affect
-FPVR. PCVR also uses a computer and a headset link. Authentication, cloud storage
+Users, \hypertarget{gl:ActivitySpace}{}their physical space, input devices, and the headset/\hypertarget{gl:Runtime}{}runtime affect
+FPVR. \hypertarget{gl:PCVR}{}PCVR also uses a computer and a headset link. Authentication, cloud storage
 and online leaderboard services support accounts and saved results. Guardians and nearby people
 are affected stakeholders (\hyperref[g7]{G.7}); user profiles are in
 \hyperref[g8]{G.8}. Table~\ref{tab:e-external} explains the exchanges labelled
@@ -1257,8 +1257,8 @@ F1--F8 in Figure~\ref{fig:e-context}.
 \bottomrule\endfoot
 User (F1) & Account, mode, level, menu, recovery and exit choices; flight controls via F3. &
 Flight view, instructions, recovery choices, current and saved results, and rankings. \\
-Headset and runtime (F2) & Device position/orientation (pose), tracking validity,
-input availability, session focus, display timing and session status. &
+Headset and runtime (F2) & \hypertarget{gl:Tracking}{}Device position/orientation (pose), tracking validity,
+input availability, \hypertarget{gl:Focus}{}session focus, display timing and session status. &
 Rendered images and responses to runtime services. \\
 Quest or compatible Xbox controller (F3) & Controller type, flight axes,
 buttons and connection state. & Instructions and device feedback shown to the
@@ -1401,7 +1401,7 @@ rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate pur
 \textbf{Hardware limits.}
 Standalone flight depends on headset processing power, memory, battery and heat
 limits. PCVR also depends on the computer and headset link.
-The proposed minimum rendering target is 72 frames per second during normal
+The proposed minimum rendering target is \hypertarget{gl:FPS}{}72 frames per second during normal
 flight and obstacle-course operation on supported hardware
 (\hyperref[sec:s2-nfr]{NFR-PERF-01}).
 \textit{Reason:} these limits affect smooth, responsive flight. The target needs
@@ -1532,7 +1532,7 @@ requirements that define it.
 \begin{description}
 \item[{\hyperref[et-scope]{E-I-01}:}]\phantomsection\label{ei-boundary}
 \textbf{Simulated flight only.}
-FPVR controls a simulated drone. No action, including moving the throttle or
+FPVR controls a simulated drone. No action, including moving the \hypertarget{gl:Throttle}{}throttle or
 recovering from a crash, may send a command to a physical aircraft. A score or
 rating also does not certify real-world piloting ability (\hyperref[g6]{G.6}).
 \textit{Reason:} users need to understand the limits of simulator practice.
@@ -1750,7 +1750,7 @@ Account status, local ranking, global ranking or availability status \\
 
 The FPVR system is a VR-based first-person-view (FPV) drone simulation game.
 Its major components are the VR interface, the flight simulation, the virtual
-environment, the training and scenario manager, and the telemetry and feedback
+environment, the training and scenario manager, and the \hypertarget{gl:Telemetry}{}telemetry and feedback
 module, together with account and leaderboard services. The user operates the
 simulated drone through the VR interface. The flight simulation combines
 control input with the drone and environment models, while the training and
@@ -2011,7 +2011,7 @@ than presented as validated training results (\req{FR-REV-01}--\req{FR-REV-05}).
 produces frames and lifecycle responses through the supported runtime. The
 proposed unavailable-input presentation is descriptive and recoverable where
 the runtime permits (\req{SR-02}). There is no promise of public
-network APIs, desktop-only controls, or physical-drone interfaces.
+\hypertarget{gl:API}{}network APIs, desktop-only controls, or physical-drone interfaces.
 \item[IF-06: AI Feedback:] The feedback provided by the AI system receives only separately approved
 current-attempt data and advises on possible places for improvement. The
 standard review is immediate and independent; an analysis may join it
@@ -3224,7 +3224,7 @@ S.2, in PCVR mode (\hyperlink{req:FR-UI-03}{FR-UI-03}).
 \item \textbf{PCVR platform} -- A Windows 11 computer, the \emph{reference PCVR
 computer} in S.2 (\hyperlink{req:NFR-INST-02}{NFR-INST-02}). A single
 reference operating system keeps PCVR testing repeatable.
-\item \textbf{XR integration} -- Unity's OpenXR Plugin and XR Interaction
+\item \hypertarget{gl:XR}{}\textbf{XR integration} -- Unity's OpenXR Plugin and XR Interaction
 Toolkit; exact package versions are an open decision
 (\hyperref[p7]{P.7}).
 \item \textbf{Online service} -- Accounts, result synchronization, and the
