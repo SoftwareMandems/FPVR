@@ -1302,60 +1302,51 @@ Supports \hyperref[ec-release]{E-C-05}.
 
 \subsection{Assumptions}\label{e3}
 
-These premises delimit the intended operating and evaluation context.
-Each must be checked; its failure does not prove that FPVR satisfies the related
-requirement. Failure consequences identify where further acceptance or failure
-behaviour is needed rather than silently assuming ideal operation.
+These assumptions describe the conditions needed for use and testing.
+Each row explains how to check the assumption and what happens if it fails.
 
 \begingroup\small\renewcommand{\arraystretch}{1.15}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth}
                          >{\raggedright\arraybackslash}p{0.40\textwidth}
                          >{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
-\caption{Environmental assumptions, rationale and validation}
-\label{tab:e-assumptions}\\
-\toprule\textbf{Identifier} & \textbf{Premise and rationale} &
-\textbf{Check and consequence if false}\\\midrule\endfirsthead
-\toprule\textbf{Identifier} & \textbf{Premise and rationale} &
-\textbf{Check and consequence if false}\\\midrule\endhead
+\caption{Assumptions and how to check them}\label{tab:e-assumptions}\\
+\toprule\textbf{Identifier} & \textbf{Assumption and reason} &
+\textbf{Check and result if false}\\\midrule\endfirsthead
+\toprule\textbf{Identifier} & \textbf{Assumption and reason} &
+\textbf{Check and result if false}\\\midrule\endhead
 \bottomrule\endfoot
 \phantomsection\label{ea-runtime}\hyperref[et-platform]{\textbf{E-A-01}} &
-A selected configuration provides a compatible runtime and reports headset,
-input and session availability. This is necessary to attempt VR operation;
-it does not imply uninterrupted tracking or input. &
-Launch and exercise each proposed pairing in Table~\ref{tab:e-pairings}; record
-runtime/device versions and status changes. Missing or incompatible services
-block that pairing's acceptance under \hyperref[ec-hardware]{E-C-02}. \\
+The chosen hardware has a compatible runtime that reports headset, controller
+and session status. FPVR needs these services to run in VR. &
+Launch and use each proposed pairing in Table~\ref{tab:e-pairings}; record
+versions and status changes. A pairing with missing or incompatible services
+cannot be accepted (\hyperref[ec-hardware]{E-C-02}). \\
 \phantomsection\label{ea-space}\hyperref[et-safety]{\textbf{E-A-02}} &
-The user or guardian can prepare a stationary activity space and consult the
-selected headset's instructions. This supports seated/standing interaction
-without requiring physical walking. &
-Review setup and exit tasks for \hyperref[sec:s2-interface]{FR-UI-06} and
-\hyperref[sec:s2-nfr]{NFR-SAFE-01}. Inadequate clearance or user discomfort
-invalidates safe-use conditions; the software cannot certify the room as safe. \\
+The user or guardian can prepare a suitable stationary space using the
+headset instructions. This allows seated or standing use. &
+Review setup and try the stationary controls and exit
+(\hyperref[sec:s2-interface]{FR-UI-06},
+\hyperref[sec:s2-nfr]{NFR-SAFE-01}). Poor clearance or discomfort means safe-use
+conditions are not met; FPVR cannot certify that the room is safe. \\
 \phantomsection\label{ea-course}\hyperref[et-course]{\textbf{E-A-03}} &
-A released course supplies a start, ordered required checkpoints, a finish,
-collision surfaces and usable recovery positions. Correct course content is
-needed to interpret progress and evaluate an attempt. &
-Inspect each released course and exercise ordered traversal and recovery,
-including recovery before the first checkpoint. Invalid or unreachable content
-blocks acceptance of \hyperref[sec:s2-checkpoints]{FR-CHK-01--08}; it cannot be
-counted as user failure. \\
+Each released course has a valid start, ordered checkpoints, finish, collision
+surfaces and usable recovery positions. These make progress and recovery
+meaningful. &
+Inspect and fly each course, including recovery before the first checkpoint.
+Invalid or unreachable course content must be corrected before acceptance
+(\hyperref[sec:s2-checkpoints]{FR-CHK-01--08}). \\
 \phantomsection\label{ea-evaluation}\hyperref[et-platform]{\textbf{E-A-04}} &
-Evaluation can access the claimed headset/controller configurations and
-representative free-flight/course content. This allows evidence for deployment,
-input, performance and recovery claims. &
-Record actual equipment and available content before testing. Missing equipment
-or content leaves the associated acceptance checks unverified; it does not
-justify marking an untested pairing as supported
+Tests can access the claimed hardware pairings and representative free-flight
+and course content. These are needed to check compatibility and performance. &
+Record the equipment and courses used. Missing equipment or content leaves
+its checks unverified and its pairing unconfirmed
 (\hyperref[sec:s2-nfr]{NFR-COMP-01, NFR-PERF-01}). \\
 \end{longtable}\endgroup
 
-These premises do not assume continuous tracking/focus, reliable links, user
-compliance, universal VR tolerance, fault-free software, internet access or
-available AI. Handling interruptions and unavailable analysis remains to be
-specified and checked in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
-\hyperref[s6]{S.6}. Single-player scope does not establish offline operation;
-historical-review exclusions do not define retention.
+Tracking, focus and PCVR links can fail. Their failure handling still needs
+specification and checks in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
+\hyperref[s6]{S.6}. An available AI service is not assumed; the standard review
+must remain available as explained in \hyperref[ei-review]{E-I-04}.
 
 \subsection{Effects}\label{e4}
 
