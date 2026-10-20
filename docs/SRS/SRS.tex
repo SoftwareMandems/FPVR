@@ -104,9 +104,8 @@
 % Meyer template helpers required by the middle sections.
 \usepackage{xcolor}
 % Keep the supplied descriptions visible while drafting.
-% Change to \showguidancefalse before submitting your completed SRS.
 \newif\ifshowguidance
-\showguidancetrue
+\showguidancefalse
 \newcommand{\guidance}[1]{%
   \ifshowguidance
     \par\smallskip\begingroup\small\color{gray}
@@ -130,7 +129,7 @@
 
 \begin{document}
 
-\title{Software Requirements Specification for \progname: subtitle describing software}
+\title{Software Requirements Specification\\\progname}
 
 \author{\authname}
 
@@ -1705,12 +1704,10 @@ because they protect the simulator's scope and core training experience
 
 \booksection{S}{System}
 
-\guidance{The System book refines the Goals one by focusing on more detailed requirements. It describes the system itself: its components, its functionality, and the criteria by which an implementation will be judged satisfactory. \cite{BM22}}
 
 
 \subsection{Components}\label{s1}
 
-\guidance{Overall structure expressed by the list of major software and, if applicable, hardware parts. \cite{BM22}}
 
 % TODO: Write your team's content for S.1 here.
 
@@ -1936,7 +1933,6 @@ Section~\ref{s6}.
 
 \subsection{Interfaces}\label{s3}
 
-% \guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
 
 \begin{description}
 \item[IF-01: Entry and navigation:] The VR and nunchuck controllers provide access to a main menu where
@@ -1974,7 +1970,6 @@ choices. Proposed safety/error interactions are subject to their SR status.
 
 \subsection{Detailed usage scenarios}\label{s4}
 
-% \guidance{Examples of interaction between the environment (or human users) and the system, expressed as user stories. Such scenarios are not by themselves a substitute for precise descriptions of functionality (\hyperref[s3]{S.3}), but provide an important complement by specifying cases that these behavior descriptions must support; they also serve as a basis for developing test cases. The scenarios most relevant for stakeholders are given in chapter \hyperref[g5]{G.5} in the Goals book, at a general level, as use cases; in contrast, \hyperref[s4]{S.4} can refer to system components and functionality (from other chapters of the System book) as well as special and erroneous cases, and introduce more specific scenarios. \cite{BM22}}
 
 \begin{description}
 \item[U-01: Start a Free-Flight Session]\mbox{}
@@ -2380,7 +2375,6 @@ obstacle-course level.
 
 \subsection{Prioritization}\label{s5}
 
-\guidance{Classification of the behaviors, interfaces and scenarios (\hyperref[s2]{S.2}, \hyperref[s3]{S.3} and \hyperref[s4]{S.4}) by their degree of criticality. It is useful in particular if during the course of the project various pressures force the team to drop certain functions. \cite{BM22}}
 
 The order in which these requirements are phased in, with due dates, is given
 in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
@@ -3120,12 +3114,10 @@ are ready if they are approved.
 
 \booksection{P}{Project}
 
-\guidance{The Project book describes not the system but the process that produces it: roles, schedule, tasks and deliverables, required technology, and the risks that could derail it. \cite{BM22}}
 
 
 \subsection{Roles and personnel}\label{p1}
 
-\guidance{Main responsibilities in the project; required project staff and their needed qualifications. It defines the roles (as a human responsibility) involved in the project. \cite{BM22}}
 
 \begin{itemize}
 \item \textbf{Team Lead and Flight Physics Developer (Ibrahim Tariq)} --
@@ -3160,7 +3152,6 @@ author.
 
 \subsection{Imposed technical choices}\label{p2}
 
-\guidance{Any a priori choices binding the project to specific tools, hardware, languages or other technical parameters. Not all technical choices in projects derive from a pure technical analysis; some result from company policies. While some project members may dislike non-strictly-technical decisions, they are a fact of project life and must be documented, in particular for the benefit of one of the quality factors for requirements: "requirements must be justified". \cite{BM22}}
 
 \begin{itemize}
 \item \textbf{Game engine} -- Unity, imposed by the confirmed project scope
@@ -3197,7 +3188,6 @@ in S.2. Multiplayer and dedicated FPV transmitter support are stretch goals
 
 \subsection{Schedule and milestones}\label{p3}
 
-\guidance{List of tasks to be carried out and their scheduling. It defines the project's key dates. \cite{BM22}}
 
 Table~\ref{tab:milestones} lists the course milestones and their due dates
 from the capstone calendar.
@@ -3272,7 +3262,6 @@ V\&V Report; dropped first if the schedule slips \\
 
 \subsection{Tasks and deliverables}\label{p4}
 
-\guidance{This is the core of the Project book. It details the individual tasks listed under \hyperref[p3]{P.3} and their expected outcomes. It define the project's main activities and the results they must produce, associated with the milestone dates defined in \hyperref[p3]{P.3}. \cite{BM22}}
 
 Table~\ref{tab:deliverables} lists the tasks that produce each deliverable,
 with the milestone dates from Table~\ref{tab:milestones}. The team lead tracks
@@ -3368,7 +3357,6 @@ supported hardware and the configuration and observed results are recorded.
 
 \subsection{Required technology elements}\label{p5}
 
-\guidance{External systems, hardware and software, expected to be necessary for building the system. It lists external technology elements, such as program libraries and hardware devices, that the project is expected to require. Although the actual use of such products belongs to design and implementation rather than requirements, it is part of the requirements task to identify elements whose availability is critical to the success of the project --- an important element of risk analysis (\hyperref[p6]{P.6}). \cite{BM22}}
 
 \begin{itemize}
 \item \textbf{VR Headset} -- A Meta Quest 3S headset for both standalone and
@@ -3412,7 +3400,6 @@ decisions listed in \hyperref[p7]{P.7}.
 
 \subsection{Risk and mitigation analysis}\label{p6}
 
-\guidance{Potential obstacles to meeting the schedule of \hyperref[p4]{P.4}, and measures for adapting the plan if they do arise. It is essential to be on the lookout for events that could derail the project, and devise mitigation strategies. It can include a SWOT analysis (Strengths, Weaknesses, Opportunities, Threats) for the project. \cite{BM22}}
 
 \begin{itemize}
 \item \textbf{Risk: VR or Controller Incompatibility}
@@ -3490,7 +3477,6 @@ Hazard Analysis.
 
 \subsection{Requirements process and report}\label{p7}
 
-\guidance{Initially, description of what the requirements process will be; later, report on its steps. It starts out as a plan for conducting the requirements elicitation process, but is meant to be updated as part of that process so that it includes the key lessons of elicitation. \cite{BM22}}
 
 \begin{itemize}
 \item \textbf{Initial Elicitation:} Requirements were gathered from the
@@ -3842,16 +3828,6 @@ Claude Opus 5.5 and GPT Astra 6.1.
 \newpage{}
 
 \section*{Appendix --- Reflection}
-
-\wss{Not required for CAS 741}
-
-The information in this section will be used to evaluate the team members on the
-
-graduate attribute of Lifelong Learning.  
-
-\input{../Reflection.text}
-
-\input{../SRS_Reflection.text}
 
 \subsection*{Arjun - Reflection}
 
