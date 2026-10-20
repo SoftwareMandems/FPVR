@@ -1137,21 +1137,21 @@ still to be chosen.}
 \end{figure}
 
 \begin{table}[H]\centering\small
-\caption{Controller pairings requiring confirmation}\label{tab:e-pairings}
-\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}YY@{}}\toprule
-\textbf{Execution mode} & \textbf{Quest motion controllers} &
-\textbf{Compatible Xbox controller}\\\midrule
-Standalone Quest & Under review & Under review\\
-PCVR & Under review & Under review\\\bottomrule
+\caption{Controller support for Quest 3S}\label{tab:e-pairings}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}YY@{}}\toprule
+\textbf{Controller type} & \textbf{Support commitment} &
+\textbf{Execution-mode compatibility}\\\midrule
+Quest motion controllers & Required & Standalone/PCVR pairings to validate\\
+Xbox-compatible controllers & Required & Standalone/PCVR pairings to validate\\\bottomrule
 \end{tabularx}\end{table}
 
 \hyperref[sec:s2-interface]{FR-UI-02--03} and
 \hyperref[sec:s2-nfr]{NFR-COMP-01} require a working configuration for each
-controller type across the system. They do not confirm every pairing in
-Table~\ref{tab:e-pairings}. For each tested pairing, record the headset,
+controller type across the system on the confirmed Quest 3S target.
+Table~\ref{tab:e-pairings} records these commitments; individual standalone and
+PCVR pairings still need validation. For each tested pairing, record the
 controller, runtime and control mapping; PCVR also needs the computer operating
-system, hardware and link details. Untested pairings remain under review
-(\hyperref[ec-hardware]{E-C-02}).
+system, hardware and link details (\hyperref[ec-hardware]{E-C-02}).
 
 \subsection{Constraints}\label{e2}
 
@@ -1171,10 +1171,11 @@ hardware and development tools.
 
 \item[{\hyperref[et-platform]{E-C-02}:}]\phantomsection\label{ec-hardware}
 \textbf{Supported hardware.}
-The draft targets Quest 3S; the earlier Development Plan names Quest 3.
-Supported headset models, Xbox controller versions, computer requirements and
-headset links remain \textbf{under review}. Record tested configurations as
-explained in \hyperref[e1]{E.1} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
+Quest 3S is the finalized target headset. Support for Quest motion controllers
+and Xbox-compatible controllers is required overall. Specific Xbox controller
+versions, computer requirements, headset links and execution-mode pairings still
+need validation. Record tested configurations as explained in
+\hyperref[e1]{E.1} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
 \textit{Reason:} choosing a device does not prove that FPVR works on it.
 
 \item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
@@ -1219,9 +1220,12 @@ rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate pur
 \textbf{Hardware limits.}
 Standalone flight depends on headset processing power, memory, battery and heat
 limits. PCVR also depends on the computer and headset link.
-\textit{Reason:} these limits affect smooth, responsive flight. The frame-rate
-target remains under review in \hyperref[sec:s2-nfr]{NFR-PERF-01}; minimum
-hardware is also unresolved in \hyperref[ec-hardware]{E-C-02}.
+The proposed minimum rendering target is 72 frames per second during normal
+flight and obstacle-course operation on supported hardware
+(\hyperref[sec:s2-nfr]{NFR-PERF-01}).
+\textit{Reason:} these limits affect smooth, responsive flight. The target needs
+validation on Quest 3S and the supported PCVR configurations; computer requirements
+remain unresolved in \hyperref[ec-hardware]{E-C-02}.
 \end{description}
 
 \subsubsection*{External sources}
@@ -1258,7 +1262,8 @@ Each row explains how to check the assumption and what happens if it fails.
 \phantomsection\label{ea-runtime}\hyperref[et-platform]{\textbf{E-A-01}} &
 The chosen hardware has a compatible runtime that reports headset, controller
 and session status. FPVR needs these services to run in VR. &
-Launch and use each proposed pairing in Table~\ref{tab:e-pairings}; record
+Launch and use proposed pairings of the controller types in
+Table~\ref{tab:e-pairings}; record
 versions and status changes. A pairing with missing or incompatible services
 cannot be accepted (\hyperref[ec-hardware]{E-C-02}). \\
 \phantomsection\label{ea-space}\hyperref[et-safety]{\textbf{E-A-02}} &
@@ -1501,8 +1506,8 @@ leaderboard fields, separate AI data use, licences and audience rules. \\
 \phantomsection\label{et-resources}
 \hyperref[ec-resources]{E-C-06} &
 \hyperref[sec:s2-nfr]{NFR-PERF-01} &
-Once the frame-rate target is set, measure frame delivery and hardware/link
-behaviour on supported devices using a repeatable course workload. \\
+Measure frame delivery against the proposed 72 FPS minimum and record
+hardware/link behaviour on supported configurations using a repeatable course workload. \\
 \phantomsection\label{et-course}
 \hyperref[ea-course]{E-A-03}, \hyperref[ei-course]{E-I-02} &
 \hyperref[sec:s2-checkpoints]{FR-CHK-01--08};
