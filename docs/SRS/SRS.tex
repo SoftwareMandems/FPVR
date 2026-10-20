@@ -3721,6 +3721,126 @@ Accessed: October 18, 2026.
 
 \newpage{}
 
+\phantomsection
+\section*{Appendix --- Generative AI Use Disclosure}
+\addcontentsline{toc}{section}{Appendix --- Generative AI Use Disclosure}
+
+\subsection*{AI Tools Used}
+
+Claude Opus 5.5 and GPT Astra 6.1.
+
+\subsection*{How and Where Used}
+
+\begin{enumerate}
+    \item \textbf{How were the AI tools used?}
+
+    The AI tools were used as drafting, reviewing, and consistency-checking
+    aids. They helped turn existing team decisions and source documents into
+    draft text, compared sections of the SRS against each other and against the
+    course rubric, and pointed out places where sections contradicted each
+    other or where a requirement had no matching verification. Claude was also
+    used to resolve merge conflicts between team members' branches and to make
+    repetitive edits across the document, such as adding link targets to every
+    requirement. The tools did not make project decisions: the headset, the
+    scope of accounts and online results, which features are stretch goals,
+    and the schedule were all decided by the team, and the AI-assisted text
+    was written to match those decisions.
+
+    \item \textbf{Which parts of the document were affected by AI assistance?}
+
+    \begin{itemize}
+        \item \textbf{Project book (\hyperref[p1]{P.1}--\hyperref[p7]{P.7}):}
+        Drafting the roles, imposed technical choices, phase-in plan, tasks,
+        technology elements, risks, and requirements process from the
+        Development Plan, the capstone calendar, and the requirements in S.2.
+        AI review also found dependency problems in the phase-in plan, such as
+        requirements scheduled before the features they depend on.
+        \item \textbf{Likely and unlikely changes:} Drafting the description of
+        how each likely change could happen and why each unlikely change is not
+        expected, and linking each one to the affected requirements.
+        \item \textbf{Prioritization (\hyperref[s5]{S.5}):} Checking that the
+        phase-in plan used the priorities assigned in S.5.
+        \item \textbf{Verification and acceptance criteria
+        (\hyperref[s6]{S.6}):} Drafting verification and validation entries for
+        requirements that were added to S.2 after S.6 was first written,
+        updating entries that no longer matched S.2, removing a duplicated copy
+        of the section, and fixing broken links.
+        \item \textbf{Functionality (\hyperref[s2]{S.2}):} Rewording the
+        hardware requirements to refer to the target headset, reference PCVR
+        computer, and standard gamepad, with the specific devices recorded as
+        constraints in P.2, and adding link targets to every requirement.
+        \item \textbf{Limitations and Exclusions (\hyperref[g6]{G.6}):}
+        Rewording the multiplayer, historical records, and transmitter rows to
+        match the team's stretch-goal decisions.
+        \item \textbf{Other sections:} Team members used the tools for
+        brainstorming and improving the clarity of wording in their own
+        sections, in the same way as described in the Hazard Analysis.
+        \item \textbf{Reflection:} Drafting parts of individual reflections
+        from the author's description of their work, which the author then
+        revised.
+    \end{itemize}
+
+    AI-generated suggestions were used as drafting and review aids rather
+    than accepted automatically. The team remained responsible for reviewing
+    the content and ensuring that the final document accurately reflected the
+    FPVR project's scope, requirements, and design decisions.
+\end{enumerate}
+
+\subsection*{Verification of AI-Generated Content}
+
+\begin{enumerate}
+    \item \textbf{How did the team check AI-generated or AI-assisted material
+    before including it in the document?}
+
+    Every AI-assisted change was reviewed by the team member responsible for
+    that section before it was committed, and again through pull-request
+    review by another team member before it was merged. Draft text was
+    checked against its source: roles and tools against the Development Plan,
+    milestone dates against the capstone calendar, and requirement references
+    against S.2. When the AI suggested a scope or hardware change, such as
+    whether user accounts were a stretch goal or which headset was the target,
+    the decision was confirmed by the team rather than taken from the
+    suggestion. Several AI suggestions were rejected or reversed after review,
+    for example an input-response target that was not backed by a requirement
+    at the time it was proposed.
+
+    \item \textbf{How did the team verify factual claims, technical
+    assertions, requirements, calculations, and references?}
+
+    \begin{itemize}
+        \item \textbf{Requirement references:} Every requirement identifier
+        mentioned in the Project book, S.5, and S.6 was checked against the
+        identifiers defined in S.2, and the phase-in plan was checked to
+        contain each requirement exactly once.
+        \item \textbf{Links:} The document was compiled with \texttt{pdflatex}
+        after each change, and the build log was checked for errors, undefined
+        references, and links to missing targets.
+        \item \textbf{Calculations:} Worked examples in S.6, such as the score
+        for a given time and crash count under
+        \hyperlink{req:FR-PER-08}{FR-PER-08}, were checked by hand.
+        \item \textbf{Numerical targets:} Thresholds such as 72 FPS and 100 ms
+        are treated as proposed targets to be confirmed on the target hardware
+        (\hyperref[p7]{P.7}), not as verified results.
+        \item \textbf{References:} AI tools were not used to produce
+        citations. External references were found and checked by team
+        members.
+    \end{itemize}
+
+    \item \textbf{Who is responsible for the accuracy, completeness,
+    consistency, and appropriateness of the submitted document?}
+
+    The team is ultimately responsible for the accuracy, completeness,
+    consistency, and appropriateness of the submitted SRS, regardless of
+    whether material was written by team members or generated with AI
+    assistance. AI tools can help with drafting, reviewing, and finding
+    inconsistencies, but their suggestions may be inaccurate, incomplete, or
+    unsuitable for the project's scope. The team therefore critically
+    evaluates AI-assisted content and ensures that the final document
+    accurately represents the FPVR system and its requirements.
+\end{enumerate}
+
+\newpage{}
+
 \section*{Appendix --- Reflection}
 
 \wss{Not required for CAS 741}
