@@ -1165,16 +1165,13 @@ require a server or internet access. Detailed interfaces belong in
 
 \clearpage
 \subsubsection*{Execution environments and compatibility}
-The following are alternative required deployment paths, rather than two copies
-of FPVR running together. \hyperref[sec:s2-nfr]{NFR-INST-01 and NFR-INST-02}
-define the corresponding installation and launch obligations.
+FPVR must support both modes below. A session uses one mode at a time
+(\hyperref[sec:s2-nfr]{NFR-INST-01--02}).
 \begin{itemize}
-\item \textbf{Standalone Quest:} FPVR executes on the headset and uses its local
-runtime, display and tracking/input services; a connected computer is not
-required for execution.
-\item \textbf{PCVR:} FPVR executes on a host computer; a compatible runtime and
-headset link convey presentation to the Quest headset and return tracking/input.
-The link technology and host specifications remain to be selected and tested.
+\item \textbf{Standalone Quest:} FPVR runs on the headset and uses its display,
+tracking and input services. No connected computer is needed during play.
+\item \textbf{PCVR:} FPVR runs on a computer. A compatible runtime and headset
+link send images to the Quest headset and return tracking and input data.
 \end{itemize}
 
 \begin{figure}[H]
@@ -1195,16 +1192,15 @@ The link technology and host specifications remain to be selected and tested.
 \put(58,34){\vector(1,0){54}}\put(68,37){\scriptsize presentation via link}
 \put(112,18){\vector(-1,0){54}}\put(67,11){\scriptsize tracking / input / status}
 \end{picture}\endgroup
-\caption{Standalone and PCVR execution environments. Outer rectangles separate
-the alternative modes; the inner boxes identify execution/presentation sites
-and their responsibilities. Arrow labels state information flow, not a chosen
-transport protocol. Both modes use a headset.}
+\caption{Standalone and PCVR modes. Outer boxes separate the modes; inner
+boxes show where FPVR runs and where images are displayed. Arrows show the
+named information flows. Both modes use a headset; the link technology is
+still to be chosen.}
 \label{fig:e-deployment}
 \end{figure}
 
-The \href{models/environment-deployment.puml}{PlantUML deployment source}
-provides an editable version of these paths. The runtime remains an external
-dependency even when it shares a device with FPVR.
+Editable diagram code is in the
+\href{models/environment-deployment.puml}{PlantUML deployment source}.
 
 \begin{table}[H]\centering\small
 \caption{Controller pairings requiring confirmation}\label{tab:e-pairings}
@@ -1215,14 +1211,13 @@ Standalone Quest & Under review & Under review\\
 PCVR & Under review & Under review\\\bottomrule
 \end{tabularx}\end{table}
 
-\hyperref[sec:s2-interface]{FR-UI-02 and FR-UI-03}, together with
-\hyperref[sec:s2-nfr]{NFR-COMP-01}, require a working configuration for each
-controller type overall; they do not establish all four pairings in
-Table~\ref{tab:e-pairings}. Acceptance evidence must identify the headset,
-controller generation, runtime version, bindings and, for PCVR, host operating
-system/specifications and link configuration. An untested cell remains
-unconfirmed. The hardware uncertainties are constrained in
-\hyperref[ec-hardware]{E-C-02}.
+\hyperref[sec:s2-interface]{FR-UI-02--03} and
+\hyperref[sec:s2-nfr]{NFR-COMP-01} require a working configuration for each
+controller type across the system. They do not confirm every pairing in
+Table~\ref{tab:e-pairings}. For each tested pairing, record the headset,
+controller, runtime and control mapping; PCVR also needs the computer operating
+system, hardware and link details. Untested pairings remain under review
+(\hyperref[ec-hardware]{E-C-02}).
 
 \subsection{Constraints}\label{e2}
 
