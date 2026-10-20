@@ -158,18 +158,28 @@ Adapted the SRS document structure to Meyer's template. \\
 \addlinespace
 
 Oct 18, 2026 & Sankalpa &
-Completed the Goals (G) section of the SRS. \\
+Completed the Goals (G) section and S.2 of the SRS. \\
 
 \addlinespace
 
 Oct 19, 2026 & John Cho &
-Added initial content for System Interfaces and Use Cases (S.3, S.4) \\
+Added initial content for System Interfaces and Use Cases (S.1, S.3, S.4) \\
 
 \addlinespace
 
 Oct 19, 2026 & Arjun &
 Updated the multiplayer limitation to identify
 multiplayer as a stretch goal. \\
+
+\addlinespace
+
+Oct 19, 2026 & Vikram &
+Completed S.5 and S.6 of the SRS. \\
+
+\addlinespace
+
+Oct 19, 2026 & Ibrahim &
+Completed the Environment (E) section of the SRS. \\
 
 \bottomrule
 \end{tabularx}
@@ -197,70 +207,70 @@ figures use these same meanings.
 \toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
 \midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
 \bottomrule\endlastfoot
-FPVR & The VR-based FPV drone training simulator specified here
+\hyperref[g1]{FPVR} & The VR-based FPV drone training simulator specified here
 (\hyperref[g1]{G.1}). \\
-FPV & First-person view: presentation from the simulated drone's viewpoint
+\hyperref[sec:s2-flight]{FPV} & First-person view: presentation from the simulated drone's viewpoint
 (\hyperref[g1]{G.1}). \\
-VR & Virtual reality: an immersive presentation viewed through a headset
+\hyperref[g1]{VR} & Virtual reality: an immersive presentation viewed through a headset
 (\hyperref[g1]{G.1}). \\
-SRS & Software requirements specification: this document's statement of the
+\hyperref[s2]{SRS} & Software requirements specification: this document's statement of the
 intended product and its acceptance expectations. \\
-AI & Artificial intelligence: the planned, feasibility-dependent intelligent
+\hyperref[sec:s2-ai]{AI} & Artificial intelligence: the planned, feasibility-dependent intelligent
 flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
-XR & Extended reality: the umbrella term that includes VR; used in the
+\hyperref[e1]{XR} & Extended reality: the umbrella term that includes VR; used in the
 runtime diagrams. It does not specify a particular integration API. \\
-PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
+\hyperref[e1]{PC / PCVR} & Personal computer / PC-based virtual reality: FPVR executes on a
 computer and presents its VR view through a connected headset
 (\hyperref[e1]{E.1}). \\
-Runtime & The external platform software that provides headset presentation,
+\hyperref[e1]{Runtime} & The external platform software that provides headset presentation,
 tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
-Tracking / pose & Tracking reports a device's position and orientation (its
+\hyperref[e1]{Tracking / pose} & Tracking reports a device's position and orientation (its
 pose) and whether that information is currently valid. \\
-Session focus & The runtime's indication of whether FPVR is the active
+\hyperref[e1]{Session focus} & The runtime's indication of whether FPVR is the active
 application receiving interaction; visible imagery alone does not prove focus. \\
-Frames per second / hertz & Application frame-delivery rate / display refresh
-frequency (Hz). These quantities are distinct; the performance target remains
-under review in \hyperref[sec:s2-nfr]{S.2}. \\
-API & Application programming interface: a program-to-program interface.
+\hyperref[sec:s2-nfr]{Frames per second / hertz} & Application frame-delivery rate / display refresh
+frequency (Hz). These quantities are distinct; the rendering target is specified
+in \hyperref[sec:s2-nfr]{S.2}. \\
+\hyperref[s3]{API} & Application programming interface: a program-to-program interface.
 Mention of an external interface does not establish a public FPVR API
 (\hyperref[s3]{S.3}). \\
-FR / NFR & Functional requirement / non-functional requirement; prefixes of the
+\hyperref[s2]{FR / NFR} & Functional requirement / non-functional requirement; prefixes of the
 existing requirement identifiers in \hyperref[s2]{S.2}. \\
-Throttle, pitch, roll, yaw & Flight commands for thrust, rotation about the
+\hyperref[sec:s2-flight]{Throttle, pitch, roll, yaw} & Flight commands for thrust, rotation about the
 lateral axis, rotation about the longitudinal axis, and rotation about the
 vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
-Virtual environment & A simulated setting containing flight space and scenery.
+\hyperref[sec:s2-levels]{Virtual environment} & A simulated setting containing flight space and scenery.
 Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
-Free flight & Practice without course checkpoints, timers, or scoring
+\hyperref[sec:s2-levels]{Free flight} & Practice without course checkpoints, timers, or scoring
 (\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
-Level / course & A selectable obstacle challenge with a start, an ordered
+\hyperref[sec:s2-levels]{Level / course} & A selectable obstacle challenge with a start, an ordered
 checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
-Attempt & One course run from start or restart until completion or exit.
+\hyperref[ei-course]{Attempt} & One course run from start or restart until completion or exit.
 Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
-Checkpoint / segment & A required ordered course gate / the part of a course
+\hyperref[sec:s2-checkpoints]{Checkpoint / segment} & A required ordered course gate / the part of a course
 between the start, successive gates, and the finish
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-Collision / crash & Contact with a simulated obstacle or surface / a simulated
+\hyperref[sec:s2-flight]{Collision / crash} & Contact with a simulated obstacle or surface / a simulated
 collision that triggers the recovery interaction. Crash-counting details are
 specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
 \hyperref[sec:s2-performance]{FR-PER-07}. \\
-Respawn / restart & Resume the same attempt at its most recently completed checkpoint
+\hyperref[sec:s2-checkpoints]{Respawn / restart} & Resume the same attempt at its most recently completed checkpoint
 (or start if none) / begin a new attempt from the start
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-Total / section time & Active-flight time for an attempt, including failed
+\hyperref[sec:s2-performance]{Total / section time} & Active-flight time for an attempt, including failed
 sections / time for the current segment. Checkpoint completion and respawn
 reset section time; respawn preserves total time, which pauses in crash-recovery
 menus (\hyperref[sec:s2-performance]{S.2}). \\
-Score / rating & A numerical performance result / a separate performance
-assessment. Their criteria remain under review
+\hyperref[sec:s2-performance]{Score / rating} & A numerical performance result / a separate performance
+assessment. The scoring formula and rating thresholds are specified
 (\hyperref[sec:s2-performance]{S.2}). \\
-Flight review & A completed attempt's performance summary. Registered users
+\hyperref[sec:s2-review]{Flight review} & A completed attempt's performance summary. Registered users
 can save results to the cloud and retrieve previous results
 (\hyperref[ef-data]{E-F-03}). \\
-Telemetry & Flight and performance measurements used for evaluation. The term
+\hyperref[ef-data]{Telemetry} & Flight and performance measurements used for evaluation. The term
 alone does not imply recording history or transmitting data
 (\hyperref[e4]{E.4}). \\
-Activity space / boundary & The user's physical space / a platform-provided
+\hyperref[ec-safety]{Activity space / boundary} & The user's physical space / a platform-provided
 virtual limit used to help the user remain within a prepared space.
 Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 \end{longtable}
@@ -3990,5 +4000,113 @@ starts from ideas that are known to work. For Unity and C\#, I will build
 small prototypes, since I learn faster by writing code than by reading
 tutorials. The other team members describe their own choices in their
 reflections.
+
+
+\clearpage
+\noindent\textit{The following reflection drafts are based on revision-history contributions. Personal course histories, consultation counts and proposed learning choices require contributor confirmation.}
+
+\subsection*{Sankalpa Chhetri Dhakal - Reflection}
+
+\subsubsection*{What went well while writing this deliverable?}
+
+The revision history records my adaptation of the SRS to Meyer's template and completion of Goals and S.2. This linked the project objectives to identifiable requirements and provided a common structure for the other books.
+
+\subsubsection*{What pain points arose, and how can they be addressed?}
+
+Changes in S.2 can affect scope, environment, priorities and verification. Checking affected requirement IDs across these sections is necessary to keep the document consistent as the scope changes.
+
+\subsubsection*{How did client or proxy discussions inspire the requirements?}
+
+The revision history does not establish how many requirements came from client or proxy discussions. G.7 records the available sources and consultation plans; a numerical attribution requires meeting records rather than an estimate.
+
+\subsubsection*{Which courses or course topics support this work?}
+
+Requirements engineering and software design topics support testable requirements, clear boundaries and separating constraints from behaviour. Individual course enrolment is not established by the revision history.
+
+\subsubsection*{What knowledge and skills does the team need?}
+
+The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is course design and evaluating optional intelligent feedback. The shared learning plan in Arjun's reflection identifies an area for every team member.
+
+\subsubsection*{How will these skills be acquired, and which approach is proposed?}
+
+Two approaches for course design are studying existing FPV courses and running small playtests. I propose starting from examples and then prioritising playtests to expose unclear checkpoints and unsuitable difficulty. For optional feedback, reviewing model documentation and building a small feasibility prototype provide complementary approaches.
+
+\subsection*{John Cho - Reflection}
+
+\subsubsection*{What went well while writing this deliverable?}
+
+The revision history records my initial content for S.1, S.3 and S.4. Describing components, interfaces and use cases together connected system responsibilities to observable interactions.
+
+\subsubsection*{What pain points arose, and how can they be addressed?}
+
+Interfaces and use cases can drift when controller support or online services change. Comparing each exchange and use-case step with S.2 helps expose mismatches without prescribing internal implementation.
+
+\subsubsection*{How did client or proxy discussions inspire the requirements?}
+
+The revision history does not establish how many requirements came from client or proxy discussions. G.7 records the available sources and consultation plans; a numerical attribution requires meeting records rather than an estimate.
+
+\subsubsection*{Which courses or course topics support this work?}
+
+Software architecture, human-computer interaction and requirements engineering topics support component boundaries, usable VR interactions and clear use cases. Individual course enrolment is not established by the revision history.
+
+\subsubsection*{What knowledge and skills does the team need?}
+
+The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is Quest 3S integration, controller mappings and runtime behaviour. The shared learning plan in Arjun's reflection identifies an area for every team member.
+
+\subsubsection*{How will these skills be acquired, and which approach is proposed?}
+
+Two approaches are reviewing runtime documentation and sample projects, and testing a minimal application on the headset. I propose beginning with a sample and then prioritising device tests, because tracking, input and connection problems need observation on the target hardware.
+
+\subsection*{Vikram Chandar - Reflection}
+
+\subsubsection*{What went well while writing this deliverable?}
+
+The revision history records my completion of S.5 and S.6. Connecting priorities with verification and acceptance criteria made the implementation order and required evidence easier to review.
+
+\subsubsection*{What pain points arose, and how can they be addressed?}
+
+A requirement may sound clear while lacking an observable pass condition. Checking each requirement against its verification method helps reveal missing thresholds, ambiguous outcomes and dependencies.
+
+\subsubsection*{How did client or proxy discussions inspire the requirements?}
+
+The revision history does not establish how many requirements came from client or proxy discussions. G.7 records the available sources and consultation plans; a numerical attribution requires meeting records rather than an estimate.
+
+\subsubsection*{Which courses or course topics support this work?}
+
+Software testing, requirements engineering and discrete mathematics topics support measurable acceptance criteria, traceability and state-transition checks. Individual course enrolment is not established by the revision history.
+
+\subsubsection*{What knowledge and skills does the team need?}
+
+The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is state-machine testing for checkpoints, crashes and timers. The shared learning plan in Arjun's reflection identifies an area for every team member.
+
+\subsubsection*{How will these skills be acquired, and which approach is proposed?}
+
+Two approaches are writing transition tables and implementing automated transition tests. I propose defining the expected transitions first, then prioritising tests for repeated crashes, skipped checkpoints and timer resets, since these cases can expose inconsistent state changes.
+
+\subsection*{Ibrahim Tariq - Reflection}
+
+\subsubsection*{What went well while writing this deliverable?}
+
+The revision history records my completion of the Environment book. Separating components, constraints, assumptions, effects and invariants clarified the system boundary and the conditions needed for training.
+
+\subsubsection*{What pain points arose, and how can they be addressed?}
+
+Accounts, cloud results and leaderboards required changes to the external-services table, context diagram and data rules. Keeping flow identifiers aligned and comparing Environment statements with S.2 helps prevent outdated exclusions.
+
+\subsubsection*{How did client or proxy discussions inspire the requirements?}
+
+The revision history does not establish how many requirements came from client or proxy discussions. G.7 records the available sources and consultation plans; a numerical attribution requires meeting records rather than an estimate.
+
+\subsubsection*{Which courses or course topics support this work?}
+
+Requirements engineering, mechanics and software testing topics support distinguishing assumptions from requirements, describing flight behaviour and planning repeatable performance checks. Individual course enrolment is not established by the revision history.
+
+\subsubsection*{What knowledge and skills does the team need?}
+
+The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is simulated flight dynamics and performance on Quest 3S. The shared learning plan in Arjun's reflection identifies an area for every team member.
+
+\subsubsection*{How will these skills be acquired, and which approach is proposed?}
+
+Two approaches are studying quadcopter dynamics and building small flight experiments. I propose using a simple model as a starting point, then prioritising repeatable flight tests and headset profiling to compare expected motion and frame delivery with observations.
 
 \end{document}
