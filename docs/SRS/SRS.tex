@@ -196,9 +196,9 @@ XR & Extended reality: the umbrella term that includes VR; used in the
 runtime diagrams. It does not specify a particular integration API. \\
 PC / PCVR & Personal computer / PC-based virtual reality: FPVR executes on a
 computer and presents its VR view through a connected headset
-(\hyperref[e1]{E.1}). \\
+(\hyperref[e2]{E.2}). \\
 Runtime & The external platform software that provides headset presentation,
-tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
+tracking, input, and application-session services (\hyperref[e2]{E.2}). \\
 Tracking / pose & Tracking reports a device's position and orientation (its
 pose) and whether that information is currently valid. \\
 Session focus & The runtime's indication of whether FPVR is the active
@@ -221,7 +221,7 @@ Free flight & Practice without course checkpoints, timers, or scoring
 Level / course & A selectable obstacle challenge with a start, an ordered
 checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
 Attempt & One course run from start or restart until completion or exit.
-Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
+Respawn continues the same attempt (\hyperref[e6]{E.6}). \\
 Checkpoint / segment & A required ordered course gate / the part of a course
 between the start, successive gates, and the finish
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
@@ -244,10 +244,10 @@ a historical-session review interface is outside scope
 (\hyperref[sec:s2-review]{S.2}, \hyperref[g6]{G.6}). \\
 Telemetry & Flight and performance measurements used for evaluation. The term
 alone does not imply recording history or transmitting data
-(\hyperref[e4]{E.4}). \\
+(\hyperref[e5]{E.5}). \\
 Activity space / boundary & The user's physical space / a platform-provided
 virtual limit used to help the user remain within a prepared space.
-Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
+Neither is part of the simulated course (\hyperref[e3]{E.3}). \\
 \end{longtable}
 \endgroup
 
@@ -1031,7 +1031,13 @@ Identifiers beginning with \textbf{E-C}, \textbf{E-A}, \textbf{E-F}, and
 \textbf{E-I} identify constraints, assumptions, effects, and invariants.
 Assumptions must be checked; invariants are rules FPVR must always preserve.
 
-\subsection{Components}\label{e1}
+\subsection{Glossary}\label{e1}
+
+The glossary has been moved to the beginning of this document, immediately
+after Revision History (see \hyperref[sec:glossary]{Glossary}). This subsection
+is otherwise empty.
+
+\subsection{Components}\label{e2}
 
 FPVR includes the simulated drone, flight spaces and courses, crash recovery,
 performance results, and VR controls. The headset, controllers and any connected
@@ -1144,7 +1150,7 @@ controller, runtime and control mapping; PCVR also needs the computer operating
 system, hardware and link details. Untested pairings remain under review
 (\hyperref[ec-hardware]{E-C-02}).
 
-\subsection{Constraints}\label{e2}
+\subsection{Constraints}\label{e3}
 
 Constraints are limits the project must follow. The items below come from the
 project scope, chosen platforms and release conditions.
@@ -1153,7 +1159,7 @@ project scope, chosen platforms and release conditions.
 \item[{\hyperref[et-platform]{E-C-01}:}]\phantomsection\label{ec-platform}
 \textbf{Platforms and engine.}
 FPVR must support the two modes and controller types described in
-\hyperref[e1]{E.1} (\hyperref[sec:s2-interface]{FR-UI-01--03},
+\hyperref[e2]{E.2} (\hyperref[sec:s2-interface]{FR-UI-01--03},
 \hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01}).
 The \href{../DevelopmentPlan/DevelopmentPlan.tex}{Development Plan},
 ``Expected Technology'', selects Unity.
@@ -1165,7 +1171,7 @@ hardware and development tools.
 The draft targets Quest 3S; the earlier Development Plan names Quest 3.
 Supported headset models, Xbox controller versions, computer requirements and
 headset links remain \textbf{under review}. Record tested configurations as
-explained in \hyperref[e1]{E.1} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
+explained in \hyperref[e2]{E.2} (\hyperref[sec:s2-nfr]{NFR-COMP-01}).
 \textit{Reason:} choosing a device does not prove that FPVR works on it.
 
 \item[{\hyperref[et-scope]{E-C-03}:}]\phantomsection\label{ec-scope}
@@ -1225,7 +1231,7 @@ Accessed October 19, 2026; see also~\cite{metaAgeGroups}.
 Supports \hyperref[ec-release]{E-C-05}.
 \end{description}
 
-\subsection{Assumptions}\label{e3}
+\subsection{Assumptions}\label{e4}
 
 These assumptions describe the conditions needed for use and testing.
 Each row explains how to check the assumption and what happens if it fails.
@@ -1273,7 +1279,7 @@ specification and checks in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
 \hyperref[s6]{S.6}. An available AI service is not assumed; the standard review
 must remain available as explained in \hyperref[ei-review]{E-I-04}.
 
-\subsection{Effects}\label{e4}
+\subsection{Effects}\label{e5}
 
 Effects describe how FPVR affects users and equipment. They also concern
 guardians, bystanders and the wider public (\hyperref[g7]{G.7}) through
@@ -1316,7 +1322,7 @@ The standard review stays available without this analysis
 \end{description}
 
 \clearpage
-\subsection{Invariants}\label{e5}
+\subsection{Invariants}\label{e6}
 
 An invariant is a rule that must stay true while FPVR operates. Values such as
 elapsed time and checkpoint count can change, but they must change according
@@ -1977,7 +1983,7 @@ Section~\ref{s6}.
 
 \subsection{Interfaces}\label{s3}
 
-\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
+\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e3]{E.3}. \cite{BM22}}
 
 % TODO: Write your team's content for S.3 here.
 
