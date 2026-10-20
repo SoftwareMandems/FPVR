@@ -2,9 +2,33 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+
+% Landscape pages: draw the page number along the bottom edge of the rotated
+% page instead of the portrait footer, which would appear on the left side.
+% Inside the landscape environment \textwidth and \textheight are swapped, so
+% \textheight here is the portrait text width.
+\newif\iflandscapefooter
+\AddToShipoutPictureFG{%
+  \iflandscapefooter
+    \put(\LenToUnit{1in+\oddsidemargin+\textheight+\footskip},
+         \LenToUnit{0.5\paperheight}){%
+      \makebox(0,0){\rotatebox{90}{\thepage}}}%
+  \fi}
 \usepackage{hyperref}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
+
+% Requirement labels and references. Links are disabled for now; to re-enable
+% them, use the commented-out definitions instead.
+% \newcommand{\reqdef}[1]{\hypertarget{req:#1}{\textbf{#1:}}}
+% \newcommand{\reqref}[1]{\hyperlink{req:#1}{#1}}
+\newcommand{\reqdef}[1]{\textbf{#1:}}
+\newcommand{\reqref}[1]{#1}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -40,7 +64,10 @@
 \midrule
 Sept 30 & Sankalpa Chhetri Dhakal & Completed Introduction\\
 Oct 6 & Sankalpa Chhetri Dhakal & Completed Scope and Purpose and System Boundaries\\
-... & ... & ...\\
+Oct 19, 2026 & Arjun Sasidaran & Added FMEA (Section 5), user well-being
+hazards and SR21--SR24, and the roadmap (Section 7); restructured safety
+requirements into functional and non-functional subsections; marked
+multiplayer, user account, and database requirements as stretch goals\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -221,152 +248,535 @@ important library, these are also potential components.}
 
 \section{Failure Mode and Effect Analysis}
 
-\wss{Include your FMEA table here. This is the most important part of this document.}
-\wss{The safety requirements in the table do not have to have the prefix SR.
-The most important thing is to show traceability to your SRS. You might trace to
-requirements you have already written, or you might need to add new
-requirements.}
-\wss{If no safety requirement can be devised, other mitigation strategies can be
-entered in the table, including strategies involving providing additional
-documentation, and/or test cases.}
+The following Failure Mode and Effect Analysis (FMEA) identifies how each major
+component of the system may fail, the effects and causes of each failure, and
+the actions taken to mitigate it. Each failure mode is traced to the safety and
+security requirements in Section 6 and, where applicable, to the functional
+requirements in the SRS. Each row is assigned a hazard reference (H) for
+traceability.
+
+The SR column contains two types of identifiers. Identifiers beginning with SR
+or NFR followed by a number (e.g., SR5, NFR2) refer to the safety and security
+requirements defined in Section 6 of this document. Identifiers containing a
+component code (e.g., FR-FLT-04, FR-CHK-02, NFR-SAFE-01) refer to requirements
+defined in the FPVR Software Requirements Specification (SRS), a separate
+document.
+
+\begin{landscape}
+\pagestyle{empty}
+\global\landscapefootertrue
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{longtable}{|L{1.9cm}|L{2.6cm}|L{3.0cm}|L{2.8cm}|L{3.8cm}|L{1.9cm}|L{0.8cm}|}
+\caption{Failure Mode and Effect Analysis} \\
+\hline
+\textbf{Design Function} & \textbf{Failure Mode} & \textbf{Effects of Failure} &
+\textbf{Causes of Failure} & \textbf{Recommended Action} & \textbf{SR} &
+\textbf{Ref} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Design Function} & \textbf{Failure Mode} & \textbf{Effects of Failure} &
+\textbf{Causes of Failure} & \textbf{Recommended Action} & \textbf{SR} &
+\textbf{Ref} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+% Drone Flight Simulation
+Drone Flight Simulation &
+Drone responds incorrectly to flight inputs &
+Unexpected drone movement; user disorientation; inaccurate training experience &
+Invalid or out-of-range input values; errors in flight physics calculations &
+Validate and clamp controller input before applying it to the simulation; test
+flight physics against expected behaviour &
+\reqref{SR5}, \reqref{NFR2}, FR-FLT-02, FR-FLT-03 &
+H1-1 \\
+\hline
+&
+Collision is not detected, or a crash is triggered without contact &
+Incorrect crash count and score; user loses trust in the training feedback &
+Misconfigured colliders; drone passing through thin obstacles at high speed &
+Use continuous collision detection for the drone; add test cases for collisions
+at high speed and with each obstacle type &
+FR-FLT-04, FR-FLT-05 &
+H1-2 \\
+\hline
+
+% VR Headset and Tracking
+VR Headset and Tracking &
+Headset disconnects or loses tracking during flight &
+Drone continues flying without reliable user input; user disorientation &
+Low headset battery; tracking interference; Quest Link cable disconnection &
+Suspend gameplay when the platform reports tracking loss or disconnection;
+restore access to the main menu on recovery &
+\reqref{SR3}, \reqref{NFR4} &
+H2-1 \\
+\hline
+&
+Frame rate drops or rendering latency increases &
+Motion sickness, eye strain, or dizziness &
+Complex scenes exceeding hardware capability; unsupported hardware &
+Maintain the minimum frame rate on supported hardware; profile performance on
+each supported configuration &
+\reqref{NFR1}, \reqref{NFR2}, \reqref{NFR3} &
+H2-2 \\
+\hline
+&
+User collides with physical objects while immersed &
+Physical injury to the user or damage to equipment &
+Obstacles in the play area; user unaware of physical surroundings &
+Display a safety notice before the first session; support seated play so users
+do not need to move physically &
+\reqref{SR1}, FR-UI-06 &
+H2-3 \\
+\hline
+&
+User cannot stop the session when feeling unwell &
+Worsening motion sickness or discomfort &
+No accessible pause or exit option during flight &
+Provide a pause and exit option at all times without requiring removal of the
+headset &
+\reqref{SR2}, NFR-SAFE-01 &
+H2-4 \\
+\hline
+
+% Controller Input
+Controller Input &
+Controller is not detected or disconnects &
+User cannot control the drone; flight continues without input &
+Controller not paired; low battery; unsupported controller &
+Verify that required hardware is detected before a flight session begins;
+suspend flight if the controller disconnects &
+\reqref{SR4}, FR-UI-03 &
+H3-1 \\
+\hline
+&
+Controller reports drifting or invalid values &
+Unintended drone movement and unnecessary crashes &
+Stick drift; hardware faults; incorrect input mapping &
+Apply dead zones and reject values outside supported input ranges &
+\reqref{SR5} &
+H3-2 \\
+\hline
+
+% Level and Checkpoint Management
+Level and Checkpoint Management &
+Checkpoint progress advances out of order or fails to register &
+Users skip course sections or cannot complete a level &
+Incorrect checkpoint ordering; checkpoint trigger volumes too small &
+Advance progress only for the next required checkpoint; test each level for
+complete and out-of-order runs &
+FR-CHK-02, FR-CHK-03 &
+H4-1 \\
+\hline
+&
+Drone respawns at an incorrect or unsafe position &
+Repeated crashes immediately after respawning; user frustration &
+Incorrect respawn point; respawn point placed inside an obstacle &
+Respawn at the most recently completed checkpoint; verify every respawn point is
+clear of obstacles &
+FR-CHK-05 &
+H4-2 \\
+\hline
+
+% Timing, Scoring, and Performance
+Timing, Scoring, and Performance &
+Timers or collision count are not paused or reset correctly &
+Inaccurate score and performance rating &
+Timer state not updated on respawn, restart, or crash recovery &
+Pause the total timer during crash recovery; reset all performance data on a
+new attempt; add test cases for each transition &
+FR-PER-04, FR-PER-06, FR-LVL-07 &
+H5-1 \\
+\hline
+&
+Saved gameplay results are lost or corrupted &
+Loss of user progress and performance records &
+Application crash or network interruption during a save &
+Preserve previously saved records when errors occur; write records atomically &
+\reqref{SR10} &
+H5-2 \\
+\hline
+
+% Data Storage and Privacy
+Data Storage and Privacy &
+Stored gameplay records are accessed or modified by unauthorized parties &
+Exposure of user data; inaccurate performance records &
+Missing access controls; tampering with stored data &
+Restrict access to user-specific records; enforce authorization checks; verify
+record integrity on retrieval (Future; see Section 7) &
+\reqref{SR8}, \reqref{SR14}, \reqref{SR17} &
+H6-1 \\
+\hline
+&
+User data is collected without the user's knowledge &
+Privacy concerns; loss of user trust &
+No disclosure of data collection practices &
+Disclose what data is collected, how it is used, and whether it is transmitted
+before collecting it &
+\reqref{SR12} &
+H6-2 \\
+\hline
+&
+Malicious or malformed user input is processed &
+Corrupted records; injection attacks; unexpected behaviour &
+User-provided data not validated before processing or storage &
+Validate and sanitize all user-provided data &
+\reqref{SR16} &
+H6-3 \\
+\hline
+&
+User account credentials are compromised &
+Unauthorized access to personal accounts and records &
+Weak authentication; plaintext password storage; brute-force attempts &
+Require authentication; hash passwords with a salted algorithm; limit repeated
+attempts; log security-relevant events (Future; see Section 7) &
+\reqref{SR13}, \reqref{SR15}, \reqref{SR19}, \reqref{SR20} &
+H6-4 \\
+\hline
+
+% Network and Multiplayer Services
+Network and Multiplayer Services (Multiplayer: Stretch Goal) &
+Required external services are unavailable &
+Dependent features, such as intelligent feedback or multiplayer, fail; user
+unaware of the cause &
+Server outage; unstable internet connection &
+Verify connectivity before enabling dependent features; notify the user of
+multiplayer network interruptions (notification: Future; see Section 7) &
+\reqref{SR6}, \reqref{SR11} &
+H7-1 \\
+\hline
+&
+Malformed or manipulated multiplayer messages are accepted &
+Inconsistent gameplay state; corrupted performance records &
+Untrusted client data; modified clients &
+Validate all data received from multiplayer clients before applying it
+(Future; see Section 7) &
+\reqref{SR9} &
+H7-2 \\
+\hline
+&
+Network traffic or session credentials are intercepted or reused &
+Exposure of user data; unauthorized access to sessions &
+Unencrypted communication; session credentials not invalidated &
+Encrypt network communication; invalidate session credentials when a user leaves
+or a session expires (Future; see Section 7) &
+\reqref{SR7}, \reqref{SR18} &
+H7-3 \\
+\hline
+
+% Intelligent Feedback
+Intelligent Feedback (Planned) &
+Feedback is unavailable or misleading &
+User receives incorrect guidance or no review &
+Analysis failure; insufficient flight data &
+Continue to provide the standard post-flight review when intelligent feedback
+fails &
+FR-AI-03, FR-REV-04 &
+H8-1 \\
+\hline
+
+% User Well-being
+User Well-being &
+User plays for extended periods without breaks &
+Eye strain, headaches, fatigue, or worsening motion sickness &
+Repeated attempts encourage continuous play; no reminders to rest &
+Display a break reminder after a defined period of continuous play; allow the
+user to pause or exit at any time &
+\reqref{SR21}, \reqref{SR2} &
+H9-1 \\
+\hline
+&
+Visual effects trigger a photosensitive seizure &
+Seizure or injury to users with photosensitive epilepsy &
+Rapid flashing from crash effects, lighting, or high-contrast patterns &
+Limit flashing visual effects to safe frequencies; include a photosensitivity
+warning in the safety notice &
+\reqref{SR22}, \reqref{SR1} &
+H9-2 \\
+\hline
+&
+Repeated crashes cause frustration or discouragement &
+Negative effect on user well-being and self-confidence; users abandon training &
+Difficulty increases too quickly; feedback focuses only on failures &
+Use neutral, constructive wording in crash feedback and results; suggest
+free-flight practice after repeated crashes in the same section &
+\reqref{SR24}, FR-LVL-01 &
+H9-3 \\
+\hline
+&
+User treats simulator results as readiness to fly a physical drone &
+Unsafe real-world drone operation, risking injury to people or damage to
+property &
+Simulated flight cannot reproduce every real-world condition, such as wind,
+signal loss, and battery limits &
+Remind users that simulator training complements real-world practice and
+applicable drone regulations &
+\reqref{SR23} &
+H9-4 \\
+\hline
+\end{longtable}
+\end{landscape}
+\global\landscapefooterfalse
 
 \section{Safety and Security Requirements}
 
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
 rationale design process how and why to fake it.)}
 
-\```latex
 \subsection{Functional Requirements}
 
 \noindent
-\textbf{SR1:} The system shall provide users with a safety notice before their first VR session, reminding them to clear their physical play area of obstacles and remain aware of their surroundings.\\
+\reqdef{SR1} The system shall provide users with a safety notice before their first VR session, reminding them to clear their physical play area of obstacles and remain aware of their surroundings.\\
 \textbf{Rationale:} Users may collide with nearby objects while immersed in the virtual environment, potentially causing injury or damaging equipment.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR2:} The system shall allow users to pause or exit gameplay at any time during a VR session.\\
+\reqdef{SR2} The system shall allow users to pause or exit gameplay at any time during a VR session.\\
 \textbf{Rationale:} Users may experience motion sickness, dizziness, or discomfort that requires them to stop playing immediately.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR3:} The system shall suspend active gameplay when the VR platform reports a headset disconnection or loss of tracking that prevents reliable interaction.\\
+\reqdef{SR3} The system shall suspend active gameplay when the VR platform reports a headset disconnection or loss of tracking that prevents reliable interaction.\\
 \textbf{Rationale:} Continuing gameplay when tracking is unreliable may cause unexpected interactions and increase user disorientation.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR4:} The system shall verify that required VR hardware is detected and initialized before allowing users to begin a flight session.\\
+\reqdef{SR4} The system shall verify that required VR hardware is detected and initialized before allowing users to begin a flight session.\\
 \textbf{Rationale:} Missing or improperly initialized hardware may prevent reliable controller input and compromise gameplay.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR5:} The system shall validate controller input values before applying them to the drone simulation and reject values outside supported input ranges.\\
+\reqdef{SR5} The system shall validate controller input values before applying them to the drone simulation and reject values outside supported input ranges.\\
 \textbf{Rationale:} Invalid controller inputs may produce unintended drone movements or unpredictable simulation behaviour.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR6:} The system shall verify connectivity to required external services before enabling features that depend on them.\\
+\reqdef{SR6} The system shall verify connectivity to required external services before enabling features that depend on them.\\
 \textbf{Rationale:} Service connectivity failures may prevent multiplayer sessions or cause dependent features to behave incorrectly.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR9:} The system shall validate data received from multiplayer clients before accepting it for gameplay state updates or performance record storage.\\
+\reqdef{SR9} The system shall validate data received from multiplayer clients before accepting it for gameplay state updates or performance record storage.\\
 \textbf{Rationale:} Malformed or manipulated network messages may cause inconsistent multiplayer behaviour or compromise recorded statistics.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR11:} The system shall notify users when a network interruption prevents access to multiplayer functionality.\\
+\reqdef{SR11} The system shall notify users when a network interruption prevents access to multiplayer functionality.\\
 \textbf{Rationale:} Users may otherwise be unaware that multiplayer functionality is unavailable or their session has been interrupted.\\
 \textbf{Risk:} Low\\[1em]
 
 \noindent
-\textbf{SR12:} The system shall disclose what gameplay data is collected, how it is used, and whether it is transmitted to external services before collecting user-associated data.\\
+\reqdef{SR12} The system shall disclose what gameplay data is collected, how it is used, and whether it is transmitted to external services before collecting user-associated data.\\
 \textbf{Rationale:} Users need to understand how their gameplay information is handled to make informed decisions about their privacy.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR13:} The system shall require users to authenticate before accessing personal accounts or user-specific gameplay records, if account functionality is implemented.\\
+\reqdef{SR13} The system shall require users to authenticate before accessing personal accounts or user-specific gameplay records, if account functionality is implemented.\\
 \textbf{Rationale:} Authentication helps prevent unauthorized users from accessing personal information and saved progress.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR14:} The system shall enforce authorization checks before allowing users to view, modify, or delete stored gameplay records.\\
+\reqdef{SR14} The system shall enforce authorization checks before allowing users to view, modify, or delete stored gameplay records.\\
 \textbf{Rationale:} Authorization prevents users from accessing or modifying records belonging to other users.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR16:} The system shall validate and sanitize user-provided data before processing or storing it.\\
+\reqdef{SR16} The system shall validate and sanitize user-provided data before processing or storing it.\\
 \textbf{Rationale:} Improperly handled input may enable injection attacks, corrupt stored records, or cause unexpected system behaviour.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR18:} The system shall terminate or invalidate multiplayer session credentials when a user leaves a session or the session expires.\\
+\reqdef{SR18} The system shall terminate or invalidate multiplayer session credentials when a user leaves a session or the session expires.\\
 \textbf{Rationale:} Invalidating expired session credentials reduces the risk of unauthorized reuse or continued access to multiplayer sessions.\\
 \textbf{Risk:} Medium
 
 
 \noindent
-\textbf{SR7:} The system shall use encrypted communication when transmitting user data or multiplayer session information over a network.\\
+\reqdef{SR7} The system shall use encrypted communication when transmitting user data or multiplayer session information over a network.\\
 \textbf{Rationale:} Unencrypted network traffic may expose user information or session data to unauthorized parties.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR8:} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
+\reqdef{SR8} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
 \textbf{Rationale:} Unauthorized access may expose private information or allow gameplay records to be modified.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR10:} The system shall preserve previously saved gameplay records when unexpected software errors or network interruptions occur.\\
+\reqdef{SR10} The system shall preserve previously saved gameplay records when unexpected software errors or network interruptions occur.\\
 \textbf{Rationale:} Unexpected failures may otherwise result in corrupted records or the loss of user progress.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR15:} The system shall securely store authentication credentials and shall not store passwords in plaintext. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
+\reqdef{SR15} The system shall securely store authentication credentials and shall not store passwords in plaintext. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
 \textbf{Rationale:} Plaintext passwords may be exposed if stored data is accessed by an unauthorized party.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{SR17:} The system shall prevent unauthorized modification of stored gameplay records and verify data integrity when records are retrieved or updated.\\
+\reqdef{SR17} The system shall prevent unauthorized modification of stored gameplay records and verify data integrity when records are retrieved or updated.\\
 \textbf{Rationale:} Tampered performance records may produce inaccurate results and undermine the reliability of user progress tracking.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR19:} The system shall limit repeated authentication attempts within a defined period.\\
+\reqdef{SR19} The system shall limit repeated authentication attempts within a defined period.\\
 \textbf{Rationale:} Limiting repeated attempts helps reduce automated password-guessing and brute-force attacks.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\textbf{SR20:} The system shall record security-relevant events, including failed authentication attempts and unauthorized access attempts, without unnecessarily logging sensitive user information.\\
+\reqdef{SR20} The system shall record security-relevant events, including failed authentication attempts and unauthorized access attempts, without unnecessarily logging sensitive user information.\\
 \textbf{Rationale:} Security logs support the investigation of suspicious activity while minimizing the exposure of sensitive data.\\
-\textbf{Risk:} Medium
+\textbf{Risk:} Medium\\[1em]
 
-\section{Non-Functional Requirements}
 \noindent
-\textbf{NFR1:} The system shall maintain a frame rate of at least 30 frames per second during standard single-player gameplay on the minimum supported VR hardware.\\
+\reqdef{SR21} The system shall display a reminder to take a break after 30 minutes of continuous play.\\
+\textbf{Rationale:} Extended VR sessions can cause eye strain, headaches, and fatigue. A 30-minute interval is a common guideline for VR break reminders and gives users a regular opportunity to rest.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\reqdef{SR22} The system shall not display visual effects that flash more than three times in any one-second period.\\
+\textbf{Rationale:} Rapid flashing can trigger seizures in users with photosensitive epilepsy. The three-flashes-per-second limit follows the WCAG 2.3.1 threshold for flashing content.\\
+\textbf{Risk:} High\\[1em]
+
+\noindent
+\reqdef{SR23} The system shall inform users that simulator training supports, but does not replace, real-world practice and applicable drone regulations.\\
+\textbf{Rationale:} FPVR is designed to build flight skills, but simulated flight cannot reproduce every real-world condition, such as wind, signal loss, and battery limits. Users should continue practising in safe real-world conditions and follow applicable regulations before operating a physical drone.\\
+\textbf{Risk:} Medium\\[1em]
+
+\noindent
+\reqdef{SR24} The system shall suggest free-flight practice after three consecutive crashes within the same checkpoint section.\\
+\textbf{Rationale:} Repeated failures can discourage users and harm their confidence. Suggesting unscored practice gives users a low-pressure way to build skill before retrying the section.\\
+\textbf{Risk:} Low
+
+\subsection{Non-Functional Requirements}
+\noindent
+\reqdef{NFR1} The system shall maintain a frame rate of at least 30 frames per second during standard single-player gameplay on the minimum supported VR hardware.\\
 \textbf{Rationale:} Maintaining a consistent frame rate helps reduce visual discomfort and supports an immersive VR experience.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\textbf{NFR2:} The system shall respond to valid controller inputs within 50 milliseconds under normal operating conditions.\\
+\reqdef{NFR2} The system shall respond to valid controller inputs within 50 milliseconds under normal operating conditions.\\
 \textbf{Rationale:} Low input latency supports precise drone control and provides a more realistic flight simulation experience.\\
 \textbf{Risk:} High\\[1em]
 
 
 \noindent
-\textbf{NFR3:} The system shall operate correctly on all VR headsets, controllers, and operating system configurations explicitly listed as supported in the system documentation.\\
+\reqdef{NFR3} The system shall operate correctly on all VR headsets, controllers, and operating system configurations explicitly listed as supported in the system documentation.\\
 \textbf{Rationale:} Defining supported configurations ensures consistent operation and reduces hardware compatibility issues.\\
 \textbf{Risk:} Medium\\[1em]
 
 
 \noindent
-\textbf{NFR4:} The system shall restore access to the main menu within 10 seconds of recovering from a recoverable VR tracking or network interruption, provided that the required hardware and services are available.\\
+\reqdef{NFR4} The system shall restore access to the main menu within 10 seconds of recovering from a recoverable VR tracking or network interruption, provided that the required hardware and services are available.\\
 \textbf{Rationale:} Prompt recovery minimizes disruption and reduces the need to restart the application.\\
 \textbf{Risk:} Medium
 
 
 \section{Roadmap}
 
-\wss{Which safety requirements will be implemented as part of the capstone timeline?
-Which requirements will be implemented in the future?}
+The following roadmap outlines which of the safety and security requirements
+from Section 6 will be implemented within the capstone timeline and which will
+be implemented in the future.
+
+\subsection{Requirements Within the Capstone Timeline}
+
+\begin{itemize}
+    \item \textbf{\reqref{SR1}:} The system shall provide users with a safety notice before their first VR session.\\
+    \textbf{Justification:} Physical injury is the most severe hazard in the system, and a safety notice is simple to implement before any user testing begins.
+
+    \item \textbf{\reqref{SR2}:} The system shall allow users to pause or exit gameplay at any time.\\
+    \textbf{Justification:} Users must be able to stop immediately if they feel unwell, so this is required before anyone plays the game.
+
+    \item \textbf{\reqref{SR3}:} The system shall suspend active gameplay when a headset disconnection or loss of tracking is reported.\\
+    \textbf{Justification:} Tracking loss can occur in every session, and continuing gameplay without reliable tracking directly causes user disorientation.
+
+    \item \textbf{\reqref{SR4}:} The system shall verify that required VR hardware is initialized before a flight session begins.\\
+    \textbf{Justification:} Every flight session depends on working hardware, so this check protects all other gameplay features from the start.
+
+    \item \textbf{\reqref{SR5}:} The system shall validate controller input values before applying them to the drone simulation.\\
+    \textbf{Justification:} Controller input drives the core flight simulation, so invalid values must be handled before flight features are built on top of it.
+
+    \item \textbf{\reqref{SR6}:} The system shall verify connectivity to required external services before enabling dependent features.\\
+    \textbf{Justification:} Checking connectivity is low effort and prevents features that depend on external services, such as the planned intelligent feedback, from failing without explanation during testing and demonstrations.
+
+    \item \textbf{\reqref{SR10}:} The system shall preserve saved gameplay records during unexpected errors or network interruptions.\\
+    \textbf{Justification:} Losing user progress during testing would undermine both the user experience and the evaluation of the system.
+
+    \item \textbf{\reqref{SR12}:} The system shall disclose what gameplay data is collected and how it is used.\\
+    \textbf{Justification:} Users must be informed before any data is collected, which includes participants in capstone user testing.
+
+    \item \textbf{\reqref{SR16}:} The system shall validate and sanitize user-provided data before processing or storing it.\\
+    \textbf{Justification:} Input validation is a basic safeguard that is far easier to include from the start than to add after data handling is built.
+
+    \item \textbf{\reqref{SR21}:} The system shall display a break reminder after 30 minutes of continuous play.\\
+    \textbf{Justification:} Eye strain and fatigue can affect any user, including participants in capstone user testing, and a timed reminder is simple to implement.
+
+    \item \textbf{\reqref{SR22}:} The system shall not display visual effects that flash more than three times per second.\\
+    \textbf{Justification:} Seizure risk is a severe hazard, and following the limit while visual effects are created avoids redesigning them later.
+
+    \item \textbf{\reqref{SR23}:} The system shall inform users that simulator training supports, but does not replace, real-world practice and applicable drone regulations.\\
+    \textbf{Justification:} The message requires little effort and should be in place before users begin relying on their training results.
+
+    \item \textbf{\reqref{SR24}:} The system shall suggest free-flight practice after three consecutive crashes within the same checkpoint section.\\
+    \textbf{Justification:} Free-flight mode is already part of the core system, so suggesting it only requires tracking consecutive crashes.
+
+    \item \textbf{\reqref{NFR1}:} The system shall maintain at least 30 frames per second on the minimum supported VR hardware.\\
+    \textbf{Justification:} Low frame rates cause motion sickness, so performance must be maintained throughout development rather than fixed at the end.
+
+    \item \textbf{\reqref{NFR2}:} The system shall respond to valid controller inputs within 50 milliseconds.\\
+    \textbf{Justification:} Responsive controls are central to the training experience and affect every flight session.
+
+    \item \textbf{\reqref{NFR3}:} The system shall operate correctly on all explicitly supported hardware configurations.\\
+    \textbf{Justification:} Defining supported hardware early focuses testing and prevents compatibility issues from appearing late in development.
+
+    \item \textbf{\reqref{NFR4}:} The system shall restore access to the main menu within 10 seconds of a recoverable interruption.\\
+    \textbf{Justification:} Interruptions are expected during normal VR use, and quick recovery avoids forcing users to restart the application.
+\end{itemize}
+
+\subsection{Requirements Implemented in the Future}
+
+The following requirements depend on multiplayer functionality, user accounts,
+or database storage of gameplay records. These features are stretch goals of
+the project that may not be implemented within the capstone timeline, so the
+requirements will be implemented when the corresponding features are developed.
+
+\begin{itemize}
+    \item \textbf{\reqref{SR7}:} The system shall use encrypted communication when transmitting multiplayer session information.\\
+    \textbf{Justification:} Encryption only applies once multiplayer networking is implemented, which is a stretch goal.
+
+    \item \textbf{\reqref{SR8}:} The system shall restrict access to stored user-specific gameplay records.\\
+    \textbf{Justification:} Access restrictions only apply once user-specific records are stored, which depends on account functionality.
+
+    \item \textbf{\reqref{SR9}:} The system shall validate data received from multiplayer clients.\\
+    \textbf{Justification:} Validation of client data is only needed once multiplayer is implemented, and should be built alongside the multiplayer networking code.
+
+    \item \textbf{\reqref{SR11}:} The system shall notify users when a network interruption prevents multiplayer access.\\
+    \textbf{Justification:} This notification only applies to multiplayer features, which are a stretch goal.
+
+    \item \textbf{\reqref{SR13}:} The system shall require users to authenticate before accessing personal accounts or records.\\
+    \textbf{Justification:} Authentication is only needed once user accounts exist, which are a stretch goal.
+
+    \item \textbf{\reqref{SR14}:} The system shall enforce authorization checks before stored gameplay records are viewed, modified, or deleted.\\
+    \textbf{Justification:} Authorization depends on both authenticated users and stored records, so it follows the implementation of SR13.
+
+    \item \textbf{\reqref{SR15}:} The system shall store passwords using a salted password-hashing algorithm.\\
+    \textbf{Justification:} No passwords are stored until account functionality is implemented.
+
+    \item \textbf{\reqref{SR17}:} The system shall prevent unauthorized modification of stored gameplay records and verify their integrity.\\
+    \textbf{Justification:} Integrity verification depends on database storage of gameplay records, which is a stretch goal.
+
+    \item \textbf{\reqref{SR18}:} The system shall invalidate multiplayer session credentials when a user leaves or a session expires.\\
+    \textbf{Justification:} Session credentials only exist once multiplayer is implemented, and depend on user accounts; both are stretch goals.
+
+    \item \textbf{\reqref{SR19}:} The system shall limit repeated authentication attempts within a defined period.\\
+    \textbf{Justification:} Rate limiting only applies once an authentication system exists.
+
+    \item \textbf{\reqref{SR20}:} The system shall record security-relevant events without logging unnecessary sensitive information.\\
+    \textbf{Justification:} Most security events relate to authentication and record access, which depend on the user account and database stretch goals.
+\end{itemize}
 
 \newpage{}
 
@@ -727,6 +1137,63 @@ Claude Opus 5.5 and GPT Astra 6.1.
     will help ensure that FPVR is reliable, secure, usable,
     and feasible to deliver within the available time.
 
+\end{enumerate}
+
+\subsection*{Arjun Sasidaran}
+
+\begin{enumerate}
+    \item % What went well while writing this deliverable?
+    Organizing the FMEA by system component worked well. Working through the
+    flight simulation, VR headset, controllers, checkpoints, scoring, data,
+    network, and feedback components one at a time made it much easier to
+    brainstorm failure modes than trying to list hazards for the whole system
+    at once. Tracing every row to a safety requirement in Section 6 or a
+    requirement in the SRS also helped me check coverage: any requirement
+    without a matching failure mode, or any failure mode without a mitigation,
+    stood out right away. Splitting the roadmap into capstone and future work,
+    with a justification for each requirement, made our priorities much
+    clearer than a single list would have.
+
+    \item % What pain points did you experience, and how did you resolve them?
+    The main pain point was deciding which safety and security requirements
+    belong in the capstone timeline. Several requirements depend on
+    multiplayer, user accounts, or database storage of flight records, which
+    are all stretch goals. Rather than removing them,
+    I kept them so the hazards are still documented, moved them to the future
+    section of the roadmap with a justification for each, and marked the
+    related FMEA actions as future work. This keeps the analysis complete
+    without committing the team to features that may not be built. Formatting was another pain point: the FMEA table was too
+    wide for a portrait page, so I moved it to landscape pages, which then
+    required extra work to keep the page numbers and column text readable.
+
+    \item % Which risks did the team think of before vs. during this deliverable?
+    Before this deliverable, we had already thought about the physical risks
+    that are common to VR, such as motion sickness, colliding with objects in
+    the room, and losing headset tracking, as well as basic performance risks
+    like low frame rates and input latency. While completing the hazard
+    analysis, we identified several less obvious risks. Going through each
+    component led to gameplay logic failures, such as checkpoints registering
+    out of order, unsafe respawn points, and incorrect timers affecting scores.
+    Reviewing the hazard analysis checklist, which asks teams to think broadly
+    about safety, led to user well-being risks: eye strain from long sessions,
+    photosensitive seizures from flashing effects, frustration from repeated
+    crashes, and users treating simulator results as readiness to fly a real
+    drone. The last risk came from our own SRS, which already states that
+    performance in FPVR is not proof of real-world flight ability.
+
+    \item % At least 2 other types of risk in software products, and why they matter.
+    One type of risk is security and privacy risk, such as unauthorized access
+    to user data, intercepted network traffic, or compromised credentials.
+    These matter because they can harm users even when the software works
+    exactly as intended, and a breach can permanently damage user trust.
+    A second type is psychological and well-being risk, such as frustration,
+    discouragement, or software that encourages unhealthy amounts of use.
+    This is especially important for games and training tools used by the
+    general public, since their design directly shapes how users feel and
+    behave. A third type is data integrity risk, where results or progress
+    are lost or recorded incorrectly. In a training tool like FPVR, inaccurate
+    scores or lost progress would give users misleading feedback about their
+    skills.
 \end{enumerate}
 
 \end{document}
