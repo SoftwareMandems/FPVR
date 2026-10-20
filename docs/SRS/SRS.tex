@@ -1414,7 +1414,7 @@ Completed checkpoints must always form the beginning of the course's required
 sequence, with none skipped. Respawn keeps progress in the same attempt;
 restart begins a new attempt.
 
-\textbf{Checkpoint order.} Let $n$ be the positive number of required checkpoints,
+\textbf{Checkpoint order.} Let $n$ be the number of required checkpoints (a positive integer),
 listed in order as $\langle C_1,\ldots,C_n\rangle$. Let $k$ count the completed
 checkpoints and $P$ list them. Then
 \[
@@ -1444,60 +1444,70 @@ then gives $k=2$ and $P=\langle C_1,C_2\rangle$. The user must still pass $C_3$
 and reach the finish. These numbers illustrate the rule; they do not set the
 number of checkpoints in every course.
 
-Let $\mathbb N_0$ denote non-negative integers and $\mathbb R_{\geq0}$
-non-negative real numbers. Let $\alpha$ identify the attempt,
-$T,U\in\mathbb R_{\geq0}$ be total and section
-times in seconds, $c\in\mathbb N_0$ be the crash count, and $p_k$ the recovery
-position for completed prefix $k$, with $p_0$ the start. After a checkpoint
-passage, $P'=\langle C_1,\ldots,C_{k'}\rangle$; a valid next-checkpoint
-passage also sets $U'=0$ (\hyperref[sec:s2-performance]{FR-PER-04}).
-The recovery relationships are
-\begin{align*}
- \text{respawn:}\quad &\alpha'=\alpha,\quad k'=k,\quad T'=T,\quad U'=0,
-                     \quad c'=c,\quad \text{position}'=p_k,\\
- \text{restart:}\quad &\alpha'\ne\alpha,\quad k'=0,\quad T'=U'=0,
-                     \quad c'=0,\quad \text{position}'=p_0.
-\end{align*}
-These are instantaneous recovery transitions, not elapsed-time intervals.
-Respawn also preserves recorded collision penalties; restart resets the score
-as specified by \hyperref[sec:s2-checkpoints]{FR-CHK-05--07}.
-During flight, a non-negative elapsed interval
-$\Delta t$ adds to $T$; while the crash-recovery menu is displayed, it does not:
+\textbf{Crash recovery.} Respawn continues the current attempt; restart starts
+again from the beginning. Table~\ref{tab:e-recovery} shows exactly what is kept
+or reset (\hyperref[sec:s2-checkpoints]{FR-CHK-05--07}).
+
+\par\noindent\begin{minipage}{\linewidth}
+\small\captionsetup{hypcap=false}
+\captionof{table}{Respawn and restart}\label{tab:e-recovery}
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}YY@{}}\toprule
+\textbf{Item} & \textbf{Respawn} & \textbf{Restart}\\\midrule
+Attempt & Continue the same attempt & Begin a new attempt\\
+Completed checkpoints & Keep $k$ and $P$ & Set $k=0$ and clear $P$\\
+Drone position & Last completed checkpoint; start if $k=0$ & Course start\\
+Total flight time & Keep accumulated time & Reset to zero\\
+Current section time & Reset to zero & Reset to zero\\
+Crashes and scoring & Keep crash count and recorded penalties & Reset crash
+count and performance score\\\bottomrule
+\end{tabularx}
+\end{minipage}
+
+\textit{Example:} checkpoints $C_1$ and $C_2$ are complete, total flight time is
+42 seconds, and one crash has been counted. Respawn returns the drone to $C_2$
+and keeps both checkpoints, the 42 seconds, the crash count and its penalty.
+The current section timer resets to zero. These values illustrate recovery;
+they are not performance targets.
+
+\textbf{Timing.} Failed flight still counts toward total time. Time spent in
+the crash-recovery menu does not. Let $T$ be total flight time and $\Delta t$
+be a non-negative elapsed interval, both measured in seconds. The total after
+that interval is $T'$:
 \[
  T'=\begin{cases}
  T+\Delta t, & \text{during active flight},\\
  T, & \text{while the crash-recovery menu is displayed}.
  \end{cases}
 \]
-Each new crash increments $c$ by one; neither its flight time nor its penalty
-is erased by respawn (\hyperref[sec:s2-performance]{FR-PER-01--07}).
-\textit{Rationale:} the completed sequence remains a valid prefix across failed
-sections, preventing skipped gates and misleading results. This formalization
-covers course attempts; free flight has no checkpoint/timing/scoring contract.
+For example, spending ten seconds in that menu does not add ten seconds to
+$T$. Respawn keeps $T$; restart resets it. The section timer resets when the
+next checkpoint is completed or the drone respawns. Each new crash adds one to
+the crash count (\hyperref[sec:s2-performance]{FR-PER-01--07}). Total time
+stops at successful completion (\hyperref[sec:s2-performance]{FR-PER-10}).
+\textit{Reason:} respawn must not erase failed-flight time or crash penalties;
+restart begins a new attempt.
+These course rules do not apply to free flight, which has no checkpoints,
+timers or score.
 
 \item[{\hyperref[et-safety]{E-I-03}:}]\phantomsection\label{ei-stationary}
 \textbf{Stationary interaction.}
-Flight control, menus and recovery remain operable in seated or standing use
-without requiring physical walking, and the active activity has an accessible
-exit without headset removal (\hyperref[sec:s2-interface]{FR-UI-06},
+Users must be able to control flight, use menus, recover and exit while seated
+or standing. Flying through a virtual course must not require walking through
+the physical room. Exit must be accessible without removing the headset
+(\hyperref[sec:s2-interface]{FR-UI-06},
 \hyperref[sec:s2-nfr]{NFR-SAFE-01}).
-\textit{Rationale:} the virtual course must not turn movement through simulated
-space into a requirement to walk through the physical activity space.
+\textit{Reason:} the controls must suit the prepared stationary space, including
+after a simulated crash.
 
 \item[{\hyperref[et-review]{E-I-04}:}]\phantomsection\label{ei-review}
-\textbf{Independent standard review.}
-After successful course completion, the standard current-attempt review remains
-available for every optional-feedback outcome. Let $B$ contain the outcomes
-``not included'', ``available'', ``unavailable'', and ``failed''. Then
-\[
- \forall b\in B,\quad
- \operatorname{completed}(\alpha)\ \Rightarrow\
- \operatorname{coreReviewAvailable}(\alpha,b).
-\]
-This preserves \hyperref[sec:s2-review]{FR-REV-01, FR-REV-04--05} and
-\hyperref[sec:s2-ai]{FR-AI-03}.
-\textit{Rationale:} a feasibility-dependent enhancement cannot prevent the
-required performance review.
+\textbf{Standard review without optional analysis.}
+After successful completion, the user must receive the current attempt's time,
+checkpoint results, crash count, score and rating. This review remains available
+whether intelligent feedback is not included, succeeds, is unavailable or fails.
+For example, an analysis error must still allow the user to review the results
+and retry the course (\hyperref[sec:s2-review]{FR-REV-01--05},
+\hyperref[sec:s2-ai]{FR-AI-03}).
+\textit{Reason:} an optional feature must not block the core training experience.
 \end{description}
 
 \subsubsection*{Traceability and intended checks}
