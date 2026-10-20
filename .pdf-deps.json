@@ -98,6 +98,9 @@
     "docs/Reflection.text",
     "docs/SRS/SRS.tex",
     "docs/SRS/activityDiagram.png",
+    "docs/SRS/models/environment-context.png",
+    "docs/SRS/models/environment-deployment.png",
+    "docs/SRS/models/environment-domain.png",
     "docs/SRS_Reflection.text"
   ],
   "docs/UserGuide/UserGuide.tex": [
