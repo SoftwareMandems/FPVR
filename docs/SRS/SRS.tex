@@ -191,7 +191,8 @@ Completed the Environment (E) section of the SRS. \\
 \unumbered{Glossary}\label{sec:glossary}
 
 The definitions below apply throughout this specification. Each term links to
-its first use in the text. Acronyms appearing in
+its first use in the text, and every later use of the term links back to
+this table. Acronyms appearing in
 figures use these same meanings.
 
 \begingroup
@@ -207,72 +208,45 @@ figures use these same meanings.
 \toprule\textbf{Term} & \textbf{Meaning and reference}\\\midrule\endhead
 \midrule\multicolumn{2}{r}{\small\textit{Continued on next page}}\endfoot
 \bottomrule\endlastfoot
-\hyperlink{gl:FPVR}{FPVR} & The VR-based FPV drone training simulator specified here
+\hyperlink{gl:FPV}{FPV}\hypertarget{glos:FPV}{} & First-person view: presentation from the simulated drone's viewpoint
 (\hyperref[g1]{G.1}). \\
-\hyperlink{gl:FPV}{FPV} & First-person view: presentation from the simulated drone's viewpoint
+\hyperlink{gl:VR}{VR}\hypertarget{glos:VR}{} & Virtual reality: an immersive presentation viewed through a headset
 (\hyperref[g1]{G.1}). \\
-\hyperlink{gl:VR}{VR} & Virtual reality: an immersive presentation viewed through a headset
-(\hyperref[g1]{G.1}). \\
-\hyperlink{gl:SRS}{SRS} & Software requirements specification: this document's statement of the
+\hyperlink{gl:SRS}{SRS}\hypertarget{glos:SRS}{} & Software requirements specification: this document's statement of the
 intended product and its acceptance expectations. \\
-\hyperlink{gl:AI}{AI} & Artificial intelligence: the planned, feasibility-dependent intelligent
+\hyperlink{gl:AI}{AI}\hypertarget{glos:AI}{} & Artificial intelligence: the planned, feasibility-dependent intelligent
 flight-feedback capability (\hyperref[sec:s2-ai]{S.2}). \\
-\hyperlink{gl:XR}{XR} & Extended reality: the umbrella term that includes VR; used in the
+\hyperlink{gl:XR}{XR}\hypertarget{glos:XR}{} & Extended reality: the umbrella term that includes VR; used in the
 runtime diagrams. It does not specify a particular integration API. \\
-\hyperlink{gl:PCVR}{PC / PCVR} & Personal computer / PC-based virtual reality: FPVR executes on a
+\hyperlink{gl:PCVR}{PC / PCVR}\hypertarget{glos:PCVR}{} & Personal computer / PC-based virtual reality: FPVR executes on a
 computer and presents its VR view through a connected headset
 (\hyperref[e1]{E.1}). \\
-\hyperlink{gl:Runtime}{Runtime} & The external platform software that provides headset presentation,
+\hyperlink{gl:Runtime}{Runtime}\hypertarget{glos:Runtime}{} & The external platform software that provides headset presentation,
 tracking, input, and application-session services (\hyperref[e1]{E.1}). \\
-\hyperlink{gl:Tracking}{Tracking / pose} & Tracking reports a device's position and orientation (its
+\hyperlink{gl:Tracking}{Tracking / pose}\hypertarget{glos:Tracking}{} & Tracking reports a device's position and orientation (its
 pose) and whether that information is currently valid. \\
-\hyperlink{gl:Focus}{Session focus} & The runtime's indication of whether FPVR is the active
+\hyperlink{gl:Focus}{Session focus}\hypertarget{glos:Focus}{} & The runtime's indication of whether FPVR is the active
 application receiving interaction; visible imagery alone does not prove focus. \\
-\hyperlink{gl:FPS}{Frames per second / hertz} & Application frame-delivery rate / display refresh
+\hyperlink{gl:FPS}{Frames per second / hertz}\hypertarget{glos:FPS}{} & Application frame-delivery rate / display refresh
 frequency (Hz). These quantities are distinct; the rendering target is specified
 in \hyperref[sec:s2-nfr]{S.2}. \\
-\hyperlink{gl:API}{API} & Application programming interface: a program-to-program interface.
+\hyperlink{gl:API}{API}\hypertarget{glos:API}{} & Application programming interface: a program-to-program interface.
 Mention of an external interface does not establish a public FPVR API
 (\hyperref[s3]{S.3}). \\
-\hyperlink{req:FR-FLT-01}{FR / NFR} & Functional requirement / non-functional requirement; prefixes of the
+\hyperlink{req:FR-FLT-01}{FR / NFR}\hypertarget{glos:FRNFR}{} & Functional requirement / non-functional requirement; prefixes of the
 existing requirement identifiers in \hyperref[s2]{S.2}. \\
-\hyperlink{gl:Throttle}{Throttle, pitch, roll, yaw} & Flight commands for thrust, rotation about the
+\hyperlink{gl:Throttle}{Throttle, pitch, roll, yaw}\hypertarget{glos:Throttle}{} & Flight commands for thrust, rotation about the
 lateral axis, rotation about the longitudinal axis, and rotation about the
 vertical axis, respectively (\hyperref[sec:s2-flight]{S.2}). \\
-\hyperlink{gl:Environment}{Virtual environment} & A simulated setting containing flight space and scenery.
-Multiple levels may use the same setting (\hyperref[sec:s2-levels]{S.2}). \\
-\hyperlink{gl:FreeFlight}{Free flight} & Practice without course checkpoints, timers, or scoring
-(\hyperref[g5]{G.5}, \hyperref[sec:s2-levels]{S.2}). \\
-\hyperlink{gl:Level}{Level / course} & A selectable obstacle challenge with a start, an ordered
-checkpoint sequence, and a finish (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperlink{gl:Attempt}{Attempt} & One course run from start or restart until completion or exit.
-Respawn continues the same attempt (\hyperref[e5]{E.5}). \\
-\hyperlink{gl:Checkpoint}{Checkpoint / segment} & A required ordered course gate / the part of a course
+\hyperlink{gl:Checkpoint}{Checkpoint / segment}\hypertarget{glos:Checkpoint}{} & A required ordered course gate / the part of a course
 between the start, successive gates, and the finish
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperlink{gl:Crash}{Collision / crash} & Contact with a simulated obstacle or surface / a simulated
-collision that triggers the recovery interaction. Crash-counting details are
-specified by \hyperref[sec:s2-flight]{FR-FLT-06} and
-\hyperref[sec:s2-performance]{FR-PER-07}. \\
-\hyperlink{gl:Respawn}{Respawn / restart} & Resume the same attempt at its most recently completed checkpoint
+\hyperlink{gl:Respawn}{Respawn / restart}\hypertarget{glos:Respawn}{} & Resume the same attempt at its most recently completed checkpoint
 (or start if none) / begin a new attempt from the start
 (\hyperref[sec:s2-checkpoints]{S.2}). \\
-\hyperlink{gl:TotalTime}{Total / section time} & Active-flight time for an attempt, including failed
-sections / time for the current segment. Checkpoint completion and respawn
-reset section time; respawn preserves total time, which pauses in crash-recovery
-menus (\hyperref[sec:s2-performance]{S.2}). \\
-\hyperlink{gl:Score}{Score / rating} & A numerical performance result / a separate performance
-assessment. The scoring formula and rating thresholds are specified
-(\hyperref[sec:s2-performance]{S.2}). \\
-\hyperlink{gl:FlightReview}{Flight review} & A completed attempt's performance summary. Registered users
-can save results to the cloud and retrieve previous results
-(\hyperref[ef-data]{E-F-03}). \\
-\hyperlink{gl:Telemetry}{Telemetry} & Flight and performance measurements used for evaluation. The term
+\hyperlink{gl:Telemetry}{Telemetry}\hypertarget{glos:Telemetry}{} & Flight and performance measurements used for evaluation. The term
 alone does not imply recording history or transmitting data
 (\hyperref[e4]{E.4}). \\
-\hyperlink{gl:ActivitySpace}{Activity space / boundary} & The user's physical space / a platform-provided
-virtual limit used to help the user remain within a prepared space.
-Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 \end{longtable}
 \endgroup
 
@@ -294,12 +268,12 @@ Neither is part of the simulated course (\hyperref[e2]{E.2}). \\
 
 \subsection{Context and Overall Objectives}\label{g1}
 
-Learning to operate a \hypertarget{gl:FPV}{}first-person-view (FPV) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
+Learning to operate a \hypertarget{gl:FPV}{}first-person-view (\hyperlink{glos:FPV}{FPV}) drone presents challenges for beginners, particularly when practicing with physical equipment. New pilots must develop coordinated flight-control skills while managing the possibility of crashes, equipment damage, and unsafe flight conditions. These challenges can make initial training costly and discourage inexperienced users from gaining practical experience.
 
-\hypertarget{gl:FPVR}{}FPVR is a \hypertarget{gl:VR}{}virtual reality (VR)-based FPV drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
+FPVR is a \hypertarget{gl:VR}{}virtual reality (\hyperlink{glos:VR}{VR})-based \hyperlink{glos:FPV}{FPV} drone training simulator designed to provide a safe, accessible, and structured environment for developing foundational drone piloting skills. The system will allow users to control a simulated drone, practice flight manoeuvres, and complete progressively challenging courses without requiring a physical drone.
 
-The training environment will include \hypertarget{gl:FreeFlight}{}free-flight practice, multiple \hypertarget{gl:Level}{}obstacle-course levels, distinct \hypertarget{gl:Environment}{}virtual environments, \hypertarget{gl:Checkpoint}{}checkpoints, and performance evaluation. Users will receive 
-feedback on their flight performance through measurable indicators such as completion time, checkpoint progress, and performance ratings. 
+The training environment will include free-flight practice, multiple obstacle-course levels, distinct virtual environments, \hypertarget{gl:Checkpoint}{}\hyperlink{glos:Checkpoint}{checkpoints}, and performance evaluation. Users will receive 
+feedback on their flight performance through measurable indicators such as completion time, \hyperlink{glos:Checkpoint}{checkpoint} progress, and performance ratings. 
 An intelligent feedback component may provide further analysis of user performance.
 
 FPVR will also support registered player accounts,
@@ -307,7 +281,7 @@ persistent performance records, and local and global
 leaderboards. Users will be able to practise without
 signing in, while registered players can save their
 completed results to an online service, review
-\hypertarget{gl:Attempt}{}previous attempts, and compare their performance
+previous attempts, and compare their performance
 with other players. These features extend the
 training experience beyond individual sessions
 by providing measurable records of progress.
@@ -316,22 +290,22 @@ by providing measurable records of progress.
 
 \subsection{Current situation}\label{g2}
 
-Learning to operate a first-person-view (FPV) drone requires beginners to develop coordinated control skills while interpreting visual feedback from the drone's perspective. Practicing with physical drones introduces risks of crashes, equipment damage, and additional costs, making simulation a valuable alternative for introductory training.
+Learning to operate a first-person-view (\hyperlink{glos:FPV}{FPV}) drone requires beginners to develop coordinated control skills while interpreting visual feedback from the drone's perspective. Practicing with physical drones introduces risks of crashes, equipment damage, and additional costs, making simulation a valuable alternative for introductory training.
 
-Several established FPV drone simulators, including Liftoff: FPV Drone Racing~\cite{liftoffFPV}  and VelociDrone\cite{velocidrone}, allow users to practice flight manoeuvres, complete racing courses, and explore virtual environments through conventional PC-based interfaces. These platforms provide extensive training and recreational capabilities, with a strong emphasis on realistic flight behaviour, racing, and freestyle flying. However, their traditional desktop experiences do not provide the same interaction environment as a dedicated virtual reality (VR) headset.
+Several established \hyperlink{glos:FPV}{FPV} drone simulators, including Liftoff: \hyperlink{glos:FPV}{FPV} Drone Racing~\cite{liftoffFPV}  and VelociDrone\cite{velocidrone}, allow users to practice flight manoeuvres, complete racing courses, and explore virtual environments through conventional \hyperlink{glos:PCVR}{PC}-based interfaces. These platforms provide extensive training and recreational capabilities, with a strong emphasis on realistic flight behaviour, racing, and freestyle flying. However, their traditional desktop experiences do not provide the same interaction environment as a dedicated virtual reality (\hyperlink{glos:VR}{VR}) headset.
 
-VR-based alternatives also exist. Liftoff: XR Drone~\cite{liftoffXR} introduces accessible drone flight using Meta Quest controllers, while DVR Simulator~\cite{dvrSimulator} and Drone Blitz~\cite{droneBlitz} offer VR flight challenges and racing or performance-tracking features. These applications demonstrate that immersive drone simulation is already feasible, but they differ in their emphasis on casual exploration, racing, and structured practice.
+\hyperlink{glos:VR}{VR}-based alternatives also exist. Liftoff: XR Drone~\cite{liftoffXR} introduces accessible drone flight using Meta Quest controllers, while DVR Simulator~\cite{dvrSimulator} and Drone Blitz~\cite{droneBlitz} offer \hyperlink{glos:VR}{VR} flight challenges and racing or performance-tracking features. These applications demonstrate that immersive drone simulation is already feasible, but they differ in their emphasis on casual exploration, racing, and structured practice.
 
-FPVR aims to build on these existing approaches by focusing specifically on a progressive, beginner-oriented VR training experience. Rather than treating flight practice and course completion as isolated activities, FPVR intends to connect free-flight familiarization, increasingly challenging obstacle courses, checkpoint-based objectives, and post-flight performance reviews into a continuous learning process. By allowing users to evaluate their results and repeat challenges, the system aims to help beginners recognize their mistakes and track improvements over successive attempts.
+FPVR aims to build on these existing approaches by focusing specifically on a progressive, beginner-oriented \hyperlink{glos:VR}{VR} training experience. Rather than treating flight practice and course completion as isolated activities, FPVR intends to connect free-flight familiarization, increasingly challenging obstacle courses, checkpoint-based objectives, and post-flight performance reviews into a continuous learning process. By allowing users to evaluate their results and repeat challenges, the system aims to help beginners recognize their mistakes and track improvements over successive attempts.
 
-The intended contribution of FPVR is therefore not the introduction of drone simulation or VR flight itself, but the integration of immersive flight practice with structured progression and measurable feedback. The effectiveness of this approach will require evaluation with potential users.
+The intended contribution of FPVR is therefore not the introduction of drone simulation or \hyperlink{glos:VR}{VR} flight itself, but the integration of immersive flight practice with structured progression and measurable feedback. The effectiveness of this approach will require evaluation with potential users.
 
 \subsection{Expected Benefits}\label{g3}
 
 \textbf{Safe and Repeatable Practice (G1):}
 FPVR will allow users to practice drone operation without exposing
 a real drone or surrounding property to collision-related damage.
-Users can recover from \hypertarget{gl:Crash}{}simulated crashes and repeat exercises
+Users can recover from simulated crashes and repeat exercises
 without the costs associated with damaging physical equipment.
 
 \medskip
@@ -347,14 +321,14 @@ practice increasingly demanding manoeuvres at their own pace.
 \textbf{Performance Awareness (G3):}
 After completing a training level, users will be able to
 review their performance through recorded measures such as
-completion time, checkpoint progress, and collisions.
+completion time, \hyperlink{glos:Checkpoint}{checkpoint} progress, and collisions.
 This feedback is intended to help users identify areas for
 improvement and encourage deliberate practice.
 
 \medskip
 
 \textbf{Accessible Introductory Training (G4):}
-FPVR will accommodate users with limited or no prior FPV
+FPVR will accommodate users with limited or no prior \hyperlink{glos:FPV}{FPV}
 flying experience by providing a free-flight environment
 where they can become familiar with flight controls before
 attempting structured challenges.
@@ -406,7 +380,7 @@ its goals.
 \midrule
 \endhead
 
-VR Flight Experience &
+\hyperlink{glos:VR}{VR} Flight Experience &
 First-person simulated drone flight through a virtual
 reality headset. &
 Core \\
@@ -437,8 +411,8 @@ Core \\
 
 \addlinespace
 
-Checkpoint System &
-Designated course checkpoints used to track progress
+\hyperlink{glos:Checkpoint}{Checkpoint} System &
+Designated course \hyperlink{glos:Checkpoint}{checkpoints} used to track progress
 toward level completion. &
 Core \\
 
@@ -446,14 +420,14 @@ Core \\
 
 Crash Recovery &
 Following a simulated crash, users can choose to
-restart the level or \hypertarget{gl:Respawn}{}respawn at the most recently
-reached checkpoint. &
+\hyperlink{glos:Respawn}{restart} the level or \hypertarget{gl:Respawn}{}\hyperlink{glos:Respawn}{respawn} at the most recently
+reached \hyperlink{glos:Checkpoint}{checkpoint}. &
 Core \\
 
 \addlinespace
 
 Timing and Scoring &
-Records completion time and calculates \hypertarget{gl:Score}{}a score
+Records completion time and calculates a score
 based on defined performance measures during
 obstacle-course challenges. &
 Core \\
@@ -463,7 +437,7 @@ Core \\
 Flight Review &
 Provides a summary of flight performance after
 completing a level, including completion time,
-collisions, checkpoint results, and score. &
+collisions, \hyperlink{glos:Checkpoint}{checkpoint} results, and score. &
 Core \\
 
 \addlinespace
@@ -477,7 +451,7 @@ Core \\
 \addlinespace
 
 Intelligent Feedback &
-Potential \hypertarget{gl:AI}{}AI-based analysis of flight performance
+Potential \hypertarget{gl:AI}{}\hyperlink{glos:AI}{AI}-based analysis of flight performance
 to provide additional observations and recommendations,
 subject to feasibility evaluation. &
 Planned \\
@@ -526,8 +500,8 @@ Core \\
 \endgroup
 
 The exact scoring and rating criteria, controller mappings,
-checkpoint and respawn behaviour, and requirements for
-AI-based feedback will be specified in the System section.
+\hyperlink{glos:Checkpoint}{checkpoint} and \hyperlink{glos:Respawn}{respawn} behaviour, and requirements for
+\hyperlink{glos:AI}{AI}-based feedback will be specified in the System section.
 
 
 \subsection{High-level usage scenarios}\label{g5}
@@ -548,7 +522,7 @@ ascending, descending, turning, and navigating through
 the environment.
 
 Unlike structured obstacle-course levels, free-flight
-mode has no checkpoints, timers, or scoring. Users can
+mode has no \hyperlink{glos:Checkpoint}{checkpoints}, timers, or scoring. Users can
 explore and practice at their own pace without specific
 completion objectives.
 
@@ -558,7 +532,7 @@ leave free-flight mode and return to the level-selection
 interface when desired.
 
 This scenario supports G1 and G4 by providing a safe,
-repeatable environment for becoming familiar with FPV
+repeatable environment for becoming familiar with \hyperlink{glos:FPV}{FPV}
 drone controls.
 
 
@@ -569,14 +543,14 @@ challenges. All levels are accessible regardless of previous
 completion, allowing users to choose courses appropriate
 to their experience and preferences.
 
-Each level contains obstacles and a sequence of checkpoints
+Each level contains obstacles and a sequence of \hyperlink{glos:Checkpoint}{checkpoints}
 that must be completed in the designated order. The system
-tracks the user's progression, \hypertarget{gl:TotalTime}{}total elapsed time, and time
-spent navigating between checkpoints. Upon reaching a
-checkpoint, the current section timer resets while the
+tracks the user's progression, total elapsed time, and time
+spent navigating between \hyperlink{glos:Checkpoint}{checkpoints}. Upon reaching a
+\hyperlink{glos:Checkpoint}{checkpoint}, the current section timer resets while the
 total elapsed time continues accumulating.
 
-The user navigates through the checkpoints in sequence
+The user navigates through the \hyperlink{glos:Checkpoint}{checkpoints} in sequence
 until reaching the finish. After successful completion,
 the system calculates a numerical score and a separate
 performance rating based on the recorded flight results.
@@ -593,15 +567,15 @@ challenges of varying difficulty with measurable outcomes.
 While attempting an obstacle-course level, the user loses
 control of the drone and experiences a simulated crash.
 The system records the collision and provides two recovery
-options: restart the entire level or respawn at the most
-recently reached checkpoint.
+options: \hyperlink{glos:Respawn}{restart} the entire level or \hyperlink{glos:Respawn}{respawn} at the most
+recently reached \hyperlink{glos:Checkpoint}{checkpoint}.
 
-If the user selects respawn, the drone returns to the last
-successfully reached checkpoint. If no checkpoints have
+If the user selects \hyperlink{glos:Respawn}{respawn}, the drone returns to the last
+successfully reached \hyperlink{glos:Checkpoint}{checkpoint}. If no \hyperlink{glos:Checkpoint}{checkpoints} have
 been reached, the drone returns to the level's starting
 position.
 
-The current section timer resets upon respawning, allowing
+The current section timer resets upon \hyperlink{glos:Respawn}{respawning}, allowing
 the user to attempt the section again. However, the total
 elapsed time continues accumulating, including the time
 spent on failed attempts. The recorded collision also
@@ -617,13 +591,13 @@ performance consequences.
 \subsubsection{Scenario 4: Reviewing Flight Performance}
 
 After successfully completing an obstacle-course level,
-the user receives \hypertarget{gl:FlightReview}{}a flight review summarizing their
+the user receives a flight review summarizing their
 performance.
 
-The review includes the total completion time, checkpoint
+The review includes the total completion time, \hyperlink{glos:Checkpoint}{checkpoint}
 results, collision count, and numerical score. The total
 completion time includes time spent on failed sections
-and subsequent attempts following checkpoint respawns.
+and subsequent attempts following \hyperlink{glos:Checkpoint}{checkpoint} \hyperlink{glos:Respawn}{respawns}.
 
 The system also presents a separate overall performance
 rating based on defined evaluation criteria. The user can
@@ -640,7 +614,7 @@ associated with collisions must be established in \hyperref[s2]{S.2}.
 \subsubsection{Scenario 5: AI-Assisted Flight Feedback
 (Planned: Subject to Feasibility)}
 
-If AI-assisted feedback is included in the final
+If \hyperlink{glos:AI}{AI}-assisted feedback is included in the final
 implementation, the system will automatically provide
 additional performance analysis as part of the post-level
 flight review.
@@ -656,7 +630,7 @@ complement the standard numerical score and performance
 rating rather than replace them.
 
 The feasibility, data requirements, analysis approach,
-and evaluation criteria for AI-assisted feedback remain
+and evaluation criteria for \hyperlink{glos:AI}{AI}-assisted feedback remain
 to be determined. The standard flight review will remain
 available independently of this optional capability.
 
@@ -731,7 +705,7 @@ encouraging repeated practice.
 \subsection{Limitations and Exclusions}\label{g6}
 
 FPVR is intended to provide an introductory virtual reality
-(VR) training experience for first-person-view (FPV) drone
+(\hyperlink{glos:VR}{VR}) training experience for first-person-view (\hyperlink{glos:FPV}{FPV}) drone
 operation. The following limitations and exclusions define
 the boundaries of the system and clarify functionality
 outside the project's current scope.
@@ -757,11 +731,11 @@ communicate with or control physical drones. \\
 
 \addlinespace
 
-VR Hardware Requirement &
-FPVR requires a compatible VR headset for operation.
+\hyperlink{glos:VR}{VR} Hardware Requirement &
+FPVR requires a compatible \hyperlink{glos:VR}{VR} headset for operation.
 Both Meta Quest controllers and compatible Xbox controllers
-will be supported, but conventional PC gameplay without
-a VR headset is excluded. \\
+will be supported, but conventional \hyperlink{glos:PCVR}{PC} gameplay without
+a \hyperlink{glos:VR}{VR} headset is excluded. \\
 
 \addlinespace
 
@@ -798,8 +772,8 @@ will be implemented only if development time permits (LC-08). \\
 
 \addlinespace
 
-Dedicated FPV Transmitters &
-Support for dedicated FPV radio transmitters is a stretch
+Dedicated \hyperlink{glos:FPV}{FPV} Transmitters &
+Support for dedicated \hyperlink{glos:FPV}{FPV} radio transmitters is a stretch
 goal and is not part of the core controller requirements
 (FR-UI-03). Compatibility and feasibility will be evaluated
 during development (LC-08). \\
@@ -816,8 +790,8 @@ these online services. \\
 
 \addlinespace
 
-AI-Assisted Feedback &
-AI-generated flight feedback is planned subject to
+\hyperlink{glos:AI}{AI}-Assisted Feedback &
+\hyperlink{glos:AI}{AI}-generated flight feedback is planned subject to
 feasibility evaluation. Core flight reviews, numerical
 scores, and performance ratings will remain available
 independently of this optional capability. \\
@@ -862,7 +836,7 @@ in the project.
 \textbf{Interest in FPVR} \\
 \midrule
 
-Beginner FPV Pilots &
+Beginner \hyperlink{glos:FPV}{FPV} Pilots &
 Primary intended users seeking accessible introductory
 training, opportunities to practise basic flight
 manoeuvres, and feedback on their performance. \\
@@ -877,7 +851,7 @@ the simulation. \\
 \addlinespace
 
 Students and Technology Enthusiasts &
-Potential users interested in experiencing FPV drone
+Potential users interested in experiencing \hyperlink{glos:FPV}{FPV} drone
 operation through virtual reality. Intended use is
 subject to applicable headset age and safety
 restrictions. \\
@@ -914,14 +888,14 @@ against the course expectations. \\
 
 Parents and Guardians &
 Indirect stakeholders concerned with age-appropriate
-access and the safe use of VR by younger users. \\
+access and the safe use of \hyperlink{glos:VR}{VR} by younger users. \\
 
 \addlinespace
 
 Society and General Public &
 Indirect stakeholders interested in safer introductory
 drone training, responsible technology use,
-accessibility, and the management of VR-related
+accessibility, and the management of \hyperlink{glos:VR}{VR}-related
 health and safety concerns. \\
 
 
@@ -941,7 +915,7 @@ performance information. \\
 \end{table}
 
 Society is considered an indirect stakeholder because
-VR-based drone training has implications for physical
+\hyperlink{glos:VR}{VR}-based drone training has implications for physical
 safety, user well-being, accessibility, and responsible
 drone operation. FPVR must not misrepresent simulated
 flight performance as proof of real-world piloting
@@ -949,7 +923,7 @@ competence.
 
 FPVR is intended for users with varying levels of
 experience and age, subject to the age restrictions
-and safety requirements of the supported VR hardware.
+and safety requirements of the supported \hyperlink{glos:VR}{VR} hardware.
 Applicable platform age-group requirements are
 documented by Meta~\cite{metaAgeGroups}.
 
@@ -1012,14 +986,14 @@ forces, gravity, and collision handling
 \addlinespace
 
 Meta Quest Documentation &
-Provides technical information about VR device
+Provides technical information about \hyperlink{glos:VR}{VR} device
 integration and controller input
 \cite{metaQuestInput}, as well as applicable
 age-group requirements \cite{metaAgeGroups}. \\
 
 \addlinespace
 
-Existing FPV Simulators &
+Existing \hyperlink{glos:FPV}{FPV} Simulators &
 Provide a basis for comparing existing flight
 practice, training, and performance evaluation
 capabilities with the proposed functionality
@@ -1060,12 +1034,12 @@ to review and refine the system requirements.
 \subsection{User Profiles}\label{g8}
 
 FPVR is intended for users with varying levels of
-experience in drone operation, virtual reality (VR),
+experience in drone operation, virtual reality (\hyperlink{glos:VR}{VR}),
 and video games. The system primarily targets
 beginners while also accommodating recreational
-users and experienced FPV pilots. Users must comply
+users and experienced \hyperlink{glos:FPV}{FPV} pilots. Users must comply
 with the age and safety restrictions of the
-supported VR hardware.
+supported \hyperlink{glos:VR}{VR} hardware.
 
 The following profiles describe the anticipated
 experience, needs, and usage patterns of the
@@ -1076,9 +1050,9 @@ system's main user groups.
 \label{sec:novice-user}
 
 The primary user is an individual with little or
-no experience operating first-person-view (FPV)
+no experience operating first-person-view (\hyperlink{glos:FPV}{FPV})
 drones. This user may also be unfamiliar with
-VR environments and their associated controllers.
+\hyperlink{glos:VR}{VR} environments and their associated controllers.
 
 \noindent\textbf{Experience:}
 May have general familiarity with computers or
@@ -1109,13 +1083,13 @@ over time.
 \label{sec:casual-user}
 
 This user is interested in experiencing drone
-flight through VR without necessarily intending
+flight through \hyperlink{glos:VR}{VR} without necessarily intending
 to purchase or operate a physical drone.
 
 \noindent\textbf{Experience:}
 May be familiar with video-game controllers and
 immersive experiences but have limited knowledge
-of actual FPV drone operation.
+of actual \hyperlink{glos:FPV}{FPV} drone operation.
 
 \noindent\textbf{Needs:}
 Engaging virtual environments, accessible
@@ -1142,7 +1116,7 @@ installation.
 \label{sec:experienced-user}
 
 This user has prior experience operating physical
-FPV drones or working with related technical
+\hyperlink{glos:FPV}{FPV} drones or working with related technical
 systems. Experienced users may participate in
 regular training activities or provide feedback
 during system evaluation.
@@ -1179,14 +1153,14 @@ flight proficiency.
 \label{sec:general-user-considerations}
 
 FPVR is intended to accommodate both seated and
-standing operation using a compatible VR headset.
+standing operation using a compatible \hyperlink{glos:VR}{VR} headset.
 Users may interact with the simulator through
 Meta Quest controllers or compatible Xbox
 controllers.
 
 Users may differ in physical capabilities,
 experience with immersive environments, and
-susceptibility to VR-related discomfort.
+susceptibility to \hyperlink{glos:VR}{VR}-related discomfort.
 The system's design will consider applicable
 headset safety guidance and the needs of
 different user groups.
@@ -1215,7 +1189,7 @@ Assumptions must be checked; invariants are rules FPVR must always preserve.
 \subsection{Components}\label{e1}
 
 FPVR includes the simulated drone, flight spaces and courses, crash recovery,
-performance results, player accounts, global leaderboards and VR controls. The
+performance results, player accounts, global leaderboards and \hyperlink{glos:VR}{VR} controls. The
 headset, controllers, connected computer, authentication service, cloud database
 and online leaderboard service are outside the software boundary.
 \hyperref[g6]{G.6} describes the simulation limits.
@@ -1223,7 +1197,7 @@ and online leaderboard service are outside the software boundary.
 \clearpage
 \subsubsection*{Domain relationships}
 Figure~\ref{fig:e-domain} shows the main training concepts. A course takes place
-in one virtual environment and contains ordered checkpoints. Each attempt uses
+in one virtual environment and contains ordered \hyperlink{glos:Checkpoint}{checkpoints}. Each attempt uses
 one course and one simulated drone. Completing the attempt produces a flight
 review. Registered users can save and retrieve completed results. The diagram
 shows one course run; it does not specify software classes.
@@ -1237,8 +1211,8 @@ each arrow names the relationship between the connected concepts.}
 \end{figure}
 
 \subsubsection*{External components}
-Users, \hypertarget{gl:ActivitySpace}{}their physical space, input devices, and the headset/\hypertarget{gl:Runtime}{}runtime affect
-FPVR. \hypertarget{gl:PCVR}{}PCVR also uses a computer and a headset link. Authentication, cloud storage
+Users, their physical space, input devices, and the headset/\hypertarget{gl:Runtime}{}\hyperlink{glos:Runtime}{runtime} affect
+FPVR. \hypertarget{gl:PCVR}{}\hyperlink{glos:PCVR}{PCVR} also uses a computer and a headset link. Authentication, cloud storage
 and online leaderboard services support accounts and saved results. Guardians and nearby people
 are affected stakeholders (\hyperref[g7]{G.7}); user profiles are in
 \hyperref[g8]{G.8}. Table~\ref{tab:e-external} explains the exchanges labelled
@@ -1257,14 +1231,14 @@ F1--F8 in Figure~\ref{fig:e-context}.
 \bottomrule\endfoot
 User (F1) & Account, mode, level, menu, recovery and exit choices; flight controls via F3. &
 Flight view, instructions, recovery choices, current and saved results, and rankings. \\
-Headset and runtime (F2) & \hypertarget{gl:Tracking}{}Device position/orientation (pose), tracking validity,
-input availability, \hypertarget{gl:Focus}{}session focus, display timing and session status. &
-Rendered images and responses to runtime services. \\
+Headset and \hyperlink{glos:Runtime}{runtime} (F2) & \hypertarget{gl:Tracking}{}Device position/orientation (\hyperlink{glos:Tracking}{pose}), \hyperlink{glos:Tracking}{tracking} validity,
+input availability, \hypertarget{gl:Focus}{}\hyperlink{glos:Focus}{session focus}, display timing and session status. &
+Rendered images and responses to \hyperlink{glos:Runtime}{runtime} services. \\
 Quest or compatible Xbox controller (F3) & Controller type, flight axes,
 buttons and connection state. & Instructions and device feedback shown to the
 user through F1. \\
-PCVR computer and headset link (F4) & Computer resources, runtime/link status
-and headset tracking/input. & PC-rendered images sent to the headset; PCVR only. \\
+\hyperlink{glos:PCVR}{PCVR} computer and headset link (F4) & Computer resources, \hyperlink{glos:Runtime}{runtime}/link status
+and headset \hyperlink{glos:Tracking}{tracking}/input. & \hyperlink{glos:PCVR}{PC}-rendered images sent to the headset; \hyperlink{glos:PCVR}{PCVR} only. \\
 Optional analysis (F5) & Additional feedback or a failure/unavailable result. &
 Flight data for analysis, if included. Data and processing location remain
 under review (\hyperref[sec:s2-ai]{S.2}). \\
@@ -1275,7 +1249,7 @@ Completed flight results linked to the user account, and requests for previous r
 Online leaderboard service (F8) & Global rankings and score-submission status. &
 Course scores, player identifiers and ranking requests. \\
 Physical space & Room clearance, user preparation and conditions for headset
-tracking. No direct obstacle-sensing input is assumed. & VR images affect user
+\hyperlink{glos:Tracking}{tracking}. No direct obstacle-sensing input is assumed. & \hyperlink{glos:VR}{VR} images affect user
 attention and movement; FPVR cannot clear the physical space. \\
 \end{longtable}\endgroup
 
@@ -1291,7 +1265,7 @@ physical space show preparation and physical influence, not a sensor connection.
 \end{figure}
 
 User-facing images and results pass through the headset.
-F4 applies only to PCVR. F5 is optional analysis; F6--F8 are required online
+F4 applies only to \hyperlink{glos:PCVR}{PCVR}. F5 is optional analysis; F6--F8 are required online
 services for accounts, saved results and global leaderboards. These online
 features need internet access in either execution mode. Detailed interfaces
 belong in \hyperref[s3]{S.3}.
@@ -1302,9 +1276,9 @@ FPVR must support both modes below. A session uses one mode at a time
 (\hyperref[sec:s2-nfr]{NFR-INST-01--02}).
 \begin{itemize}
 \item \textbf{Standalone Quest:} FPVR runs on the headset and uses its display,
-tracking and input services. No connected computer is needed during play.
-\item \textbf{PCVR:} FPVR runs on a computer. A compatible runtime and headset
-link send images to the Quest headset and return tracking and input data.
+\hyperlink{glos:Tracking}{tracking} and input services. No connected computer is needed during play.
+\item \textbf{\hyperlink{glos:PCVR}{PCVR}:} FPVR runs on a computer. A compatible \hyperlink{glos:Runtime}{runtime} and headset
+link send images to the Quest headset and return \hyperlink{glos:Tracking}{tracking} and input data.
 \end{itemize}
 
 \begin{figure}[H]
@@ -1322,16 +1296,16 @@ still to be chosen.}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}YY@{}}\toprule
 \textbf{Controller type} & \textbf{Support commitment} &
 \textbf{Execution-mode compatibility}\\\midrule
-Quest motion controllers & Required & Standalone/PCVR pairings to validate\\
-Xbox-compatible controllers & Required & Standalone/PCVR pairings to validate\\\bottomrule
+Quest motion controllers & Required & Standalone/\hyperlink{glos:PCVR}{PCVR} pairings to validate\\
+Xbox-compatible controllers & Required & Standalone/\hyperlink{glos:PCVR}{PCVR} pairings to validate\\\bottomrule
 \end{tabularx}\end{table}
 
 \hyperref[sec:s2-interface]{FR-UI-02--03} and
 \hyperref[sec:s2-nfr]{NFR-COMP-01} require a working configuration for each
 controller type across the system on the confirmed Quest 3S target.
 Table~\ref{tab:e-pairings} records these commitments; individual standalone and
-PCVR pairings still need validation. For each tested pairing, record the
-controller, runtime and control mapping; PCVR also needs the computer operating
+\hyperlink{glos:PCVR}{PCVR} pairings still need validation. For each tested pairing, record the
+controller, \hyperlink{glos:Runtime}{runtime} and control mapping; \hyperlink{glos:PCVR}{PCVR} also needs the computer operating
 system, hardware and link details (\hyperref[ec-hardware]{E-C-02}).
 
 \subsection{Constraints}\label{e2}
@@ -1376,7 +1350,7 @@ Use must follow the selected headset's
 \hyperref[es-meta-safety]{safety instructions}, including space preparation,
 appropriate supervision and breaks. Age and regional eligibility must be
 reviewed for the users described in \hyperref[g8]{G.8}.
-\textit{Reason:} VR affects a person in a real room. Stationary controls and an
+\textit{Reason:} \hyperlink{glos:VR}{VR} affects a person in a real room. Stationary controls and an
 accessible exit (\hyperref[sec:s2-interface]{FR-UI-06},
 \hyperref[sec:s2-nfr]{NFR-SAFE-01}) support safer use but cannot ensure comfort
 for every user.
@@ -1385,27 +1359,27 @@ for every user.
 \textbf{Release and data rules.}
 A Meta release must meet the applicable
 \hyperref[es-meta-age]{audience rules}. Distribution must also
-respect engine, runtime and asset licences. Account data, completed flight
+respect engine, \hyperlink{glos:Runtime}{runtime} and asset licences. Account data, completed flight
 results and leaderboard entries require persistent cloud storage. Protect
 credentials and stored data, encrypt service connections, and restrict access
 to private records to their owner and authorised services. Define the data
 collected, its purpose, recipients, retention period, deletion process and user
 notice/consent and applicable legal duties before release. Explain which
 leaderboard details are public.
-Optional AI processing must have a separate data-use policy; storing results
-does not authorise sending them or credentials to an AI service.
+Optional \hyperlink{glos:AI}{AI} processing must have a separate data-use policy; storing results
+does not authorise sending them or credentials to an \hyperlink{glos:AI}{AI} service.
 \textit{Reason:} required storage supports accounts, previous results and global
 rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate purpose.
 
 \item[{\hyperref[et-resources]{E-C-06}:}]\phantomsection\label{ec-resources}
 \textbf{Hardware limits.}
 Standalone flight depends on headset processing power, memory, battery and heat
-limits. PCVR also depends on the computer and headset link.
-The proposed minimum rendering target is \hypertarget{gl:FPS}{}72 frames per second during normal
+limits. \hyperlink{glos:PCVR}{PCVR} also depends on the computer and headset link.
+The proposed minimum rendering target is \hypertarget{gl:FPS}{}72 \hyperlink{glos:FPS}{frames per second} during normal
 flight and obstacle-course operation on supported hardware
 (\hyperref[sec:s2-nfr]{NFR-PERF-01}).
 \textit{Reason:} these limits affect smooth, responsive flight. The target needs
-validation on Quest 3S and the supported PCVR configurations; computer requirements
+validation on Quest 3S and the supported \hyperlink{glos:PCVR}{PCVR} configurations; computer requirements
 remain unresolved in \hyperref[ec-hardware]{E-C-02}.
 \end{description}
 
@@ -1441,8 +1415,8 @@ Each row explains how to check the assumption and what happens if it fails.
 \textbf{Check and result if false}\\\midrule\endhead
 \bottomrule\endfoot
 \phantomsection\label{ea-runtime}\hyperref[et-platform]{\textbf{E-A-01}} &
-The chosen hardware has a compatible runtime that reports headset, controller
-and session status. FPVR needs these services to run in VR. &
+The chosen hardware has a compatible \hyperlink{glos:Runtime}{runtime} that reports headset, controller
+and session status. FPVR needs these services to run in \hyperlink{glos:VR}{VR}. &
 Launch and use proposed pairings of the controller types in
 Table~\ref{tab:e-pairings}; record
 versions and status changes. A pairing with missing or incompatible services
@@ -1455,10 +1429,10 @@ Review setup and try the stationary controls and exit
 \hyperref[sec:s2-nfr]{NFR-SAFE-01}). Poor clearance or discomfort means safe-use
 conditions are not met; FPVR cannot certify that the room is safe. \\
 \phantomsection\label{ea-course}\hyperref[et-course]{\textbf{E-A-03}} &
-Each released course has a valid start, ordered checkpoints, finish, collision
+Each released course has a valid start, ordered \hyperlink{glos:Checkpoint}{checkpoints}, finish, collision
 surfaces and usable recovery positions. These make progress and recovery
 meaningful. &
-Inspect and fly each course, including recovery before the first checkpoint.
+Inspect and fly each course, including recovery before the first \hyperlink{glos:Checkpoint}{checkpoint}.
 Invalid or unreachable course content must be corrected before acceptance
 (\hyperref[sec:s2-checkpoints]{FR-CHK-01--08}). \\
 \phantomsection\label{ea-evaluation}\hyperref[et-platform]{\textbf{E-A-04}} &
@@ -1469,9 +1443,9 @@ its checks unverified and its pairing unconfirmed
 (\hyperref[sec:s2-nfr]{NFR-COMP-01, NFR-PERF-01}). \\
 \end{longtable}\endgroup
 
-Tracking, focus and PCVR links can fail. Their failure handling still needs
+\hyperlink{glos:Tracking}{Tracking}, \hyperlink{glos:Focus}{focus} and \hyperlink{glos:PCVR}{PCVR} links can fail. Their failure handling still needs
 specification and checks in \hyperref[s3]{S.3}, \hyperref[s4]{S.4}, and
-\hyperref[s6]{S.6}. An available AI service is not assumed; the standard review
+\hyperref[s6]{S.6}. An available \hyperlink{glos:AI}{AI} service is not assumed; the standard review
 must remain available as explained in \hyperref[ei-review]{E-I-04}.
 Account login, cloud save/retrieval and leaderboard requests depend on internet
 access and their services. Check service failures and rejected credentials;
@@ -1502,13 +1476,13 @@ needs separate evaluation (\hyperref[g6]{G.6}).
 
 \item[{\hyperref[et-release]{E-F-03}:}]\phantomsection\label{ef-data}
 \textbf{Flight data and equipment use.}
-FPVR updates the selected course, checkpoint progress, timers, crash count,
+FPVR updates the selected course, \hyperlink{glos:Checkpoint}{checkpoint} progress, timers, crash count,
 score, rating and current review (\hyperref[sec:s2-performance]{FR-PER-01--10},
 \hyperref[sec:s2-review]{FR-REV-02}). Registered users can save completed results
 to persistent cloud storage and retrieve previous results. Account-linked
 records and public leaderboard entries create privacy and access-control
 obligations under \hyperref[ec-release]{E-C-05}. FPVR also uses device processing
-power, memory, display, battery and network access; PCVR uses the computer and
+power, memory, display, battery and network access; \hyperlink{glos:PCVR}{PCVR} uses the computer and
 link (\hyperref[ec-resources]{E-C-06}).
 
 \item[{\hyperref[et-review]{E-F-04}:}]\phantomsection\label{ef-analysis}
@@ -1525,35 +1499,35 @@ The standard review stays available without this analysis
 \subsection{Invariants}\label{e5}
 
 An invariant is a rule that must stay true while FPVR operates. Values such as
-elapsed time and checkpoint count can change, but they must change according
+elapsed time and \hyperlink{glos:Checkpoint}{checkpoint} count can change, but they must change according
 to these rules. The rules below explain the required behaviour and link to the
 requirements that define it.
 
 \begin{description}
 \item[{\hyperref[et-scope]{E-I-01}:}]\phantomsection\label{ei-boundary}
 \textbf{Simulated flight only.}
-FPVR controls a simulated drone. No action, including moving the \hypertarget{gl:Throttle}{}throttle or
+FPVR controls a simulated drone. No action, including moving the \hypertarget{gl:Throttle}{}\hyperlink{glos:Throttle}{throttle} or
 recovering from a crash, may send a command to a physical aircraft. A score or
 rating also does not certify real-world piloting ability (\hyperref[g6]{G.6}).
 \textit{Reason:} users need to understand the limits of simulator practice.
 
 \item[{\hyperref[et-course]{E-I-02}:}]
 \phantomsection\label{ei-course}
-\textbf{Checkpoint order and recovery.}
-Completed checkpoints must always form the beginning of the course's required
-sequence, with none skipped. Respawn keeps progress in the same attempt;
+\textbf{\hyperlink{glos:Checkpoint}{Checkpoint} order and recovery.}
+Completed \hyperlink{glos:Checkpoint}{checkpoints} must always form the beginning of the course's required
+sequence, with none skipped. \hyperlink{glos:Respawn}{Respawn} keeps progress in the same attempt;
 restart begins a new attempt.
 
-\textbf{Checkpoint order.} Let $n$ be the number of required checkpoints (a positive integer),
+\textbf{\hyperlink{glos:Checkpoint}{Checkpoint} order.} Let $n$ be the number of required \hyperlink{glos:Checkpoint}{checkpoints} (a positive integer),
 listed in order as $\langle C_1,\ldots,C_n\rangle$. Let $k$ count the completed
-checkpoints and $P$ list them. Then
+\hyperlink{glos:Checkpoint}{checkpoints} and $P$ list them. Then
 \[
   k\in\{0,\ldots,n\},\qquad P=\langle C_1,\ldots,C_k\rangle.
 \]
 This says that $k$ cannot be below zero or above $n$, and $P$ contains exactly
-the first $k$ checkpoints. Before the first checkpoint, $k=0$ and $P$ is empty.
+the first $k$ \hyperlink{glos:Checkpoint}{checkpoints}. Before the first \hyperlink{glos:Checkpoint}{checkpoint}, $k=0$ and $P$ is empty.
 
-During active flight, when no crash awaits recovery, let $e$ be a checkpoint
+During active flight, when no crash awaits recovery, let $e$ be a \hyperlink{glos:Checkpoint}{checkpoint}
 passage. A prime ($'$) means the value just after that event:
 \[
  k'=\begin{cases}
@@ -1561,31 +1535,31 @@ passage. A prime ($'$) means the value just after that event:
  k, & \text{otherwise}.
  \end{cases}
 \]
-Only the next required checkpoint increases progress. Repeated or out-of-order
-checkpoints do not count, and progress cannot advance while a crash awaits
+Only the next required \hyperlink{glos:Checkpoint}{checkpoint} increases progress. Repeated or out-of-order
+\hyperlink{glos:Checkpoint}{checkpoints} do not count, and progress cannot advance while a crash awaits
 recovery (\hyperref[sec:s2-flight]{FR-FLT-06},
 \hyperref[sec:s2-checkpoints]{FR-CHK-01--03}). Reaching the finish counts as
-completion only after all $n$ checkpoints are complete
+completion only after all $n$ \hyperlink{glos:Checkpoint}{checkpoints} are complete
 (\hyperref[sec:s2-checkpoints]{FR-CHK-08}).
 
-\textit{Example, using three checkpoints:} after $C_1$, $k=1$ and
+\textit{Example, using three \hyperlink{glos:Checkpoint}{checkpoints}:} after $C_1$, $k=1$ and
 $P=\langle C_1\rangle$. Passing $C_3$ next changes neither value. Passing $C_2$
 then gives $k=2$ and $P=\langle C_1,C_2\rangle$. The user must still pass $C_3$
 and reach the finish. These numbers illustrate the rule; they do not set the
-number of checkpoints in every course.
+number of \hyperlink{glos:Checkpoint}{checkpoints} in every course.
 
 \par\noindent\begin{minipage}{\linewidth}
-\textbf{Crash recovery.} Respawn continues the current attempt; restart starts
+\textbf{Crash recovery.} \hyperlink{glos:Respawn}{Respawn} continues the current attempt; restart starts
 again from the beginning. Table~\ref{tab:e-recovery} shows exactly what is kept
 or reset (\hyperref[sec:s2-checkpoints]{FR-CHK-05--07}).
 
 \small\captionsetup{hypcap=false}
 \captionof{table}{Respawn and restart}\label{tab:e-recovery}
 \begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}YY@{}}\toprule
-\textbf{Item} & \textbf{Respawn} & \textbf{Restart}\\\midrule
+\textbf{Item} & \textbf{\hyperlink{glos:Respawn}{Respawn}} & \textbf{Restart}\\\midrule
 Attempt & Continue the same attempt & Begin a new attempt\\
-Completed checkpoints & Keep $k$ and $P$ & Set $k=0$ and clear $P$\\
-Drone position & Last completed checkpoint; start if $k=0$ & Course start\\
+Completed \hyperlink{glos:Checkpoint}{checkpoints} & Keep $k$ and $P$ & Set $k=0$ and clear $P$\\
+Drone position & Last completed \hyperlink{glos:Checkpoint}{checkpoint}; start if $k=0$ & Course start\\
 Total flight time & Keep accumulated time & Reset to zero\\
 Current section time & Reset to zero & Reset to zero\\
 Crashes and scoring & Keep crash count and recorded penalties & Reset crash
@@ -1593,9 +1567,9 @@ count and performance score\\\bottomrule
 \end{tabularx}
 \end{minipage}
 
-\textit{Example:} checkpoints $C_1$ and $C_2$ are complete, total flight time is
-42 seconds, and one crash has been counted. Respawn returns the drone to $C_2$
-and keeps both checkpoints, the 42 seconds, the crash count and its penalty.
+\textit{Example:} \hyperlink{glos:Checkpoint}{checkpoints} $C_1$ and $C_2$ are complete, total flight time is
+42 seconds, and one crash has been counted. \hyperlink{glos:Respawn}{Respawn} returns the drone to $C_2$
+and keeps both \hyperlink{glos:Checkpoint}{checkpoints}, the 42 seconds, the crash count and its penalty.
 The current section timer resets to zero. These values illustrate recovery;
 they are not performance targets.
 
@@ -1610,13 +1584,13 @@ that interval is $T'$:
  \end{cases}
 \]
 For example, spending ten seconds in that menu does not add ten seconds to
-$T$. Respawn keeps $T$; restart resets it. The section timer resets when the
-next checkpoint is completed or the drone respawns. Each new crash adds one to
+$T$. \hyperlink{glos:Respawn}{Respawn} keeps $T$; restart resets it. The section timer resets when the
+next \hyperlink{glos:Checkpoint}{checkpoint} is completed or the drone \hyperlink{glos:Respawn}{respawns}. Each new crash adds one to
 the crash count (\hyperref[sec:s2-performance]{FR-PER-01--07}). Total time
 stops at successful completion (\hyperref[sec:s2-performance]{FR-PER-10}).
-\textit{Reason:} respawn must not erase failed-flight time or crash penalties;
+\textit{Reason:} \hyperlink{glos:Respawn}{respawn} must not erase failed-flight time or crash penalties;
 restart begins a new attempt.
-These course rules do not apply to free flight, which has no checkpoints,
+These course rules do not apply to free flight, which has no \hyperlink{glos:Checkpoint}{checkpoints},
 timers or score.
 
 \item[{\hyperref[et-safety]{E-I-03}:}]\phantomsection\label{ei-stationary}
@@ -1632,7 +1606,7 @@ after a simulated crash.
 \item[{\hyperref[et-review]{E-I-04}:}]\phantomsection\label{ei-review}
 \textbf{Standard review without optional analysis.}
 After successful completion, the user must receive the current attempt's time,
-checkpoint results, crash count, score and rating. This review remains available
+\hyperlink{glos:Checkpoint}{checkpoint} results, crash count, score and rating. This review remains available
 whether intelligent feedback is not included, succeeds, is unavailable or fails.
 For example, an analysis error must still allow the user to review the results
 and retry the course (\hyperref[sec:s2-review]{FR-REV-01--04},
@@ -1661,7 +1635,7 @@ checks, not completed software or user tests.
 \hyperref[sec:s2-interface]{FR-UI-01--03};
 \hyperref[sec:s2-nfr]{NFR-INST-01--02, NFR-COMP-01} &
 Launch both modes and test each claimed controller pairing. Record hardware,
-runtime, mapping and PCVR link details. Mark untested pairings and check the
+\hyperlink{glos:Runtime}{runtime}, mapping and \hyperlink{glos:PCVR}{PCVR} link details. Mark untested pairings and check the
 chosen engine in the build. \\
 \phantomsection\label{et-scope}
 \hyperref[ec-scope]{E-C-03}, \hyperref[ef-training]{E-F-02},
@@ -1683,18 +1657,18 @@ standing without walking. Record comfort and accessibility issues. \\
 Test registration/login, cloud save/retrieval of previous results and global
 rankings (F6--F8), including service failures. Check access to another user's
 private results is denied. Review encryption, retention/deletion, public
-leaderboard fields, separate AI data use, licences and audience rules. \\
+leaderboard fields, separate \hyperlink{glos:AI}{AI} data use, licences and audience rules. \\
 \phantomsection\label{et-resources}
 \hyperref[ec-resources]{E-C-06} &
 \hyperref[sec:s2-nfr]{NFR-PERF-01} &
-Measure frame delivery against the proposed 72 FPS minimum and record
+Measure frame delivery against the proposed 72 \hyperlink{glos:FPS}{FPS} minimum and record
 hardware/link behaviour on supported configurations using a repeatable course workload. \\
 \phantomsection\label{et-course}
 \hyperref[ea-course]{E-A-03}, \hyperref[ei-course]{E-I-02} &
 \hyperref[sec:s2-checkpoints]{FR-CHK-01--08};
 \hyperref[sec:s2-performance]{FR-PER-01--07, FR-PER-10} &
 Try ordered, repeated and skipped gates, early finish and gate passage while
-crashed. Crash before and after a checkpoint; check Table~\ref{tab:e-recovery},
+crashed. Crash before and after a \hyperlink{glos:Checkpoint}{checkpoint}; check Table~\ref{tab:e-recovery},
 menu-time exclusion and the completion timer. \\
 \phantomsection\label{et-review}
 \hyperref[ef-analysis]{E-F-04}, \hyperref[ei-review]{E-I-04} &
@@ -1705,7 +1679,7 @@ available, unavailable and failed feedback. Check the standard review and retry
 option in each case. \\
 \end{longtable}\endgroup
 
-\textbf{Likely changes.} Supported devices, runtime/link choices, performance
+\textbf{Likely changes.} Supported devices, \hyperlink{glos:Runtime}{runtime}/link choices, performance
 limits and optional data processing may change as they are tested
 (\hyperref[ec-hardware]{E-C-02}, \hyperref[ec-release]{E-C-05},
 \hyperref[ec-resources]{E-C-06}). The four invariants are expected to stay stable
@@ -1720,8 +1694,8 @@ because they protect the simulator's scope and core training experience
 
 The following are logical responsibilities for specifying behaviour, not a
 module design: (1) drone flight and collision; (2) training modes and level
-selection; (3) checkpoint progression and recovery; (4) timing and evaluation;
-(5) VR interfaces and controller input; (6) post-flight review; (7) account
+selection; (3) \hyperlink{glos:Checkpoint}{checkpoint} progression and recovery; (4) timing and evaluation;
+(5) \hyperlink{glos:VR}{VR} interfaces and controller input; (6) post-flight review; (7) account
 registration and leaderboard access; and (8) optional intelligent feedback.
 Each has a corresponding subsection of \hyperref[s2]{S.2}. The first seven
 comprise the core. The eighth is conditional on a separate feasibility and
@@ -1732,29 +1706,29 @@ these responsibilities.
 \caption{Logical responsibilities and observable contracts}\label{tab:logical}
 \begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}YY@{}}\toprule
 Responsibility & Observed inputs & Observed outputs \\ \midrule
-Flight/collision & Flight axes, gravity, contact, current pose & Drone view,
+Flight/collision & Flight axes, gravity, contact, current \hyperlink{glos:Tracking}{pose} & Drone view,
 movement, one latched crash event \\
 Modes/levels & Practice/course selection, exit/restart & Selected environment,
 initialized or ended attempt \\
 Progress/recovery & Gate crossing, finish, recovery choice & Ordered prefix,
-recovery pose, completion state \\
-Timing/evaluation & Active interval, checkpoint/crash/completion events & Total
-and segment time, crash count, score/rating \\
-VR interfaces & Pose/focus/input availability and user action & Instructions,
+recovery \hyperlink{glos:Tracking}{pose}, completion state \\
+Timing/evaluation & Active interval, \hyperlink{glos:Checkpoint}{checkpoint}/crash/completion events & Total
+and \hyperlink{glos:Checkpoint}{segment} time, crash count, score/rating \\
+\hyperlink{glos:VR}{VR} interfaces & Pose/\hyperlink{glos:Focus}{focus}/input availability and user action & Instructions,
 menus, flight/review presentation \\
-Review/optional AI & Final current-attempt result, optional analysis outcome &
+Review/optional \hyperlink{glos:AI}{AI} & Final current-attempt result, optional analysis outcome &
 Standard review, optional labelled feedback or fallback \\
 Accounts/leaderboards & Registration, sign-in, saved result, ranking request &
 Account status, local ranking, global ranking or availability status \\
 \bottomrule\end{tabularx}\end{table}
 
-The FPVR system is a VR-based first-person-view (FPV) drone simulation game.
-Its major components are the VR interface, the flight simulation, the virtual
-environment, the training and scenario manager, and the \hypertarget{gl:Telemetry}{}telemetry and feedback
+The FPVR system is a \hyperlink{glos:VR}{VR}-based first-person-view (\hyperlink{glos:FPV}{FPV}) drone simulation game.
+Its major components are the \hyperlink{glos:VR}{VR} interface, the flight simulation, the virtual
+environment, the training and scenario manager, and the \hypertarget{gl:Telemetry}{}\hyperlink{glos:Telemetry}{telemetry} and feedback
 module, together with account and leaderboard services. The user operates the
-simulated drone through the VR interface. The flight simulation combines
+simulated drone through the \hyperlink{glos:VR}{VR} interface. The flight simulation combines
 control input with the drone and environment models, while the training and
-scenario manager configures the exercise and the telemetry and feedback module
+scenario manager configures the exercise and the \hyperlink{glos:Telemetry}{telemetry} and feedback module
 presents the resulting flight information. Account and leaderboard services
 support registration, saved performance results, local rankings, and optional
 global rankings through the online service.
@@ -1769,15 +1743,15 @@ global rankings through the online service.
 
 \subsection{Functionality}\label{s2}
 
-This section defines the externally observable functional and non-functional requirements of FPVR. Each requirement has a unique identifier and an individual rationale. Requirements apply to the initial release unless explicitly designated as an optional enhancement. Requirements refer to the \emph{target headset}, the \emph{reference PCVR computer}, the headset's \emph{motion controllers}, and a \emph{standard gamepad}; the specific devices are imposed technical choices recorded in \hyperref[p2]{P.2}, so the requirements stay valid if the hardware changes. Numeric thresholds and scoring parameters in this section constitute a proposed, testable baseline to be approved by the project team and verified on target hardware.
+This section defines the externally observable functional and non-functional requirements of FPVR. Each requirement has a unique identifier and an individual rationale. Requirements apply to the initial release unless explicitly designated as an optional enhancement. Requirements refer to the \emph{target headset}, the \emph{reference \hyperlink{glos:PCVR}{PCVR} computer}, the headset's \emph{motion controllers}, and a \emph{standard gamepad}; the specific devices are imposed technical choices recorded in \hyperref[p2]{P.2}, so the requirements stay valid if the hardware changes. Numeric thresholds and scoring parameters in this section constitute a proposed, testable baseline to be approved by the project team and verified on target hardware.
 
 \subsubsection{Drone Flight Simulation}
 \label{sec:s2-flight}
 \begin{itemize}
 \item \hypertarget{req:FR-FLT-01}{}\textbf{FR-FLT-01:} FPVR shall display a first-person view whose position and orientation follow the simulated drone during flight.\\
-\textit{Rationale:} The view must correspond to the vehicle being controlled to provide an FPV training experience.
-\item \hypertarget{req:FR-FLT-02}{}\textbf{FR-FLT-02:} FPVR shall accept independently variable throttle, pitch, roll, and yaw inputs and produce a corresponding change in simulated drone behaviour for each input.\\
-\textit{Rationale:} These are the four primary control axes expected in manual FPV flight.
+\textit{Rationale:} The view must correspond to the vehicle being controlled to provide an \hyperlink{glos:FPV}{FPV} training experience.
+\item \hypertarget{req:FR-FLT-02}{}\textbf{FR-FLT-02:} FPVR shall accept independently variable \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} inputs and produce a corresponding change in simulated drone behaviour for each input.\\
+\textit{Rationale:} These are the four primary control axes expected in manual \hyperlink{glos:FPV}{FPV} flight.
 \item \hypertarget{req:FR-FLT-03}{}\textbf{FR-FLT-03:} When the drone is airborne and no upward thrust is applied, its vertical velocity shall decrease under simulated gravity.\\
 \textit{Rationale:} Gravity is necessary to distinguish the flight model from unrestricted game-style movement and can be checked without prescribing a physics engine.
 \item \hypertarget{req:FR-FLT-04}{}\textbf{FR-FLT-04:} FPVR shall detect drone contact with course obstacles and ground surfaces during flight.\\
@@ -1791,40 +1765,40 @@ This section defines the externally observable functional and non-functional req
 \subsubsection{Training Modes and Level Management}
 \label{sec:s2-levels}
 \begin{itemize}
-\item \hypertarget{req:FR-LVL-01}{}\textbf{FR-LVL-01:} FPVR shall provide free-flight practice without checkpoints, a completion timer, numerical scoring, or performance ratings.\\
+\item \hypertarget{req:FR-LVL-01}{}\textbf{FR-LVL-01:} FPVR shall provide free-flight practice without \hyperlink{glos:Checkpoint}{checkpoints}, a completion timer, numerical scoring, or performance ratings.\\
 \textit{Rationale:} Beginners need an unrestricted setting to learn the controls before attempting assessed challenges.
 \item \hypertarget{req:FR-LVL-02}{}\textbf{FR-LVL-02:} Following a crash in free-flight mode, the user shall be able to restore the drone to its free-flight starting position without restarting FPVR.\\
 \textit{Rationale:} Quick recovery enables repeated practice without interruption.
-\item \hypertarget{req:FR-LVL-03}{}\textbf{FR-LVL-03:} FPVR shall provide at least three selectable obstacle-course levels, each with a distinct obstacle or checkpoint arrangement; the levels shall be identified as introductory, intermediate, and advanced.\\
+\item \hypertarget{req:FR-LVL-03}{}\textbf{FR-LVL-03:} FPVR shall provide at least three selectable obstacle-course levels, each with a distinct obstacle or \hyperlink{glos:Checkpoint}{checkpoint} arrangement; the levels shall be identified as introductory, intermediate, and advanced.\\
 \textit{Rationale:} Three differentiated configurations establish a verifiable minimum for varied practice without relying on subjective difficulty claims.
 \item \hypertarget{req:FR-LVL-04}{}\textbf{FR-LVL-04:} FPVR shall provide at least two visually distinct virtual environments, with at least one playable obstacle-course level in each.\\
 \textit{Rationale:} Distinct environments offer variation while permitting reuse of an environment by multiple levels.
 \item \hypertarget{req:FR-LVL-05}{}\textbf{FR-LVL-05:} Every obstacle-course level shall be selectable immediately without prerequisites or unlock conditions.\\
 \textit{Rationale:} Users with different skill levels should choose their own training difficulty.
 \item \hypertarget{req:FR-LVL-06}{}\textbf{FR-LVL-06:} The user shall be able to leave either training mode and return to the main menu without restarting the application.\\
-\textit{Rationale:} Users must be able to stop a VR activity without terminating the software.
-\item \hypertarget{req:FR-LVL-07}{}\textbf{FR-LVL-07:} Starting an obstacle-course attempt shall initialize checkpoint progress to zero, both timers to zero, crash count to zero, and the attempt's score state to its initial value.\\
+\textit{Rationale:} Users must be able to stop a \hyperlink{glos:VR}{VR} activity without terminating the software.
+\item \hypertarget{req:FR-LVL-07}{}\textbf{FR-LVL-07:} Starting an obstacle-course attempt shall initialize \hyperlink{glos:Checkpoint}{checkpoint} progress to zero, both timers to zero, crash count to zero, and the attempt's score state to its initial value.\\
 \textit{Rationale:} A fresh attempt must be independent of the previous attempt's performance.
 \end{itemize}
 
 \subsubsection{Checkpoints and Crash Recovery}
 \label{sec:s2-checkpoints}
 \begin{itemize}
-\item \hypertarget{req:FR-CHK-01}{}\textbf{FR-CHK-01:} Each obstacle-course level shall have an ordered list of at least two checkpoints followed by a finish location.\\
-\textit{Rationale:} Ordered segments are needed for measurable progression and checkpoint-based practice.
-\item \hypertarget{req:FR-CHK-02}{}\textbf{FR-CHK-02:} FPVR shall record a checkpoint as completed only when the drone passes through the next checkpoint in the prescribed order.\\
+\item \hypertarget{req:FR-CHK-01}{}\textbf{FR-CHK-01:} Each obstacle-course level shall have an ordered list of at least two \hyperlink{glos:Checkpoint}{checkpoints} followed by a finish location.\\
+\textit{Rationale:} Ordered \hyperlink{glos:Checkpoint}{segments} are needed for measurable progression and checkpoint-based practice.
+\item \hypertarget{req:FR-CHK-02}{}\textbf{FR-CHK-02:} FPVR shall record a \hyperlink{glos:Checkpoint}{checkpoint} as completed only when the drone passes through the next \hyperlink{glos:Checkpoint}{checkpoint} in the prescribed order.\\
 \textit{Rationale:} This makes completion dependent on following the intended course.
-\item \hypertarget{req:FR-CHK-03}{}\textbf{FR-CHK-03:} Passing through a later checkpoint before completing the next required checkpoint shall not advance progress.\\
+\item \hypertarget{req:FR-CHK-03}{}\textbf{FR-CHK-03:} Passing through a later \hyperlink{glos:Checkpoint}{checkpoint} before completing the next required \hyperlink{glos:Checkpoint}{checkpoint} shall not advance progress.\\
 \textit{Rationale:} This prevents bypassing the challenge sequence.
-\item \hypertarget{req:FR-CHK-04}{}\textbf{FR-CHK-04:} After a crash in an obstacle course, FPVR shall display the choices \emph{Respawn} and \emph{Restart Level}.\\
+\item \hypertarget{req:FR-CHK-04}{}\textbf{FR-CHK-04:} After a crash in an obstacle course, FPVR shall display the choices \emph{\hyperlink{glos:Respawn}{Respawn}} and \emph{\hyperlink{glos:Respawn}{Restart} Level}.\\
 \textit{Rationale:} Users need both targeted practice and the option to begin a fresh scored attempt.
-\item \hypertarget{req:FR-CHK-05}{}\textbf{FR-CHK-05:} Respawn shall return the drone to the most recently completed checkpoint, or to the level start if none has been completed.\\
-\textit{Rationale:} The player can retry the failed segment without losing earlier valid progress.
-\item \hypertarget{req:FR-CHK-06}{}\textbf{FR-CHK-06:} Respawn shall preserve completed checkpoints, accumulated total flight time, and the recorded crash count and score penalties.\\
+\item \hypertarget{req:FR-CHK-05}{}\textbf{FR-CHK-05:} \hyperlink{glos:Respawn}{Respawn} shall return the drone to the most recently completed \hyperlink{glos:Checkpoint}{checkpoint}, or to the level start if none has been completed.\\
+\textit{Rationale:} The player can retry the failed \hyperlink{glos:Checkpoint}{segment} without losing earlier valid progress.
+\item \hypertarget{req:FR-CHK-06}{}\textbf{FR-CHK-06:} \hyperlink{glos:Respawn}{Respawn} shall preserve completed \hyperlink{glos:Checkpoint}{checkpoints}, accumulated total flight time, and the recorded crash count and score penalties.\\
 \textit{Rationale:} Repeated failed attempts must continue to affect the overall performance result.
-\item \hypertarget{req:FR-CHK-07}{}\textbf{FR-CHK-07:} Restart Level shall return the drone to the level start and reset checkpoints, both timers, crash count, and score state.\\
+\item \hypertarget{req:FR-CHK-07}{}\textbf{FR-CHK-07:} \hyperlink{glos:Respawn}{Restart} Level shall return the drone to the level start and reset \hyperlink{glos:Checkpoint}{checkpoints}, both timers, crash count, and score state.\\
 \textit{Rationale:} Restarting is defined as a new attempt rather than a shortcut that retains previous penalties.
-\item \hypertarget{req:FR-CHK-08}{}\textbf{FR-CHK-08:} FPVR shall declare a level complete only after every checkpoint has been completed in order and the drone reaches the finish.\\
+\item \hypertarget{req:FR-CHK-08}{}\textbf{FR-CHK-08:} FPVR shall declare a level complete only after every \hyperlink{glos:Checkpoint}{checkpoint} has been completed in order and the drone reaches the finish.\\
 \textit{Rationale:} This gives a deterministic and testable definition of successful completion.
 \end{itemize}
 
@@ -1833,13 +1807,13 @@ This section defines the externally observable functional and non-functional req
 \begin{itemize}
 \item \hypertarget{req:FR-PER-01}{}\textbf{FR-PER-01:} Each obstacle-course attempt shall have a total timer that measures accumulated active flight time from the start of the attempt to successful completion.\\
 \textit{Rationale:} A single total time provides a comparable performance measure for a completed attempt.
-\item \hypertarget{req:FR-PER-02}{}\textbf{FR-PER-02:} The total timer shall retain time spent in flight segments that end in crashes.\\
+\item \hypertarget{req:FR-PER-02}{}\textbf{FR-PER-02:} The total timer shall retain time spent in flight \hyperlink{glos:Checkpoint}{segments} that end in crashes.\\
 \textit{Rationale:} Failed attempts must not disappear from the overall completion-time result.
-\item \hypertarget{req:FR-PER-03}{}\textbf{FR-PER-03:} Each obstacle-course attempt shall have a separate section timer measuring active flight time since the start of the current checkpoint segment.\\
-\textit{Rationale:} Segment timing provides immediate feedback during repeated practice.
-\item \hypertarget{req:FR-PER-04}{}\textbf{FR-PER-04:} The section timer shall reset to zero when the next required checkpoint is completed and when a checkpoint respawn occurs.\\
-\textit{Rationale:} Each segment attempt should begin with a fresh local timer.
-\item \hypertarget{req:FR-PER-05}{}\textbf{FR-PER-05:} Checkpoint respawn shall not reset the total timer; Restart Level shall reset both timers.\\
+\item \hypertarget{req:FR-PER-03}{}\textbf{FR-PER-03:} Each obstacle-course attempt shall have a separate section timer measuring active flight time since the start of the current \hyperlink{glos:Checkpoint}{checkpoint} \hyperlink{glos:Checkpoint}{segment}.\\
+\textit{Rationale:} \hyperlink{glos:Checkpoint}{Segment} timing provides immediate feedback during repeated practice.
+\item \hypertarget{req:FR-PER-04}{}\textbf{FR-PER-04:} The section timer shall reset to zero when the next required \hyperlink{glos:Checkpoint}{checkpoint} is completed and when a \hyperlink{glos:Checkpoint}{checkpoint} \hyperlink{glos:Respawn}{respawn} occurs.\\
+\textit{Rationale:} Each \hyperlink{glos:Checkpoint}{segment} attempt should begin with a fresh local timer.
+\item \hypertarget{req:FR-PER-05}{}\textbf{FR-PER-05:} \hyperlink{glos:Checkpoint}{Checkpoint} \hyperlink{glos:Respawn}{respawn} shall not reset the total timer; \hyperlink{glos:Respawn}{Restart} Level shall reset both timers.\\
 \textit{Rationale:} The two recovery choices intentionally have different effects on attempt history.
 \item \hypertarget{req:FR-PER-06}{}\textbf{FR-PER-06:} Both timers shall pause while the crash-recovery menu is displayed and resume when active flight resumes; no menu time shall be added to either timer.\\
 \textit{Rationale:} Decision time in a menu should not affect flight performance.
@@ -1858,16 +1832,16 @@ This section defines the externally observable functional and non-functional req
 \begin{itemize}
 \item \hypertarget{req:FR-UI-01}{}\textbf{FR-UI-01:} FPVR shall present the flight view and training menus in the target headset.\\
 \textit{Rationale:} Headset-based training is the core experience; the target headset is the agreed primary evaluation device (\hyperref[p2]{P.2}).
-\item \hypertarget{req:FR-UI-02}{}\textbf{FR-UI-02:} FPVR shall support both standalone execution on the target headset and PCVR execution with the target headset connected to the reference PCVR computer.\\
-\textit{Rationale:} Both deployment paths are in the project scope; a single reference computer (\hyperref[p2]{P.2}) makes PCVR testing repeatable.
-\item \hypertarget{req:FR-UI-03}{}\textbf{FR-UI-03:} FPVR shall provide a flight-control configuration for the target headset's motion controllers in standalone mode and a standard gamepad in PCVR mode, each providing throttle, pitch, roll, and yaw.\\
+\item \hypertarget{req:FR-UI-02}{}\textbf{FR-UI-02:} FPVR shall support both standalone execution on the target headset and \hyperlink{glos:PCVR}{PCVR} execution with the target headset connected to the reference \hyperlink{glos:PCVR}{PCVR} computer.\\
+\textit{Rationale:} Both deployment paths are in the project scope; a single reference computer (\hyperref[p2]{P.2}) makes \hyperlink{glos:PCVR}{PCVR} testing repeatable.
+\item \hypertarget{req:FR-UI-03}{}\textbf{FR-UI-03:} FPVR shall provide a flight-control configuration for the target headset's motion controllers in standalone mode and a standard gamepad in \hyperlink{glos:PCVR}{PCVR} mode, each providing \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw}.\\
 \textit{Rationale:} This defines a minimum verifiable controller-to-execution-mode matrix without promising every controller in every mode.
-\item \hypertarget{req:FR-UI-04}{}\textbf{FR-UI-04:} For each supported controller configuration, FPVR shall display a control guide identifying the assigned throttle, pitch, roll, and yaw inputs before the user begins flight.\\
-\textit{Rationale:} Explicit instructions allow users to operate the simulator without assuming previous FPV experience.
+\item \hypertarget{req:FR-UI-04}{}\textbf{FR-UI-04:} For each supported controller configuration, FPVR shall display a control guide identifying the assigned \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} inputs before the user begins flight.\\
+\textit{Rationale:} Explicit instructions allow users to operate the simulator without assuming previous \hyperlink{glos:FPV}{FPV} experience.
 \item \hypertarget{req:FR-UI-05}{}\textbf{FR-UI-05:} FPVR shall provide menu interactions for choosing training mode, selecting a level, starting flight, recovering from crashes, and returning to the main menu.\\
 \textit{Rationale:} Every required gameplay transition must be accessible to the user.
 \item \hypertarget{req:FR-UI-06}{}\textbf{FR-UI-06:} FPVR shall permit seated and standing operation without requiring the user to physically walk to control drone movement.\\
-\textit{Rationale:} Users should be able to operate the simulator within a stationary VR play area.
+\textit{Rationale:} Users should be able to operate the simulator within a stationary \hyperlink{glos:VR}{VR} play area.
 \end{itemize}
 
 \subsubsection{Player Accounts and Authentication}
@@ -1915,7 +1889,7 @@ This section defines the externally observable functional and non-functional req
 \begin{itemize}
 \item \hypertarget{req:FR-REV-01}{}\textbf{FR-REV-01:} FPVR shall display a post-flight review immediately after successful completion of an obstacle-course level.\\
 \textit{Rationale:} Immediate feedback connects performance outcomes to the just-completed attempt.
-\item \hypertarget{req:FR-REV-02}{}\textbf{FR-REV-02:} The review shall display the completed level, total completion time, completed checkpoints, crash count, numerical score, and rating.\\
+\item \hypertarget{req:FR-REV-02}{}\textbf{FR-REV-02:} The review shall display the completed level, total completion time, completed \hyperlink{glos:Checkpoint}{checkpoints}, crash count, numerical score, and rating.\\
 \textit{Rationale:} These measures explain the result and support deliberate practice.
 \item \hypertarget{req:FR-REV-03}{}\textbf{FR-REV-03:} From the review, the user shall be able to retry the same level, choose another level, or return to the main menu.\\
 \textit{Rationale:} Users should be able to continue training without restarting the application.
@@ -1928,7 +1902,7 @@ This section defines the externally observable functional and non-functional req
 \subsubsection{Intelligent Feedback} 
 \label{sec:s2-ai}
 \begin{itemize}
-\item \hypertarget{req:FR-AI-01}{}\textbf{FR-AI-01:} FPVR shall generate a natural-language observation based on the completed attempt's available time, checkpoint, and crash data.\\
+\item \hypertarget{req:FR-AI-01}{}\textbf{FR-AI-01:} FPVR shall generate a natural-language observation based on the completed attempt's available time, \hyperlink{glos:Checkpoint}{checkpoint}, and crash data.\\
 \textit{Rationale:} Feedback must be grounded in measurable attempt data rather than invented flight events.
 \item \hypertarget{req:FR-AI-02}{}\textbf{FR-AI-02:} FPVR shall display it automatically in the post-flight review without requiring an additional user request.\\
 \textit{Rationale:} Automatic presentation makes the enhancement accessible during the normal review workflow.
@@ -1941,19 +1915,19 @@ This section defines the externally observable functional and non-functional req
 \begin{itemize}
 \item \hypertarget{req:NFR-INST-01}{}\textbf{NFR-INST-01 (Installability):} FPVR shall install and launch as a standalone application on the target headset without a connected computer.\\
 \textit{Rationale:} Standalone operation is a committed delivery mode, not merely an editor demonstration.
-\item \hypertarget{req:NFR-INST-02}{}\textbf{NFR-INST-02 (Installability):} FPVR shall launch in PCVR mode on the reference PCVR computer connected to the target headset using a supported PCVR connection method.\\
+\item \hypertarget{req:NFR-INST-02}{}\textbf{NFR-INST-02 (Installability):} FPVR shall launch in \hyperlink{glos:PCVR}{PCVR} mode on the reference \hyperlink{glos:PCVR}{PCVR} computer connected to the target headset using a supported \hyperlink{glos:PCVR}{PCVR} connection method.\\
 \textit{Rationale:} A specified reference computer makes the second deployment mode independently testable.
-\item \hypertarget{req:NFR-COMP-01}{}\textbf{NFR-COMP-01 (Compatibility):} The target headset's motion controllers shall support the four flight axes in standalone mode, and a standard gamepad shall support the four flight axes in PCVR mode.\\
+\item \hypertarget{req:NFR-COMP-01}{}\textbf{NFR-COMP-01 (Compatibility):} The target headset's motion controllers shall support the four flight axes in standalone mode, and a standard gamepad shall support the four flight axes in \hyperlink{glos:PCVR}{PCVR} mode.\\
 \textit{Rationale:} This minimum matrix is testable without promising unsupported controller combinations.
-\item \hypertarget{req:NFR-PERF-01}{}\textbf{NFR-PERF-01 (Rendering):} On the target headset in standalone mode, FPVR shall maintain an average of at least 72 rendered frames per second over a continuous 120-second normal-flight test in each of the two required environments.\\
-\textit{Rationale:} The 72-FPS threshold is an initial headset-oriented performance target; averaging over a fixed interval makes the result reproducible, although frame-time spikes should also be inspected during V\&V.
+\item \hypertarget{req:NFR-PERF-01}{}\textbf{NFR-PERF-01 (Rendering):} On the target headset in standalone mode, FPVR shall maintain an average of at least 72 rendered \hyperlink{glos:FPS}{frames per second} over a continuous 120-second normal-flight test in each of the two required environments.\\
+\textit{Rationale:} The 72-\hyperlink{glos:FPS}{FPS} threshold is an initial headset-oriented performance target; averaging over a fixed interval makes the result reproducible, although frame-time spikes should also be inspected during V\&V.
 \item \hypertarget{req:NFR-PERF-02}{}\textbf{NFR-PERF-02 (Input Response):} In the reference test environment, the elapsed time from a received flight-control input event to the first corresponding simulated state update shall not exceed 100 ms in at least 95\% of 100 measured input events.\\
 \textit{Rationale:} This proposed software-response threshold makes responsiveness measurable without conflating it with headset display latency.
-\item \hypertarget{req:NFR-REL-01}{}\textbf{NFR-REL-01 (Reliability):} FPVR shall complete 20 consecutive crash-and-respawn cycles in each required obstacle-course environment without application termination or loss of checkpoint consistency.\\
+\item \hypertarget{req:NFR-REL-01}{}\textbf{NFR-REL-01 (Reliability):} FPVR shall complete 20 consecutive crash-and-respawn cycles in each required obstacle-course environment without application termination or loss of \hyperlink{glos:Checkpoint}{checkpoint} consistency.\\
 \textit{Rationale:} A repeatable stress test checks the recovery workflow that users will exercise frequently.
 \item \hypertarget{req:NFR-USAB-01}{}\textbf{NFR-USAB-01 (Usability):} The control guide shall be accessible from the main menu and before the first flight of a newly launched session.\\
 \textit{Rationale:} Beginners need discoverable instructions without requiring prior experience.
-\item \hypertarget{req:NFR-SAFE-01}{}\textbf{NFR-SAFE-01 (VR Safety):} FPVR shall allow the user to pause or leave an active flight activity using an in-application menu without removing the headset.\\
+\item \hypertarget{req:NFR-SAFE-01}{}\textbf{NFR-SAFE-01 (\hyperlink{glos:VR}{VR} Safety):} FPVR shall allow the user to pause or leave an active flight activity using an in-application menu without removing the headset.\\
 \textit{Rationale:} Users must be able to stop an uncomfortable experience promptly.
 \item \hypertarget{req:NFR-SAFE-02}{}\textbf{NFR-SAFE-02 (Stationary Use):} All core flight, menu, and recovery actions shall be operable while seated or standing in one physical location.\\
 \textit{Rationale:} Stationary operation reduces the need for movement within the user's physical surroundings.
@@ -1969,7 +1943,7 @@ This section defines the externally observable functional and non-functional req
 
 \noindent\textbf{Baseline interpretation.}
 The requirements above define the proposed initial acceptance baseline. The numerical score, 
-rating bands, frame-rate target, input-response threshold, and reference PCVR platform are initial project specifications rather than empirically validated claims. Any later change 
+rating bands, frame-rate target, input-response threshold, and reference \hyperlink{glos:PCVR}{PCVR} platform are initial project specifications rather than empirically validated claims. Any later change 
 shall be recorded in revision history and propagated to verification tests, traceability links, and the affected scope sections.
 
 Requirement priorities will be established in
@@ -1991,34 +1965,34 @@ Section~\ref{s6}.
 
 
 \begin{description}
-\item[IF-01: Entry and navigation:] The VR and nunchuck controllers provide access to a main menu where
+\item[IF-01: Entry and navigation:] The \hyperlink{glos:VR}{VR} and nunchuck controllers provide access to a main menu where
 users can select modes for free flight, available course choices, and return/exit actions. (\req{FR-UI-04}/\req{FR-UI-05},
 \req{FR-LVL-05}/\req{FR-LVL-06}).
-\item[IF-02: Flight:] Continuous throttle, pitch, roll, and yaw actions affect
+\item[IF-02: Flight:] Continuous \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} actions affect
 the drone's first-person view based on inputs from a controller (\req{FR-FLT-02}). The application will display progress during
-a course (\req{FR-REV-02}), where as free flight has no course timer, checkpoints, or score
+a course (\req{FR-REV-02}), where as free flight has no course timer, \hyperlink{glos:Checkpoint}{checkpoints}, or score
 (\req{FR-FLT-01}/\req{FR-FLT-02}, \req{FR-LVL-01}).
-\item[IF-03: Retry:] Upon failure to complete a course due to a crash or timeout, users can press a button on the controller to reset the drone to a prior checkpoint.
+\item[IF-03: Retry:] Upon failure to complete a course due to a crash or timeout, users can press a button on the controller to reset the drone to a prior \hyperlink{glos:Checkpoint}{checkpoint}.
 Selection is an explicit menu action that can be interfaced with a controller.
 (\req{FR-LVL-02}, \req{FR-CHK-04}--\req{FR-CHK-07};).
 \item[IF-04: Review:] On course completion show the selected course, final total
-active time labelled in seconds, checkpoint results in course order, integer
+active time labelled in seconds, \hyperlink{glos:Checkpoint}{checkpoint} results in course order, integer
 crash count, numerical score in points, and separate rating. Retry and activity
 selection remain available; prior-session navigation is absent. Unapproved
 scoring parameters must be identified as provisional in any prototype rather
 than presented as validated training results (\req{FR-REV-01}--\req{FR-REV-05}).
-\item[IF-05: Platform Interaction:] Consumes pose/input availability and focus;
-produces frames and lifecycle responses through the supported runtime. The
+\item[IF-05: Platform Interaction:] Consumes \hyperlink{glos:Tracking}{pose}/input availability and \hyperlink{glos:Focus}{focus};
+produces frames and lifecycle responses through the supported \hyperlink{glos:Runtime}{runtime}. The
 proposed unavailable-input presentation is descriptive and recoverable where
-the runtime permits (\req{SR-02}). There is no promise of public
-\hypertarget{gl:API}{}network APIs, desktop-only controls, or physical-drone interfaces.
-\item[IF-06: AI Feedback:] The feedback provided by the AI system receives only separately approved
+the \hyperlink{glos:Runtime}{runtime} permits (\req{SR-02}). There is no promise of public
+\hypertarget{gl:API}{}network \hyperlink{glos:API}{APIs}, desktop-only controls, or physical-drone interfaces.
+\item[IF-06: AI Feedback:] The feedback provided by the \hyperlink{glos:AI}{AI} system receives only separately approved
 current-attempt data and advises on possible places for improvement. The
 standard review is immediate and independent; an analysis may join it
 automatically if the optional capability is approved
 (\req{FR-AI-01}--\req{FR-AI-03}, \req{SR-08}). Output schemas,
 provider, timeout, and data permission are \textbf{TO BE REVIEWED} before external
-AI enters scope.
+\hyperlink{glos:AI}{AI} enters scope.
 \end{description}
 Interfaces describe visible information and action meanings. Exact widget
 layout, engine classes, storage structures, and input packages remain design
@@ -2032,10 +2006,10 @@ choices. Proposed safety/error interactions are subject to their SR status.
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+\textbf{Stakeholders of interest:} Novice \hyperlink{glos:FPV}{FPV} pilots, drone and gaming enthusiasts
 
 \textbf{Precondition:} The application is running with all necessary hardware, a supported
-headset and controller are available, and the main menu is visible from the VR.
+headset and controller are available, and the main menu is visible from the \hyperlink{glos:VR}{VR}.
 
 \textbf{Main success scenario:}
 \begin{itemize}
@@ -2043,11 +2017,11 @@ headset and controller are available, and the main menu is visible from the VR.
 \item The system loads the free-flight environment and places the drone at its
 starting position.
 \item The application initializes the controller inputs and displays the flight view.
-\item The pilot practises throttle, roll, pitch, and yaw in the open
+\item The pilot practises \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{roll}, \hyperlink{glos:Throttle}{pitch}, and \hyperlink{glos:Throttle}{yaw} in the open
 environment.
 \item The pilot takes off and manoeuvres the drone without course
 restrictions.
-\item The simulator provides no course timer, checkpoints, or score for the session.
+\item The simulator provides no course timer, \hyperlink{glos:Checkpoint}{checkpoints}, or score for the session.
 \item If the drone crashes, the pilot opens the recovery option and resets the
 drone.
 \item The system returns the drone to its grounded starting position and restores
@@ -2093,9 +2067,9 @@ reapply the affected control.
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+\textbf{Stakeholders of interest:} Novice \hyperlink{glos:FPV}{FPV} pilots, drone and gaming enthusiasts
 
-\textbf{Precondition:} An obstacle-course level with ordered checkpoints and a
+\textbf{Precondition:} An obstacle-course level with ordered \hyperlink{glos:Checkpoint}{checkpoints} and a
 finish is available, and the user is at the level-selection interface.
 
 \textbf{Main success scenario:}
@@ -2103,37 +2077,37 @@ finish is available, and the user is at the level-selection interface.
 \item The user opens the level-selection interface.
 \item The application displays the available obstacle-course levels.
 \item The user selects an available course.
-\item The system loads the course and places the drone at the valid starting pose.
-\item The system initializes the attempt, checkpoint progress, collision count, and
+\item The system loads the course and places the drone at the valid starting \hyperlink{glos:Tracking}{pose}.
+\item The system initializes the attempt, \hyperlink{glos:Checkpoint}{checkpoint} progress, collision count, and
 timer.
-\item The user takes off and flies toward the first required checkpoint.
-\item The user crosses each required checkpoint in the specified order.
-\item The system records each valid checkpoint crossing and advances the required
-checkpoint.
-\item The user reaches the finish after all required checkpoints are complete.
+\item The user takes off and flies toward the first required \hyperlink{glos:Checkpoint}{checkpoint}.
+\item The user crosses each required \hyperlink{glos:Checkpoint}{checkpoint} in the specified order.
+\item The system records each valid \hyperlink{glos:Checkpoint}{checkpoint} crossing and advances the required
+\hyperlink{glos:Checkpoint}{checkpoint}.
+\item The user reaches the finish after all required \hyperlink{glos:Checkpoint}{checkpoints} are complete.
 \item The application validates the completed route, stops the timer, and opens the
 current-attempt review.
 \end{itemize}
 
 \textbf{Secondary scenarios:}
 \begin{itemize}
-\item If the user crosses a later checkpoint before the required checkpoint:
+\item If the user crosses a later \hyperlink{glos:Checkpoint}{checkpoint} before the required \hyperlink{glos:Checkpoint}{checkpoint}:
 \begin{enumerate}
-\item The system detects the checkpoint trigger.
-\item The system compares the triggered checkpoint with the next required
-checkpoint.
+\item The system detects the \hyperlink{glos:Checkpoint}{checkpoint} trigger.
+\item The system compares the triggered \hyperlink{glos:Checkpoint}{checkpoint} with the next required
+\hyperlink{glos:Checkpoint}{checkpoint}.
 \item The system rejects the out-of-order crossing.
-\item The application leaves the required checkpoint unchanged and informs the user to
+\item The application leaves the required \hyperlink{glos:Checkpoint}{checkpoint} unchanged and informs the user to
 return to the route.
-\item The user flies through the required checkpoint before continuing toward
-the later checkpoint.
+\item The user flies through the required \hyperlink{glos:Checkpoint}{checkpoint} before continuing toward
+the later \hyperlink{glos:Checkpoint}{checkpoint}.
 \end{enumerate}
-\item If the user crosses an already-completed checkpoint:
+\item If the user crosses an already-completed \hyperlink{glos:Checkpoint}{checkpoint}:
 \begin{enumerate}
-\item The system detects the repeated checkpoint trigger.
-\item The system identifies the checkpoint as already recorded.
+\item The system detects the repeated \hyperlink{glos:Checkpoint}{checkpoint} trigger.
+\item The system identifies the \hyperlink{glos:Checkpoint}{checkpoint} as already recorded.
 \item The system ignores the repeated trigger and preserves the existing progress.
-\item The user continues from the current required checkpoint.
+\item The user continues from the current required \hyperlink{glos:Checkpoint}{checkpoint}.
 \end{enumerate}
 \item If the controller disconnects:
 \begin{enumerate}
@@ -2146,9 +2120,9 @@ place the controls in their neutral position.
 \item The pilot applies neutral controls and explicitly confirms Resume.
 \item The system restores flight control from the paused state.
 \end{enumerate}
-\item If a required checkpoint is missing:
+\item If a required \hyperlink{glos:Checkpoint}{checkpoint} is missing:
 \begin{enumerate}
-\item The application detects that the course does not contain the required checkpoint.
+\item The application detects that the course does not contain the required \hyperlink{glos:Checkpoint}{checkpoint}.
 \item The system marks the attempt invalid and prevents a finish from becoming a
 valid completion.
 \item The system pauses the session when possible and informs the user of the
@@ -2169,7 +2143,7 @@ reapply the affected control.
 \item The system detects that the drone is outside the valid course
 area.
 \item FPVR informs the user that they are outside and must return to the main course
-\item After a prolonged period, the system will reset the drone to the last valid position or checkpoint.
+\item After a prolonged period, the system will reset the drone to the last valid position or \hyperlink{glos:Checkpoint}{checkpoint}.
 \end{enumerate}
 \end{itemize}
 
@@ -2177,7 +2151,7 @@ area.
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} FPV pilots
+\textbf{Stakeholders of interest:} \hyperlink{glos:FPV}{FPV} pilots
 
 \textbf{Precondition:} The user is attempting an obstacle course and is
 actively flying until they collide with an obstacle such as the ground, wall, or a goal.
@@ -2189,13 +2163,13 @@ actively flying until they collide with an obstacle such as the ground, wall, or
 \item The system detects the collision and stops active flight input.
 \item The system records one crash and displays the recovery menu.
 \item The user selects Restart.
-\item The application finds the most recently completed checkpoint, or the course start if
-no checkpoint has been completed.
+\item The application finds the most recently completed \hyperlink{glos:Checkpoint}{checkpoint}, or the course start if
+no \hyperlink{glos:Checkpoint}{checkpoint} has been completed.
 \item The system places the drone at the selected recovery position with a valid
 orientation.
 \item The system resets the section timer while preserving total time and crash
 penalties.
-\item The system restores the next required checkpoint and clears transient crash
+\item The system restores the next required \hyperlink{glos:Checkpoint}{checkpoint} and clears transient crash
 state.
 \item The user confirms neutral controls and resumes flight.
 \end{itemize}
@@ -2213,15 +2187,15 @@ registration while the menu is displayed.
 \end{enumerate}
 \item If the user selects Restart as a new attempt:
 \begin{enumerate}
-\item The user chooses New Attempt rather than recovery at the checkpoint.
+\item The user chooses New Attempt rather than recovery at the \hyperlink{glos:Checkpoint}{checkpoint}.
 \item The application asks the user to confirm the restart.
 \item The user confirms the restart.
 \item The system creates a new attempt at the course start.
-\item The system resets checkpoint progress, timers, collision count, and
+\item The system resets \hyperlink{glos:Checkpoint}{checkpoint} progress, timers, collision count, and
 performance data.
 \item The user begins the new flight.
 \end{enumerate}
-\item If external networking or the optional AI service is unavailable:
+\item If external networking or the optional \hyperlink{glos:AI}{AI} service is unavailable:
 \begin{enumerate}
 \item The application detects the unavailable service or failed connection.
 \item The system reports that the optional capability is unavailable.
@@ -2231,7 +2205,7 @@ the course using standard local behavior.
 \item The system records and displays the standard result without waiting for the
 unavailable service.
 \end{enumerate}
-\item If the user declines consent for optional AI analysis:
+\item If the user declines consent for optional \hyperlink{glos:AI}{AI} analysis:
 \begin{enumerate}
 \item The application requests consent before sending the required flight data.
 \item The user selects Decline.
@@ -2240,7 +2214,7 @@ does not send the data.
 \item The application continues the standard flight, recovery, and review flow.
 \item The system displays the standard result without changing its score.
 \end{enumerate}
-\item If the optional AI request times out:
+\item If the optional \hyperlink{glos:AI}{AI} request times out:
 \begin{enumerate}
 \item The application starts the optional request after consent is available.
 \item The system reaches the configured timeout without a valid response.
@@ -2249,11 +2223,11 @@ unavailable.
 \item The user continues to the standard result without waiting further.
 \item The system preserves the recorded score and rating.
 \end{enumerate}
-\item If the optional AI output is malformed:
+\item If the optional \hyperlink{glos:AI}{AI} output is malformed:
 \begin{enumerate}
 \item The application receives the optional response.
 \item The system validates the response before displaying or applying it.
-\item The application rejects malformed output and reports that AI feedback is
+\item The application rejects malformed output and reports that \hyperlink{glos:AI}{AI} feedback is
 unavailable.
 \item The system displays the standard review and preserves the recorded score,
 rating, and other results.
@@ -2264,11 +2238,11 @@ rating, and other results.
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} FPV pilots, drone training instructors,
-and the team responsible for the optional AI feedback service.
+\textbf{Stakeholders of interest:} \hyperlink{glos:FPV}{FPV} pilots, drone training instructors,
+and the team responsible for the optional \hyperlink{glos:AI}{AI} feedback service.
 
 \textbf{Precondition:} The user has completed at least one course and the
-attempt has been recorded by the application. If AI feedback is enabled, the
+attempt has been recorded by the application. If \hyperlink{glos:AI}{AI} feedback is enabled, the
 user has approved the data required for the optional analysis.
 
 \textbf{Main success scenario:}
@@ -2276,13 +2250,13 @@ user has approved the data required for the optional analysis.
 \item The user opens the list of recorded flights.
 \item The application displays the locally stored recordings and their available results.
 \item The user selects a completed flight recording.
-\item The system loads the stored virtual telemetry data and footage.
-\item The application presents the recording in the VR or screen replay view.
+\item The system loads the stored virtual \hyperlink{glos:Telemetry}{telemetry} data and footage.
+\item The application presents the recording in the \hyperlink{glos:VR}{VR} or screen replay view.
 \item The user plays the recording and may pause, rewind, or fast-forward it.
 \item The system displays the standard performance results, including completion
-time, checkpoint results, collision count, numerical score, and performance
+time, \hyperlink{glos:Checkpoint}{checkpoint} results, collision count, numerical score, and performance
 rating.
-\item If optional AI feedback is enabled and consent is available, the application sends
+\item If optional \hyperlink{glos:AI}{AI} feedback is enabled and consent is available, the application sends
 the permitted performance information for analysis.
 \item The system displays the resulting observations within the review without
 changing the standard results.
@@ -2318,7 +2292,7 @@ menu.
 application.
 \item The user returns to the recording list or updates before trying again.
 \end{enumerate}
-\item If AI feedback is unavailable:
+\item If \hyperlink{glos:AI}{AI} feedback is unavailable:
 \begin{enumerate}
 \item The application checks whether the optional service is reachable and enabled.
 \item The system reports the unavailable capability.
@@ -2326,28 +2300,28 @@ application.
 \item The system displays the standard review and leaves the user in the replay
 flow.
 \end{enumerate}
-\item If the user declines AI consent:
+\item If the user declines \hyperlink{glos:AI}{AI} consent:
 \begin{enumerate}
 \item The application requests consent before sending permitted flight-performance data.
 \item The user selects Decline.
 \item The system does not send the data for optional analysis.
 \item The application displays the standard review without optional observations.
 \end{enumerate}
-\item If AI feedback times out:
+\item If \hyperlink{glos:AI}{AI} feedback times out:
 \begin{enumerate}
 \item The application starts the optional analysis request.
 \item The system reaches the configured timeout without a usable response.
 \item The application stops waiting and marks the analysis unavailable.
 \item The system displays the standard review without interrupting replay controls.
 \end{enumerate}
-\item If the AI service fails to produce an analysis:
+\item If the \hyperlink{glos:AI}{AI} service fails to produce an analysis:
 \begin{enumerate}
 \item The application receives an empty or failed analysis result.
 \item The system reports that no optional feedback is available.
 \item The application keeps the standard performance results visible.
 \item The user continues or exits the replay normally.
 \end{enumerate}
-\item If the AI response is malformed:
+\item If the \hyperlink{glos:AI}{AI} response is malformed:
 \begin{enumerate}
 \item The system validates the response before using it.
 \item The application discards the malformed response.
@@ -2361,7 +2335,7 @@ rating, or other standard results.
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} FPV pilots
+\textbf{Stakeholders of interest:} \hyperlink{glos:FPV}{FPV} pilots
 
 \textbf{Precondition:} The user is running the application, has a stable internet
 connection, and has selected the optional multiplayer training mode. The application
@@ -2450,8 +2424,8 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-flight]{FR-FLT-01} & First-Person Flight View & High & Essential to the FPV experience; the view must follow the drone to support effective flight perception and control. \\
-\hyperref[sec:s2-flight]{FR-FLT-02} & Four-Axis Flight Controls & High & All four control axes are necessary for meaningful manual FPV flight training. \\
+\hyperref[sec:s2-flight]{FR-FLT-01} & First-Person Flight View & High & Essential to the \hyperlink{glos:FPV}{FPV} experience; the view must follow the drone to support effective flight perception and control. \\
+\hyperref[sec:s2-flight]{FR-FLT-02} & Four-Axis Flight Controls & High & All four control axes are necessary for meaningful manual \hyperlink{glos:FPV}{FPV} flight training. \\
 \hyperref[sec:s2-flight]{FR-FLT-03} & Simulated Gravity & High & Fundamental to credible flight behaviour and realistic control practice. \\
 \hyperref[sec:s2-flight]{FR-FLT-04} & Collision Detection & High & Required to detect obstacle and ground contact and initiate crash recovery. \\
 \hyperref[sec:s2-flight]{FR-FLT-05} & Crash Trigger Rules & High & Establishes correct takeoff and crash behaviour, preventing false crashes and enforcing course challenges. \\
@@ -2475,7 +2449,7 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hyperref[sec:s2-levels]{FR-LVL-03} & Three Differentiated Levels & High & Establishes the minimum required course content and introductory, intermediate, and advanced progression. \\
 \hyperref[sec:s2-levels]{FR-LVL-04} & Multiple Environments & Medium & Provides environmental variety and satisfies the required content scope, but is secondary to core flight functionality. \\
 \hyperref[sec:s2-levels]{FR-LVL-05} & Unrestricted Level Selection & Medium & Improves user choice and accessibility, although it is not fundamental to flight simulation. \\
-\hyperref[sec:s2-levels]{FR-LVL-06} & Return to Main Menu & High & Allows users to leave VR activities and navigate the application without terminating it. \\
+\hyperref[sec:s2-levels]{FR-LVL-06} & Return to Main Menu & High & Allows users to leave \hyperlink{glos:VR}{VR} activities and navigate the application without terminating it. \\
 \hyperref[sec:s2-levels]{FR-LVL-07} & Attempt Initialization & High & Ensures attempts start with clean state, preventing previous progress, timings, and penalties from affecting results. \\
 \hline
 \end{tabular}
@@ -2491,12 +2465,12 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-checkpoints]{FR-CHK-01} & Ordered Checkpoints and Finish & High & Defines the course structure needed for progression, timing, and completion. \\
-\hyperref[sec:s2-checkpoints]{FR-CHK-02} & Ordered Checkpoint Completion & High & Ensures progression depends on passing through checkpoints in the intended sequence. \\
-\hyperref[sec:s2-checkpoints]{FR-CHK-03} & Prevention of Checkpoint Skipping & High & Preserves course integrity by preventing users from bypassing required segments. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-01} & Ordered \hyperlink{glos:Checkpoint}{Checkpoints} and Finish & High & Defines the course structure needed for progression, timing, and completion. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-02} & Ordered \hyperlink{glos:Checkpoint}{Checkpoint} Completion & High & Ensures progression depends on passing through \hyperlink{glos:Checkpoint}{checkpoints} in the intended sequence. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-03} & Prevention of \hyperlink{glos:Checkpoint}{Checkpoint} Skipping & High & Preserves course integrity by preventing users from bypassing required \hyperlink{glos:Checkpoint}{segments}. \\
 \hyperref[sec:s2-checkpoints]{FR-CHK-04} & Crash Recovery Choices & High & Provides the essential options for resuming practice or starting a fresh attempt. \\
-\hyperref[sec:s2-checkpoints]{FR-CHK-05} & Checkpoint Respawn & High & Allows users to retry a failed segment without repeating completed sections. \\
-\hyperref[sec:s2-checkpoints]{FR-CHK-06} & Respawn State Preservation & High & Maintains valid progress and accumulated penalties during recovery. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-05} & \hyperlink{glos:Checkpoint}{Checkpoint} \hyperlink{glos:Respawn}{Respawn} & High & Allows users to retry a failed \hyperlink{glos:Checkpoint}{segment} without repeating completed sections. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-06} & \hyperlink{glos:Respawn}{Respawn} State Preservation & High & Maintains valid progress and accumulated penalties during recovery. \\
 \hyperref[sec:s2-checkpoints]{FR-CHK-07} & Level Restart and Reset & High & Provides a clean attempt state for consistent scoring and testing. \\
 \hyperref[sec:s2-checkpoints]{FR-CHK-08} & Level Completion Validation & High & Defines deterministic completion required by scoring, storage, and review. \\
 \hline
@@ -2514,10 +2488,10 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
 \hyperref[sec:s2-performance]{FR-PER-01} & Total Flight Timer & High & Provides the principal time measure for evaluating and comparing completed attempts. \\
-\hyperref[sec:s2-performance]{FR-PER-02} & Crash Time Retention & High & Prevents failed flight segments from being excluded from total completion time. \\
+\hyperref[sec:s2-performance]{FR-PER-02} & Crash Time Retention & High & Prevents failed flight \hyperlink{glos:Checkpoint}{segments} from being excluded from total completion time. \\
 \hyperref[sec:s2-performance]{FR-PER-03} & Section Timer & Medium & Provides segment-level feedback for targeted practice beyond the overall attempt time. \\
-\hyperref[sec:s2-performance]{FR-PER-04} & Section Timer Reset Rules & Medium & Ensures segment measurements remain meaningful after checkpoint completion and respawn. \\
-\hyperref[sec:s2-performance]{FR-PER-05} & Timer Recovery Rules & High & Maintains consistent timing across respawn and restart, directly affecting score accuracy. \\
+\hyperref[sec:s2-performance]{FR-PER-04} & Section Timer Reset Rules & Medium & Ensures \hyperlink{glos:Checkpoint}{segment} measurements remain meaningful after \hyperlink{glos:Checkpoint}{checkpoint} completion and \hyperlink{glos:Respawn}{respawn}. \\
+\hyperref[sec:s2-performance]{FR-PER-05} & Timer Recovery Rules & High & Maintains consistent timing across \hyperlink{glos:Respawn}{respawn} and restart, directly affecting score accuracy. \\
 \hyperref[sec:s2-performance]{FR-PER-06} & Timer Pause During Recovery & High & Prevents menu decision time from distorting flight performance measurements. \\
 \hyperref[sec:s2-performance]{FR-PER-07} & Crash Counting & High & Supplies a required performance metric and the crash penalty used in scoring. \\
 \hyperref[sec:s2-performance]{FR-PER-08} & Numerical Score Calculation & High & Converts time and crash data into a reproducible score for ratings and rankings. \\
@@ -2537,8 +2511,8 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-interface]{FR-UI-01} & Target Headset VR Interface & High & Defines the primary target device for the intended headset-based training experience. \\
-\hyperref[sec:s2-interface]{FR-UI-02} & Standalone and PCVR Modes & High & Both deployment paths are committed project requirements. \\
+\hyperref[sec:s2-interface]{FR-UI-01} & Target Headset \hyperlink{glos:VR}{VR} Interface & High & Defines the primary target device for the intended headset-based training experience. \\
+\hyperref[sec:s2-interface]{FR-UI-02} & Standalone and \hyperlink{glos:PCVR}{PCVR} Modes & High & Both deployment paths are committed project requirements. \\
 \hyperref[sec:s2-interface]{FR-UI-03} & Mode-Specific Controller Support & High & Provides the input mechanisms required for flight in both execution modes. \\
 \hyperref[sec:s2-interface]{FR-UI-04} & Controller Guidance & High & Identifies control assignments before flight, reducing confusion for beginners. \\
 \hyperref[sec:s2-interface]{FR-UI-05} & Menu Navigation and Actions & High & Makes all essential gameplay transitions accessible to users. \\
@@ -2637,14 +2611,14 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
 \hyperref[sec:s2-nfr]{NFR-INST-01} & Standalone Installability & High & Standalone delivery on the target headset is a committed deployment requirement. \\
-\hyperref[sec:s2-nfr]{NFR-INST-02} & PCVR Installability & High & PCVR is a committed deployment mode and must be independently launchable on the reference platform. \\
+\hyperref[sec:s2-nfr]{NFR-INST-02} & \hyperlink{glos:PCVR}{PCVR} Installability & High & \hyperlink{glos:PCVR}{PCVR} is a committed deployment mode and must be independently launchable on the reference platform. \\
 \hyperref[sec:s2-nfr]{NFR-COMP-01} & Controller Compatibility & High & Correct controller support is necessary for flight in both required execution modes. \\
-\hyperref[sec:s2-nfr]{NFR-PERF-01} & Rendering Performance & High & The specified frame-rate target supports smooth VR operation and helps reduce discomfort. \\
+\hyperref[sec:s2-nfr]{NFR-PERF-01} & Rendering Performance & High & The specified frame-rate target supports smooth \hyperlink{glos:VR}{VR} operation and helps reduce discomfort. \\
 \hyperref[sec:s2-nfr]{NFR-PERF-02} & Input Response Time & High & Responsive control is fundamental to precise drone handling and must meet the specified threshold. \\
-\hyperref[sec:s2-nfr]{NFR-REL-01} & Crash-Recovery Reliability & High & Repeated recovery cycles must preserve application stability and checkpoint consistency. \\
+\hyperref[sec:s2-nfr]{NFR-REL-01} & Crash-Recovery Reliability & High & Repeated recovery cycles must preserve application stability and \hyperlink{glos:Checkpoint}{checkpoint} consistency. \\
 \hyperref[sec:s2-nfr]{NFR-USAB-01} & Control Guide Accessibility & High & Makes essential instructions discoverable to new users before flight. \\
-\hyperref[sec:s2-nfr]{NFR-SAFE-01} & In-Application Pause and Exit & High & Allows users to stop or leave active VR activities promptly without removing the headset. \\
-\hyperref[sec:s2-nfr]{NFR-SAFE-02} & Stationary Operation & High & Keeps core actions accessible from one physical location, reducing unnecessary movement in VR. \\
+\hyperref[sec:s2-nfr]{NFR-SAFE-01} & In-Application Pause and Exit & High & Allows users to stop or leave active \hyperlink{glos:VR}{VR} activities promptly without removing the headset. \\
+\hyperref[sec:s2-nfr]{NFR-SAFE-02} & Stationary Operation & High & Keeps core actions accessible from one physical location, reducing unnecessary movement in \hyperlink{glos:VR}{VR}. \\
 \hyperref[sec:s2-nfr]{NFR-SEC-01} & Credential Protection & High & Protects account credentials against interception and plaintext exposure. \\
 \hyperref[sec:s2-nfr]{NFR-SEC-02} & Account Access Control & High & Prevents unauthorized access to private account data and fraudulent leaderboard submissions. \\
 \hyperref[sec:s2-nfr]{NFR-DAT-01} & Synchronized Result Persistence & High & Ensures cloud-backed results remain retrievable across sign-outs and application restarts. \\
@@ -2673,12 +2647,12 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Verification:} Move and rotate the drone in a test scene and
  confirm the headset view matches drone position and orientation, with no
  offset or lag between them.\par
- \textbf{Validation:} Users report the view feels like sitting in a real FPV drone.
+ \textbf{Validation:} Users report the view feels like sitting in a real \hyperlink{glos:FPV}{FPV} drone.
 \item \hyperlink{req:FR-FLT-02}{\textbf{FR-FLT-02}}\par
- \textbf{Verification:} Apply each of throttle, pitch, roll, and yaw in
+ \textbf{Verification:} Apply each of \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} in
  isolation and in combination, and check that the drone's state responds in
  the correct axis and direction.\par
- \textbf{Validation:} Users with FPV experience confirm that the control
+ \textbf{Validation:} Users with \hyperlink{glos:FPV}{FPV} experience confirm that the control
  response matches expectations.
 \item \hyperlink{req:FR-FLT-03}{\textbf{FR-FLT-03}}\par
  \textbf{Verification:} Run the zero-thrust drop fixture in
@@ -2707,7 +2681,7 @@ evaluation sessions, supervisor/owner review, or expert review.
 \subsubsection{Training Mode and Level Management}
 \begin{itemize}
 \item \hyperlink{req:FR-LVL-01}{\textbf{FR-LVL-01}}\par
- \textbf{Verification:} Enter free flight and confirm no checkpoints,
+ \textbf{Verification:} Enter free flight and confirm no \hyperlink{glos:Checkpoint}{checkpoints},
  timer, or score are shown or computed.\par
  \textbf{Validation:} Novice users confirm free flight gives low-pressure practice.
 \item \hyperlink{req:FR-LVL-02}{\textbf{FR-LVL-02}}\par
@@ -2717,7 +2691,7 @@ evaluation sessions, supervisor/owner review, or expert review.
 \item \hyperlink{req:FR-LVL-03}{\textbf{FR-LVL-03}}\par
  \textbf{Verification:} Confirm at least three obstacle-course levels are
  selectable, labelled introductory, intermediate, and advanced, each with a
- distinct obstacle or checkpoint arrangement. Check that each loads and is
+ distinct obstacle or \hyperlink{glos:Checkpoint}{checkpoint} arrangement. Check that each loads and is
  completable.\par
  \textbf{Validation:} Users rank the levels by difficulty, and the ranking is
  compared with the intended difficulty.
@@ -2736,7 +2710,7 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Users confirm that exiting is easy to find and quick.
 \item \hyperlink{req:FR-LVL-07}{\textbf{FR-LVL-07}}\par
  \textbf{Verification:} Complete or abandon an attempt, start a new one, and
- inspect checkpoint progress, timers, collision count, and performance data
+ inspect \hyperlink{glos:Checkpoint}{checkpoint} progress, timers, collision count, and performance data
  for reset values.\par
  \textbf{Validation:} Supervisor review confirms that attempts are independent.
 \end{itemize}
@@ -2745,37 +2719,37 @@ evaluation sessions, supervisor/owner review, or expert review.
 \begin{itemize}
 \item \hyperlink{req:FR-CHK-01}{\textbf{FR-CHK-01}}\par
  \textbf{Verification:} Inspect each course definition for an ordered
- sequence of at least two checkpoints followed by a finish location.\par
- \textbf{Validation:} Users confirm that the checkpoint order is understandable.
+ sequence of at least two \hyperlink{glos:Checkpoint}{checkpoints} followed by a finish location.\par
+ \textbf{Validation:} Users confirm that the \hyperlink{glos:Checkpoint}{checkpoint} order is understandable.
 \item \hyperlink{req:FR-CHK-02}{\textbf{FR-CHK-02}}\par
- \textbf{Verification:} Fly through checkpoints in order and confirm
+ \textbf{Verification:} Fly through \hyperlink{glos:Checkpoint}{checkpoints} in order and confirm
  progress advances by exactly one each time.\par
- \textbf{Validation:} Users confirm that checkpoint progress matches what they experience.
+ \textbf{Validation:} Users confirm that \hyperlink{glos:Checkpoint}{checkpoint} progress matches what they experience.
 \item \hyperlink{req:FR-CHK-03}{\textbf{FR-CHK-03}}\par
- \textbf{Verification:} Fly through checkpoints out of order and confirm
+ \textbf{Verification:} Fly through \hyperlink{glos:Checkpoint}{checkpoints} out of order and confirm
  progress does not change.\par
  \textbf{Validation:} Users confirm that the course cannot be skipped and that
- guidance makes the next checkpoint clear.
+ guidance makes the next \hyperlink{glos:Checkpoint}{checkpoint} clear.
 \item \hyperlink{req:FR-CHK-04}{\textbf{FR-CHK-04}}\par
  \textbf{Verification:} Crash during a course and confirm both the restart
- and respawn options are offered.\par
+ and \hyperlink{glos:Respawn}{respawn} options are offered.\par
  \textbf{Validation:} Users confirm that the options are clear.
 \item \hyperlink{req:FR-CHK-05}{\textbf{FR-CHK-05}}\par
- \textbf{Verification:} Respawn after crashing before the first checkpoint,
- after checkpoint $n$, and at the last checkpoint. Check that the drone
- returns to the start or the last completed checkpoint.\par
- \textbf{Validation:} Users confirm that respawn lets them resume without confusion.
+ \textbf{Verification:} \hyperlink{glos:Respawn}{Respawn} after crashing before the first \hyperlink{glos:Checkpoint}{checkpoint},
+ after \hyperlink{glos:Checkpoint}{checkpoint} $n$, and at the last \hyperlink{glos:Checkpoint}{checkpoint}. Check that the drone
+ returns to the start or the last completed \hyperlink{glos:Checkpoint}{checkpoint}.\par
+ \textbf{Validation:} Users confirm that \hyperlink{glos:Respawn}{respawn} lets them resume without confusion.
 \item \hyperlink{req:FR-CHK-06}{\textbf{FR-CHK-06}}\par
- \textbf{Verification:} Respawn and confirm completed checkpoints, total
+ \textbf{Verification:} \hyperlink{glos:Respawn}{Respawn} and confirm completed \hyperlink{glos:Checkpoint}{checkpoints}, total
  time, and collision penalties are all preserved.\par
- \textbf{Validation:} Supervisor review confirms respawn carries a fair penalty.
+ \textbf{Validation:} Supervisor review confirms \hyperlink{glos:Respawn}{respawn} carries a fair penalty.
 \item \hyperlink{req:FR-CHK-07}{\textbf{FR-CHK-07}}\par
- \textbf{Verification:} Restart the level and confirm checkpoint progress,
+ \textbf{Verification:} \hyperlink{glos:Respawn}{Restart} the level and confirm \hyperlink{glos:Checkpoint}{checkpoint} progress,
  total time, section time, collision count, and score are all reset.\par
  \textbf{Validation:} Users confirm that restart gives a clean attempt.
 \item \hyperlink{req:FR-CHK-08}{\textbf{FR-CHK-08}}\par
- \textbf{Verification:} Reach the finish with all checkpoints completed in
- order, and again with a missed or out-of-order checkpoint. Only the first
+ \textbf{Verification:} Reach the finish with all \hyperlink{glos:Checkpoint}{checkpoints} completed in
+ order, and again with a missed or out-of-order \hyperlink{glos:Checkpoint}{checkpoint}. Only the first
  case may complete the level.\par
  \textbf{Validation:} Users confirm that completion feels earned and consistent.
 \end{itemize}
@@ -2792,16 +2766,16 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Supervisor review confirms that failed sections should count.
 \item \hyperlink{req:FR-PER-03}{\textbf{FR-PER-03}}\par
  \textbf{Verification:} Confirm the section timer starts from the beginning
- of each checkpoint segment and runs independently of the total timer.\par
+ of each \hyperlink{glos:Checkpoint}{checkpoint} \hyperlink{glos:Checkpoint}{segment} and runs independently of the total timer.\par
  \textbf{Validation:} Users find per-section times useful for improving their flying.
 \item \hyperlink{req:FR-PER-04}{\textbf{FR-PER-04}}\par
- \textbf{Verification:} Confirm the section timer resets on checkpoint
- completion and on respawn.\par
+ \textbf{Verification:} Confirm the section timer resets on \hyperlink{glos:Checkpoint}{checkpoint}
+ completion and on \hyperlink{glos:Respawn}{respawn}.\par
  \textbf{Validation:} Users confirm that the section timer reflects the current section.
 \item \hyperlink{req:FR-PER-05}{\textbf{FR-PER-05}}\par
- \textbf{Verification:} Record the total time before and after respawn and
+ \textbf{Verification:} Record the total time before and after \hyperlink{glos:Respawn}{respawn} and
  confirm it does not drop.\par
- \textbf{Validation:} Supervisor review confirms respawn keeps time consequences.
+ \textbf{Validation:} Supervisor review confirms \hyperlink{glos:Respawn}{respawn} keeps time consequences.
 \item \hyperlink{req:FR-PER-06}{\textbf{FR-PER-06}}\par
  \textbf{Verification:} Open the crash-recovery menu, wait a known
  duration, and confirm both the total and section timers stay frozen and
@@ -2838,13 +2812,13 @@ evaluation sessions, supervisor/owner review, or expert review.
  feedback is recorded.
 \item \hyperlink{req:FR-UI-02}{\textbf{FR-UI-02}}\par
  \textbf{Verification:} Run the same core scenarios standalone on the
- target headset and in PCVR mode with the target headset connected to the
- reference PCVR computer, and compare behaviour.\par
+ target headset and in \hyperlink{glos:PCVR}{PCVR} mode with the target headset connected to the
+ reference \hyperlink{glos:PCVR}{PCVR} computer, and compare behaviour.\par
  \textbf{Validation:} Users confirm that both modes are usable.
 \item \hyperlink{req:FR-UI-03}{\textbf{FR-UI-03}}\par
  \textbf{Verification:} Fly the same scenario with the target headset's
- motion controllers in standalone mode and with a standard gamepad in PCVR
- mode, and confirm throttle, pitch, roll, and yaw work in each.\par
+ motion controllers in standalone mode and with a standard gamepad in \hyperlink{glos:PCVR}{PCVR}
+ mode, and confirm \hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} work in each.\par
  \textbf{Validation:} Users try both configurations and confirm either can be
  used to fly.
 \item \hyperlink{req:FR-UI-04}{\textbf{FR-UI-04}}\par
@@ -2965,7 +2939,7 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Users confirm that the review appears at a useful moment.
 \item \hyperlink{req:FR-REV-02}{\textbf{FR-REV-02}}\par
  \textbf{Verification:} Confirm the review shows total completion time,
- checkpoint results, collision count, score, and rating, and that they match
+ \hyperlink{glos:Checkpoint}{checkpoint} results, collision count, score, and rating, and that they match
  recorded values.\par
  \textbf{Validation:} Users confirm that the review content is sufficient for
  judging their performance.
@@ -3014,19 +2988,19 @@ phase 6 of the phase-in plan (\hyperref[p3]{P.3}).
  \textbf{Validation:} An independent evaluator installs the application using
  only the documentation.
 \item \hyperlink{req:NFR-INST-02}{\textbf{NFR-INST-02}}\par
- \textbf{Verification:} Launch FPVR in PCVR mode on the reference PCVR
- computer connected to the target headset using a supported PCVR connection
+ \textbf{Verification:} Launch FPVR in \hyperlink{glos:PCVR}{PCVR} mode on the reference \hyperlink{glos:PCVR}{PCVR}
+ computer connected to the target headset using a supported \hyperlink{glos:PCVR}{PCVR} connection
  method.\par
  \textbf{Validation:} An independent evaluator launches it using only the documentation.
 \item \hyperlink{req:NFR-COMP-01}{\textbf{NFR-COMP-01}}\par
  \textbf{Verification:} Confirm the target headset's motion controllers
  control all four flight axes in standalone mode and a standard gamepad
- controls all four in PCVR mode, and record the tested combinations.\par
+ controls all four in \hyperlink{glos:PCVR}{PCVR} mode, and record the tested combinations.\par
  \textbf{Validation:} Users confirm that each controller is usable for flight.
 \item \hyperlink{req:NFR-PERF-01}{\textbf{NFR-PERF-01}}\par
  \textbf{Verification:} On the target headset in standalone mode, fly normally for
  120 continuous seconds in each of the two required environments and confirm
- the average frame rate is at least 72 FPS. Record frame-time spikes for
+ the average frame rate is at least 72 \hyperlink{glos:FPS}{FPS}. Record frame-time spikes for
  review.\par
  \textbf{Validation:} Users report whether the visuals feel smooth and comfortable.
 \item \hyperlink{req:NFR-PERF-02}{\textbf{NFR-PERF-02}}\par
@@ -3038,7 +3012,7 @@ phase 6 of the phase-in plan (\hyperref[p3]{P.3}).
 \item \hyperlink{req:NFR-REL-01}{\textbf{NFR-REL-01}}\par
  \textbf{Verification:} Run 20 consecutive crash-and-respawn cycles in each
  required obstacle-course environment and confirm the application does not
- terminate and checkpoint progress stays consistent.\par
+ terminate and \hyperlink{glos:Checkpoint}{checkpoint} progress stays consistent.\par
  \textbf{Validation:} Users practise extended sessions and report any instability.
 \item \hyperlink{req:NFR-USAB-01}{\textbf{NFR-USAB-01}}\par
  \textbf{Verification:} Confirm the control guide is reachable from the main
@@ -3093,7 +3067,7 @@ and rating proposals are now specified directly by
 \item \hypertarget{req:PR-FLT-01}{}\textbf{PR-FLT-01}\par
  \textbf{Verification:} Hover near the clearance threshold of
  \texttt{TAKEOFF\_CLEARANCE\_M} and confirm airborne latches when it is first
- reached and does not clear when returning below it. Check respawn and restart
+ reached and does not clear when returning below it. Check \hyperlink{glos:Respawn}{respawn} and restart
  initialize it correctly.\par
  \textbf{Validation:} Users confirm that takeoff feels natural. The clearance is
  checked against the drone size and course scale.
@@ -3101,7 +3075,7 @@ and rating proposals are now specified directly by
  \textbf{Verification:} Run the zero-thrust, zero-drag, zero-velocity
  fixture for \texttt{GRAVITY\_TEST\_SECONDS} and compare the displacement with
  $gt^2/2$ using \texttt{REFERENCE\_GRAVITY} within
- \texttt{GRAVITY\_REL\_ERROR}. Document the fixture's initial pose and
+ \texttt{GRAVITY\_REL\_ERROR}. Document the fixture's initial \hyperlink{glos:Tracking}{pose} and
  velocity.\par
  \textbf{Validation:} Supervisor review of the reference drone and realism
  tolerances, which remain TO BE REVIEWED.
@@ -3123,7 +3097,7 @@ are ready if they are approved.
  medical or room claims are made.\par
  \textbf{Validation:} Expert review of the wording and user comprehension checks.
 \item \hypertarget{req:SR-02}{}\textbf{SR-02}\par
- \textbf{Verification:} Simulate loss of tracking, input, focus, and
+ \textbf{Verification:} Simulate loss of \hyperlink{glos:Tracking}{tracking}, input, \hyperlink{glos:Focus}{focus}, and
  controller connection. Confirm that flight and both timers stop, stale
  controls are discarded, and resume requires available input, neutral controls,
  and explicit confirmation.\par
@@ -3141,8 +3115,8 @@ are ready if they are approved.
  \textbf{Validation:} Comfort effectiveness is PENDING VERIFICATION through user trials.
 \item \hypertarget{req:SR-05}{}\textbf{SR-05}\par
  \textbf{Verification:} Inject non-finite or out-of-range inputs, invalid
- checkpoint orders, and intersecting recovery poses. Confirm invalid
- configuration is rejected before flight, runtime faults enter a recoverable
+ \hyperlink{glos:Checkpoint}{checkpoint} orders, and intersecting recovery poses. Confirm invalid
+ configuration is rejected before flight, \hyperlink{glos:Runtime}{runtime} faults enter a recoverable
  error state, and progress, scores, and stale controls are unaffected.\par
  \textbf{Validation:} Supervisor review of the failure behaviour.
 \item \hypertarget{req:SR-06}{}\textbf{SR-06}\par
@@ -3159,9 +3133,9 @@ are ready if they are approved.
  is discarded when a new attempt starts or the review is left.\par
  \textbf{Validation:} Owner review of retention scope.
 \item \hypertarget{req:SR-08}{}\textbf{SR-08}\par
- \textbf{Verification:} If external AI is proposed, review provider,
+ \textbf{Verification:} If external \hyperlink{glos:AI}{AI} is proposed, review provider,
  privacy, retention, and opt-in. Confirm that feedback is labelled advisory,
- cannot change checkpoint, timer, crash, score, or rating state, and that
+ cannot change \hyperlink{glos:Checkpoint}{checkpoint}, timer, crash, score, or rating state, and that
  timeout, error, or declined consent leaves the standard review intact.\par
  \textbf{Validation:} Supervisor and owner approval before any transfer is enabled.
 \end{itemize}
@@ -3178,7 +3152,7 @@ are ready if they are approved.
 \begin{itemize}
 \item \textbf{Team Lead and Flight Physics Developer (Ibrahim Tariq)} --
 Tracks deadlines and keeps the project on schedule. Implements the flight
-model, gravity, and VR camera, and owns frame-rate performance.
+model, gravity, and \hyperlink{glos:VR}{VR} camera, and owns frame-rate performance.
 \item \textbf{Team Liaison and Hardware Integration Developer (John Cho)} --
 Main point of contact with the supervisor, teaching assistant, and
 instructor, and shares their updates with the team. Implements controller
@@ -3186,9 +3160,9 @@ input and headset integration, and owns compatibility testing across headset
 and controller pairs.
 \item \textbf{Training Environments Lead (Sankalpa Chhetri Dhakal)} -- Builds
 the obstacle courses and virtual environments. Leads the investigation of the
-optional ML (machine learning)/AI flight feedback.
+optional ML (machine learning)/\hyperlink{glos:AI}{AI} flight feedback.
 \item \textbf{Game State Developer (Vikram Chandar)} -- Implements game state,
-checkpoints, crash recovery, and timing, and keeps course progress
+\hyperlink{glos:Checkpoint}{checkpoints}, crash recovery, and timing, and keeps course progress
 consistent across crashes and restarts.
 \item \textbf{Scoring and Player Data Developer (Arjun Sasidaran)} --
 Implements scoring, ratings, flight data recording, and the post-flight
@@ -3211,20 +3185,20 @@ author.
 
 \begin{itemize}
 \item \textbf{Game engine} -- Unity, imposed by the confirmed project scope
-for its VR, input, and physics support.
+for its \hyperlink{glos:VR}{VR}, input, and physics support.
 \item \textbf{Programming language} -- C\#, the Unity scripting language
 selected in the Development Plan.
-\item \textbf{VR headset} -- Meta Quest 3S. This is the \emph{target headset}
-in S.2, run both standalone and through PCVR
+\item \textbf{\hyperlink{glos:VR}{VR} headset} -- Meta Quest 3S. This is the \emph{target headset}
+in S.2, run both standalone and through \hyperlink{glos:PCVR}{PCVR}
 (\hyperlink{req:FR-UI-01}{FR-UI-01}, \hyperlink{req:FR-UI-02}{FR-UI-02}). It
 was chosen as the agreed primary evaluation device.
 \item \textbf{Controllers} -- The Quest 3S \emph{motion controllers} in
 standalone mode and an Xbox-compatible gamepad, the \emph{standard gamepad} in
-S.2, in PCVR mode (\hyperlink{req:FR-UI-03}{FR-UI-03}).
-\item \textbf{PCVR platform} -- A Windows 11 computer, the \emph{reference PCVR
+S.2, in \hyperlink{glos:PCVR}{PCVR} mode (\hyperlink{req:FR-UI-03}{FR-UI-03}).
+\item \textbf{\hyperlink{glos:PCVR}{PCVR} platform} -- A Windows 11 computer, the \emph{reference \hyperlink{glos:PCVR}{PCVR}
 computer} in S.2 (\hyperlink{req:NFR-INST-02}{NFR-INST-02}). A single
-reference operating system keeps PCVR testing repeatable.
-\item \hypertarget{gl:XR}{}\textbf{XR integration} -- Unity's OpenXR Plugin and XR Interaction
+reference operating system keeps \hyperlink{glos:PCVR}{PCVR} testing repeatable.
+\item \hypertarget{gl:XR}{}\textbf{\hyperlink{glos:XR}{XR} integration} -- Unity's OpenXR Plugin and \hyperlink{glos:XR}{XR} Interaction
 Toolkit; exact package versions are an open decision
 (\hyperref[p7]{P.7}).
 \item \textbf{Online service} -- Accounts, result synchronization, and the
@@ -3238,7 +3212,7 @@ per issue and pull-request review before merging.
 project documentation on every pull request.
 \item \textbf{Not required for the core system} -- Multiplayer networking and
 custom RF (radio-frequency) hardware are not needed to meet the requirements
-in S.2. Multiplayer and dedicated FPV transmitter support are stretch goals
+in S.2. Multiplayer and dedicated \hyperlink{glos:FPV}{FPV} transmitter support are stretch goals
 (LC-08); the technology each would need is listed in \hyperref[p5]{P.5}.
 \end{itemize}
 
@@ -3254,8 +3228,8 @@ from the capstone calendar.
 \toprule
 Milestone & Due date \\\midrule
 Problem Statement, PoC Plan, Development Plan & Complete (Sept. 2026) \\
-SRS and Hazard Analysis & Oct. 19, 2026 \\
-SRS peer review issues & Oct. 22, 2026 \\
+\hyperlink{glos:SRS}{SRS} and Hazard Analysis & Oct. 19, 2026 \\
+\hyperlink{glos:SRS}{SRS} peer review issues & Oct. 22, 2026 \\
 VnV Plan & Nov. 2, 2026 \\
 VnV Plan peer review issues & Nov. 5, 2026 \\
 Design Document Rev $-1$ and CD-Fall & Nov. 16, 2026 \\
@@ -3280,7 +3254,7 @@ Each requirement's priority is given in \hyperref[s5]{S.5}; within a phase,
 Medium-priority requirements are the first to be deferred if the phase runs
 late. Each phase is
 due at a milestone in Table~\ref{tab:milestones}; phases 1 and 2 form the proof
-of concept, which the Development Plan defines as VR support, a simple flight
+of concept, which the Development Plan defines as \hyperlink{glos:VR}{VR} support, a simple flight
 model, and controller input. Phase 5 does not depend on the flight work, so it is developed alongside
 phases 3 and 4 from January and is due with the V\&V Report. A phase is
 complete when its requirements are implemented and pass the verification
@@ -3334,11 +3308,11 @@ areas.
 Requirements and hazards & Write the Goals, Environment, System, and Project
 books; give every requirement a unique ID and rationale; identify hazards with
 an FMEA and derive safety and security requirements; trace each requirement
-to its goal, hazards, and verification. & SRS and Hazard Analysis &
+to its goal, hazards, and verification. & \hyperlink{glos:SRS}{SRS} and Hazard Analysis &
 Oct. 19, 2026 \\
-SRS peer review & Review the assigned team's SRS against the rubric and raise
+\hyperlink{glos:SRS}{SRS} peer review & Review the assigned team's \hyperlink{glos:SRS}{SRS} against the rubric and raise
 more than five substantive GitHub issues; triage the issues raised on this
-SRS and assign each to an owner. & SRS peer review issues & Oct. 22, 2026 \\
+\hyperlink{glos:SRS}{SRS} and assign each to an owner. & \hyperlink{glos:SRS}{SRS} peer review issues & Oct. 22, 2026 \\
 Verification planning & Write a test case for every requirement in
 S.2, with inputs, expected outputs, and pass criteria; write
 step-by-step procedures for phases 1 and 2; define how frame rate and input
@@ -3348,16 +3322,16 @@ VnV peer review & Review the assigned team's VnV Plan and raise issues;
 address the issues raised on this plan. & VnV Plan peer review issues &
 Nov. 5, 2026 \\
 Architecture & Decompose the system into modules (input, flight model, course
-and checkpoint state, timing and scoring, review, result storage and
+and \hyperlink{glos:Checkpoint}{checkpoint} state, timing and scoring, review, result storage and
 leaderboards, accounts, user interface); define each module's secrets and
 interfaces; trace every High-priority requirement to a module. & Design
 Document Rev $-1$ and CD-Fall & Nov. 16, 2026 \\
 Design peer review & Review the assigned team's design document and raise
 issues; address the issues raised on this design. & Design Document
 Rev $-1$ peer review & Nov. 19, 2026 \\
-VR and controller integration (phase 1) & Set up the Unity project with
-OpenXR; build and launch on the Quest 3S in standalone and PCVR modes; map
-throttle, pitch, roll, and yaw for the Quest 3S motion controllers and the
+\hyperlink{glos:VR}{VR} and controller integration (phase 1) & Set up the Unity project with
+OpenXR; build and launch on the Quest 3S in standalone and \hyperlink{glos:PCVR}{PCVR} modes; map
+\hyperlink{glos:Throttle}{throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} for the Quest 3S motion controllers and the
 gamepad (FR-UI-03); add the control guide, main menu, pause menu, and exit
 (FR-UI-04, NFR-SAFE-01). & PoC Demonstration &
 Nov. 23 -- Dec. 3, 2026 \\
@@ -3367,16 +3341,16 @@ measure input response (NFR-PERF-02) and profile frame rate on the headset;
 tune controller dead zones. & PoC Demonstration &
 Nov. 23 -- Dec. 3, 2026 \\
 Detailed design & Specify each module's interface, state variables, and
-behaviour, including the checkpoint, crash, and timer state transitions and
+behaviour, including the \hyperlink{glos:Checkpoint}{checkpoint}, crash, and timer state transitions and
 the local and online result states. &
 Design Documentation & Jan. 18, 2027 \\
 Courses, recovery, and timing (phase 3) & Build at least three obstacle
 courses in at least two environments
-(FR-LVL); place ordered checkpoints; detect
-crashes, respawn at the last checkpoint, and restart a course
+(FR-LVL); place ordered \hyperlink{glos:Checkpoint}{checkpoints}; detect
+crashes, \hyperlink{glos:Respawn}{respawn} at the last \hyperlink{glos:Checkpoint}{checkpoint}, and \hyperlink{glos:Respawn}{restart} a course
 (FR-CHK); add the total and section timers and crash count (FR-PER-01 to
 FR-PER-07) and the level-select and crash-recovery menus (FR-UI-05); confirm
-72 FPS in both environments (NFR-PERF-01); run 20 consecutive
+72 \hyperlink{glos:FPS}{FPS} in both environments (NFR-PERF-01); run 20 consecutive
 crash-and-respawn cycles in each environment (NFR-REL-01). & Module Implementation & Jan. 21, 2027 \\
 Scoring, review, and local results (phase 4) & Implement the score and
 rating (FR-PER-08 to FR-PER-10); build the post-flight review screen
@@ -3399,7 +3373,7 @@ recorded attempt data and add feedback to the post-flight review (FR-AI);
 if it is not ready, fix defects from verification and improve comfort and
 usability instead. & Final Demonstration
 (Revision 1) & Mar. 15 -- Mar. 21, 2027 \\
-Final documentation & Update the SRS, Hazard Analysis, VnV Plan and Report,
+Final documentation & Update the \hyperlink{glos:SRS}{SRS}, Hazard Analysis, VnV Plan and Report,
 and design documents to match the delivered system; write the user guide and
 installation instructions; complete the reflections. & Final Documentation
 (Revision 1) & Mar. 31, 2027 \\
@@ -3415,15 +3389,15 @@ supported hardware and the configuration and observed results are recorded.
 
 
 \begin{itemize}
-\item \textbf{VR Headset} -- A Meta Quest 3S headset for both standalone and
-PCVR play.
+\item \textbf{\hyperlink{glos:VR}{VR} Headset} -- A Meta Quest 3S headset for both standalone and
+\hyperlink{glos:PCVR}{PCVR} play.
 \item \textbf{Controllers} -- Quest 3S motion controllers and an
 Xbox-compatible gamepad.
-\item \textbf{PCVR Host} -- A Windows 11 computer and a supported PCVR
+\item \textbf{\hyperlink{glos:PCVR}{PCVR} Host} -- A Windows 11 computer and a supported \hyperlink{glos:PCVR}{PCVR}
 connection to the headset.
 \item \textbf{Game Engine and Language} -- Unity with C\#, including its
 physics, input, and rendering systems.
-\item \textbf{XR Packages} -- OpenXR Plugin and XR Interaction Toolkit for
+\item \textbf{\hyperlink{glos:XR}{XR} Packages} -- OpenXR Plugin and \hyperlink{glos:XR}{XR} Interaction Toolkit for
 headset and controller integration.
 \item \textbf{Profiling Tools} -- Unity Profiler and headset performance
 tools to measure frame rate, input response, and state transitions.
@@ -3440,25 +3414,25 @@ requests.
 build for the project documents.
 \item \textbf{Test Space} -- A safe, clear, stationary area for headset
 testing.
-\item \textbf{AI Model} -- A pre-trained model, such as Qwen2-VL, evaluated
+\item \textbf{\hyperlink{glos:AI}{AI} Model} -- A pre-trained model, such as Qwen2-VL, evaluated
 for the intelligent feedback in phase 6 (\hyperref[sec:s2-ai]{FR-AI}).
 \item \textbf{Network Stack (Stretch Goal)} -- Unity Netcode, Unity Transport,
 and the Unity Multiplayer SDK, as identified in the Development Plan, needed
 only if multiplayer is taken on (LC-08).
-\item \textbf{RF Hardware (Stretch Goal)} -- A dedicated FPV radio transmitter
+\item \textbf{RF Hardware (Stretch Goal)} -- A dedicated \hyperlink{glos:FPV}{FPV} radio transmitter
 and a receiver module using an open-source radio protocol, needed only if
 transmitter support is taken on (LC-08); the protocol and hardware are an
 open decision (\hyperref[p7]{P.7}).
 \end{itemize}
 
-Exact versions, PC specifications, and profiling equipment are open
+Exact versions, \hyperlink{glos:PCVR}{PC} specifications, and profiling equipment are open
 decisions listed in \hyperref[p7]{P.7}.
 
 \subsection{Risk and mitigation analysis}\label{p6}
 
 
 \begin{itemize}
-\item \textbf{Risk: VR or Controller Incompatibility}
+\item \textbf{Risk: \hyperlink{glos:VR}{VR} or Controller Incompatibility}
   \begin{itemize}
   \item Description: The Quest 3S, a controller, or an execution mode may
   not launch or accept input.
@@ -3466,7 +3440,7 @@ decisions listed in \hyperref[p7]{P.7}.
   test both controller and mode pairs early, and record any problems
   (NFR-COMP-01). Responsible: John Cho.
   \end{itemize}
-\item \textbf{Risk: VR Performance Shortfall}
+\item \textbf{Risk: \hyperlink{glos:VR}{VR} Performance Shortfall}
   \begin{itemize}
   \item Description: A representative course may fall below the target frame
   rate or exceed the input-response threshold, causing discomfort.
@@ -3476,7 +3450,7 @@ decisions listed in \hyperref[p7]{P.7}.
   \end{itemize}
 \item \textbf{Risk: Unrealistic Flight Physics}
   \begin{itemize}
-  \item Description: The flight model may not feel like a real FPV drone
+  \item Description: The flight model may not feel like a real \hyperlink{glos:FPV}{FPV} drone
   because no reference drone has been chosen.
   \item Mitigation: Agree on a reference drone with the supervisor and build
   the flight model incrementally from gravity checks (FR-FLT).
@@ -3484,9 +3458,9 @@ decisions listed in \hyperref[p7]{P.7}.
   \end{itemize}
 \item \textbf{Risk: Inconsistent Game State}
   \begin{itemize}
-  \item Description: Crashes, checkpoints, and timers may disagree, giving
+  \item Description: Crashes, \hyperlink{glos:Checkpoint}{checkpoints}, and timers may disagree, giving
   wrong scores.
-  \item Mitigation: Define the checkpoint, crash, and timer state changes in
+  \item Mitigation: Define the \hyperlink{glos:Checkpoint}{checkpoint}, crash, and timer state changes in
   the detailed design and test each one directly (FR-CHK, FR-PER).
   Responsible: Vikram Chandar and Arjun Sasidaran.
   \end{itemize}
@@ -3510,11 +3484,11 @@ decisions listed in \hyperref[p7]{P.7}.
   spot (NFR-SAFE-02), and stop testing when a user cannot continue safely.
   Responsible: rotating QA role.
   \end{itemize}
-\item \textbf{Risk: AI Feedback Scope Creep}
+\item \textbf{Risk: \hyperlink{glos:AI}{AI} Feedback Scope Creep}
   \begin{itemize}
-  \item Description: The AI feedback feature may take time away from core
+  \item Description: The \hyperlink{glos:AI}{AI} feedback feature may take time away from core
   features.
-  \item Mitigation: Keep AI feedback in phase 6 and only start it after the
+  \item Mitigation: Keep \hyperlink{glos:AI}{AI} feedback in phase 6 and only start it after the
   Revision 0 demonstration (FR-AI). Responsible: Sankalpa Chhetri Dhakal.
   \end{itemize}
 \item \textbf{Risk: Unrealistic Schedule or Workload}
@@ -3555,9 +3529,9 @@ G.7.
 \item \textbf{Open Decisions:} These must be resolved before the affected
 requirements are accepted.
   \begin{itemize}
-  \item Hardware: PC specifications and Unity and package versions
+  \item Hardware: \hyperlink{glos:PCVR}{PC} specifications and Unity and package versions
   (NFR-INST-02, NFR-COMP-01).
-  \item Performance: confirm the 72 FPS and 100 ms thresholds on the Quest 3S
+  \item Performance: confirm the 72 \hyperlink{glos:FPS}{FPS} and 100 ms thresholds on the Quest 3S
   and agree how they are measured (NFR-PERF-01, NFR-PERF-02).
   \item Flight model: reference drone, accuracy targets, and controller dead
   zones (FR-FLT).
@@ -3569,10 +3543,10 @@ requirements are accepted.
   \item Safety and comfort: the safety requirements from the Hazard Analysis,
   comfort options, and procedures for testing with users (NFR-SAFE-01,
   NFR-SAFE-02).
-  \item AI feedback: which model to use, whether it runs on the device or as
+  \item \hyperlink{glos:AI}{AI} feedback: which model to use, whether it runs on the device or as
   a service, and how attempt data is handled (FR-AI).
   \item Stretch goals: which networking package to use for multiplayer and
-  which radio protocol and hardware to use for FPV transmitters (LC-08).
+  which radio protocol and hardware to use for \hyperlink{glos:FPV}{FPV} transmitters (LC-08).
   \end{itemize}
 \end{itemize}
 
@@ -3590,7 +3564,7 @@ architecture is prescribed here.
 \hyperlink{req:NFR-COMP-01}{NFR-COMP-01}.
 Other Quest models, such as the Quest 3, or extra controller and mode pairs,
 such as a gamepad in standalone mode, may be added once the Quest 3S baseline
-works, and the reference PCVR computer may change.
+works, and the reference \hyperlink{glos:PCVR}{PCVR} computer may change.
 \item[LC-02: Flight tuning.]
 \hyperlink{req:FR-FLT-02}{FR-FLT-02}, \hyperlink{req:FR-FLT-03}{FR-FLT-03},
 \hyperlink{req:FR-FLT-05}{FR-FLT-05}.
@@ -3605,7 +3579,7 @@ follows whatever score is used.
 \item[LC-04: Performance thresholds.]
 \hyperlink{req:NFR-PERF-01}{NFR-PERF-01},
 \hyperlink{req:NFR-PERF-02}{NFR-PERF-02}.
-The 72 FPS and 100 ms targets are proposed values and may be raised or
+The 72 \hyperlink{glos:FPS}{FPS} and 100 ms targets are proposed values and may be raised or
 lowered after they are measured on the Quest 3S.
 \item[LC-05: Content and comfort.]
 \hyperlink{req:FR-LVL-03}{FR-LVL-03}, \hyperlink{req:FR-LVL-04}{FR-LVL-04},
@@ -3627,7 +3601,7 @@ The model, the data it uses, and whether it runs on the device or as a service
 may change, and as the only Low-priority feature it may be deferred.
 \item[LC-08: Stretch goals.]
 \hyperlink{req:FR-UI-03}{FR-UI-03}, \hyperlink{req:NFR-COMP-01}{NFR-COMP-01}.
-Multiplayer and dedicated FPV transmitter support may be added after the
+Multiplayer and dedicated \hyperlink{glos:FPV}{FPV} transmitter support may be added after the
 required features are complete. Each would add new requirements, bring in a
 networking package or radio hardware (P.5), and change the limits in
 \hyperref[g6]{G.6}.
@@ -3646,20 +3620,20 @@ responsibilities the team cannot take on.
 \item[UC-02: Four-axis control.]
 \hyperlink{req:FR-FLT-02}{FR-FLT-02}, \hyperlink{req:FR-UI-03}{FR-UI-03},
 \hyperlink{req:FR-UI-04}{FR-UI-04}, \hyperlink{req:NFR-COMP-01}{NFR-COMP-01}.
-Throttle, pitch, roll, and yaw are how every real FPV drone is flown, so
-changing them would break the FPV training goal.
+\hyperlink{glos:Throttle}{Throttle}, \hyperlink{glos:Throttle}{pitch}, \hyperlink{glos:Throttle}{roll}, and \hyperlink{glos:Throttle}{yaw} are how every real \hyperlink{glos:FPV}{FPV} drone is flown, so
+changing them would break the \hyperlink{glos:FPV}{FPV} training goal.
 \item[UC-03: Recovery and scoring rules.]
 \hyperlink{req:FR-CHK-02}{FR-CHK-02}, \hyperlink{req:FR-CHK-05}{FR-CHK-05}
 to \hyperlink{req:FR-CHK-08}{FR-CHK-08}, \hyperlink{req:FR-PER-05}{FR-PER-05},
 \hyperlink{req:FR-PER-07}{FR-PER-07}.
-Ordered checkpoints, keeping penalties on Respawn, and a fresh attempt on
-Restart Level are what make results comparable; changing them would make
+Ordered \hyperlink{glos:Checkpoint}{checkpoints}, keeping penalties on \hyperlink{glos:Respawn}{Respawn}, and a fresh attempt on
+\hyperlink{glos:Respawn}{Restart} Level are what make results comparable; changing them would make
 stored scores and leaderboards (\hyperlink{req:FR-DAT-06}{FR-DAT-06})
 meaningless.
 \item[UC-04: Headset-based training.]
 \hyperlink{req:FR-UI-01}{FR-UI-01}, \hyperlink{req:FR-UI-06}{FR-UI-06},
 \hyperlink{req:NFR-INST-01}{NFR-INST-01}.
-Immersive VR is what sets FPVR apart from desktop simulators
+Immersive \hyperlink{glos:VR}{VR} is what sets FPVR apart from desktop simulators
 (\hyperref[g2]{G.2}), and desktop-only play is excluded in
 \hyperref[g6]{G.6}.
 \item[UC-05: Offline core training.]
@@ -3774,28 +3748,28 @@ Claude Opus 5.5 and GPT Astra 6.1.
 \subsection*{How and Where Used}
 
 \begin{enumerate}
-    \item \textbf{How were the AI tools used?}
+    \item \textbf{How were the \hyperlink{glos:AI}{AI} tools used?}
 
-    The AI tools were used as drafting, reviewing, and consistency-checking
+    The \hyperlink{glos:AI}{AI} tools were used as drafting, reviewing, and consistency-checking
     aids. They helped turn existing team decisions and source documents into
-    draft text, compared sections of the SRS against each other and against the
+    draft text, compared sections of the \hyperlink{glos:SRS}{SRS} against each other and against the
     course rubric, and pointed out places where sections contradicted each
     other or where a requirement had no matching verification. Claude was also
     used to resolve merge conflicts between team members' branches and to make
     repetitive edits across the document, such as adding link targets to every
     requirement. The tools did not make project decisions: the headset, the
     scope of accounts and online results, which features are stretch goals,
-    and the schedule were all decided by the team, and the AI-assisted text
+    and the schedule were all decided by the team, and the \hyperlink{glos:AI}{AI}-assisted text
     was written to match those decisions.
 
-    \item \textbf{Which parts of the document were affected by AI assistance?}
+    \item \textbf{Which parts of the document were affected by \hyperlink{glos:AI}{AI} assistance?}
 
     \begin{itemize}
         \item \textbf{Project book (\hyperref[p1]{P.1}--\hyperref[p7]{P.7}):}
         Drafting the roles, imposed technical choices, phase-in plan, tasks,
         technology elements, risks, and requirements process from the
         Development Plan, the capstone calendar, and the requirements in S.2.
-        AI review also found dependency problems in the phase-in plan, such as
+        \hyperlink{glos:AI}{AI} review also found dependency problems in the phase-in plan, such as
         requirements scheduled before the features they depend on.
         \item \textbf{Likely and unlikely changes:} Drafting the description of
         how each likely change could happen and why each unlikely change is not
@@ -3808,7 +3782,7 @@ Claude Opus 5.5 and GPT Astra 6.1.
         updating entries that no longer matched S.2, removing a duplicated copy
         of the section, and fixing broken links.
         \item \textbf{Functionality (\hyperref[s2]{S.2}):} Rewording the
-        hardware requirements to refer to the target headset, reference PCVR
+        hardware requirements to refer to the target headset, reference \hyperlink{glos:PCVR}{PCVR}
         computer, and standard gamepad, with the specific devices recorded as
         constraints in P.2, and adding link targets to every requirement.
         \item \textbf{Limitations and Exclusions (\hyperref[g6]{G.6}):}
@@ -3822,7 +3796,7 @@ Claude Opus 5.5 and GPT Astra 6.1.
         revised.
     \end{itemize}
 
-    AI-generated suggestions were used as drafting and review aids rather
+    \hyperlink{glos:AI}{AI}-generated suggestions were used as drafting and review aids rather
     than accepted automatically. The team remained responsible for reviewing
     the content and ensuring that the final document accurately reflected the
     FPVR project's scope, requirements, and design decisions.
@@ -3831,18 +3805,18 @@ Claude Opus 5.5 and GPT Astra 6.1.
 \subsection*{Verification of AI-Generated Content}
 
 \begin{enumerate}
-    \item \textbf{How did the team check AI-generated or AI-assisted material
+    \item \textbf{How did the team check \hyperlink{glos:AI}{AI}-generated or \hyperlink{glos:AI}{AI}-assisted material
     before including it in the document?}
 
-    Every AI-assisted change was reviewed by the team member responsible for
+    Every \hyperlink{glos:AI}{AI}-assisted change was reviewed by the team member responsible for
     that section before it was committed, and again through pull-request
     review by another team member before it was merged. Draft text was
     checked against its source: roles and tools against the Development Plan,
     milestone dates against the capstone calendar, and requirement references
-    against S.2. When the AI suggested a scope or hardware change, such as
+    against S.2. When the \hyperlink{glos:AI}{AI} suggested a scope or hardware change, such as
     whether user accounts were a stretch goal or which headset was the target,
     the decision was confirmed by the team rather than taken from the
-    suggestion. Several AI suggestions were rejected or reversed after review,
+    suggestion. Several \hyperlink{glos:AI}{AI} suggestions were rejected or reversed after review,
     for example an input-response target that was not backed by a requirement
     at the time it was proposed.
 
@@ -3860,10 +3834,10 @@ Claude Opus 5.5 and GPT Astra 6.1.
         \item \textbf{Calculations:} Worked examples in S.6, such as the score
         for a given time and crash count under
         \hyperlink{req:FR-PER-08}{FR-PER-08}, were checked by hand.
-        \item \textbf{Numerical targets:} Thresholds such as 72 FPS and 100 ms
+        \item \textbf{Numerical targets:} Thresholds such as 72 \hyperlink{glos:FPS}{FPS} and 100 ms
         are treated as proposed targets to be confirmed on the target hardware
         (\hyperref[p7]{P.7}), not as verified results.
-        \item \textbf{References:} AI tools were not used to produce
+        \item \textbf{References:} \hyperlink{glos:AI}{AI} tools were not used to produce
         citations. External references were found and checked by team
         members.
     \end{itemize}
@@ -3872,12 +3846,12 @@ Claude Opus 5.5 and GPT Astra 6.1.
     consistency, and appropriateness of the submitted document?}
 
     The team is ultimately responsible for the accuracy, completeness,
-    consistency, and appropriateness of the submitted SRS, regardless of
-    whether material was written by team members or generated with AI
-    assistance. AI tools can help with drafting, reviewing, and finding
+    consistency, and appropriateness of the submitted \hyperlink{glos:SRS}{SRS}, regardless of
+    whether material was written by team members or generated with \hyperlink{glos:AI}{AI}
+    assistance. \hyperlink{glos:AI}{AI} tools can help with drafting, reviewing, and finding
     inconsistencies, but their suggestions may be inaccurate, incomplete, or
     unsuitable for the project's scope. The team therefore critically
-    evaluates AI-assisted content and ensures that the final document
+    evaluates \hyperlink{glos:AI}{AI}-assisted content and ensures that the final document
     accurately represents the FPVR system and its requirements.
 \end{enumerate}
 
@@ -3904,7 +3878,7 @@ and how did you resolve them?}
 
 The main pain point was keeping the Project book consistent with sections
 that were being written at the same time. I first wrote the Project book when
-the SRS excluded networking and stored history, so P.2 said no network or
+the \hyperlink{glos:SRS}{SRS} excluded networking and stored history, so P.2 said no network or
 database was needed, and the Development Plan and Hazard Analysis disagreed
 with that. While I was working, the System book was updated to add accounts,
 cloud results, leaderboards, and history, and to name the Quest 3S as the
@@ -3912,7 +3886,7 @@ headset. When I merged those changes, my phase-in plan, technology list, and
 likely changes no longer matched the requirements. I resolved this by
 treating S.2 and S.5 as the source of truth: I added a phase for accounts and
 online results, used the S.5 priorities in the phase-in plan, listed the
-online service in P.2 and P.5, and kept only multiplayer and FPV transmitters
+online service in P.2 and P.5, and kept only multiplayer and \hyperlink{glos:FPV}{FPV} transmitters
 as stretch goals. The lesson for me is that the Project book should be
 written after the requirements settle, or updated every time they change.
 
@@ -3947,17 +3921,17 @@ acquire to successfully complete this capstone project?}
 \begin{itemize}
 \item \textbf{Unity and C\# development} -- the whole team, since every
 component is built in Unity.
-\item \textbf{VR development on the Meta Quest 3S with OpenXR} -- John Cho and
+\item \textbf{\hyperlink{glos:VR}{VR} development on the Meta Quest 3S with OpenXR} -- John Cho and
 Ibrahim Tariq, for headset and controller integration and frame-rate
 performance.
 \item \textbf{Drone flight dynamics} -- Ibrahim Tariq, to build a flight model
-that feels like a real FPV drone.
+that feels like a real \hyperlink{glos:FPV}{FPV} drone.
 \item \textbf{Level and environment design} -- Sankalpa Chhetri Dhakal, for
 the obstacle courses and environments.
 \item \textbf{Machine learning for flight feedback} -- Sankalpa Chhetri
-Dhakal, to evaluate whether the optional AI feedback is feasible.
+Dhakal, to evaluate whether the optional \hyperlink{glos:AI}{AI} feedback is feasible.
 \item \textbf{State machine design and testing} -- Vikram Chandar, to keep
-checkpoints, crashes, and timers consistent.
+\hyperlink{glos:Checkpoint}{checkpoints}, crashes, and timers consistent.
 \item \textbf{Scoring design and flight data recording} -- Arjun Sasidaran,
 to design a score and rating that are fair and that users can understand.
 \end{itemize}
@@ -3969,14 +3943,14 @@ each team member pursue, and why did they make this choice?}
 
 \begin{itemize}
 \item \textbf{Unity and C\#} -- (1) Unity Learn tutorials and the Unity
-manual; (2) building small prototypes, such as a single checkpoint or timer,
+manual; (2) building small prototypes, such as a single \hyperlink{glos:Checkpoint}{checkpoint} or timer,
 before the real features.
-\item \textbf{VR on the Meta Quest 3S} -- (1) Meta's developer documentation and
+\item \textbf{\hyperlink{glos:VR}{VR} on the Meta Quest 3S} -- (1) Meta's developer documentation and
 sample projects; (2) testing early builds on the headset and profiling them.
 \item \textbf{Drone flight dynamics} -- (1) reading about quadcopter dynamics
 and the reference drone's specifications; (2) flying existing simulators such
 as Liftoff and comparing their behaviour.
-\item \textbf{Level design} -- (1) studying the courses in existing FPV
+\item \textbf{Level design} -- (1) studying the courses in existing \hyperlink{glos:FPV}{FPV}
 simulators; (2) playtesting courses with teammates and adjusting difficulty.
 \item \textbf{Machine learning} -- (1) online courses and model documentation
 for pre-trained models such as Qwen2-VL; (2) testing a model on small samples
@@ -4007,7 +3981,7 @@ reflections.
 
 \subsubsection*{What went well while writing this deliverable?}
 
-The revision history records my adaptation of the SRS to Meyer's template and completion of Goals and S.2. This linked the project objectives to identifiable requirements and provided a common structure for the other books.
+The revision history records my adaptation of the \hyperlink{glos:SRS}{SRS} to Meyer's template and completion of Goals and S.2. This linked the project objectives to identifiable requirements and provided a common structure for the other books.
 
 \subsubsection*{What pain points arose, and how can they be addressed?}
 
@@ -4023,11 +3997,11 @@ Requirements engineering and software design topics support testable requirement
 
 \subsubsection*{What knowledge and skills does the team need?}
 
-The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is course design and evaluating optional intelligent feedback. The shared learning plan in Arjun's reflection identifies an area for every team member.
+The team needs Unity development, \hyperlink{glos:VR}{VR} integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is course design and evaluating optional intelligent feedback. The shared learning plan in Arjun's reflection identifies an area for every team member.
 
 \subsubsection*{How will these skills be acquired, and which approach is proposed?}
 
-Two approaches for course design are studying existing FPV courses and running small playtests. I propose starting from examples and then prioritising playtests to expose unclear checkpoints and unsuitable difficulty. For optional feedback, reviewing model documentation and building a small feasibility prototype provide complementary approaches.
+Two approaches for course design are studying existing \hyperlink{glos:FPV}{FPV} courses and running small playtests. I propose starting from examples and then prioritising playtests to expose unclear \hyperlink{glos:Checkpoint}{checkpoints} and unsuitable difficulty. For optional feedback, reviewing model documentation and building a small feasibility prototype provide complementary approaches.
 
 \subsection*{John Cho - Reflection}
 
@@ -4045,15 +4019,15 @@ The revision history does not establish how many requirements came from client o
 
 \subsubsection*{Which courses or course topics support this work?}
 
-Software architecture, human-computer interaction and requirements engineering topics support component boundaries, usable VR interactions and clear use cases. Individual course enrolment is not established by the revision history.
+Software architecture, human-computer interaction and requirements engineering topics support component boundaries, usable \hyperlink{glos:VR}{VR} interactions and clear use cases. Individual course enrolment is not established by the revision history.
 
 \subsubsection*{What knowledge and skills does the team need?}
 
-The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is Quest 3S integration, controller mappings and runtime behaviour. The shared learning plan in Arjun's reflection identifies an area for every team member.
+The team needs Unity development, \hyperlink{glos:VR}{VR} integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is Quest 3S integration, controller mappings and \hyperlink{glos:Runtime}{runtime} behaviour. The shared learning plan in Arjun's reflection identifies an area for every team member.
 
 \subsubsection*{How will these skills be acquired, and which approach is proposed?}
 
-Two approaches are reviewing runtime documentation and sample projects, and testing a minimal application on the headset. I propose beginning with a sample and then prioritising device tests, because tracking, input and connection problems need observation on the target hardware.
+Two approaches are reviewing \hyperlink{glos:Runtime}{runtime} documentation and sample projects, and testing a minimal application on the headset. I propose beginning with a sample and then prioritising device tests, because \hyperlink{glos:Tracking}{tracking}, input and connection problems need observation on the target hardware.
 
 \subsection*{Vikram Chandar - Reflection}
 
@@ -4075,11 +4049,11 @@ Software testing, requirements engineering and discrete mathematics topics suppo
 
 \subsubsection*{What knowledge and skills does the team need?}
 
-The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is state-machine testing for checkpoints, crashes and timers. The shared learning plan in Arjun's reflection identifies an area for every team member.
+The team needs Unity development, \hyperlink{glos:VR}{VR} integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is state-machine testing for \hyperlink{glos:Checkpoint}{checkpoints}, crashes and timers. The shared learning plan in Arjun's reflection identifies an area for every team member.
 
 \subsubsection*{How will these skills be acquired, and which approach is proposed?}
 
-Two approaches are writing transition tables and implementing automated transition tests. I propose defining the expected transitions first, then prioritising tests for repeated crashes, skipped checkpoints and timer resets, since these cases can expose inconsistent state changes.
+Two approaches are writing transition tables and implementing automated transition tests. I propose defining the expected transitions first, then prioritising tests for repeated crashes, skipped \hyperlink{glos:Checkpoint}{checkpoints} and timer resets, since these cases can expose inconsistent state changes.
 
 \subsection*{Ibrahim Tariq - Reflection}
 
@@ -4101,7 +4075,7 @@ Requirements engineering, mechanics and software testing topics support distingu
 
 \subsubsection*{What knowledge and skills does the team need?}
 
-The team needs Unity development, VR integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is simulated flight dynamics and performance on Quest 3S. The shared learning plan in Arjun's reflection identifies an area for every team member.
+The team needs Unity development, \hyperlink{glos:VR}{VR} integration, flight dynamics, course design, state-based testing and scoring skills. My proposed focus is simulated flight dynamics and performance on Quest 3S. The shared learning plan in Arjun's reflection identifies an area for every team member.
 
 \subsubsection*{How will these skills be acquired, and which approach is proposed?}
 
