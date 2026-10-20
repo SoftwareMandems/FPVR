@@ -2670,8 +2670,10 @@ Medium-priority requirements are the first to be deferred if the phase runs
 late. Each phase is
 due at a milestone in Table~\ref{tab:milestones}; phases 1 and 2 form the proof
 of concept, which the Development Plan defines as VR support, a simple flight
-model, and controller input. A phase is complete when its requirements are
-implemented and pass the verification cases specified in the VnV Plan.
+model, and controller input. Phase 5 does not depend on the flight work, so it is developed alongside
+phases 3 and 4 from January and is due with the V\&V Report. A phase is
+complete when its requirements are implemented and pass the verification
+cases specified in the VnV Plan.
 
 \begin{table}[H]\centering\small
 \caption{Requirement phase-in plan}\label{tab:phasein}
@@ -2679,17 +2681,18 @@ implemented and pass the verification cases specified in the VnV Plan.
 \toprule
 Phase & Requirements & Due date / milestone \\\midrule
 1. Deployment, input, and safety &
-FR-UI-01 to FR-UI-06, NFR-INST-01, NFR-INST-02, NFR-COMP-01, NFR-SAFE-01,
-NFR-SAFE-02 &
+FR-UI-01 to FR-UI-04, FR-UI-06, NFR-INST-01, NFR-INST-02, NFR-COMP-01,
+NFR-SAFE-01, NFR-SAFE-02 &
 Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
 2. Free flight &
-FR-FLT-01 to FR-FLT-06, FR-LVL-01, FR-LVL-02, NFR-PERF-01, NFR-PERF-02 &
+FR-FLT-01 to FR-FLT-06, FR-LVL-01, FR-LVL-02, NFR-PERF-02 &
 Nov. 23 -- Dec. 3, 2026 (PoC Demonstration) \\
-3. Ordered courses and recovery &
-FR-LVL-03 to FR-LVL-07, FR-CHK-01 to FR-CHK-08, NFR-REL-01 &
+3. Ordered courses, recovery, and timing &
+FR-LVL-03 to FR-LVL-07, FR-CHK-01 to FR-CHK-08, FR-PER-01 to FR-PER-07,
+FR-UI-05, NFR-PERF-01, NFR-REL-01 &
 Jan. 21, 2027 (Module Implementation) \\
-4. Evaluation, review, and local results &
-FR-PER-01 to FR-PER-10, FR-REV-01 to FR-REV-04, FR-DAT-01, FR-DAT-04,
+4. Scoring, review, and local results &
+FR-PER-08 to FR-PER-10, FR-REV-01 to FR-REV-04, FR-DAT-01, FR-DAT-04,
 FR-DAT-06, FR-DAT-07, NFR-USAB-01, NFR-OFF-01 &
 Feb. 1 -- Feb. 11, 2027 (Revision 0 Demonstration) \\
 5. Accounts and online results &
@@ -2698,8 +2701,8 @@ FR-DAT-10, FR-REV-05, NFR-SEC-01, NFR-SEC-02, NFR-DAT-01 &
 Mar. 8, 2027 (V\&V Report) \\
 6. Intelligent feedback &
 FR-AI-01 to FR-AI-03 &
-Mar. 15 -- Mar. 21, 2027 (Final Demonstration); dropped first if the schedule
-slips \\
+Mar. 15 -- Mar. 21, 2027 (Final Demonstration); verified in the Revision 1
+V\&V Report; dropped first if the schedule slips \\
 \bottomrule\end{tabularx}\end{table}
 
 \subsection{Tasks and deliverables}\label{p4}
@@ -2745,27 +2748,28 @@ Rev $-1$ peer review & Nov. 19, 2026 \\
 VR and controller integration (phase 1) & Set up the Unity project with
 OpenXR; build and launch on the Quest 3S in standalone and PCVR modes; map
 throttle, pitch, roll, and yaw for the Quest 3S motion controllers and the
-gamepad (FR-UI-03); add the control guide, pause menu, and exit (FR-UI,
-NFR-SAFE-01). & PoC Demonstration &
+gamepad (FR-UI-03); add the control guide, main menu, pause menu, and exit
+(FR-UI-04, NFR-SAFE-01). & PoC Demonstration &
 Nov. 23 -- Dec. 3, 2026 \\
 Flight model (phase 2) & Implement four-axis flight with gravity, takeoff, and
 landing (FR-FLT); add the first-person camera;
-profile a free-flight session on the headset against the frame-rate and
-input-response thresholds (NFR-PERF-01, NFR-PERF-02); tune controller dead
-zones. & PoC Demonstration &
+measure input response (NFR-PERF-02) and profile frame rate on the headset;
+tune controller dead zones. & PoC Demonstration &
 Nov. 23 -- Dec. 3, 2026 \\
 Detailed design & Specify each module's interface, state variables, and
 behaviour, including the checkpoint, crash, and timer state transitions and
 the local and online result states. &
 Design Documentation & Jan. 18, 2027 \\
-Courses and recovery (phase 3) & Build at least three obstacle
+Courses, recovery, and timing (phase 3) & Build at least three obstacle
 courses in at least two environments
 (FR-LVL); place ordered checkpoints; detect
 crashes, respawn at the last checkpoint, and restart a course
-(FR-CHK); run 20 consecutive crash-and-respawn cycles in each environment
-(NFR-REL-01). & Module Implementation & Jan. 21, 2027 \\
-Evaluation, review, and local results (phase 4) & Implement the timers, crash
-count, score, and rating (FR-PER); build the post-flight review screen
+(FR-CHK); add the total and section timers and crash count (FR-PER-01 to
+FR-PER-07) and the level-select and crash-recovery menus (FR-UI-05); confirm
+72 FPS in both environments (NFR-PERF-01); run 20 consecutive
+crash-and-respawn cycles in each environment (NFR-REL-01). & Module Implementation & Jan. 21, 2027 \\
+Scoring, review, and local results (phase 4) & Implement the score and
+rating (FR-PER-08 to FR-PER-10); build the post-flight review screen
 (FR-REV); save each completed attempt locally and show the local leaderboard
 (FR-DAT-01, FR-DAT-04); confirm the core flow works with no network
 (NFR-OFF-01); integrate with phases 1--3 and rehearse the demonstration. &
