@@ -1151,7 +1151,7 @@ and usage assumptions.
 
 \subsection{Functionality}\label{s2}
 
-This section defines the externally observable functional and non-functional requirements of FPVR. Each requirement has a unique identifier and an individual rationale. Requirements apply to the initial release unless explicitly designated as an optional enhancement. The target headset is Meta Quest 3S. Numeric thresholds and scoring parameters in this section constitute a proposed, testable baseline to be approved by the project team and verified on target hardware.
+This section defines the externally observable functional and non-functional requirements of FPVR. Each requirement has a unique identifier and an individual rationale. Requirements apply to the initial release unless explicitly designated as an optional enhancement. Requirements refer to the \emph{target headset}, the \emph{reference PCVR computer}, the headset's \emph{motion controllers}, and a \emph{standard gamepad}; the specific devices are imposed technical choices recorded in \hyperref[p2]{P.2}, so the requirements stay valid if the hardware changes. Numeric thresholds and scoring parameters in this section constitute a proposed, testable baseline to be approved by the project team and verified on target hardware.
 
 \subsubsection{Drone Flight Simulation}
 \label{sec:s2-flight}
@@ -1238,11 +1238,11 @@ This section defines the externally observable functional and non-functional req
 \subsubsection{VR Interface and Controller Input}
 \label{sec:s2-interface}
 \begin{itemize}
-\item \hypertarget{req:FR-UI-01}{}\textbf{FR-UI-01:} FPVR shall present the flight view and training menus in a Meta Quest 3S headset.\\
-\textit{Rationale:} The Quest 3S is the agreed primary evaluation device.
-\item \hypertarget{req:FR-UI-02}{}\textbf{FR-UI-02:} FPVR shall support both standalone execution on Quest 3S and PCVR execution with Quest 3S connected to a compatible Windows 11 computer.\\
-\textit{Rationale:} Both deployment paths are in the project scope; Windows 11 is the proposed reference PCVR operating system for repeatable testing.
-\item \hypertarget{req:FR-UI-03}{}\textbf{FR-UI-03:} FPVR shall provide a flight-control configuration for Quest 3S motion controllers in standalone mode and an Xbox-compatible gamepad in PCVR mode, each providing throttle, pitch, roll, and yaw.\\
+\item \hypertarget{req:FR-UI-01}{}\textbf{FR-UI-01:} FPVR shall present the flight view and training menus in the target headset.\\
+\textit{Rationale:} Headset-based training is the core experience; the target headset is the agreed primary evaluation device (\hyperref[p2]{P.2}).
+\item \hypertarget{req:FR-UI-02}{}\textbf{FR-UI-02:} FPVR shall support both standalone execution on the target headset and PCVR execution with the target headset connected to the reference PCVR computer.\\
+\textit{Rationale:} Both deployment paths are in the project scope; a single reference computer (\hyperref[p2]{P.2}) makes PCVR testing repeatable.
+\item \hypertarget{req:FR-UI-03}{}\textbf{FR-UI-03:} FPVR shall provide a flight-control configuration for the target headset's motion controllers in standalone mode and a standard gamepad in PCVR mode, each providing throttle, pitch, roll, and yaw.\\
 \textit{Rationale:} This defines a minimum verifiable controller-to-execution-mode matrix without promising every controller in every mode.
 \item \hypertarget{req:FR-UI-04}{}\textbf{FR-UI-04:} For each supported controller configuration, FPVR shall display a control guide identifying the assigned throttle, pitch, roll, and yaw inputs before the user begins flight.\\
 \textit{Rationale:} Explicit instructions allow users to operate the simulator without assuming previous FPV experience.
@@ -1321,13 +1321,13 @@ This section defines the externally observable functional and non-functional req
 \subsubsection{Non-Functional Requirements}
 \label{sec:s2-nfr}
 \begin{itemize}
-\item \hypertarget{req:NFR-INST-01}{}\textbf{NFR-INST-01 (Installability):} FPVR shall install and launch as a standalone application on Meta Quest 3S without a connected PC.\\
+\item \hypertarget{req:NFR-INST-01}{}\textbf{NFR-INST-01 (Installability):} FPVR shall install and launch as a standalone application on the target headset without a connected computer.\\
 \textit{Rationale:} Standalone operation is a committed delivery mode, not merely an editor demonstration.
-\item \hypertarget{req:NFR-INST-02}{}\textbf{NFR-INST-02 (Installability):} FPVR shall launch in PCVR mode on a Windows 11 computer connected to a Quest 3S using a supported PCVR connection method.\\
-\textit{Rationale:} A specified reference operating system makes the second deployment mode independently testable.
-\item \hypertarget{req:NFR-COMP-01}{}\textbf{NFR-COMP-01 (Compatibility):} Quest 3S motion controllers shall support the four flight axes in standalone mode, and an Xbox-compatible gamepad shall support the four flight axes in PCVR mode.\\
+\item \hypertarget{req:NFR-INST-02}{}\textbf{NFR-INST-02 (Installability):} FPVR shall launch in PCVR mode on the reference PCVR computer connected to the target headset using a supported PCVR connection method.\\
+\textit{Rationale:} A specified reference computer makes the second deployment mode independently testable.
+\item \hypertarget{req:NFR-COMP-01}{}\textbf{NFR-COMP-01 (Compatibility):} The target headset's motion controllers shall support the four flight axes in standalone mode, and a standard gamepad shall support the four flight axes in PCVR mode.\\
 \textit{Rationale:} This minimum matrix is testable without promising unsupported controller combinations.
-\item \hypertarget{req:NFR-PERF-01}{}\textbf{NFR-PERF-01 (Rendering):} On Quest 3S in standalone mode, FPVR shall maintain an average of at least 72 rendered frames per second over a continuous 120-second normal-flight test in each of the two required environments.\\
+\item \hypertarget{req:NFR-PERF-01}{}\textbf{NFR-PERF-01 (Rendering):} On the target headset in standalone mode, FPVR shall maintain an average of at least 72 rendered frames per second over a continuous 120-second normal-flight test in each of the two required environments.\\
 \textit{Rationale:} The 72-FPS threshold is an initial headset-oriented performance target; averaging over a fixed interval makes the result reproducible, although frame-time spikes should also be inspected during V\&V.
 \item \hypertarget{req:NFR-PERF-02}{}\textbf{NFR-PERF-02 (Input Response):} In the reference test environment, the elapsed time from a received flight-control input event to the first corresponding simulated state update shall not exceed 100 ms in at least 95\% of 100 measured input events.\\
 \textit{Rationale:} This proposed software-response threshold makes responsiveness measurable without conflating it with headset display latency.
@@ -1922,7 +1922,7 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-interface]{FR-UI-01} & Quest 3S VR Interface & High & Defines the primary target device for the intended headset-based training experience. \\
+\hyperref[sec:s2-interface]{FR-UI-01} & Target Headset VR Interface & High & Defines the primary target device for the intended headset-based training experience. \\
 \hyperref[sec:s2-interface]{FR-UI-02} & Standalone and PCVR Modes & High & Both deployment paths are committed project requirements. \\
 \hyperref[sec:s2-interface]{FR-UI-03} & Mode-Specific Controller Support & High & Provides the input mechanisms required for flight in both execution modes. \\
 \hyperref[sec:s2-interface]{FR-UI-04} & Controller Guidance & High & Identifies control assignments before flight, reducing confusion for beginners. \\
@@ -2021,7 +2021,7 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-nfr]{NFR-INST-01} & Standalone Installability & High & Standalone Quest 3S delivery is a committed deployment requirement. \\
+\hyperref[sec:s2-nfr]{NFR-INST-01} & Standalone Installability & High & Standalone delivery on the target headset is a committed deployment requirement. \\
 \hyperref[sec:s2-nfr]{NFR-INST-02} & PCVR Installability & High & PCVR is a committed deployment mode and must be independently launchable on the reference platform. \\
 \hyperref[sec:s2-nfr]{NFR-COMP-01} & Controller Compatibility & High & Correct controller support is necessary for flight in both required execution modes. \\
 \hyperref[sec:s2-nfr]{NFR-PERF-01} & Rendering Performance & High & The specified frame-rate target supports smooth VR operation and helps reduce discomfort. \\
@@ -2218,17 +2218,17 @@ evaluation sessions, supervisor/owner review, or expert review.
 \begin{itemize}
 \item \hyperlink{req:FR-UI-01}{\textbf{FR-UI-01}}\par
  \textbf{Verification:} Run the complete training experience, including the
- flight view and all menus, on a Meta Quest 3S headset.\par
+ flight view and all menus, on the target headset.\par
  \textbf{Validation:} Users complete a session wearing the headset, and their
  feedback is recorded.
 \item \hyperlink{req:FR-UI-02}{\textbf{FR-UI-02}}\par
  \textbf{Verification:} Run the same core scenarios standalone on the
- Quest 3S and in PCVR mode with the Quest 3S connected to a Windows 11
- computer, and compare behaviour.\par
+ target headset and in PCVR mode with the target headset connected to the
+ reference PCVR computer, and compare behaviour.\par
  \textbf{Validation:} Users confirm that both modes are usable.
 \item \hyperlink{req:FR-UI-03}{\textbf{FR-UI-03}}\par
- \textbf{Verification:} Fly the same scenario with the Quest 3S motion
- controllers in standalone mode and with an Xbox-compatible gamepad in PCVR
+ \textbf{Verification:} Fly the same scenario with the target headset's
+ motion controllers in standalone mode and with a standard gamepad in PCVR
  mode, and confirm throttle, pitch, roll, and yaw work in each.\par
  \textbf{Validation:} Users try both configurations and confirm either can be
  used to fly.
@@ -2394,21 +2394,22 @@ phase 6 of the phase-in plan (\hyperref[p3]{P.3}).
 \subsubsection{Non-Functional Requirements}
 \begin{itemize}
 \item \hyperlink{req:NFR-INST-01}{\textbf{NFR-INST-01}}\par
- \textbf{Verification:} Install and launch FPVR on a Quest 3S with no
- computer connected, starting from a clean device.\par
+ \textbf{Verification:} Install and launch FPVR on the target headset with
+ no computer connected, starting from a clean device.\par
  \textbf{Validation:} An independent evaluator installs the application using
  only the documentation.
 \item \hyperlink{req:NFR-INST-02}{\textbf{NFR-INST-02}}\par
- \textbf{Verification:} Launch FPVR in PCVR mode on a Windows 11 computer
- connected to a Quest 3S using a supported PCVR connection method.\par
+ \textbf{Verification:} Launch FPVR in PCVR mode on the reference PCVR
+ computer connected to the target headset using a supported PCVR connection
+ method.\par
  \textbf{Validation:} An independent evaluator launches it using only the documentation.
 \item \hyperlink{req:NFR-COMP-01}{\textbf{NFR-COMP-01}}\par
- \textbf{Verification:} Confirm the Quest 3S motion controllers control all
- four flight axes in standalone mode and an Xbox-compatible gamepad controls
- all four in PCVR mode, and record the tested combinations.\par
+ \textbf{Verification:} Confirm the target headset's motion controllers
+ control all four flight axes in standalone mode and a standard gamepad
+ controls all four in PCVR mode, and record the tested combinations.\par
  \textbf{Validation:} Users confirm that each controller is usable for flight.
 \item \hyperlink{req:NFR-PERF-01}{\textbf{NFR-PERF-01}}\par
- \textbf{Verification:} On the Quest 3S in standalone mode, fly normally for
+ \textbf{Verification:} On the target headset in standalone mode, fly normally for
  120 continuous seconds in each of the two required environments and confirm
  the average frame rate is at least 72 FPS. Record frame-time spikes for
  review.\par
@@ -2601,14 +2602,16 @@ author.
 for its VR, input, and physics support.
 \item \textbf{Programming language} -- C\#, the Unity scripting language
 selected in the Development Plan.
-\item \textbf{VR headset} -- Meta Quest 3S, the agreed primary evaluation
-device, run both standalone and through PCVR
-(\hyperlink{req:FR-UI-01}{FR-UI-01}, \hyperlink{req:FR-UI-02}{FR-UI-02}).
-\item \textbf{Controllers} -- Quest 3S motion controllers in standalone mode
-and an Xbox-compatible gamepad in PCVR mode
-(\hyperlink{req:FR-UI-03}{FR-UI-03}).
-\item \textbf{PCVR platform} -- A Windows 11 computer, the reference operating
-system for PCVR testing (\hyperlink{req:NFR-INST-02}{NFR-INST-02}).
+\item \textbf{VR headset} -- Meta Quest 3S. This is the \emph{target headset}
+in S.2, run both standalone and through PCVR
+(\hyperlink{req:FR-UI-01}{FR-UI-01}, \hyperlink{req:FR-UI-02}{FR-UI-02}). It
+was chosen as the agreed primary evaluation device.
+\item \textbf{Controllers} -- The Quest 3S \emph{motion controllers} in
+standalone mode and an Xbox-compatible gamepad, the \emph{standard gamepad} in
+S.2, in PCVR mode (\hyperlink{req:FR-UI-03}{FR-UI-03}).
+\item \textbf{PCVR platform} -- A Windows 11 computer, the \emph{reference PCVR
+computer} in S.2 (\hyperlink{req:NFR-INST-02}{NFR-INST-02}). A single
+reference operating system keeps PCVR testing repeatable.
 \item \textbf{XR integration} -- Unity's OpenXR Plugin and XR Interaction
 Toolkit; exact package versions are an open decision
 (\hyperref[p7]{P.7}).
