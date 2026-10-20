@@ -85,14 +85,23 @@ Potential hazards associated with this component include loss of tracking,
 visual latency, incorrect orientation, poor headset fit, and the user becoming
 unaware of their physical surroundings.
 
-\subsection{VR Controllers / Input Devices}
+\subsection{Controller Thumbsticks, Triggers, Buttons, and Input Connection}
 
-The input subsystem allows the user to control the simulated drone. Depending
-on the final implementation, input may be provided through VR controllers, a
-game controller, or an external FPV-style radio controller.
+Controller thumbsticks and triggers provide axis values that are mapped to
+drone throttle, pitch, roll, and yaw. Buttons provide discrete commands such as
+pause, restart, and respawn. Depending on the final implementation, these
+controls may be provided by VR controllers, a game controller, or an external
+FPV-style radio controller. The controller connection carries these values and
+button events to the application.
 
-Failures may include disconnected controllers, incorrect input mappings, stuck
-inputs, input delay, or incorrect calibration.
+Failures may include thumbstick drift, where a centred stick reports an input
+and causes unintended drone movement; a stuck thumbstick or trigger,
+which maintains a control value after release; or a stuck or unresponsive
+button, which repeats or prevents a command. Incorrect axis mappings, inverted
+axis directions, or incorrect centre, range, or dead-zone calibration may
+produce unintended throttle or steering responses. A disconnected controller,
+dropped input updates, or delayed input delivery may cause loss of control,
+continued use of a stale control value, or a delayed response to a pilot command.
 
 \subsection{Host Computer}
 
