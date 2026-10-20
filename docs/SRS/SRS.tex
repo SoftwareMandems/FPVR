@@ -75,7 +75,6 @@
 \newcounter{lcnum} %Likely change number
 \newcommand{\lthelcnum}{LC\thelcnum}
 \newcommand{\lcref}[1]{LC\ref{#1}}
-\usepackage{fullpage}
 \newcommand{\deftheory}[9][Not Applicable]
 {
 \newpage
@@ -1820,6 +1819,226 @@ obstacle-course level.
 \guidance{Classification of the behaviors, interfaces and scenarios (\hyperref[s2]{S.2}, \hyperref[s3]{S.3} and \hyperref[s4]{S.4}) by their degree of criticality. It is useful in particular if during the course of the project various pressures force the team to drop certain functions. \cite{BM22}}
 
 % TODO: Write your team's content for S.5 here.
+
+% ============================================================
+% Requirement Priority Tables
+% Existing packages only; no global document changes.
+% ============================================================
+
+% 1. Drone Flight Simulation
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Drone Flight Simulation}
+\label{tab:priority-flight}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-flight]{FR-FLT-01} & First-Person Flight View & High & Essential to the FPV experience; the view must follow the drone to support effective flight perception and control. \\
+\hyperref[sec:s2-flight]{FR-FLT-02} & Four-Axis Flight Controls & High & All four control axes are necessary for meaningful manual FPV flight training. \\
+\hyperref[sec:s2-flight]{FR-FLT-03} & Simulated Gravity & High & Fundamental to credible flight behaviour and realistic control practice. \\
+\hyperref[sec:s2-flight]{FR-FLT-04} & Collision Detection & High & Required to detect obstacle and ground contact and initiate crash recovery. \\
+\hyperref[sec:s2-flight]{FR-FLT-05} & Crash Trigger Rules & High & Establishes correct takeoff and crash behaviour, preventing false crashes and enforcing course challenges. \\
+\hyperref[sec:s2-flight]{FR-FLT-06} & Crash Event Handling & High & Prevents duplicate crash events and coordinates input suspension and recovery, protecting penalty accuracy. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 2. Training Modes and Level Management
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Training Modes and Level Management}
+\label{tab:priority-levels}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-levels]{FR-LVL-01} & Free-Flight Practice & High & Provides unrestricted practice for learning flight controls without assessment pressure. \\
+\hyperref[sec:s2-levels]{FR-LVL-02} & Free-Flight Recovery & High & Enables repeated practice after crashes without restarting the application. \\
+\hyperref[sec:s2-levels]{FR-LVL-03} & Three Differentiated Levels & High & Establishes the minimum required course content and introductory, intermediate, and advanced progression. \\
+\hyperref[sec:s2-levels]{FR-LVL-04} & Multiple Environments & Medium & Provides environmental variety and satisfies the required content scope, but is secondary to core flight functionality. \\
+\hyperref[sec:s2-levels]{FR-LVL-05} & Unrestricted Level Selection & Medium & Improves user choice and accessibility, although it is not fundamental to flight simulation. \\
+\hyperref[sec:s2-levels]{FR-LVL-06} & Return to Main Menu & High & Allows users to leave VR activities and navigate the application without terminating it. \\
+\hyperref[sec:s2-levels]{FR-LVL-07} & Attempt Initialization & High & Ensures attempts start with clean state, preventing previous progress, timings, and penalties from affecting results. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 3. Checkpoints and Crash Recovery
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Checkpoints and Crash Recovery}
+\label{tab:priority-checkpoints}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-checkpoints]{FR-CHK-01} & Ordered Checkpoints and Finish & High & Defines the course structure needed for progression, timing, and completion. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-02} & Ordered Checkpoint Completion & High & Ensures progression depends on passing through checkpoints in the intended sequence. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-03} & Prevention of Checkpoint Skipping & High & Preserves course integrity by preventing users from bypassing required segments. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-04} & Crash Recovery Choices & High & Provides the essential options for resuming practice or starting a fresh attempt. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-05} & Checkpoint Respawn & High & Allows users to retry a failed segment without repeating completed sections. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-06} & Respawn State Preservation & High & Maintains valid progress and accumulated penalties during recovery. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-07} & Level Restart and Reset & High & Provides a clean attempt state for consistent scoring and testing. \\
+\hyperref[sec:s2-checkpoints]{FR-CHK-08} & Level Completion Validation & High & Defines deterministic completion required by scoring, storage, and review. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 4. Timing and Performance Evaluation
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Timing and Performance Evaluation}
+\label{tab:priority-performance}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-performance]{FR-PER-01} & Total Flight Timer & High & Provides the principal time measure for evaluating and comparing completed attempts. \\
+\hyperref[sec:s2-performance]{FR-PER-02} & Crash Time Retention & High & Prevents failed flight segments from being excluded from total completion time. \\
+\hyperref[sec:s2-performance]{FR-PER-03} & Section Timer & Medium & Provides segment-level feedback for targeted practice beyond the overall attempt time. \\
+\hyperref[sec:s2-performance]{FR-PER-04} & Section Timer Reset Rules & Medium & Ensures segment measurements remain meaningful after checkpoint completion and respawn. \\
+\hyperref[sec:s2-performance]{FR-PER-05} & Timer Recovery Rules & High & Maintains consistent timing across respawn and restart, directly affecting score accuracy. \\
+\hyperref[sec:s2-performance]{FR-PER-06} & Timer Pause During Recovery & High & Prevents menu decision time from distorting flight performance measurements. \\
+\hyperref[sec:s2-performance]{FR-PER-07} & Crash Counting & High & Supplies a required performance metric and the crash penalty used in scoring. \\
+\hyperref[sec:s2-performance]{FR-PER-08} & Numerical Score Calculation & High & Converts time and crash data into a reproducible score for ratings and rankings. \\
+\hyperref[sec:s2-performance]{FR-PER-09} & Performance Ratings & Medium & Makes results easier to interpret, although numerical scoring can operate without rating categories. \\
+\hyperref[sec:s2-performance]{FR-PER-10} & Final Timer and Score Integration & High & Ensures completed attempts use a fixed final time for scoring and review. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 5. VR Interface and Controller Input
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: VR Interface and Controller Input}
+\label{tab:priority-interface}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-interface]{FR-UI-01} & Quest 3S VR Interface & High & Defines the primary target device for the intended headset-based training experience. \\
+\hyperref[sec:s2-interface]{FR-UI-02} & Standalone and PCVR Modes & High & Both deployment paths are committed project requirements. \\
+\hyperref[sec:s2-interface]{FR-UI-03} & Mode-Specific Controller Support & High & Provides the input mechanisms required for flight in both execution modes. \\
+\hyperref[sec:s2-interface]{FR-UI-04} & Controller Guidance & High & Identifies control assignments before flight, reducing confusion for beginners. \\
+\hyperref[sec:s2-interface]{FR-UI-05} & Menu Navigation and Actions & High & Makes all essential gameplay transitions accessible to users. \\
+\hyperref[sec:s2-interface]{FR-UI-06} & Seated and Standing Operation & High & Supports stationary use without requiring physical movement to control the drone. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 6. Player Accounts and Authentication
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Player Accounts and Authentication}
+\label{tab:priority-accounts}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-accounts]{FR-ACC-01} & Account Registration & Medium & Enables attributable online results and global rankings, while core training remains available without an account. \\
+\hyperref[sec:s2-accounts]{FR-ACC-02} & Registration Validation & High & Prevents duplicate usernames and enforces the specified minimum password length. \\
+\hyperref[sec:s2-accounts]{FR-ACC-03} & Secure Sign-In & High & Protects account-linked results and avoids revealing which credential was incorrect. \\
+\hyperref[sec:s2-accounts]{FR-ACC-04} & Sign-Out & Medium & Supports account separation on shared devices but is not required for basic training. \\
+\hyperref[sec:s2-accounts]{FR-ACC-05} & Guest Training and Authenticated Submission & High & Preserves access to training while requiring authentication for global leaderboard submissions. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 7. Result Storage and Leaderboards
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Result Storage and Leaderboards}
+\label{tab:priority-leaderboard}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-leaderboard]{FR-DAT-01} & Local Result Storage & High & Preserves completed attempt data and provides the foundation for local rankings and offline continuity. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-02} & Online Result Submission & Medium & Enables global rankings and cross-installation results but depends on connectivity and online infrastructure. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-03} & Failed Submission Recovery & High & Prevents network failures from losing results and supports later synchronization. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-04} & Local Leaderboard & Medium & Enables on-device performance comparison without depending on online services. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-05} & Global Leaderboard & Medium & Supports cross-player comparison but requires online infrastructure and authenticated submissions. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-06} & Leaderboard Ranking Rules & High & Defines deterministic ordering and tie-breaking, preventing ambiguous rankings. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-07} & Leaderboard Display Requirements & Medium & Establishes a testable minimum display while depending on leaderboard functionality. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-08} & Online Unavailability Handling & High & Ensures online service failures do not disable local rankings or core training. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-09} & Cross-Installation Result Retrieval & Medium & Supports progress continuity across devices but depends on cloud persistence and authentication. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-10} & Synchronization Status Display & High & Prevents users from mistaking locally saved results for results accepted by the online service. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 8. Post-Flight Review
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Post-Flight Review}
+\label{tab:priority-review}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-review]{FR-REV-01} & Automatic Post-Flight Review & High & Delivers immediate performance feedback after a successful attempt. \\
+\hyperref[sec:s2-review]{FR-REV-02} & Review Metrics & High & Presents the measures needed to understand completion, score, and crash penalties. \\
+\hyperref[sec:s2-review]{FR-REV-03} & Review Navigation & High & Allows users to continue training or leave without restarting the application. \\
+\hyperref[sec:s2-review]{FR-REV-04} & Review Availability Without Network & High & Preserves essential performance feedback when optional online services are unavailable. \\
+\hyperref[sec:s2-review]{FR-REV-05} & Historical Result Review & Medium & Enables progress tracking across sessions but is secondary to reviewing the current attempt. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 9. Intelligent Feedback
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Intelligent Feedback}
+\label{tab:priority-ai}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-ai]{FR-AI-01} & Data-Grounded Feedback Generation & Low & Adds personalized interpretation of performance data but is not necessary for core training or standard review. \\
+\hyperref[sec:s2-ai]{FR-AI-02} & Automatic Feedback Presentation & Low & Improves convenience and discoverability of the optional intelligent feedback feature. \\
+\hyperref[sec:s2-ai]{FR-AI-03} & Feedback Failure Isolation & High & Prevents failure of the optional intelligent service from blocking the standard post-flight review. \\
+\hline
+\end{tabular}
+\end{table}
+
+% 10. Non-Functional Requirements
+\begin{table}[htbp]
+\centering
+\small
+\caption{Priority Assignment: Non-Functional Requirements}
+\label{tab:priority-nfr}
+\begin{tabular}{p{2.1cm} p{2.7cm} p{1.3cm} p{7.0cm}}
+\hline
+\textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
+\hline
+\hyperref[sec:s2-nfr]{NFR-INST-01} & Standalone Installability & High & Standalone Quest 3S delivery is a committed deployment requirement. \\
+\hyperref[sec:s2-nfr]{NFR-INST-02} & PCVR Installability & High & PCVR is a committed deployment mode and must be independently launchable on the reference platform. \\
+\hyperref[sec:s2-nfr]{NFR-COMP-01} & Controller Compatibility & High & Correct controller support is necessary for flight in both required execution modes. \\
+\hyperref[sec:s2-nfr]{NFR-PERF-01} & Rendering Performance & High & The specified frame-rate target supports smooth VR operation and helps reduce discomfort. \\
+\hyperref[sec:s2-nfr]{NFR-PERF-02} & Input Response Time & High & Responsive control is fundamental to precise drone handling and must meet the specified threshold. \\
+\hyperref[sec:s2-nfr]{NFR-REL-01} & Crash-Recovery Reliability & High & Repeated recovery cycles must preserve application stability and checkpoint consistency. \\
+\hyperref[sec:s2-nfr]{NFR-USAB-01} & Control Guide Accessibility & High & Makes essential instructions discoverable to new users before flight. \\
+\hyperref[sec:s2-nfr]{NFR-SAFE-01} & In-Application Pause and Exit & High & Allows users to stop or leave active VR activities promptly without removing the headset. \\
+\hyperref[sec:s2-nfr]{NFR-SAFE-02} & Stationary Operation & High & Keeps core actions accessible from one physical location, reducing unnecessary movement in VR. \\
+\hyperref[sec:s2-nfr]{NFR-SEC-01} & Credential Protection & High & Protects account credentials against interception and plaintext exposure. \\
+\hyperref[sec:s2-nfr]{NFR-SEC-02} & Account Access Control & High & Prevents unauthorized access to private account data and fraudulent leaderboard submissions. \\
+\hyperref[sec:s2-nfr]{NFR-DAT-01} & Synchronized Result Persistence & High & Ensures cloud-backed results remain retrievable across sign-outs and application restarts. \\
+\hyperref[sec:s2-nfr]{NFR-OFF-01} & Offline Availability & High & Keeps core training and local functionality usable when online services fail. \\
+\hline
+\end{tabular}
+\end{table}
+
+\clearpage
 
 \subsection{Verification and acceptance criteria}\label{s6}
 
