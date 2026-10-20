@@ -18,4 +18,4 @@ The folders and files for this project are as follows:
 - test - Test cases
 - etc.
 
-The documentation for this project is updated on the project's [GitHub page](https://smiths.github.io/capTemplate/). <!-- update for your project!  -->
+The documentation for this project is updated on the project's [GitHub page](https://softwaremandems.github.io/FPVR/). <!-- update for your project!  -->

@@ -2,6 +2,8 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \title{Development Plan\\\progname}
 
@@ -22,8 +24,11 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
+Sep 27 2026 & Ibrahim Tariq & Add Introduction and Gen AI usage in report sections\\
 Sep 27 2026 & Vikram Chandar & Add Expected Technology, Coding Standards and Use of AI sections\\
-Date2 & Name(s) & Description of changes\\
+Sep 27 2026 & Sankalpa Chhetri Dhakal & Add IP to Protect section and Project Decomposition and Scheduling sections\\
+Sep 28 2026 & John Cho & Added POC Demo Plan and Potential Risks\\
+Sep 28 2026 & Arjun Sasidaran & Add Copyright License, Team Meeting Plan, Team Communication Plan, Team Member Roles and Workflow Plan sections, and reflection\\
 ... & ... & ...\\
 \bottomrule
 \end{tabularx}
@@ -31,128 +36,323 @@ Date2 & Name(s) & Description of changes\\
 
 \newpage{}
 
-\wss{Put your introductory blurb here.  Often the blurb is a brief roadmap of
-what is contained in the report.}
-
-\wss{Additional information on the development plan can be found in the
-\href{https://gitlab.cas.mcmaster.ca/courses/capstone/-/blob/main/Lectures/L02b_POCAndDevPlan/POCAndDevPlan.pdf?ref_type=heads}
-{lecture slides}.}
+This Development Plan explains how the team will organize and manage the FPVR project. 
+It covers how the team will communicate, hold meetings, divide responsibilities, track 
+tasks, and manage the development process. It also describes the project schedule, proof
+of concept, expected technologies, use of AI tools, and coding standards. These plans 
+will help the team stay organized, track progress, and work together throughout the project.
 
 \section{Confidential Information?}
 
-\wss{State whether your project has confidential information from industry, or
-not.  If there is confidential information, point to the agreement you have in
-place.}
-
-\wss{For most teams this section will just state that there is no confidential
-information to protect.}
+FPVR is not subject to any form of confidentiality nor should it contain any private 
+interactions or insider information from stakeholders that might be treated as 
+being confidential. Any potentially sensitive information that needs to be recorded
+will be stored separate from any public repository.
+% \wss{For most teams this section will just state that there is no confidential
+% information to protect.}
 \section{IP to Protect}
 
-\wss{State whether there is IP to protect.  If there is, point to the agreement.
-All students who are working on a project that requires an IP agreement are also
-required to sign the ``Intellectual Property Guide Acknowledgement.''}
+There is currently no intellectual property agreement associated with this
+project. The project is being developed by the team as part of the capstone
+course and is not subject to any additional IP protection requirements from an
+external organization.
 
 \section{Copyright License}
 
-\wss{What copyright license is your team adopting.  Point to the license in your
-repo.}
+The team has adopted the MIT License for this project. The MIT License is a
+short, permissive open-source license that allows anyone to use, modify, and
+distribute the software, provided that the original copyright notice and
+license are included. The team chose this license because it is simple to
+understand and places few restrictions on others who may want to build on the
+project. The full license is available in the
+\href{https://github.com/SoftwareMandems/FPVR/blob/main/LICENSE}{\texttt{LICENSE}}
+file in the project repository.
 
 \section{Team Meeting Plan}
 
-\wss{This section is for meetings between the team members, and meetings between 
-the team and their supervisor/advisor (as appropriate).}
+The team holds regular internal meetings and also meets with the project
+supervisor, Dr.\ Douglas Down.
 
-\wss{How often will the team meet? where? when?}
-
-\wss{If the meeting is a physical location (not virtual), out of an abundance of
-caution for safety reasons you shouldn't put the location online}
-
-\wss{To help schedule meetings, you can use the lecture/tutorial time when we do 
-not have anything else scheduled.}
-
-\wss{How often will you meet with your supervisor/advisor?  when?  where?}
-
-\wss{Will meetings be virtual?  At least some meetings should likely be
-in-person.}
-
-\wss{How will the meetings be structured?  There should be a chair for all meetings.  
-There should be an agenda for all meetings.}
+\begin{itemize}
+  \item \textbf{Team meetings:} The team meets once a week, in person, on
+  Thursdays from 3:30 to 4:20~p.m. If the team is unable to meet in person,
+  the meeting is held online on Discord at the same time.
+  \item \textbf{Supervisor meetings:} The team meets with Dr.\ Down in person
+  in his office every two weeks. The exact meeting time will be finalized once
+  a time is confirmed with and approved by the supervisor.
+  \item \textbf{Chair and agenda:} Every meeting has a chair and an agenda. The
+  chair posts the agenda in the meeting's GitHub issue at least one day before
+  the meeting.
+  \item \textbf{Structure:} Each meeting follows the same structure:
+  \begin{enumerate}
+    \item Review of action items from the last meeting.
+    \item Progress updates from each member.
+    \item Discussion of blockers and decisions.
+    \item Assignment of new action items.
+  \end{enumerate}
+  \item \textbf{Notes:} Meeting notes and action items are recorded in a
+  GitHub issue created from the matching meeting template (team meeting or
+  supervisor meeting).
+\end{itemize}
 
 \section{Team Communication Plan}
 
-\wss{Issues on GitHub should be part of your communication plan.}
+The team uses a small set of tools for communication, each with a specific
+purpose, so that discussions are easy to find and decisions are recorded.
+
+\begin{itemize}
+  \item \textbf{Discord:} used for day-to-day messaging, quick questions, and
+  coordinating work. Online team meetings are also held on Discord.
+  \item \textbf{GitHub Issues:} used for tasks, bugs, meeting agendas and
+  notes, and decisions, so that there is a written record. Meetings are
+  created from the team's issue templates, and any decision made on Discord
+  is recorded in the relevant issue.
+  \item \textbf{Pull request comments:} used for discussion and review of
+  code and documentation changes.
+  \item \textbf{External communication:} the team liaison (John Cho) is the
+  main point of contact with the supervisor, TA, and instructor, and shares
+  any updates with the team on Discord.
+  \item \textbf{Response time:} members are expected to respond to messages
+  within 24 hours on weekdays.
+  \item \textbf{Urgent matters:} handled by mentioning the relevant members
+  directly on Discord, followed by text message if there is no response.
+\end{itemize}
 
 \section{Team Member Roles}
 
-\wss{You should identify the types of roles you anticipate, like notetaker,
-leader, meeting chair, reviewer.  Assigning specific people to those roles is
-not necessary at this stage.  In a student team the role of the individuals will
-likely change throughout the year.}
+Each team member has both project-level roles, which support how the team
+works together, and a technical role, which covers an area of the system
+they lead.
+
+\subsection{Project Roles}
+
+\begin{itemize}
+  \item \textbf{Team lead (Ibrahim Tariq):} tracks deadlines and keeps the
+  project on schedule.
+  \item \textbf{Team liaison (John Cho):} the main point of contact with the
+  supervisor, TA, and instructor.
+  \item \textbf{Meeting chair:} sets the agenda and runs the meeting. This
+  role rotates between meetings.
+  \item \textbf{Notetaker:} records meeting notes and action items in the
+  meeting's GitHub issue. This role rotates between meetings.
+  \item \textbf{Quality assurance:} checks each deliverable against its
+  checklist and the Avenue rubric before submission. This role rotates for
+  each deliverable, and the member who wrote the most of a deliverable does
+  not act as its QA reviewer.
+  \item \textbf{Reviewer:} reviews pull requests. Every member reviews, and
+  each pull request needs approval from at least one member other than its
+  author.
+\end{itemize}
+
+\subsection{Technical Roles}
+
+Each member leads one technical area of the project, as shown in
+Table~\ref{tab:techroles}. The lead is responsible for the design of that
+area and is the first person to ask about it, but is not the only person who
+works on it.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Team Member} & \textbf{Technical Area} \\
+    \midrule
+    John Cho & Controller input and hardware integration \\
+    Ibrahim Tariq & Flight physics and VR / camera \\
+    Sankalpa Chhetri Dhakal & Training environments and ML / AI \\
+    Vikram Chandar & Back-end (game state, scoring, flight data) \\
+    Arjun Sasidaran & Back-end (game state, scoring, flight data) \\
+    \bottomrule
+  \end{tabular}
+  \caption{Technical area leads}
+  \label{tab:techroles}
+\end{table}
+
+\subsection{Flexibility}
+
+Roles are assigned with overlap and are expected to change throughout the
+year. Every member contributes to both development and documentation, and
+work is reassigned based on workload and deadlines rather than strictly by
+role.
 
 \section{Workflow Plan}
 
 \begin{itemize}
-	\item How will you be using git, including branches, pull request, etc.?
-	\item How will you be managing issues, including template issues, issue
-	classification, etc.?
-  \item Use of CI/CD
+  \item \textbf{Git:}
+  \begin{itemize}
+    \item The \texttt{main} branch is kept stable and is the source of the
+    published documents.
+    \item Work is done on a separate branch for each issue, named after the
+    issue number (e.g.\ \texttt{feature/18}).
+    \item Changes are merged into \texttt{main} through pull requests, which
+    must be reviewed and approved by at least one other team member and pass
+    CI before merging. Each pull request links the issue it resolves (e.g.\
+    \texttt{Closes \#18}) so the issue closes automatically when it is merged.
+    \item After a pull request is merged, its branch is deleted on GitHub
+    and locally. Branches that have had no activity for over two weeks are
+    reviewed at the next team meeting and either finished or deleted, so that
+    the list of branches only shows active work.
+  \end{itemize}
+  \item \textbf{Tags and releases:}
+  \begin{itemize}
+    \item When a deliverable is submitted, the commit on \texttt{main} that
+    was submitted is marked with an annotated Git tag named after the
+    deliverable and revision (e.g.\ \texttt{DevPlan-Rev0},
+    \texttt{SRS-Rev0}, \texttt{Final-Rev1}). This records exactly what was
+    submitted, and makes it easy to compare later revisions against it.
+    \item Tags are created only after the deliverable's pull request has been
+    merged and the quality assurance check is complete.
+    \item Once working software exists, each demonstration (the proof of
+    concept, Revision~0, and Revision~1) is also published as a GitHub
+    Release from its tag, with a short summary of the features included.
+  \end{itemize}
+  \item \textbf{Issues:}
+  \begin{itemize}
+    \item Every task, bug, and meeting is tracked as a GitHub issue.
+    \item Issue templates are used for recurring issue types: team meetings,
+    supervisor meetings, TA meetings, lectures, and peer reviews. These
+    templates automatically apply the \texttt{meeting} or \texttt{review}
+    label.
+    \item Other issues, such as development tasks and bugs, are created as
+    blank issues. These are classified with labels that describe the type of
+    work, such as \texttt{documentation}, \texttt{enhancement}, and
+    \texttt{bug}.
+    \item Each issue is assigned to a team member and tracked on the
+    project's Kanban board.
+  \end{itemize}
+  \item \textbf{CI/CD:}
+  \begin{itemize}
+    \item A GitHub Actions workflow compiles the LaTeX documents on every
+    pull request to \texttt{main}, so documents that fail to build are
+    caught before merging.
+    \item On every push to \texttt{main}, the same workflow rebuilds only
+    the documents affected by the change, commits the generated PDFs to the
+    \texttt{pdfs/} folder, and deploys them to GitHub Pages for review.
+    \item Once source code is added, the CI pipeline will be extended to
+    build the project and run the unit tests on every pull request.
+  \end{itemize}
 \end{itemize}
 
 \section{Project Decomposition and Scheduling}
 
-\begin{itemize}
-  \item How will you be using GitHub projects?
-  \item Include a link to your GitHub project
-\end{itemize}
+The team will use GitHub Projects to organize and track the development of the
+project. A Kanban board has been created with the following stages:
+\textit{Backlog}, \textit{Ready}, \textit{In Progress}, \textit{In Review}, and
+\textit{Done}. Tasks will move through these stages as work is planned,
+implemented, reviewed, and completed.
 
-\wss{How will the project be scheduled?  This is the big picture schedule, not
-details. You will need to reproduce information that is in the course outline
-for deadlines.}
+\vspace{0.75em}
+
+The project is decomposed into smaller GitHub Issues representing development
+tasks, research activities, meetings, and course deliverables. Labels are used
+to identify the type of work, such as research, development plan tasks, problem
+statement tasks, and meetings. This allows the team to assign work to individual
+members and monitor the progress of each task.
+
+The GitHub Project can be found at:
+
+\begin{center}
+\url{https://github.com/orgs/SoftwareMandems/projects/1}
+\end{center}
+
+The overall project schedule will follow the major capstone milestones and
+deadlines provided in the course outline. In addition to course deliverables,
+technical work will be scheduled in stages. The early stages will focus on setting up the Unity and VR environment and developing a basic FPV drone flight model.
+Once the core simulation is working, development will move toward controller
+support, training environments, scoring and feedback systems, multiplayer
+functionality, and the planned AI-based flight analysis features.
+
+Tasks that are not yet ready to be worked on will remain in the backlog, while
+tasks that are prepared for development will move into the ready state. Work
+currently being completed will be tracked as in progress, and completed work
+will be reviewed before being moved to done. This workflow will allow the team
+to continuously track progress and adjust the schedule as priorities change.
+
 
 \section{Proof of Concept Demonstration Plan}
 
-What is the main risk, or risks, for the success of your project?  What will you
-demonstrate during your proof of concept demonstration to convince yourself that
-you will be able to overcome this risk?
+% What is the main risk, or risks, for the success of your project?  What will you
+% demonstrate during your proof of concept demonstration to convince yourself that
+% you will be able to overcome this risk?
+The main appeal for this project and what should be prioritized above all else
+is the VR integration and controller interface support. Without it, the entire
+idea falls flat and loses its biggest charm. To prevent that from happening, the proof of concept
+demonstration will generally focus on setting up a basic Unity project with VR support along
+with a simple but functional drone flight model and an off-the-shelf USB controller.
+By following this plan, the team will be able to demonstrate the feasibility of the 
+overall concept while establishing a foundation for the remainder of the project's
+development.
+\subsection{Potential Risks and Mitigation Strategies}
+The following is a list of potential risks that can impact the success of FPVR:
+\begin{itemize}
+    \item \textbf{VR Incompatibility:} VR hardware (Meta Quest 3) may face compatibility issues
+    with Unity or VR SDK. Begin VR integration early using Unity's OpenXR
+    Plugin and XR Interaction Toolkit. Test the Meta Quest 3 with basic
+    scenes and build off from there. If for whatever reason this is not possible, one fallback could
+    be to create a non-VR desktop mode for users to interact with the simulation.
+    \item \textbf{RF Integration Issues:} Interfacing open-source radio communication protocols with
+    a custom RF module to connect with drone controllers may present challenges especially in integration. 
+    It is still unknown if such an idea is viable and more research is required to determine if it could work.
+    Test early using recommended hardware, read through necessary documentation, and create simple
+    prototypes. If a radio link is not feasible, the project will use a supported USB or virtual
+    controller as an alternative solution. 
+    \item \textbf{Unrealistic Flight Physics:} The drone in simulation may not be as accurate as 
+    expected, leading to unrealistic flight and control behavior. Develop the flight model incrementally,
+    beginning with basic movement and control before adding more advanced features such as PID feedback and
+    telemetry. The simulation may be compared against real drone flight data, documented
+    specifications, and feedback from experienced drone pilots where possible.
+    Physics parameters will be configurable so that the model can be adjusted as
+    testing reveals inaccuracies.
+    \item \textbf{Latency and Overall Performance:} The simulation will be built under dozens of
+    hidden abstraction layers which can introduce unwanted latency and tank performance.
+    Establish requirements for frame rate, input latency, and simulation response time early in development.
+    Use Unity Profiler, Unity Memory Profiler, and Frame Debugger to identify
+    bottlenecks. The team will attempt to focus on optimizing as much as possible, reducing
+    unnecessary processing, rendering complexity, and network traffic. If all goes well and secondary
+    features come into play, Multiplayer and AI-assisted tooling will be
+    designed so that they do not interfere with the real-time flight controls.
+\end{itemize}
 
 \section{Expected Technology}
 
 
-\noindent The project will use an open source game engine like \textbf{Unity} as the primary game engine and \textbf{C\#} as the primary programming language. C\# will be used to implement the drone simulation, flight controls, physics, user interfaces, VR interactions, multiplayer functionality, and AI-based flight analysis. C may be investigated for lower-level components such as drivers if direct hardware access or performance requirements make it necessary.
+\noindent The project will use an open source game engine like Unity as the primary game engine and C\# as the primary programming language. C\# will be used to implement the drone simulation, flight controls, physics, user interfaces, VR interactions, multiplayer functionality, and AI-based flight analysis. Unity and C\# were selected because they provide established tools for VR development, physics simulation, and cross-platform deployment. However, Unity's abstractions may limit access to lower-level hardware functionality and may introduce performance overhead for computationally intensive components. C may therefore be investigated for lower-level components such as drivers if direct hardware access or performance requirements make it necessary.
 
 \vspace{0.75em}
 
-\noindent Unity's built-in physics, input, and rendering systems will be used where appropriate to support the drone simulation. Unity's VR and XR packages such as OpenXR Plugin and XR Interaction Toolkit will be investigated for integration with the project's VR hardware. Additional Unity packages and libraries such as Unity Mutiplayer SDK, Unity Transport and Unity Netcode may be used for multiplayer networking, data collection, visualization, and other functionality required by the project.
+\noindent Unity's built-in physics, input, and rendering systems will be used where appropriate to support the drone simulation. These systems reduce the need to implement common functionality from scratch, but their general-purpose implementations may not provide the level of control or performance required for realistic FPV flight. Unity's VR and XR packages such as OpenXR Plugin and XR Interaction Toolkit will be investigated for integration with the project's VR hardware, with compatibility and input latency evaluated during development. Additional Unity packages and libraries such as Unity Multiplayer SDK, Unity Transport and Unity Netcode may be used for multiplayer networking, data collection, visualization, and other functionality required by the project. These packages will be evaluated based on their compatibility, performance, documentation, and ability to meet the project's requirements, with custom implementations considered where existing functionality is insufficient.
 
 \vspace{0.75em}
 
-\noindent For the AI-based flight analysis component, pre trained models are expected to be leveraged. Open Source models like Qwen2-VL should be used to provide feedback on areas such as control efficiency and flight performance. Existing models and libraries will be tested to see if it can satisfy the project's requirements before considering the development or training of a custom model.
+\noindent For the AI-based flight analysis component, pre trained models are expected to be leveraged rather than developing a model from scratch. Open Source models like Qwen2-VL may be investigated to provide feedback on areas such as control efficiency and flight performance. However, general-purpose models may not reliably interpret the structured controller inputs and flight telemetry required by the project and may produce inconsistent feedback. Existing models and libraries will therefore be tested against representative flight data to determine whether they satisfy the project's accuracy, performance, and hardware requirements before considering fine-tuning, adapting an existing model, or developing a custom model.
 
 \vspace{0.75em}
 
-\noindent The project can use a standard linter such as Microsoft C\# linter and formatter to maintain consistent coding conventions and identify potential issues during development. Unit testing will be performed using an appropriate C\# testing framework, such as NUnit or Unity's Test Framework. Code coverage tools will also be investigated to measure the extent to which automated tests exercise the implemented functionality.
+\noindent The project can use a standard linter such as Microsoft C\# linter and formatter to maintain consistent coding conventions and identify potential issues during development. The linter will provide automated checks for common coding problems, although static analysis cannot detect all runtime or simulation-specific issues. Unit testing will therefore be performed using an appropriate C\# testing framework, such as NUnit or Unity's Test Framework. Code coverage tools will also be investigated to measure the extent to which automated tests exercise the implemented functionality and identify areas requiring additional tests.
 \vspace{0.75em}
 
-\noindent Continuous Integration (CI) will be implemented using \textbf{GitHub Actions} where practical. Automated builds, tests, and code-quality checks will be run when changes are pushed to the repository or submitted through pull requests. This will help identify integration and testing issues before changes are merged into the main branch.
+\noindent Continuous Integration (CI) will be implemented using GitHub Actions where practical. Automated builds, tests, and code-quality checks will be run when changes are pushed to the repository or submitted through pull requests. GitHub Actions was selected because it integrates with the team's existing GitHub workflow and can automate repetitive verification tasks. However, Unity projects can require significant build dependencies and execution time, so the CI workflow will be limited to checks that can be reliably automated within the available resources. This will help identify integration and testing issues before changes are merged into the main branch.
 
 \vspace{0.75em}
-\noindent \textbf{Git}, \textbf{GitHub}, and \textbf{GitHub Projects} will be used for version control, collaboration, issue tracking, and project management. GitHub Issues will be used to track development tasks and defects, while GitHub Projects will be used to organize and monitor the project's overall progress. Unity and the team's development environment will be used for implementation and debugging, while additional development and performance-monitoring tools will be investigated as the project progresses.
+\noindent Git, GitHub, and GitHub Projects will be used for version control, collaboration, issue tracking, and project management. GitHub Issues will be used to track development tasks and defects, while GitHub Projects will be used to organize and monitor the project's overall progress. These tools provide an integrated workflow for coordinating development, while working within the github ecosystem.
 
 \vspace{0.75em}
-\noindent The team will use an open source IDE like \textbf{Visual Studio Code} as the primary IDE for C\# development, debugging, and integration with Unity. Code coverage can be measured using a seperte \textbf{Unity's Code Coverage package} to determine the percentage of C\# code executed by the project's automated tests.
-The coverage results will be used to identify untested areas of the Unity project and guide additional test development.
-
-\vspace{0.75em}
-
-\noindent The team will use a free performance profiler such as the \textbf{Unity Profiler} to measure CPU, GPU, memory, physics, and rendering performance throughout development. The \textbf{Unity Memory Profiler} and \textbf{Frame Debugger} will also be investigated to identify memory usage issues and rendering bottlenecks, particularly for maintaining the performance requirements of the VR simulation.
+\noindent The team will use an open source IDE like Visual Studio Code as the primary IDE for development, debugging, and integration with Unity. Visual Studio Code provides a lightweight development environment and supports the project's required languages and tools, although its Unity and C\# functionality may not provide the same level of integrated tooling as a full-featured IDE but it gives familiarity and flexibility if changes are to be made in the future. Code coverage can be measured using a separate Unity's Code Coverage package to determine the percentage of C\# code executed by the project's automated tests. 
 
 \vspace{0.75em}
 
-\noindent Although existing Unity systems, libraries, and frameworks will be used where appropriate, major project-specific components such as the drone flight model, controller behaviour, flight evaluation system, and integration between the simulation, VR controls, multiplayer functionality, and AI analysis will be implemented by the team. The specific implementation choices may change as the project progresses and the team evaluates feasibility, performance, and compatibility.
+\noindent The team will use a free performance profiler such as the Unity Profiler to measure CPU, GPU, memory, physics, and rendering performance throughout development. The Unity Memory Profiler and Frame Debugger will also be investigated to identify memory usage issues and rendering bottlenecks, particularly for maintaining the performance requirements of the VR simulation. These tools provide detailed information about Unity's runtime behaviour, but profiling results may not fully represent performance on the final VR hardware. Performance testing will therefore also be performed on the target hardware to validate that optimizations identified through profiling translate into acceptable real-world performance.
+
+\vspace{0.75em}
+
+\noindent Although existing Unity systems, libraries, and frameworks will be used where appropriate, major project-specific components such as the drone flight model, controller behaviour, flight evaluation system, and integration between the simulation, VR controls, multiplayer functionality, and AI analysis will be implemented through custom code. Existing tools will be preferred when they provide reliable and maintainable functionality, while custom implementations will be considered when their limitations prevent them from meeting the project's requirements. 
+
+
+
 
 \section{Use of AI and LLMs}
 
-\noindent The team will use \textbf{Claude Code} and \textbf{ChatGPT} as development and documentation assistance tools throughout the project. These tools may be used to assist with generating code, explaining unfamiliar concepts, debugging, developing test cases, reviewing code, and drafting or improving project documentation.
+\noindent The team will use Claude Code and ChatGPT as development and documentation assistance tools throughout the project. These tools may be used to assist with generating code, explaining unfamiliar concepts, debugging, developing test cases, reviewing code, and drafting or improving project documentation.
 
 \vspace{0.75em}
 
@@ -174,130 +374,256 @@ The project will use the \textbf{Microsoft C\# Coding Conventions} as the coding
 
 \section{Appendix --- Generative AI Use Disclosure}
 
-\wss{ChatGPT (version 5) was used to brainstorm ideas for the template for this disclose section.}
-
-\wss{This section is about the use of AI to write this document, not your
-planned use of AI for your project.  You discuss that topic in one of the
-sections in the body of this report.}
-
 \subsection{AI Tools Used}
 
-\wss{Give the name of the AI tool(s) used and the version.}
+\begin{itemize}
+    \item ChatGPT 5.6 Sol, OpenAI
+    \item Claude Opus 4.8, Anthropic
+\end{itemize}
 
 \subsection{How and Where Used}
 
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
+ChatGPT 5.6 Sol and Claude Opus 4.8 were used as support tools for selected sections of this
+document. They were used for grammar and wording review, brainstorming and research help,
+and checking consistency between sections. Final decisions about project requirements,
+technologies, responsibilities, workflows, and wording were made by the project team.
 
-\wss{For each of the uses, identify which parts of the document were affected.}
+AI assistance was used in the following sections:
 
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
+\begin{itemize}
+
+    \item \textbf{Team Meeting Plan --- ChatGPT 5.6 Sol:}
+    ChatGPT reviewed the wording and organization of meeting procedures and checked for
+    conflicts with the Team Communication Plan and Team Member Roles. The meeting process
+    was decided by the team.
+
+    \item \textbf{Team Communication Plan --- Claude Opus 4.8:}
+    Claude reviewed the section for clarity and checked that the uses of Discord, GitHub
+    Issues, pull request comments, and external communication were clearly explained and
+    consistent with related sections.
+
+    \item \textbf{Team Member Roles --- ChatGPT 5.6 Sol:}
+    ChatGPT reviewed project and technical role descriptions and checked that responsibilities
+    matched related sections. All roles were assigned by the team before the AI review.
+
+    \item \textbf{Workflow Plan --- Claude Opus 4.8:}
+    Claude reviewed the Git, GitHub, issue tracking, pull request, release, and CI/CD
+    workflows for clarity and consistency. The workflow itself was designed by the team.
+
+    \item \textbf{Project Decomposition and Scheduling --- ChatGPT 5.6 Sol:}
+    ChatGPT reviewed the explanation of GitHub Issues and the Kanban board and helped make
+    the workflow states easier to understand. Scheduling, milestones, assignments, and
+    priorities were decided by the team.
+
+    \item \textbf{Expected Technology --- ChatGPT 5.6 Sol and Claude Opus 4.8:}
+    Both tools were used for brainstorming, research help, and wording review. ChatGPT helped
+    identify possible technologies, libraries, testing tools, profiling tools, and approaches
+    related to Unity, C\#, VR/XR, multiplayer, testing, CI, performance, and AI-based flight
+    analysis.
+
+    Claude provided an additional review and helped identify claims that were too certain,
+    missing trade-offs, or technologies that should be described as options to investigate.
+
+    AI-generated research was treated only as a starting point. Important technical claims
+    were checked against suitable primary sources, such as official documentation.
+
+    \item \textbf{Coding Standard --- ChatGPT 5.6 Sol:}
+    ChatGPT reviewed the section for clarity and organization. The Microsoft C\# Coding
+    Conventions and project-specific practices were chosen by the team and checked against
+    the original standard.
+
+\end{itemize}
+
+AI was also used to compare related sections for differences in terminology, responsibilities,
+communication methods, review procedures, and project-management processes. Any possible
+conflict was checked against the team's agreed-upon workflow before changes were made.
+
+AI was also used to help summarize and shorten this Generative AI Use Disclosure while
+keeping the required information.
+
+Neither ChatGPT nor Claude was treated as an official source for project requirements,
+technical facts, team responsibilities, or project-management decisions.
 
 \subsection{Verification of AI-Generated Content}
+All AI-assisted material was manually reviewed before being added to the official document.
+Every AI-assisted change included in the final version was reviewed by at least two team
+members.
 
-\wss{\begin{itemize}
-    \item Describe how the team checked AI-generated or AI-assisted material
-    before including it in the document.
-    \item In particular, verify factual claims, technical assertions,
-    requirements, calculations, references, and other information for which an
-    AI system may produce incorrect or fabricated results.
-    \item \textbf{The team is responsible for the accuracy, completeness,
-consistency, and appropriateness of the submitted document, regardless of
-whether material was generated by a human or an AI system.}
-\end{itemize}}
+Grammar and wording changes were checked to ensure they improved readability without changing
+technical meaning or team decisions. For team organization sections, reviewers checked that
+responsibilities, meeting procedures, communication methods, GitHub processes, and review
+procedures remained consistent.
+
+For the Expected Technology section, AI suggestions were treated as possible options rather
+than confirmed facts. Relevant technical claims were checked against primary or official
+sources, and technologies that had not been fully researched were described as options to
+investigate.
+
+Agreement between ChatGPT and Claude was not considered verification by itself. Human review
+was still required.
+
+The team remains responsible for the accuracy, completeness, consistency, and appropriateness
+of the submitted document. All AI-assisted material was reviewed by at least two team members
+and checked against other sources where needed.
 
 \newpage{}
 
 \section*{Appendix --- Reflection}
 
-\wss{Not required for CAS 741}
+\subsection*{Sankalpa --- Reflection}
+\subsubsection*{Why is it important to create a development plan prior to starting the
+    project?}
 
-\input{../Reflection.text}
+  Creating a development plan before starting the project is important because it gives the 
+  team a shared understanding of how the project will be organized and developed. Without a plan, 
+  it would be easy for team members to have different expectations about responsibilities, workflows, 
+  deadlines, and development practices. While working on the Project Decomposition and Scheduling 
+  section, I found that breaking the project into GitHub Issues and organizing them on a Kanban board 
+  made the overall project feel much more manageable. Instead of viewing the FPV drone simulator as 
+  one large project, we can approach it as smaller tasks that can be assigned, tracked, reviewed, and
+   completed individually. I also think the plan will be useful later in the year because we now 
+   have an initial structure that we can adjust as our priorities and understanding of the project
+    change.
+\subsubsection*{In your opinion, what are the advantages and disadvantages of using
+    CI/CD?}
+One of the biggest advantages of CI/CD is that it can catch problems early. Automated builds, tests, and 
+other checks can run whenever changes are pushed or a pull request is created, which reduces the chance of 
+broken or incompatible code being merged into the main branch. This is especially useful for a team project 
+because multiple people will be developing different parts of the system at the same time. It also encourages 
+the team to integrate changes frequently instead of waiting until large amounts of code have been written separately.
 
-\begin{enumerate}
-    \item Why is it important to create a development plan prior to starting the
-    project?
-    \item In your opinion, what are the advantages and disadvantages of using
-    CI/CD?
-    \item What disagreements did your group have in this deliverable, if any,
-    and how did you resolve them?
-\end{enumerate}
+A disadvantage is that CI/CD requires additional setup and maintenance. For our project, which involves Unity and VR, 
+configuring automated builds and tests may be more complicated than it would be for a simpler software project. A CI 
+pipeline can also become frustrating if it is poorly configured and fails for reasons unrelated to the actual code. 
+Because of this, I think CI/CD is valuable for our project, but we should automate checks where they provide a clear 
+benefit rather than adding automation simply for the sake of having it.
+
+\subsubsection*{What disagreements did your group have in this deliverable, if any,
+    and how did you resolve them?}
+Our group did not have any major disagreements while completing this deliverable. Most discussions were about how we wanted to 
+organize the project and how much detail we should include at this early stage. For example, while setting up the project decomposition 
+and scheduling, we had to decide how tasks should be represented and tracked through GitHub Issues and the Kanban board. We resolved these 
+smaller differences through discussion and by choosing approaches that were simple enough to use now but could still be expanded later as 
+the project becomes more complex. Overall, responsibilities were divided between team members, and we reviewed the combined work to make 
+sure the different sections were consistent with the direction of the project.
+
+\subsection*{Arjun - Reflection}
+\subsubsection*{Why is it important to create a development plan prior to starting the
+    project?}
+
+A development plan forces the team to agree on how the project will run
+before any real work depends on those decisions. When I wrote the workflow
+plan, I had to decide how branches are named, when they are deleted, how pull
+requests are reviewed, and how submitted deliverables are tagged. These are
+easy to agree on now, but would be much harder to change after five people
+have each developed their own habits. Writing the team roles and meeting plan
+had a similar effect: naming a team lead, a team liaison, and a rotating
+quality assurance role means that responsibilities are clear from the start,
+instead of being assumed. The plan also acts as a reference point. When
+questions come up later in the year, such as who contacts the supervisor or
+how a decision should be recorded, the team can check the plan rather than
+debate the question again.
+
+\subsubsection*{In your opinion, what are the advantages and disadvantages of using
+    CI/CD?}
+
+The main advantage of CI/CD is that checks run automatically, so the team
+does not have to rely on each member remembering to run them. Our repository
+already compiles the \LaTeX{} documents on every pull request, which means a
+document that fails to build is caught before it is merged into
+\texttt{main}. The same workflow also publishes the generated PDFs, so
+reviewers and the TA always see the latest version without anyone building
+and uploading them by hand. Once our Unity code is added, running the build
+and unit tests on every pull request should give the same protection for the
+software.
+
+The disadvantage is that the pipeline itself becomes something the team has
+to understand and maintain. While working on this deliverable, I found that
+the workflow only produces a viewable PDF after changes are merged into
+\texttt{main}, which was not obvious at first. Workflows can also fail for
+reasons unrelated to our work, such as package installation problems, and
+each run takes time before a pull request can be merged. For a Unity and VR
+project, automating builds and tests will take extra setup, so the team
+should add automation gradually where it clearly saves effort.
+
+\subsubsection*{What disagreements did your group have in this deliverable, if any,
+    and how did you resolve them?}
+
+The team did not have any serious disagreements, but there were a few
+decisions that needed discussion. The main one was how often the team should
+meet. The first draft of the meeting plan had two meetings a week, one in
+person and one on Discord. After discussing everyone's schedules, the team
+agreed that one in-person meeting on Thursday afternoons was more realistic,
+with Discord used as a backup when the team cannot meet in person. There was
+also some discussion about how specific the team roles should be, since some
+technical areas, such as the back-end systems, are not fully defined yet. The
+team resolved this by assigning each member a technical area now and stating
+that roles are expected to change over the year. These decisions were made
+through discussion in meetings and on Discord, and the final wording was
+checked through pull request reviews.
 
 \newpage{}
 
 \section*{Appendix --- Team Charter}
 
-\wss{borrows from
-\href{https://engineering.up.edu/industry_partnerships/files/team-charter.pdf}
-{University of Portland Team Charter}}
-
 \subsection*{External Goals}
 
-\wss{What are your team's external goals for this project? These are not the
-goals related to the functionality or quality fo the project.  These are the
-goals on what the team wishes to achieve with the project.  Potential goals are
-to win a prize at the Capstone EXPO, or to have something to talk about in
-interviews, or to get an A+, etc.}
-
+The team’s main external goal is to produce a polished capstone project that we are proud to demonstrate at the Capstone EXPO and can discuss in future academic and professional opportunities. We aim to perform well in the course while also gaining practical experience with technologies and development practices that are relevant outside of the classroom. Each team member should finish the project with meaningful technical contributions that they can discuss in interviews and include in their portfolio.
 \subsection*{Attendance}
 
 \subsubsection*{Expectations}
 
-\wss{What are your team's expectations regarding meeting attendance (being on
-time, leaving early, missing meetings, etc.)?}
+Team members are expected to attend at least 90\% of scheduled team and supervisor meetings and arrive on time. If a member knows that they will be late or unable to attend, they should notify the team through Discord as early as possible.
+
+Members who miss a meeting are responsible for reviewing the meeting notes and completing any action items assigned to them. Attendance will be reviewed if a member repeatedly misses meetings or arrives late without communicating with the team.
 
 \subsubsection*{Acceptable Excuse}
 
-\wss{What constitutes an acceptable excuse for missing a meeting or a deadline?
-What types of excuses will not be considered acceptable?}
+Acceptable reasons for missing a meeting or deadline include illness, emergencies, unavoidable academic conflicts, work obligations that cannot reasonably be changed, or other circumstances outside of a member's control.
+
+Whenever possible, the team should be notified in advance. Forgetting about a meeting, repeatedly failing to manage time, or missing a deadline without communicating with the team are not considered acceptable excuses.
 
 \subsubsection*{In Case of Emergency}
 
-\wss{What process will team members follow if they have an emergency and cannot
-attend a team meeting or complete their individual work promised for a team
-deliverable?}
+If a team member experiences an emergency that prevents them from attending a meeting or completing assigned work, they should notify the team through Discord as soon as reasonably possible.
+
+If an important task cannot be completed before its deadline, the member should provide the team with the current state of their work when possible. The team will then redistribute urgent work among available members and adjust responsibilities or deadlines where possible.
 
 \subsection*{Accountability and Teamwork}
 
 \subsubsection*{Quality} 
 
-\wss{What are your team's expectations regarding the quality
-of team members' preparation for team meetings and the quality of the
-deliverables that members bring to the team?}
+Team members are expected to come to meetings prepared and complete assigned work to a standard suitable for inclusion in the project. Members should review and test their own work before requesting review from another team member.
+
+Course deliverables should be checked against the relevant rubric and project requirements before submission. Pull requests should contain work that is understandable and ready for review. At least one other team member should review a pull request before it is merged.
 
 \subsubsection*{Attitude}
 
-\wss{What are your team's expectations regarding team members' ideas,
-interactions with the team, cooperation, attitudes, and anything else regarding
-team member contributions?  Do you want to introduce a code of conduct?  Do you
-want a conflict resolution plan?  Can adopt existing codes of conduct.}
+Team members are expected to communicate respectfully and be open to the ideas and feedback of others. Members should be comfortable proposing ideas, asking questions, disagreeing with decisions, and providing constructive criticism.
+
+Everyone should make a reasonable effort to help other members when they encounter blockers. Disagreements should focus on the project rather than individuals, and criticism should be constructive.
 
 \subsubsection*{Stay on Track}
 
-\wss{What methods will be used to keep the team on track? How will your team
-ensure that members contribute as expected to the team and that the team
-performs as expected? How will your team reward members who do well and manage
-members whose performance is below expectations?  What are the consequences for
-someone not contributing their fair share?}
+GitHub Issues and the GitHub Project Kanban board will be used to track assigned work, deadlines, and progress. Each task should have an assigned team member and be moved through the board as work progresses. Progress and blockers will also be discussed during regular team meetings.
 
-\wss{You may wish to use the project management metrics collected for the TA and
-instructor for this.}
+Trigger items that may require team discussion include repeatedly missing meetings, failing to communicate for more than 48 hours on weekdays, repeatedly missing agreed-upon deadlines without notice, or consistently failing to complete assigned work.
 
-\wss{You can set target metrics for attendance, commits, etc.  What are the
-consequences if someone doesn't hit their targets?  Do they need to bring the
-coffee to the next team meeting?  Does the team need to make an appointment with
-their TA, or the instructor?  Are there incentives for reaching targets early?}
+When one of these issues occurs, the team will first discuss it directly with the member and determine whether there is a blocker or other issue that can be resolved. If the behaviour continues, responsibilities may be reassigned and the issue will be discussed by the full team. Continued problems may be brought to the TA, supervisor, or instructor if necessary.
+
+Members who complete their work early or make additional contributions are encouraged to help with outstanding development, testing, reviews, or documentation. Strong contributions will also be recognized during meetings and considered when dividing future work so that responsibilities remain fair. Contributors that continously fail to meet expectations will have to buy lunch for everyone on the team, in the next meeting.
 
 \subsubsection*{Team Building}
 
-\wss{How will you build team cohesion (fun time, group rituals, etc.)? }
+The team will build cohesion through regular in-person meetings and collaborative working sessions. Discord will also be used for informal communication so that interactions are not limited strictly to assigned project tasks.
+
+The team may occasionally organize informal activities such as getting food together, playing poker, or working together outside of scheduled meetings. The goal is to maintain a comfortable team environment where members can communicate openly and enjoy working together throughout the project.
 
 \subsubsection*{Decision Making} 
 
-\wss{How will you make decisions in your group? Consensus?  Vote? How will you
-handle disagreements? }
+The team will attempt to make decisions through consensus whenever possible. Each member should have an opportunity to give their opinion, particularly when a decision directly affects the technical area they are leading.
 
+For technical disagreements, the team will consider project requirements, feasibility, implementation effort, maintainability, performance, and evidence from research or testing. When practical, prototypes or experiments may be used to compare alternatives.
+
+If consensus cannot be reached within a reasonable amount of time, the team will use a majority vote so that the disagreement does not block progress. With five team members, a decision requires at least three votes to pass. For significant decisions where the team remains uncertain, the team may consult the supervisor, TA, or instructor. Important decisions will be recorded in the relevant GitHub Issue.
 \end{document}

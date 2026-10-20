@@ -22,36 +22,73 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
+Sep 27, 2026 & John Cho & Initial Problem Statement\\
 Sep 27 2026 & Vikram Chandar & Goals, Stretch Goals and Environment\\
-Date2 & Name(s) & Description of changes\\
-... & ... & ...\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
+\newpage
+
 \section{Problem Statement}
 
-\wss{You should check your problem statement with the
-\href{https://smiths.github.io/capTemplate/Checklists/ProbState-Checklist.pdf}
-{problem statement checklist}}. 
+% \wss{You should check your problem statement with the
+% \href{https://smiths.github.io/capTemplate/Checklists/ProbState-Checklist.pdf}
+% {problem statement checklist}}. 
 
-\wss{You can change the section headings, as long as you include the required
-information.}
+% \wss{You can change the section headings, as long as you include the required
+% information.}
 
 \subsection{Problem}
 
-\wss{What problem are you trying to solve?  Why is it important? Do not talk
-about how you will solve the problem, only what the problem is.  AI is rarely
-part of the problem.  The problem is ``what'' you want to do, not ``how'' you
-want to do it.  The problem statement should be written in a way that is
-understandable to a non-technical audience.}
+% \wss{What problem are you trying to solve?  Why is it important? Do not talk
+% about how you will solve the problem, only what the problem is.  AI is rarely
+% part of the problem.  The problem is ``what'' you want to do, not ``how'' you
+% want to do it.  The problem statement should be written in a way that is
+% understandable to a non-technical audience.}
+Learning to fly a FPV (First person view) drone can be difficult and unsafe especially 
+for beginner pilots. If left unaccounted for, they can risk damaging their drones, nearby 
+property, or other equipment while learning basic flight controls and maneuvers.
+\\ \\
+Practing and flying in general through traditional means can also be limited by the need 
+for large open spaces, weather conditions, and access to costly hardware. 
+These barriers can make it difficult for anybody to fly a drone with little to no
+consequences. Although there are existing FPV simulators on the market that attempt to address this issue, 
+they are often not immersive nor realistic enough to provide a true experience of flying a drone. 
 
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+\textbf{Inputs:}
+\begin{itemize}
+    \item Joystick controller or similar interface (over RF or Serial)
+\end{itemize}
+\textbf{Outputs:}
+\begin{itemize}
+    \item Simulated feedback from the VR
+    \item AI-integrated performance analysis at the end of a course/session
+\end{itemize}
 
 \subsection{Stakeholders}
+\subsubsection{Primary Stakeholders}
+\begin{itemize}
+    \item \textbf{Drone Pilots:} FPVR will be designed with beginner to intermediate
+    level pilots in mind, licensed or not, who have yet to familiarize themselves with flying drones
+    in the field.
+    \item \textbf{Drone Training Organizations:} In Canada, any drone above 250g in weight
+    requires a pilot with a formal certificate to operate in a public space [1]. 
+    Realistic drone flight simulation may complement these
+    mandatory in-person flight exams facilitated by drone schools and provide pilots an easily accessible
+    way to practice.
+\end{itemize}
+
+\subsubsection{Secondary Stakeholders}
+\begin{itemize}
+    \item \textbf{Drone Clubs and Teams:} Local technical clubs designing and building
+    teleoperated FPV drones can benefit from FPVR and provide quick and useful feedback for improving
+    the product. 
+    \item \textbf{FPV Communities:} Anyone from a passive to hardcore FPV hobbyist
+    within a drone community might find this technology useful both for casual and practical use. 
+\end{itemize}
 
 \subsection{Environment}
 
@@ -97,17 +134,54 @@ The extras chosen are the Design Thinking Report and the Usability Report. The D
 
 \section*{Appendix --- Reflection}
 
-\wss{Not required for CAS 741}
+% \input{../Reflection.text}
 
-\input{../Reflection.text}
+\subsection*{John - Reflection}
+\subsubsection*{What went well while writing this deliverable?}
 
-\begin{enumerate}
-    \item What went well while writing this deliverable? 
-    \item What pain points did you experience during this deliverable, and how
-    did you resolve them?
-    \item How did you and your team adjust the scope of your goals to ensure
+Writing the problem statement itself was fairly simple since our
+project was purposely selected to address a very specific use case
+and audience. Our first TA meeting also helped to clarify certain sections of
+the problem statement such inputs and outputs and how that relates to controller
+and VR headset that we're planning on incorporating into the project.
+
+\subsubsection*{What pain points did you experience during this deliverable, and how did you resolve them?}
+
+The content of the report itself wasn't difficult to write, but coordinating who does what was a
+much bigger headache than I expected. Although we had a solid grasp on how the project
+will be laid out, we had no idea how to actually divide the work effectively. In the end,
+we decided to manage all our tickets through a kanban and assign each of the tasks accordingly,
+and raise any concerns/bugs through direct messages.
+
+\subsubsection*{How did you and your team adjust the scope of your goals to ensure
     they are suitable for a Capstone project (not overly ambitious but also of
-    appropriate complexity for a senior design project)?
-\end{enumerate}  
+    appropriate complexity for a senior design project)?}
 
+We mostly sorted all of that through in our TA meeting. There wasn't a lot that
+we changed regarding the scope of the project, more so refined it to better suit
+the user's needs. Originally, we were planning on designing this application purely 
+for drone pilots to excerise and practice their skills, but soon realized we could
+expand our target audience to include casual users who are more interested in the
+gameplay.
+
+\subsection*{Vikram - Reflection}
+\subsubsection*{What went well while writing this deliverable?}
+
+We were able to clearly define the project's goals, requirements, and technical direction. Discussing the available tools and technologies helped us identify which existing solutions could be used and where custom implementations would be necessary. We also found that dividing the work between team members made it easier to research different technical areas.
+
+\subsubsection*{What pain points did you experience during this deliverable, and how did you resolve them?}
+
+One of the main challenges was determining which technologies and features were realistic to implement within the time and resources available to the team. There were many possible tools and features that could improve the project, but including all of them would have increased the scope significantly. We addressed this by discussing the requirements as a team and prioritizing the core functionality needed for the drone simulation and VR training experience. 
+
+\subsubsection*{How did you and your team adjust the scope of your goals to ensure
+    they are suitable for a Capstone project (not overly ambitious but also of
+    appropriate complexity for a senior design project)?}
+
+The team narrowed the project around the core goal of creating a VR-based FPV drone training simulator with realistic flight controls and performance evaluation. Instead of attempting to build every feature from the beginning, we separated the project into core requirements and stretch goals. The core system will focus on the drone simulation, VR controls, training environments, performance tracking, and a basic flight evaluation system. Features such as multiple drone configurations, multiplayer, and more advanced AI-based analysis will be developed only if the core requirements are completed successfully.
+
+\begin{thebibliography}{00}
+    \bibitem{1}
+        T. Canada, “Flying your drone safely and legally,” Transport Canada, Nov. 04, 2025. 
+        https://tc.canada.ca/en/aviation/drone-safety/learn-rules-you-fly-your-drone/flying-your-drone-safely-legally
+\end{thebibliography}
 \end{document}
