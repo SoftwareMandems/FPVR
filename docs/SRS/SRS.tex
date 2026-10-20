@@ -122,6 +122,12 @@
   \renewcommand{\theHsubsection}{#1.\arabic{subsection}}
   \setcounter{subsection}{0}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\req}[1]{\hyperlink{req:#1}{\texttt{#1}}}
+\newcommand{\ver}[1]{\hyperlink{ver:#1}{\texttt{#1}}}
+\newcommand{\goal}[1]{\hyperlink{goal:#1}{#1}}
+\newcommand{\haz}[1]{\href{../HazardAnalysis/HazardAnalysis.pdf\#haz:#1}{#1}}
+\newcommand{\sym}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\proposal}{\textbf{PROPOSED; review pending.}}
 
 \begin{document}
 
@@ -155,6 +161,11 @@ Adapted the SRS document structure to Meyer's template. \\
 
 Oct 18, 2026 & Sankalpa &
 Completed the Goals (G) section of the SRS. \\
+
+\addlinespace
+
+Oct 19, 2026 & John Cho &
+Added initial content for System Interfaces and Use Cases (S.3, S.4) \\
 
 \bottomrule
 \end{tabularx}
@@ -1205,15 +1216,447 @@ Section~\ref{s6}.
 
 \subsection{Interfaces}\label{s3}
 
-\guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
+% \guidance{How the system makes the functionality of \hyperref[s2]{S.2} available to the rest of the world, particularly user interfaces and program interfaces (APIs). It specifies how that functionality will be made available to the rest of the world, including people (users) and other systems. These are interfaces provided by the system to the outside; the other way around, interfaces from other systems, which the system may use, are specified in \hyperref[e2]{E.2}. \cite{BM22}}
 
-% TODO: Write your team's content for S.3 here.
+\begin{description}
+\item[IF-01: Entry and navigation:] The VR and nunchuck controllers provide access to a main menu where
+users can select modes for free flight, available course choices, and return/exit actions. (\req{FR-UI-04}/\req{FR-UI-05},
+\req{FR-LVL-05}/\req{FR-LVL-06}).
+\item[IF-02: Flight:] Continuous throttle, pitch, roll, and yaw actions affect
+the drone's first-person view based on inputs from a controller (\req{FR-FLT-02}). The application will display progress during
+a course (\req{FR-REV-02}), where as free flight has no course timer, checkpoints, or score
+(\req{FR-FLT-01}/\req{FR-FLT-02}, \req{FR-LVL-01}).
+\item[IF-03: Retry:] Upon failure to complete a course due to a crash or timeout, users can press a button on the controller to reset the drone to a prior checkpoint.
+Selection is an explicit menu action that can be interfaced with a controller.
+(\req{FR-LVL-02}, \req{FR-CHK-04}--\req{FR-CHK-07};).
+\item[IF-04: Review:] On course completion show the selected course, final total
+active time labelled in seconds, checkpoint results in course order, integer
+crash count, numerical score in points, and separate rating. Retry and activity
+selection remain available; prior-session navigation is absent. Unapproved
+scoring parameters must be identified as provisional in any prototype rather
+than presented as validated training results (\req{FR-REV-01}--\req{FR-REV-05}).
+\item[IF-05: Platform Interaction:] Consumes pose/input availability and focus;
+produces frames and lifecycle responses through the supported runtime. The
+proposed unavailable-input presentation is descriptive and recoverable where
+the runtime permits (\req{SR-02}). There is no promise of public
+network APIs, desktop-only controls, or physical-drone interfaces.
+\item[IF-06: AI Feedback:] The feedback provided by the AI system receives only separately approved
+current-attempt data and advises on possible places for improvement. The
+standard review is immediate and independent; an analysis may join it
+automatically if the optional capability is approved
+(\req{FR-AI-01}--\req{FR-AI-03}, \req{SR-08}). Output schemas,
+provider, timeout, and data permission are \textbf{TO BE REVIEWED} before external
+AI enters scope.
+\end{description}
+Interfaces describe visible information and action meanings. Exact widget
+layout, engine classes, storage structures, and input packages remain design
+choices. Proposed safety/error interactions are subject to their SR status.
 
 \subsection{Detailed usage scenarios}\label{s4}
 
-\guidance{Examples of interaction between the environment (or human users) and the system, expressed as user stories. Such scenarios are not by themselves a substitute for precise descriptions of functionality (\hyperref[s3]{S.3}), but provide an important complement by specifying cases that these behavior descriptions must support; they also serve as a basis for developing test cases. The scenarios most relevant for stakeholders are given in chapter \hyperref[g5]{G.5} in the Goals book, at a general level, as use cases; in contrast, \hyperref[s4]{S.4} can refer to system components and functionality (from other chapters of the System book) as well as special and erroneous cases, and introduce more specific scenarios. \cite{BM22}}
+% \guidance{Examples of interaction between the environment (or human users) and the system, expressed as user stories. Such scenarios are not by themselves a substitute for precise descriptions of functionality (\hyperref[s3]{S.3}), but provide an important complement by specifying cases that these behavior descriptions must support; they also serve as a basis for developing test cases. The scenarios most relevant for stakeholders are given in chapter \hyperref[g5]{G.5} in the Goals book, at a general level, as use cases; in contrast, \hyperref[s4]{S.4} can refer to system components and functionality (from other chapters of the System book) as well as special and erroneous cases, and introduce more specific scenarios. \cite{BM22}}
 
-% TODO: Write your team's content for S.4 here.
+\begin{description}
+\item[U-01: Start a Free-Flight Session]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+
+\textbf{Precondition:} The application is running with all necessary hardware, a supported
+headset and controller are available, and the main menu is visible from the VR.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The pilot selects Free Flight from the main menu.
+\item The system loads the free-flight environment and places the drone at its
+starting position.
+\item The application initializes the controller inputs and displays the flight view.
+\item The pilot practises throttle, roll, pitch, and yaw in the open
+environment.
+\item The pilot takes off and manoeuvres the drone without course
+restrictions.
+\item The simulator provides no course timer, checkpoints, or score for the session.
+\item If the drone crashes, the pilot opens the recovery option and resets the
+drone.
+\item The system returns the drone to its grounded starting position and restores
+flight control.
+\item The pilot continues practising and may repeat the crash-and-reset cycle.
+\item The pilot selects Exit and the application returns to the main menu.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the pilot crashes repeatedly:
+\begin{enumerate}
+\item The pilot selects Reset after each crash.
+\item The system counts the contact as a crash and opens the recovery state.
+\item The system clears the active motion and returns the drone to its grounded
+starting position.
+\item The pilot confirms that the controls are neutral and resumes practice.
+\item The pilot repeats these steps for each subsequent crash; no course score
+or completion result is created.
+\end{enumerate}
+\item If the controller disconnects:
+\begin{enumerate}
+\item The application detects the loss of the controller connection.
+\item The system pauses flight input and prevents the last received axes from being
+applied continuously.
+\item The pilot reconnects or re-pairs the controller.
+\item The application reports that the controller is available and asks the pilot to
+place the controls in their neutral position.
+\item The pilot applies neutral controls and explicitly confirms Resume.
+\item The system restores flight control from the paused state.
+\end{enumerate}
+\item If an input axis is non-finite:
+\begin{enumerate}
+\item The application detects a non-finite input value.
+\item The system rejects the value instead of using it for flight or scoring.
+\item The application pauses the session when possible and asks the user to release and
+reapply the affected control.
+\item The user restores valid controller input and explicitly resumes.
+\end{enumerate}
+\end{itemize}
+
+\item[U-02: Running an Obstacle-Course Level]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} Novice FPV pilots, drone and gaming enthusiasts
+
+\textbf{Precondition:} An obstacle-course level with ordered checkpoints and a
+finish is available, and the user is at the level-selection interface.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user opens the level-selection interface.
+\item The application displays the available obstacle-course levels.
+\item The user selects an available course.
+\item The system loads the course and places the drone at the valid starting pose.
+\item The system initializes the attempt, checkpoint progress, collision count, and
+timer.
+\item The user takes off and flies toward the first required checkpoint.
+\item The user crosses each required checkpoint in the specified order.
+\item The system records each valid checkpoint crossing and advances the required
+checkpoint.
+\item The user reaches the finish after all required checkpoints are complete.
+\item The application validates the completed route, stops the timer, and opens the
+current-attempt review.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the user crosses a later checkpoint before the required checkpoint:
+\begin{enumerate}
+\item The system detects the checkpoint trigger.
+\item The system compares the triggered checkpoint with the next required
+checkpoint.
+\item The system rejects the out-of-order crossing.
+\item The application leaves the required checkpoint unchanged and informs the user to
+return to the route.
+\item The user flies through the required checkpoint before continuing toward
+the later checkpoint.
+\end{enumerate}
+\item If the user crosses an already-completed checkpoint:
+\begin{enumerate}
+\item The system detects the repeated checkpoint trigger.
+\item The system identifies the checkpoint as already recorded.
+\item The system ignores the repeated trigger and preserves the existing progress.
+\item The user continues from the current required checkpoint.
+\end{enumerate}
+\item If the controller disconnects:
+\begin{enumerate}
+\item The application detects the loss of the controller connection.
+\item The system pauses flight input and prevents the last received axes from being
+applied continuously.
+\item The pilot reconnects or re-pairs the controller.
+\item The application reports that the controller is available and asks the pilot to
+place the controls in their neutral position.
+\item The pilot applies neutral controls and explicitly confirms Resume.
+\item The system restores flight control from the paused state.
+\end{enumerate}
+\item If a required checkpoint is missing:
+\begin{enumerate}
+\item The application detects that the course does not contain the required checkpoint.
+\item The system marks the attempt invalid and prevents a finish from becoming a
+valid completion.
+\item The system pauses the session when possible and informs the user of the
+missing course data.
+\item The user exits the invalid attempt or retries after the course data is
+corrected.
+\end{enumerate}
+\item If an input axis is non-finite:
+\begin{enumerate}
+\item The application detects a non-finite input value.
+\item The system rejects the value instead of using it for flight or scoring.
+\item The application pauses the session when possible and asks the user to release and
+reapply the affected control.
+\item The user restores valid controller input and explicitly resumes.
+\end{enumerate}
+\item If the drone position is out of bounds:
+\begin{enumerate}
+\item The system detects that the drone is outside the valid course
+area.
+\item FPVR informs the user that they are outside and must return to the main course
+\item After a prolonged period, the system will reset the drone to the last valid position or checkpoint.
+\end{enumerate}
+\end{itemize}
+
+\item[U-03: Recover from Crash during a Course.]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots
+
+\textbf{Precondition:} The user is attempting an obstacle course and is
+actively flying until they collide with an obstacle such as the ground, wall, or a goal.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user flies an active obstacle-course attempt.
+\item The drone collides with an obstacle, the ground, a wall, or a goal.
+\item The system detects the collision and stops active flight input.
+\item The system records one crash and displays the recovery menu.
+\item The user selects Restart.
+\item The application finds the most recently completed checkpoint, or the course start if
+no checkpoint has been completed.
+\item The system places the drone at the selected recovery position with a valid
+orientation.
+\item The system resets the section timer while preserving total time and crash
+penalties.
+\item The system restores the next required checkpoint and clears transient crash
+state.
+\item The user confirms neutral controls and resumes flight.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the drone makes repeated contact while the recovery menu is shown:
+\begin{enumerate}
+\item The application detects the first collision and opens the recovery menu.
+\item The system marks the crash as handled and disables additional crash
+registration while the menu is displayed.
+\item The system ignores subsequent contact events during that recovery state.
+\item The user selects Restart or exits the attempt.
+\item The system records no more than one crash for that collision event.
+\end{enumerate}
+\item If the user selects Restart as a new attempt:
+\begin{enumerate}
+\item The user chooses New Attempt rather than recovery at the checkpoint.
+\item The application asks the user to confirm the restart.
+\item The user confirms the restart.
+\item The system creates a new attempt at the course start.
+\item The system resets checkpoint progress, timers, collision count, and
+performance data.
+\item The user begins the new flight.
+\end{enumerate}
+\item If external networking or the optional AI service is unavailable:
+\begin{enumerate}
+\item The application detects the unavailable service or failed connection.
+\item The system reports that the optional capability is unavailable.
+\item The application disables only the dependent optional feature.
+\item The user continues practising, recovering from crashes, and completing
+the course using standard local behavior.
+\item The system records and displays the standard result without waiting for the
+unavailable service.
+\end{enumerate}
+\item If the user declines consent for optional AI analysis:
+\begin{enumerate}
+\item The application requests consent before sending the required flight data.
+\item The user selects Decline.
+\item The system records that optional analysis is unavailable for this attempt and
+does not send the data.
+\item The application continues the standard flight, recovery, and review flow.
+\item The system displays the standard result without changing its score.
+\end{enumerate}
+\item If the optional AI request times out:
+\begin{enumerate}
+\item The application starts the optional request after consent is available.
+\item The system reaches the configured timeout without a valid response.
+\item The application cancels or abandons the optional request and reports the service as
+unavailable.
+\item The user continues to the standard result without waiting further.
+\item The system preserves the recorded score and rating.
+\end{enumerate}
+\item If the optional AI output is malformed:
+\begin{enumerate}
+\item The application receives the optional response.
+\item The system validates the response before displaying or applying it.
+\item The application rejects malformed output and reports that AI feedback is
+unavailable.
+\item The system displays the standard review and preserves the recorded score,
+rating, and other results.
+\end{enumerate}
+\end{itemize}
+
+\item[U-04: Replay and Analyze Flight Performance]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots, drone training instructors,
+and the team responsible for the optional AI feedback service.
+
+\textbf{Precondition:} The user has completed at least one course and the
+attempt has been recorded by the application. If AI feedback is enabled, the
+user has approved the data required for the optional analysis.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user opens the list of recorded flights.
+\item The application displays the locally stored recordings and their available results.
+\item The user selects a completed flight recording.
+\item The system loads the stored virtual telemetry data and footage.
+\item The application presents the recording in the VR or screen replay view.
+\item The user plays the recording and may pause, rewind, or fast-forward it.
+\item The system displays the standard performance results, including completion
+time, checkpoint results, collision count, numerical score, and performance
+rating.
+\item If optional AI feedback is enabled and consent is available, the application sends
+the permitted performance information for analysis.
+\item The system displays the resulting observations within the review without
+changing the standard results.
+\item The user exits the replay and the application returns to the main menu.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If the selected recording is corrupted:
+\begin{enumerate}
+\item The application attempts to read and validate the recording metadata and content.
+\item The system detects the corruption and stops loading the recording.
+\item The application displays an error explaining that the recording cannot be replayed.
+\item The user dismisses the error.
+\item The application returns the user to the recording list or main menu without changing
+the stored result.
+\end{enumerate}
+\item If the selected recording is missing:
+\begin{enumerate}
+\item The system looks up the selected recording and its referenced local files.
+\item The application detects that one or more required files are absent.
+\item The system displays an error and removes the unavailable item from the active
+replay view.
+\item The user dismisses the error and returns to the recording list or main
+menu.
+\end{enumerate}
+\item If the recording is incompatible with the current application version:
+\begin{enumerate}
+\item The application reads the recording version metadata.
+\item The system compares it with the current supported recording format.
+\item The application prevents incompatible data from being interpreted as a replay.
+\item The system displays a warning and suggests updating the recording or the
+application.
+\item The user returns to the recording list or updates before trying again.
+\end{enumerate}
+\item If AI feedback is unavailable:
+\begin{enumerate}
+\item The application checks whether the optional service is reachable and enabled.
+\item The system reports the unavailable capability.
+\item The application skips the optional request.
+\item The system displays the standard review and leaves the user in the replay
+flow.
+\end{enumerate}
+\item If the user declines AI consent:
+\begin{enumerate}
+\item The application requests consent before sending permitted flight-performance data.
+\item The user selects Decline.
+\item The system does not send the data for optional analysis.
+\item The application displays the standard review without optional observations.
+\end{enumerate}
+\item If AI feedback times out:
+\begin{enumerate}
+\item The application starts the optional analysis request.
+\item The system reaches the configured timeout without a usable response.
+\item The application stops waiting and marks the analysis unavailable.
+\item The system displays the standard review without interrupting replay controls.
+\end{enumerate}
+\item If the AI service fails to produce an analysis:
+\begin{enumerate}
+\item The application receives an empty or failed analysis result.
+\item The system reports that no optional feedback is available.
+\item The application keeps the standard performance results visible.
+\item The user continues or exits the replay normally.
+\end{enumerate}
+\item If the AI response is malformed:
+\begin{enumerate}
+\item The system validates the response before using it.
+\item The application discards the malformed response.
+\item The system records the optional analysis as unavailable.
+\item The application displays the standard review without changing the recorded score,
+rating, or other standard results.
+\end{enumerate}
+\end{itemize}
+
+\item[U-05: Connecting to Multiplayer Training Session (optional)]\mbox{}
+
+\textbf{Primary Actor:} FPVR user
+
+\textbf{Stakeholders of interest:} FPV pilots
+
+\textbf{Precondition:} The user is running the application, has a stable internet
+connection, and has selected the optional multiplayer training mode. The application
+should be able to connect to an external database or server.
+
+\textbf{Main success scenario:}
+\begin{itemize}
+\item The user selects Multiplayer Training from the main menu.
+\item The application verifies that the multiplayer option and network connection are
+available.
+\item The system requests a connection to an available training session.
+\item The application joins the session and receives its participant and course data.
+\item The system displays the participating users and selected training course.
+\item The application initializes the user's local flight state and performance data.
+\item The users complete the training session while the system synchronizes the
+session state.
+\item The system keeps each participant's flight state and performance data
+separate.
+\item The application detects the end of the session and validates the local result.
+\item The system displays the session results and returns the user to the main menu.
+\end{itemize}
+
+\textbf{Secondary scenarios:}
+\begin{itemize}
+\item If no training session is available:
+\begin{enumerate}
+\item The application searches for an available training session.
+\item The system finds no session that can accept the user.
+\item The application informs the user that no training session is available.
+\item The user selects Retry to search again or Exit to return to the main
+menu.
+\item The system performs the selected action without creating a partial
+multiplayer result.
+\end{enumerate}
+\item If the connection is lost before the session starts:
+\begin{enumerate}
+\item The application detects that the connection attempt failed.
+\item The system cancels the incomplete join operation.
+\item The application informs the user that the session could not be joined.
+\item The user selects Retry or returns to the main menu.
+\end{enumerate}
+\item If the connection is lost during the session:
+\begin{enumerate}
+\item The system detects the lost connection.
+\item The application pauses local multiplayer input and marks synchronization as
+invalid.
+\item The system attempts the supported reconnection behavior or waits for the
+session to end.
+\item If synchronization is restored, the application reports the restored state and the
+user explicitly resumes.
+\item If synchronization cannot be restored, the system ends the multiplayer
+session, informs the user, and does not fabricate a result.
+\item The user returns to the main menu or selects a single-user training
+mode.
+\end{enumerate}
+\item If the multiplayer service is unavailable:
+\begin{enumerate}
+\item The application detects that the service cannot be reached.
+\item The system informs the user that Multiplayer Training is unavailable.
+\item The application leaves the multiplayer attempt unstarted.
+\item The user returns to the main menu and selects Free Flight or an
+obstacle-course level.
+\item The system starts the selected single-user training mode normally.
+\end{enumerate}
+\end{itemize}
+\end{description}
 
 \subsection{Prioritization}\label{s5}
 
