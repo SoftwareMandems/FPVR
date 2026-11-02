@@ -441,6 +441,30 @@ test environment is finalized.
   reproduced.
 \end{itemize}
 
+The minimum hardware matrix follows FR-UI-03 and NFR-COMP-01. Additional controller/mode
+combinations will be claimed only after testing.
+
+\begin{table}[!htbp]
+\centering
+\caption{Required FPVR test configurations}
+\label{tab:vnv-configurations}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.26\textwidth}@{}}
+\toprule
+\textbf{Mode} &
+\textbf{Execution and display} &
+\textbf{Flight input} \\
+\midrule
+Standalone &
+FPVR runs on Meta Quest 3S without a connected PC. &
+Quest motion controllers \\
+PCVR &
+FPVR runs on the Windows 11 reference PC and displays through Quest 3S. &
+Xbox-compatible gamepad \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 \subsection{Software Validation}
 
 \wss{If there is any external data that can be used for validation, you should
