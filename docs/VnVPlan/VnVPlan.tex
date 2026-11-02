@@ -387,6 +387,12 @@ The unit testing scope covers the rule-based logic in each module:
   \item Intelligent Feedback: failure handling and isolation from result data
 \end{itemize}
 
+Testing effort follows the priorities in section S.5 of the SRS and the Hazard
+Analysis. Rules that determine a player's recorded result come first, because an
+error there can look correct in the headset while still producing a wrong score
+or ranking. Intelligent Feedback comes last because core training does not
+depend on it.
+
 \subsection{Tests for Functional Requirements}
 
 \wss{Most of the verification will be through automated unit testing.  If
