@@ -241,6 +241,26 @@ review. The inspection checklist is:
   available hardware, people, and schedule?
 \end{itemize}
 
+The following known differences require explicit resolution:
+
+\begin{itemize}
+  \item \textbf{Scope:} The Problem Statement and Hazard Analysis still place accounts
+  and database storage among the stretch goals. SRS S.2 requires accounts, cloud
+  results, and leaderboards. Their security checks must therefore be included, and the
+  older roadmap must be reconciled with this scope.
+  \item \textbf{Performance:} Hazard Analysis NFR1 specifies 30 FPS, whereas SRS
+  NFR-PERF-01 proposes a 72-FPS average over 120 seconds in each required standalone
+  environment. Hazard Analysis NFR2 specifies a 50-ms response, whereas SRS NFR-PERF-02
+  proposes at most 100 ms for at least 95 of 100 input events. These measures and
+  thresholds must be agreed and both documents updated before the affected tests can
+  establish acceptance.
+  \item \textbf{Recovery and review:} SRS U-03 uses ``Restart'' for checkpoint recovery,
+  although FR-CHK-05--07 distinguish Respawn from Restart Level. IF-04 excludes
+  prior-session navigation, while FR-REV-05 requires historical results. U-04 also
+  describes recorded flight replay beyond the result-history requirements. The review
+  will align these passages with the agreed scope.
+\end{itemize}
+
 \subsection{Design Verification}
 
 \wss{Plans for design verification}
