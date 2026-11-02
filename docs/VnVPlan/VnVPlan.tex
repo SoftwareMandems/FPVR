@@ -122,16 +122,35 @@ Repos.csv) if your plan changes as a result of the VnV planning exercise.}
 
 \subsection{Relevant Documentation}
 
-\wss{Reference relevant documentation.  This will definitely include your SRS
-  and your other project documents (design documents, like MG, MIS, etc).  You
-  can include these even before they are written, since by the time the project
-  is done, they will be written.  You can create BibTeX entries for your
-  documents and within those entries include a hyperlink to the documents.}
+This VnV plan is derived from two project documents: the Software
+Requirements Specification (SRS)~\citep{SRS} and the Hazard
+Analysis~\citep{HazardAnalysis}. Together they define what FPVR is
+supposed to do and which failures would be unacceptable, which is the
+information needed to choose tests and interpret results.
 
-\citet{SRS}
+The SRS~\citep{SRS} is the statement of the software requirements. It
+records the goals of FPVR, the functional requirements (for example
+flight control, checkpoint behaviour, and session flow), and the
+non-functional requirements (for example performance, usability, and
+safety-related qualities). System tests in this plan are written
+against those requirements so that a passing test set is evidence that
+the implemented product matches the specified behaviour. The SRS also
+supplies identifiers, assumptions, and environmental constraints that
+this plan uses for traceability: each system test should map back to
+one or more requirements.
 
-\wss{Don't just list the other documents.  You should explain why they are relevant and 
-how they relate to your VnV efforts.}
+The Hazard Analysis~\citep{HazardAnalysis} identifies hazards and
+risks for FPVR. Through a Failure Mode and Effect Analysis it
+describes how components can fail, what the effects of those failures
+would be, and which safety and security requirements mitigate them.
+Those hazards and the derived safety requirements focus on the cases where incorrect
+behaviour could injure a user, damage equipment, produce misleading
+training, or compromise the integrity of the application. Tests
+inspired by the Hazard Analysis therefore include failure and
+mitigation scenarios (for example invalid controller input, lost
+tracking, or unrealistic physics) in addition to the happy-path cases
+taken from the SRS.
+
 
 \section{Plan}
 
