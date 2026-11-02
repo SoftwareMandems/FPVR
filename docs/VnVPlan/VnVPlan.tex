@@ -277,11 +277,30 @@ traceability entries together. Unresolved criteria will be reported as blocked.
 
 \subsection{Design Verification}
 
-\wss{Plans for design verification}
+The Module Guide and Module Interface Specification will be reviewed as they are
+developed, first at Design Revision \(-\)1 and again before module implementation. These
+documents will define the modules that realize the logical responsibilities in SRS S.1.
+The area lead will present interfaces and state transitions to another member, and
+classmates will be asked to review the design through the scheduled peer review.
 
-\wss{The review will include reviews by your classmates}
+The design inspection will check that:
 
-\wss{Create a checklists?}
+\begin{itemize}
+  \item Every required behaviour has an owning module and a traceable interface. Inputs,
+  outputs, units, valid ranges, and failure results are specified, including the
+  controller-to-flight and result-to-storage boundaries.
+  \item State transitions preserve SRS E-I-02: only the next checkpoint counts, one
+  crash produces one penalty, menu time is excluded, Respawn preserves the attempt, and
+  Restart Level creates a fresh attempt. Reviewers will trace these values through a
+  complete example, including a crash before any checkpoint.
+  \item Loss of tracking or input, invalid course data, failed saves, and unavailable
+  services have defined handling. Online or optional AI failures cannot block local
+  training or the standard review. Account ownership and public leaderboard fields are
+  checked at the service boundary.
+  \item Both deployment modes can support the design. Flight-critical work does not wait
+  for network replies, and tests can supply controlled inputs, elapsed time, and service
+  responses without a person wearing the headset.
+\end{itemize}
 
 \subsection{Verification and Validation Plan Verification}
 
