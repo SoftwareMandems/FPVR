@@ -391,6 +391,13 @@ logic to integrated workflows and then to the installed application.
   analyzer findings will be fixed or explicitly justified in the review record.
 \end{itemize}
 
+Safety-related checks will cover the Hazard Analysis requirements applicable to the
+delivered features, including notices, pause/exit, tracking-loss handling, input checks,
+saved-data protection, break reminders, and constructive recovery messages. Timed
+reminders can be checked with a controlled clock; flashing effects and injected
+performance failures will be inspected without exposing participants. Detailed failure
+behaviour will use the reconciled requirements from Section 3.2.
+
 \subsection{Automated Testing and Verification Tools}
 
 \wss{What tools are you using for automated testing.  Likely a unit testing
