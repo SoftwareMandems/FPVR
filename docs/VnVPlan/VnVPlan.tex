@@ -341,6 +341,14 @@ assess its clarity and feasibility during the VnV peer review. The checklist is:
   required by the rubric.
 \end{itemize}
 
+Once the relevant automated suites exist, their ability to detect faults will be checked
+using a small, controlled mutation exercise. On a temporary branch, the team will
+introduce one fault at a time: allow an out-of-order checkpoint, clear total time on
+Respawn, remove a crash penalty, change a rating boundary, or accept another account's
+result submission. Each fault must cause its associated test to fail. Undetected faults
+will lead to a revised test and a repeat check. All mutations will be removed, and the
+unchanged production code must pass again.
+
 \subsection{Implementation Verification}
 
 \wss{You should at least point to the tests listed in this document and the unit
