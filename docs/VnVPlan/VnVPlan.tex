@@ -482,23 +482,68 @@ reconciliation in Section 3.2.
 
 \subsection{Software Validation}
 
-\wss{If there is any external data that can be used for validation, you should
-  point to it here.  If there are no plans for validation, you should state that
-  here.}
+Validation will address the Problem Statement's goals of accessible practice, responsive
+controls, varied challenges, and useful performance feedback. Two separate studies are
+planned under the non-functional tests in Section 4.2: \textbf{NF-UI-01} for beginners'
+use of the interface and \textbf{NF-REAL-01} for experienced pilots' assessment of
+flight realism. These are planned test IDs. Their procedures will use the tasks and
+evidence below, with the two question sets reproduced in Section 6.2. Beginner and pilot
+results will be analysed separately.
 
-\wss{You might want to use review sessions with the stakeholder to check that
-the requirements document captures the right requirements.  Maybe task based
-inspection?}
+\subsubsection{Beginner Interface Study}
 
-\wss{For those capstone teams with an external supervisor, the Rev 0 demo should 
-be used as an opportunity to validate the requirements.  You should plan on 
-demonstrating your project to your supervisor shortly after the scheduled Rev 0 demo.  
-The feedback from your supervisor will be very useful for improving your project.}
+Sankalpa will lead NF-UI-01 with a non-author QA observer and a target of four non-team
+participants with little or no FPV experience. This study will assess discoverability,
+clarity, and ease of use for FR-UI-04--06, FR-CHK-04, FR-REV-02--03, NFR-USAB-01, and
+NFR-SAFE-01--02. Two participants will use standalone Quest motion controllers and two
+will use the PCVR gamepad configuration. Prior VR/game experience and seated or standing
+use will be recorded.
 
-\wss{For teams without an external supervisor, user testing can serve the same purpose 
-as a Rev 0 demo for the supervisor.}
+After a common safety orientation, participants will use the application's instructions
+to perform these tasks without coaching:
 
-\wss{This section might reference back to the SRS verification section.}
+\begin{enumerate}
+  \item Find the control guide, identify throttle, pitch, roll, and yaw, and start free
+  flight.
+  \item Return to the menu, select the introductory course, and identify the next
+  required checkpoint.
+  \item After a simulated crash, use Respawn and Restart Level and explain the
+  difference between their effects on the attempt.
+  \item Pause and exit an active flight without removing the headset or walking away
+  from the starting position.
+  \item Read a completed attempt's review, explain its time, crashes, score, and rating,
+  and choose to retry the level.
+\end{enumerate}
+
+The observer will record each task's completion, elapsed time, errors, assistance, and
+comments. If a participant cannot complete the course, that outcome will be recorded and
+a clearly identified prepared result may be used for the review task. Using that result
+does not count as successful course completion. After phase 5, a focused follow-up task
+will ask users to retrieve a previous result using a test account and distinguish
+local-only from synchronized results.
+
+The beginner questionnaire will use the following statements, rated from \textbf{1
+(strongly disagree) to 5 (strongly agree):}
+
+\begin{itemize}
+  \item \textbf{B1:} I could find and understand the flight-control instructions.
+  \item \textbf{B2:} I could choose a mode or level and return to the menu easily.
+  \item \textbf{B3:} I understood the difference between Respawn and Restart Level.
+  \item \textbf{B4:} I could find and use pause and exit when I wanted to stop.
+  \item \textbf{B5:} The review helped me understand how my time and crashes affected my
+  result.
+\end{itemize}
+
+An open question will ask: \textbf{``Which part was most confusing, and what would make
+it clearer?''}
+
+For each task, report the number completed without assistance out of four, alongside
+individual completion times, errors, and hardware configuration. Report the median and
+range for each questionnaire item. The proposed targets are independent completion by at
+least three of four beginners for each task, successful pause/exit by all four, and a
+median of at least 4/5 for each item. Any pause/exit difficulty will require correction
+and retesting even if other targets are met. These observations will complement the
+functional checks of each required action.
 
 \section{System Tests}
 
