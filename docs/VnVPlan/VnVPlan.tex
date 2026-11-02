@@ -256,7 +256,7 @@ multiple similarly related major functional modules.
 
 \begin{enumerate}
 
-\item{\textbf{T.FR.FLT.01}\\}
+\item{\hypertarget{test-fr-flt-01}{}\textbf{T.FR.FLT.01}\\}
 \textbf{Control:} Manual
 					
 \textbf{Initial State:} System is running and displayed on a flat screen/monitor or VR headset.
@@ -268,7 +268,7 @@ within the environment (FR-FLT-01).
 
 \textbf{Test Case Derivation:} Verifies FR-FLT-01.
 					
-\item{\textbf{T.FR.FLT.02}\\}
+\item{\hypertarget{test-fr-flt-02}{}\textbf{T.FR.FLT.02}\\}
 \textbf{Control:} Automatic
 					
 \textbf{Initial State:} Simulated drone is at rest within an environment.
@@ -282,7 +282,7 @@ within the environment (FR-FLT-01).
 \textbf{How test will be performed:} Starting at rest (FR-FLT-05), the drone begins by moving up and down, 
 tilting left, right, forward, backward, and rotating in place (FR-FLT-02), followed with sustained flight for a period of time (FR-FLT-03).
 
-\item{\textbf{T.FR.FLT.03}\\}
+\item{\hypertarget{test-fr-flt-03}{}\textbf{T.FR.FLT.03}\\}
 \textbf{Control:} Automatic
 					
 \textbf{Initial State:} Drone is suspended in flight within an environment.
@@ -299,7 +299,7 @@ triggers exactly one logged crash event (FR-FLT-06).
 \subsubsection{Menu Interface (S.2.2, S.2.5)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.MI.01}\\}
+\item{\hypertarget{test-fr-mi-01}{}\textbf{T.FR.MI.01}\\}
 \textbf{Control:} Manual
 					
 \textbf{Initial State:} UI is running and main menu is displayed.
@@ -312,7 +312,7 @@ timer limitations (FR-LVL-01).
 
 \textbf{Test Case Derivation:} Verifies FR-LVL-01, FR-LVL-02.
 
-\item{\textbf{T.FR.MI.02}\\}
+\item{\hypertarget{test-fr-mi-02}{}\textbf{T.FR.MI.02}\\}
 \textbf{Control:} Manual
 					
 \textbf{Initial State:} UI is running and main menu is displayed.
@@ -326,7 +326,7 @@ data cleared (FR-LVL-07).
 \textbf{Test Case Derivation:} Verifies FR-LVL-07. Navigating through the course menu also indirectly verifies FR-LVL-03,
 FR-LVL-04, FR-LVL-05, FR-LVL-06, FR-UI-01, FR-UI-05.
 
-\item{\textbf{T.FR.MI.03}\\}
+\item{\hypertarget{test-fr-mi-03}{}\textbf{T.FR.MI.03}\\}
 \textbf{Control:} Manual
 					
 \textbf{Initial State:} System is running and drone is in a course.
@@ -341,7 +341,7 @@ FR-LVL-04, FR-LVL-05, FR-LVL-06, FR-UI-01, FR-UI-05.
 \subsubsection{Checkpoint and Crash Recovery (S.2.3)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.CHK.01}\\}
+\item{\hypertarget{test-fr-chk-01}{}\textbf{T.FR.CHK.01}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} A selectable obstacle-course level is loaded with its
@@ -356,7 +356,7 @@ from which it will stop counting (FR-CHK-02, FR-CHK-03).
 
 \textbf{Test Case Derivation:} Verifies FR-CHK-01, FR-CHK-02, FR-CHK-03, FR-CHK-08.
 
-\item{\textbf{T.FR.CHK.02}\\}
+\item{\hypertarget{test-fr-chk-02}{}\textbf{T.FR.CHK.02}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} A course attempt has completed zero checkpoints, and a
@@ -373,7 +373,7 @@ restart level if checkpoints $\geq 1$ (FR-CHK-04).
 \subsubsection{Timing and Performance Evaluation (S.2.4)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.PER.01}\\}
+\item{\hypertarget{test-fr-per-01}{}\textbf{T.FR.PER.01}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} A new obstacle-course attempt is ready to start.
@@ -392,7 +392,7 @@ crash (FR-PER-01--FR-PER-07, FR-PER-10).
 \textbf{How test will be performed:} Check $\sum_{i=1}^{n} \epsilon_{s,i} \approx \epsilon_t$ where $\epsilon_{s,i}$ is the section time 
 for segment $i$ and $\epsilon_t$ is the total time.
 
-\item{\textbf{T.FR.PER.02}\\}
+\item{\hypertarget{test-fr-per-02}{}\textbf{T.FR.PER.02}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} Drone has finished a course attempt.
@@ -412,7 +412,7 @@ $\max(0,1000-\lfloor T\rfloor-100C)$ and the rating is Needs Improvement for
 \subsubsection{Player Accounts and Authentication (S.2.6)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.ACC.01}\\}
+\item{\hypertarget{test-fr-acc-01}{}\textbf{T.FR.ACC.01}\\}
 \textbf{Control:} Manual
 
 \textbf{Initial State:} The application has network connectivity and the
@@ -426,7 +426,7 @@ short passwords are rejected with explanatory messages (FR-ACC-01, FR-ACC-02).
 
 \textbf{Test Case Derivation:} Verifies FR-ACC-01, FR-ACC-02.
 
-\item{\textbf{T.FR.ACC.02}\\}
+\item{\hypertarget{test-fr-acc-02}{}\textbf{T.FR.ACC.02}\\}
 \textbf{Control:} Manual
 
 \textbf{Initial State:} A registered account exists.
@@ -446,7 +446,7 @@ authentication (FR-ACC-03--FR-ACC-05).
 \subsubsection{Result Storage and Leaderboards (S.2.7)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.DAT.01}\\}
+\item{\hypertarget{test-fr-dat-01}{}\textbf{T.FR.DAT.01}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} A completed course result is available on an
@@ -463,7 +463,7 @@ distinguished (FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10).
 
 \textbf{Test Case Derivation:} Verifies FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10.
 
-\item{\textbf{T.FR.DAT.02}\\}
+\item{\hypertarget{test-fr-dat-02}{}\textbf{T.FR.DAT.02}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} An authenticated player has completed a course.
@@ -480,7 +480,7 @@ FR-DAT-05, FR-DAT-08).
 
 \textbf{Test Case Derivation:} Verifies FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08.
 
-\item{\textbf{T.FR.DAT.03}\\}
+\item{\hypertarget{test-fr-dat-03}{}\textbf{T.FR.DAT.03}\\}
 \textbf{Control:} Manual
 
 \textbf{Initial State:} A result has been synchronized for a registered player.
@@ -498,7 +498,7 @@ identifier (FR-DAT-09, FR-REV-05).
 \subsubsection{Post-Flight Review and Intelligent Feedback (S.2.8, S.2.9)}
 
 \begin{enumerate}
-\item{\textbf{T.FR.REV.01}\\}
+\item{\hypertarget{test-fr-rev-01}{}\textbf{T.FR.REV.01}\\}
 \textbf{Control:} Manual
 
 \textbf{Initial State:} The user has completed an obstacle-course level.
@@ -513,7 +513,7 @@ FR-REV-03).
 
 \textbf{Test Case Derivation:} Verifies FR-REV-01, FR-REV-02, FR-REV-03.
 
-\item{\textbf{T.FR.REV.02}\\}
+\item{\hypertarget{test-fr-rev-02}{}\textbf{T.FR.REV.02}\\}
 \textbf{Control:} Automatic
 
 \textbf{Initial State:} A course can be completed while the network and
@@ -596,27 +596,27 @@ How test will be performed:
 \centering
 \caption{Traceability between functional requirements and system tests}
 \label{tab:fr-traceability}
-\begin{tabularx}{\textwidth}{p{0.29\textwidth}X}
+\begin{tabularx}{\textwidth}{p{0.32\textwidth}X}
 \toprule
-\textbf{Requirement(s)} & \textbf{System test case(s)}\\
+\textbf{System test case ID} & \textbf{Requirements verified}\\
 \midrule
-FR-FLT-01--06 & T.FR.FLT.01--03\\
-FR-LVL-01--02 & T.FR.MI.01\\
-FR-LVL-03--07 & T.FR.MI.02, T.FR.MI.04\\
-FR-CHK-01--03, FR-CHK-08 & T.FR.CHK.01\\
-FR-CHK-04--07 & T.FR.CHK.02\\
-FR-PER-01--07, FR-PER-10 & T.FR.PER.01\\
-FR-PER-08--09 & T.FR.PER.02\\
-FR-UI-01--03, FR-UI-06 & T.FR.UI.01\\
-FR-UI-04 & T.FR.MI.03, T.FR.MI.04\\
-FR-UI-05 & T.FR.MI.02\\
-FR-ACC-01--02 & T.FR.ACC.01\\
-FR-ACC-03--05 & T.FR.ACC.02\\
-FR-DAT-01, FR-DAT-04, FR-DAT-06--07, FR-DAT-10 & T.FR.DAT.01\\
-FR-DAT-02--03, FR-DAT-05, FR-DAT-08 & T.FR.DAT.02\\
-FR-DAT-09 & T.FR.DAT.03\\
-FR-REV-01--03 & T.FR.REV.01\\
-FR-REV-04--05, FR-AI-01--03 & T.FR.REV.02, T.FR.DAT.03\\
+\hyperlink{test-fr-flt-01}{T.FR.FLT.01} & FR-FLT-01\\
+\hyperlink{test-fr-flt-02}{T.FR.FLT.02} & FR-FLT-02, FR-FLT-03, FR-FLT-05\\
+\hyperlink{test-fr-flt-03}{T.FR.FLT.03} & FR-FLT-04, FR-FLT-06\\
+\hyperlink{test-fr-mi-01}{T.FR.MI.01} & FR-LVL-01, FR-LVL-02\\
+\hyperlink{test-fr-mi-02}{T.FR.MI.02} & FR-LVL-03--07, FR-UI-01, FR-UI-05\\
+\hyperlink{test-fr-mi-03}{T.FR.MI.03} & FR-UI-04\\
+\hyperlink{test-fr-chk-01}{T.FR.CHK.01} & FR-CHK-01--03, FR-CHK-08\\
+\hyperlink{test-fr-chk-02}{T.FR.CHK.02} & FR-CHK-04--07\\
+\hyperlink{test-fr-per-01}{T.FR.PER.01} & FR-PER-01--07, FR-PER-10\\
+\hyperlink{test-fr-per-02}{T.FR.PER.02} & FR-PER-08, FR-PER-09\\
+\hyperlink{test-fr-acc-01}{T.FR.ACC.01} & FR-ACC-01, FR-ACC-02\\
+\hyperlink{test-fr-acc-02}{T.FR.ACC.02} & FR-ACC-03--05\\
+\hyperlink{test-fr-dat-01}{T.FR.DAT.01} & FR-DAT-01, FR-DAT-04, FR-DAT-06--07, FR-DAT-10\\
+\hyperlink{test-fr-dat-02}{T.FR.DAT.02} & FR-DAT-02--03, FR-DAT-05, FR-DAT-08\\
+\hyperlink{test-fr-dat-03}{T.FR.DAT.03} & FR-DAT-09, FR-REV-05\\
+\hyperlink{test-fr-rev-01}{T.FR.REV.01} & FR-REV-01--03\\
+\hyperlink{test-fr-rev-02}{T.FR.REV.02} & FR-REV-04, FR-AI-01--03\\
 \bottomrule
 \end{tabularx}
 \end{table}
