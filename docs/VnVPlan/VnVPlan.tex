@@ -454,6 +454,24 @@ NFR-PERF-02 measures the time from an input event to the flight update.
 
 \end{enumerate}
 
+\subsubsection{Checkpoint Progress and Recovery}
+
+\begin{enumerate}
+
+\item \texttt{RespawnCycle\_TwentyCrashes\_KeepsProgress}
+
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Attempt with two checkpoints complete.
+
+\textbf{Input:} 20 crash-and-respawn cycles.
+
+\textbf{Expected Output:} Both checkpoints remain complete, and no exceptions occur.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-REL-01 (crash-recovery reliability).\par}
+
+\end{enumerate}
+
 \subsection{Traceability Between Test Cases and Modules}
 
 \wss{Provide evidence that all modules have been considered.}
