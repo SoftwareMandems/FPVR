@@ -551,6 +551,174 @@ This module tests checkpoint order and the two recovery options, supporting the 
 
 \end{enumerate}
 
+\subsubsection{Timing and Evaluation}
+
+This module tests timer rules, score calculation, and ratings, supporting the Timing and Performance Evaluation system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{CalculateScore\_TimeAndCrashes\_ReturnsScore}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed obstacle-course attempt.
+
+\textbf{Input:} $T = 95.7$ s, $C = 2$.
+
+\textbf{Expected Output:} Score of 705.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-08 ($\max(0, 1000 - 95 - 200) = 705$).\par}
+
+\item \texttt{CalculateScore\_LargePenalty\_ReturnsZero}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed obstacle-course attempt.
+
+\textbf{Input:} $T = 950.0$ s, $C = 1$.
+
+\textbf{Expected Output:} Score of 0.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-08 ($1000 - 950 - 100 = -50$, which is raised to 0).\par}
+
+\item \texttt{AssignRating\_BandBoundaries\_ReturnsRating}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Rating logic loaded.
+
+\textbf{Input:} Scores of 0, 399, 400, 599, 600, 799, 800, and 1000.
+
+\textbf{Expected Output:} Needs Improvement (0, 399), Bronze (400, 599), Silver (600, 799), and Gold (800, 1000).
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-09 (rating bands).\par}
+
+\item \texttt{UpdateTimers\_RecoveryMenuOpen\_StaysPaused}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active attempt with a total time of 30.0 s and a section time of 8.0 s.
+
+\textbf{Input:} Recovery menu opens, then 5.0 s of simulated time passes.
+
+\textbf{Expected Output:} Total time stays at 30.0 s and section time stays at 8.0 s.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-06 (timer pause during recovery).\par}
+
+\item \texttt{RecordCrash\_TwoCrashEvents\_CountsTwo}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active attempt with 0 crashes.
+
+\textbf{Input:} Two crash events.
+
+\textbf{Expected Output:} Crash count of 2.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-07 (crash counting).\par}
+
+\item \texttt{ApplyRecovery\_Respawn\_KeepsTotalTime}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Total time 40.0 s, section time 12.0 s, and 1 crash.
+
+\textbf{Input:} Respawn recovery event.
+
+\textbf{Expected Output:} Total time 40.0 s, section time 0.0 s, and 1 crash.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-06, FR-PER-04, and FR-PER-05 (respawn timer rules).\par}
+
+\item \texttt{ApplyRecovery\_Restart\_ResetsTimers}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Total time 40.0 s, section time 12.0 s, and 1 crash.
+
+\textbf{Input:} Restart Level recovery event.
+
+\textbf{Expected Output:} Both timers at 0.0 s, 0 crashes, and score state at its initial value.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-07 and FR-PER-05 (restart timer rules).\par}
+
+\end{enumerate}
+
+\subsubsection{VR Interface and Input}
+
+This module tests how controller input reaches the flight model, supporting the Menu Interface system tests in section 4.1. Appearance and headset behaviour are covered by section 4.
+
+\begin{enumerate}
+
+\item \texttt{MapInput\_EachConfiguration\_ReturnsFourAxes}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Quest motion controller and standard gamepad configurations loaded.
+
+\textbf{Input:} Full deflection of the throttle, pitch, roll, and yaw controls, one at a time, in each configuration.
+
+\textbf{Expected Output:} Only the matching flight axis changes for each control.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-UI-03 and NFR-COMP-01 (controller support).\par}
+
+\item \texttt{ReadInput\_InvalidValue\_DiscardsInput}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with the last valid input stored.
+
+\textbf{Input:} Non-finite and out-of-range values on each flight axis.
+
+\textbf{Expected Output:} Values are discarded, and the last valid input is kept.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-05 (invalid input).\par}
+
+\item \texttt{HandleDisconnect\_DuringFlight\_ReportsUnavailable}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with a connected controller.
+
+\textbf{Input:} Controller connection is lost.
+
+\textbf{Expected Output:} Input is reported as unavailable, and stale controls are discarded.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-02 (loss of input).\par}
+
+\end{enumerate}
+
+\subsubsection{Post-Flight Review}
+
+This module tests the contents and availability of the standard review, supporting the Post-Flight Review and Intelligent Feedback system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{BuildReview\_CompletedAttempt\_ReturnsFinalValues}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Final result for the introductory level: 95.7 s, 3 of 3 checkpoints, 2 crashes, a score of 705, and a Silver rating.
+
+\textbf{Input:} Review is requested.
+
+\textbf{Expected Output:} Review contains all six values unchanged.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-REV-02 (review metrics).\par}
+
+\item \texttt{ShowReview\_ServicesUnavailable\_ShowsReview}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt, with the fake online and feedback services set to unavailable.
+
+\textbf{Input:} Level completion event.
+
+\textbf{Expected Output:} Standard review is produced with all of its fields.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-REV-01 and FR-REV-04 (review without network).\par}
+
+\end{enumerate}
+
 \subsection{Tests for Nonfunctional Requirements}
 
 \wss{If there is a module that needs to be independently assessed for
