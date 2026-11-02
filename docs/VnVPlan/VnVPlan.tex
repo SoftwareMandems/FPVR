@@ -358,6 +358,12 @@ level. These tests complement the system tests in section 4 by checking the
 rules behind each requirement in isolation, such as score calculation,
 checkpoint order, and leaderboard ranking.
 
+The modules follow the logical responsibilities in section S.1 of the SRS, and
+the MG and MIS will use the same nine modules. The first eight are core modules.
+Intelligent Feedback is optional and depends on the scope decision recorded in
+the SRS. Unit tests are organized by module and will run in the continuous
+integration pipeline using the Unity Test Framework, which is based on NUnit.
+
 \subsection{Unit Testing Scope}
 
 \wss{What modules are outside of the scope.  If there are modules that are
