@@ -719,6 +719,126 @@ This module tests the contents and availability of the standard review, supporti
 
 \end{enumerate}
 
+\subsubsection{Accounts and Online Service}
+
+This module tests account rules and online access, supporting the Player Accounts and Authentication system tests in section 4.1. The online service is replaced by a fake.
+
+\begin{enumerate}
+
+\item \texttt{Register\_PasswordLengthBoundary\_AppliesRule}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Fake online service with no existing accounts.
+
+\textbf{Input:} Unique usernames with an 11-character and a 12-character password.
+
+\textbf{Expected Output:} The 11-character password is rejected with an explanatory message, and the 12-character password is accepted.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-02 (registration validation).\par}
+
+\item \texttt{SignIn\_InvalidCredentials\_ReturnsGenericError}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Fake online service with one registered account.
+
+\textbf{Input:} Sign-in with a wrong password, then with an unknown username.
+
+\textbf{Expected Output:} Both attempts are rejected with the same message.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-03 (secure sign-in).\par}
+
+\item \texttt{SubmitResult\_NoSession\_RejectsSubmission}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Guest player with a completed result.
+
+\textbf{Input:} Global leaderboard submission.
+
+\textbf{Expected Output:} Submission is rejected, and no data is sent to the fake service.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-05 and SR-06 (authenticated submission).\par}
+
+\end{enumerate}
+
+\subsubsection{Results and Leaderboards}
+
+This module tests local results and ranking, which must work without the online service, supporting the Result Storage and Leaderboards system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{SaveResult\_CompletedAttempt\_WritesAllFields}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Empty local storage.
+
+\textbf{Input:} Completed result with level identifier, timestamp, total time, crash count, score, rating, and local player identifier.
+
+\textbf{Expected Output:} Reading the record back returns all seven fields unchanged.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-01 (local result storage).\par}
+
+\item \texttt{RankResults\_EqualScores\_AppliesTiebreakers}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Local results loaded for one level.
+
+\textbf{Input:} Three results with a score of 705: A (195.0 s, 10:05), B (95.0 s, 10:10), and C (95.0 s, 10:00).
+
+\textbf{Expected Output:} Ranked order of C, B, A.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-06 (shorter time, then earlier timestamp, breaks ties).\par}
+
+\item \texttt{SyncResult\_ServiceUnavailable\_KeepsLocalResult}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Authenticated player, a locally saved result, and a fake service set to fail.
+
+\textbf{Input:} Online result submission.
+
+\textbf{Expected Output:} Local result is kept, marked as not synchronized, and available to retry.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-03 and FR-DAT-10 (failed submission recovery and synchronization status).\par}
+
+\end{enumerate}
+
+\subsubsection{Intelligent Feedback}
+
+This module tests that the optional feedback feature cannot affect the standard review or recorded results.
+
+\begin{enumerate}
+
+\item \texttt{RequestFeedback\_ServiceTimeout\_ReturnsUnavailable}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt with the fake feedback service set to time out.
+
+\textbf{Input:} Feedback request.
+
+\textbf{Expected Output:} An unavailable result is returned without raising an error.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-AI-03 (feedback failure isolation).\par}
+
+\item \texttt{ApplyFeedback\_AnyResponse\_LeavesResultUnchanged}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt with a stored result.
+
+\textbf{Input:} Feedback response from the fake service.
+
+\textbf{Expected Output:} Checkpoint, timer, crash, score, and rating data are identical to the stored result.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-08 (feedback isolation).\par}
+
+\end{enumerate}
+
 \subsection{Tests for Nonfunctional Requirements}
 
 \wss{If there is a module that needs to be independently assessed for
