@@ -408,6 +408,25 @@ Out of scope for unit testing:
   (LC-08)
 \end{itemize}
 
+\subsubsection{Testing Strategy}
+
+The unit testing strategy uses both black-box and white-box approaches:
+
+\begin{itemize}
+  \item \textbf{Black-box testing:} Inputs and expected outputs come from the
+  SRS and the MIS. Each access program has one test for normal behaviour and
+  additional tests for edge cases, boundary values, and invalid input.
+  \item \textbf{White-box testing:} The Unity Code Coverage package identifies
+  untested branches, which guide additional tests of internal state transitions,
+  such as crash and recovery states.
+  \item \textbf{Mocking and isolation:} The online service and intelligent
+  feedback service are replaced by fakes, and timers use simulated time, so
+  results do not depend on a network or real time.
+  \item \textbf{Test modes:} Logic that does not need a running scene uses Edit
+  Mode tests. Behaviour that depends on physics or frame updates uses Play Mode
+  tests. Game rules are kept in plain C\# classes so they can run in Edit Mode.
+\end{itemize}
+
 \subsection{Tests for Functional Requirements}
 
 \wss{Most of the verification will be through automated unit testing.  If
