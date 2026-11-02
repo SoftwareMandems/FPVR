@@ -472,6 +472,24 @@ NFR-PERF-02 measures the time from an input event to the flight update.
 
 \end{enumerate}
 
+\subsubsection{Accounts and Online Service}
+
+\begin{enumerate}
+
+\item \texttt{Register\_ValidPassword\_NoPlaintextStored}
+
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Empty local storage and a fake online service.
+
+\textbf{Input:} Registration with a known test password.
+
+\textbf{Expected Output:} The password does not appear in any locally saved data.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-SEC-01 (credential protection).\par}
+
+\end{enumerate}
+
 \subsection{Traceability Between Test Cases and Modules}
 
 \wss{Provide evidence that all modules have been considered.}
