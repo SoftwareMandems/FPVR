@@ -413,20 +413,33 @@ results.
 
 \subsection{Automated Testing and Verification Tools}
 
-\wss{What tools are you using for automated testing.  Likely a unit testing
-  framework and maybe a profiling tool, like ValGrind.  Other possible tools
-  include a static analyzer, make, continuous integration tools, test coverage
-  tools, etc.  Explain your plans for summarizing code coverage metrics.
-  Linters are another important class of tools.  For the programming language
-  you select, you should look at the available linters.  There may also be tools
-  that verify that coding standards have been respected, like flake9 for
-  Python.}
+The planned tools fit the Unity/C\# environment in SRS P.2. Exact Unity, package,
+analyzer, and service versions will be recorded and checked for compatibility before the
+test environment is finalized.
 
-\wss{If you have already done this in the development plan, you can point to
-that document.}
-
-\wss{The details of this section will likely evolve as you get closer to the
-  implementation.}
+\begin{itemize}
+  \item \textbf{Unity Test Framework and NUnit:} Edit Mode tests will check isolated C\#
+  logic. Play Mode tests will check physics, scene objects, collision events, and
+  frame-dependent interactions. Controlled input, time, and service fixtures will
+  support repeatable cases.
+  \item \textbf{GitHub Actions:} Extend the existing documentation workflow with
+  compilation, configured analysis, and automated tests on pull requests using a
+  licensed Unity runner. Keep test-result files and logs with each run. If runner access
+  is unavailable, execute the same checks locally and attach the results before merging.
+  Headset tests will be recorded separately.
+  \item \textbf{Unity Code Coverage:} Report covered and executable lines by FPVR module
+  and overall. Exclude third-party, generated, and test code, and list the exclusions.
+  Review uncovered logic, especially safety, recovery, scoring, and access control; add
+  tests or document why another check is needed. Code coverage will be reported
+  separately from requirement coverage and mutation results.
+  \item \textbf{C\# compiler and Roslyn analyzers:} Use a compatible, versioned rule set
+  for correctness and the team's C\# coding conventions. Run these checks during
+  development and in the build workflow so findings are available to the whole team.
+  \item \textbf{Unity Profiler, headset metrics, and timestamp logs:} Collect
+  application frame times and input-to-state-update intervals on the target builds.
+  Preserve raw measurements and configuration details so the reported performance can be
+  reproduced.
+\end{itemize}
 
 \subsection{Software Validation}
 
