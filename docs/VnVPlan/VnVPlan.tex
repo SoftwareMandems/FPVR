@@ -315,12 +315,31 @@ evidence that each review occurred.
 
 \subsection{Verification and Validation Plan Verification}
 
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
+The rotating QA reviewer will inspect this plan before submission and after major
+requirement or design changes. The assigned peer reviewers and TA will be asked to
+assess its clarity and feasibility during the VnV peer review. The checklist is:
 
-\wss{The review will include reviews by your classmates}
-
-\wss{Create a checklists?}
+\begin{itemize}
+  \item Every in-scope functional, non-functional, and applicable safety requirement has
+  a test or an explicitly justified inspection. Traceability works in both directions,
+  and proposed or deferred items have visible status. Critical recovery, scoring, and
+  data-protection rules have checks at both the logic and integrated-workflow levels.
+  \item Each test gives a unique ID, requirement links, configuration, initial state,
+  inputs, steps, expected result, pass criterion, and the reason for that expectation.
+  Boundary and failure cases are included, and expected values are derived independently
+  of the implementation being tested.
+  \item A different member can execute the procedure and reach the same pass/fail
+  decision. The reviewer will dry-run a checkpoint/recovery test and a performance
+  procedure when the required build is available.
+  \item Equipment, test data, owners, and time are available. Automated tests are
+  separated from headset and user checks, and no procedure requires exposing a
+  participant to deliberately unsafe visuals or physical conditions.
+  \item Section 4.2 contains two separate usability-related test procedures: beginners
+  assess the interface, and experienced FPV pilots assess realism. Section 6.2 contains
+  both question sets. Section 5 retains the unit-testing strategy while detailed cases
+  await the MIS. The List of Figures and List of Tables remain in the document, as
+  required by the rubric.
+\end{itemize}
 
 \subsection{Implementation Verification}
 
