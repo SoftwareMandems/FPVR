@@ -168,9 +168,43 @@ excluded from the academic-year scope will be listed with their rationale.
 
 \subsection{Verification and Validation Team}
 
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+Responsibilities follow the project roles in SRS P.1. Table 1 identifies the lead for
+each area. Every member will write tests for their work and review another member's
+work. The rotating quality assurance (QA) reviewer will not be the main author of the
+artifact being reviewed, and each pull request will require review by a different
+member.
+
+\begin{table}[!htbp]
+\centering
+\caption{FPVR verification and validation responsibilities}
+\label{tab:vnv-responsibilities}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Team member} &
+\textbf{Responsibility} \\
+\midrule
+Ibrahim Tariq &
+Coordinate V\&V milestones and defect priorities. Lead flight-model, gravity, camera,
+and rendering-performance checks, and the experienced-pilot realism study. \\
+John Cho &
+Lead headset, controller, installation, and interruption-recovery testing. Record
+hardware configurations and arrange supervisor and external reviews. \\
+Sankalpa Chhetri Dhakal &
+Check every course, obstacle type, and recovery position. Lead the beginner interface
+study and usability findings; evaluate optional intelligent feedback if included. \\
+Vikram Chandar &
+Lead tests of game states, checkpoint order, crash events, respawn, restart, and timers.
+Maintain repeatable state-transition fixtures. \\
+Arjun Sasidaran &
+Lead score, rating, review, account, storage, and leaderboard tests, including offline
+recovery and access control. Check expected results independently. \\
+Dr. Douglas Down &
+Review scope, flight realism, and unresolved acceptance criteria during the existing
+fortnightly meetings. Provide feedback on the Revision 0 demonstration. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{SRS Verification}
 
