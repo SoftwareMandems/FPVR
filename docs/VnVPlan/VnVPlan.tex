@@ -398,6 +398,19 @@ reminders can be checked with a controlled clock; flashing effects and injected
 performance failures will be inspected without exposing participants. Detailed failure
 behaviour will use the reconciled requirements from Section 3.2.
 
+Each run will record the build commit, test ID, requirement IDs, configuration, inputs,
+expected and actual results, and pass/fail/blocked status, with logs or screenshots
+where useful. Failures will become assigned GitHub issues. After a fix, the failing case
+and affected regression tests will be rerun. Changes to shared game state, input, or
+persistence will also trigger the complete core workflow. Third-party engine and service
+internals are outside the team's verification scope, but their integration and failure
+handling remain in scope.
+
+The V\&V Report will summarize passed, failed, blocked, and unexecuted tests, and show
+which requirements have supporting evidence. Proposed and formally deferred requirements
+will be listed separately so an untested item cannot appear to be covered by the passing
+results.
+
 \subsection{Automated Testing and Verification Tools}
 
 \wss{What tools are you using for automated testing.  Likely a unit testing
