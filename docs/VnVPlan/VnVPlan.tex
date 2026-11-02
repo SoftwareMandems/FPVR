@@ -375,57 +375,181 @@ needs to be well-documented, with meaningful names for all of the tests.}
   explain your rationale for the ranking of module importance.}
 
 \subsection{Tests for Functional Requirements}
+\label{sec:unit-fr}
 
-\wss{Most of the verification will be through automated unit testing.  If
-  appropriate specific modules can be verified by a non-testing based
-  technique.  That can also be documented in this section.}
+Most verification of these modules is through automated unit testing. Test names
+follow the format \texttt{Method\_Condition\_ExpectedResult}. The results of
+these tests are recorded in the VnV Report. Each test checks one module, and any
+other module it depends on is replaced by a fake. SR requirements are still
+proposed in the SRS, so tests that trace to them apply only if they are approved.
 
-\subsubsection{Module 1}
+\subsubsection{Flight and Collision}
 
-\wss{Include a blurb here to explain why the subsections below cover the module.
-  References to the MIS would be good.  You will want tests from a black box
-  perspective and from a white box perspective.  Explain to the reader how the
-  tests were selected.}
+This module tests gravity and the rules that decide when a crash is recorded, supporting the Realistic Flight Simulation system tests in section 4.1. The flight model is under review, so tests check the direction of change, not exact values.
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item \texttt{UpdateFlight\_NoThrust\_ReducesVerticalVelocity}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{Type:} Functional, Dynamic, Automatic
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+\textbf{Initial State:} Airborne drone with zero vertical velocity.
 
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Input:} Zero throttle for 1.0 s of simulated time.
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{Expected Output:} Vertical velocity is lower than at the start of the test.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-03 (simulated gravity).\par}
 
-How test will be performed: 
+\item \texttt{HandleContact\_GroundBeforeTakeoff\_NoCrash}
 
-\item{...\\}
-    
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Drone on its starting surface and not yet airborne.
+
+\textbf{Input:} Ground contact event.
+
+\textbf{Expected Output:} No crash event is raised.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-05 (crash trigger rules).\par}
+
+\item \texttt{HandleContact\_RepeatedContact\_OneCrashEvent}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Airborne drone.
+
+\textbf{Input:} 10 consecutive contact events with the same obstacle.
+
+\textbf{Expected Output:} Exactly one crash event is raised.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-06 (single crash event).\par}
+
 \end{enumerate}
 
-\subsubsection{Module 2}
+\subsubsection{Modes and Levels}
 
-...
+This module holds the attempt state machine that connects flight, checkpoints, timers, and recovery, supporting the Menu Interface system tests in section 4.1. The other modules are replaced by fakes, so these tests check the attempt state and the requests this module makes.
+
+\begin{enumerate}
+
+\item \texttt{StartAttempt\_AfterPriorRun\_ResetsAttemptState}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} A previous attempt has ended.
+
+\textbf{Input:} A new attempt is started on the same level.
+
+\textbf{Expected Output:} The attempt enters its initial state and requests a reset of checkpoint progress, both timers, crash count, and score state.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-LVL-07 (attempt initialization).\par}
+
+\item \texttt{RecoverFreeFlight\_AfterCrash\_RestoresStart}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Free-flight mode with the drone crashed.
+
+\textbf{Input:} Player selects recovery.
+
+\textbf{Expected Output:} Drone returns to the free-flight starting position without restarting the application.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-LVL-02 (free-flight recovery).\par}
+
+\item \texttt{PauseFlight\_ActiveAttempt\_FreezesAttempt}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active obstacle-course attempt in flight.
+
+\textbf{Input:} Player selects pause from the in-application menu.
+
+\textbf{Expected Output:} Attempt enters the paused state and requests that flight input and both timers stop.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-SAFE-01 and SR-03 (in-application pause).\par}
+
+\item \texttt{ResumeAttempt\_ControlsNotNeutral\_StaysPaused}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Attempt paused after input loss, with input available again and the controls not at neutral.
+
+\textbf{Input:} Player confirms resume.
+
+\textbf{Expected Output:} Attempt stays paused.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-02 (resume conditions).\par}
+
+\item \texttt{LoadLevel\_InvalidCheckpointOrder\_RejectsLevel}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Level definition with a duplicated checkpoint position in its ordered list.
+
+\textbf{Input:} Request to load the level.
+
+\textbf{Expected Output:} Level is rejected before flight, and no attempt starts.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-05 (invalid configuration).\par}
+
+\end{enumerate}
+
+\subsubsection{Checkpoint Progress and Recovery}
+
+This module tests checkpoint order and the two recovery options, supporting the Checkpoint and Crash Recovery system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{CompleteCheckpoint\_OutOfOrder\_NoProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Ordered checkpoints A, B, and C, with none completed.
+
+\textbf{Input:} Drone crosses checkpoint B.
+
+\textbf{Expected Output:} Zero checkpoints completed, and A is still the next required checkpoint.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-02 and FR-CHK-03 (ordered completion and skip prevention).\par}
+
+\item \texttt{CompleteLevel\_MissingCheckpoint\_NotComplete}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Ordered checkpoints A, B, and C, with A and B completed.
+
+\textbf{Input:} Drone reaches the finish.
+
+\textbf{Expected Output:} Level is not declared complete.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-08 (level completion).\par}
+
+\item \texttt{Respawn\_AfterCrash\_KeepsProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Checkpoint A complete, with the drone crashed.
+
+\textbf{Input:} Player selects Respawn.
+
+\textbf{Expected Output:} Recovery position is checkpoint A, and A is still complete.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-05 and FR-CHK-06 (respawn and progress preservation).\par}
+
+\item \texttt{RestartLevel\_AfterCrash\_ClearsProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Checkpoint A complete, with the drone crashed.
+
+\textbf{Input:} Player selects Restart Level.
+
+\textbf{Expected Output:} Recovery position is the level start, and zero checkpoints are completed.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-07 (level restart).\par}
+
+\end{enumerate}
 
 \subsection{Tests for Nonfunctional Requirements}
 
