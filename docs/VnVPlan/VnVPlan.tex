@@ -227,64 +227,309 @@ as a Rev 0 demo for the supervisor.}
 
 \section{System Tests}
 
-\wss{There should be text between all headings, even if it is just a roadmap of
-the contents of the subsections.}
+% \wss{There should be text between all headings, even if it is just a roadmap of
+% the contents of the subsections.}
+
+System tests are tests that are used to verify that FPVR satisfies the functional
+and non-functional requirements as specified in the SRS. This section will cover all
+system tests that will be performed end-to-end on the application.
 
 \subsection{Tests for Functional Requirements}
 
-\wss{Subsets of the tests may be in related, so this section is divided into
-  different areas.  If there are no identifiable subsets for the tests, this
-  level of document structure can be removed.}
+% \wss{Subsets of the tests may be in related, so this section is divided into
+%   different areas.  If there are no identifiable subsets for the tests, this
+%   level of document structure can be removed.}
 
-\wss{Include a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.}
+% \wss{Include a blurb here to explain why the subsections below
+%   cover the requirements.  References to the SRS would be good here.}
 
-\subsubsection{Area of Testing1}
+The following is a list of tests used to cover the functional requirements (S.2) of the SRS.
+Note that tests are not mutually exclusive to a single subset of requirements and can hit
+multiple similarly related major functional modules. 
 
-\wss{It would be nice to have a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.  If a section
-  covers tests for input constraints, you should reference the data constraints
-  table in the SRS.}
-		
-\paragraph{Title for Test}
+\subsubsection{Realistic Flight Simulation (S.2.1)}
+
+% \wss{It would be nice to have a blurb here to explain why the subsections below
+%   cover the requirements.  References to the SRS would be good here.  If a section
+%   covers tests for input constraints, you should reference the data constraints
+%   table in the SRS.}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{\textbf{T.FR.FLT.01}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} System is running and displayed on a flat screen/monitor or VR headset.
+					
+\textbf{Input:} Move the drone using the corresponding input controller.
+					
+\textbf{Output:} The field of view of the drone changes in response to the input of the controller and moves in the expected direction
+within the environment (FR-FLT-01).
 
-Control: Manual versus Automatic
+\textbf{Test Case Derivation:} Verifies FR-FLT-01.
 					
-Initial State: 
+\item{\textbf{T.FR.FLT.02}\\}
+\textbf{Control:} Automatic
 					
-Input: 
+\textbf{Initial State:} Simulated drone is at rest within an environment.
 					
-Output: \wss{The expected result for the given inputs.  Output is not how you
-are going to return the results of the test.  The output is the expected
-result.}
+\textbf{Input:} Simple flight path that exercises each of the drone's control axes one by one.
+					
+\textbf{Output:} Drone behaves as expected and follows the path within a reasonable margin of error ($\leq 5\%$ of expected path).
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Test Case Derivation:} Verifies FR-FLT-02, FR-FLT-03, FR-FLT-05.
 
-Control: Manual versus Automatic
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{How test will be performed:} Starting at rest (FR-FLT-05), the drone begins by moving up and down, 
+tilting left, right, forward, backward, and rotating in place (FR-FLT-02), followed with sustained flight for a period of time (FR-FLT-03).
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+\item{\textbf{T.FR.FLT.03}\\}
+\textbf{Control:} Automatic
+					
+\textbf{Initial State:} Drone is suspended in flight within an environment.
+					
+\textbf{Input:} Drone is moving and projected to hit a collision object.
+					
+\textbf{Output:} Drone comes into contact with object, stops moving (FR-FLT-04), and 
+triggers exactly one logged crash event (FR-FLT-06).
 
-How test will be performed: 
+\textbf{Test Case Derivation:} Verifies FR-FLT-04, FR-FLT-06.
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\subsubsection{Menu Interface (S.2.2, S.2.5)}
 
-...
+\begin{enumerate}
+\item{\textbf{T.FR.MI.01}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} UI is running and main menu is displayed.
+					
+\textbf{Input:} Free-flight mode is selected from the menu.
+					
+\textbf{Output:} Free-flight mode is loaded and drone is placed in an area with no courses, 
+obstacles littered throughout the field that the drone can collide with (FR-LVL-02), and no attempt or 
+timer limitations (FR-LVL-01).
+
+\textbf{Test Case Derivation:} Verifies FR-LVL-01, FR-LVL-02.
+
+\item{\textbf{T.FR.MI.02}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} UI is running and main menu is displayed.
+					
+\textbf{Input:} User scrolls through the list of available courses, terrains/environments for selected course, 
+and hits the start button.
+					
+\textbf{Output:} Course is loaded and drone is initialized at the starting position of the course with all stale 
+data cleared (FR-LVL-07).
+
+\textbf{Test Case Derivation:} Verifies FR-LVL-07. Navigating through the course menu also indirectly verifies FR-LVL-03,
+FR-LVL-04, FR-LVL-05, FR-LVL-06, FR-UI-01, FR-UI-05.
+
+\item{\textbf{T.FR.MI.03}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} System is running and drone is in a course.
+					
+\textbf{Input:} Button is pressed on the controller that brings up the help menu/controller guide.
+					
+\textbf{Output:} Small window pops up on the screen with a list of controls and their corresponding actions (FR-UI-04). 
+
+\textbf{Test Case Derivation:} Verifies FR-UI-04.
+\end{enumerate}
+
+\subsubsection{Checkpoint and Crash Recovery (S.2.3)}
+
+\begin{enumerate}
+\item{\textbf{T.FR.CHK.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A selectable obstacle-course level is loaded with its
+course definition available for inspection.
+
+\textbf{Input:} Pass through checkpoints in order, then attempt to pass through
+a later checkpoint before the next required checkpoint and finally reach the
+finish.
+
+\textbf{Output:} Level will record the number of checkpoints passed up until a checkpoint is skipped
+from which it will stop counting (FR-CHK-02, FR-CHK-03).
+
+\textbf{Test Case Derivation:} Verifies FR-CHK-01, FR-CHK-02, FR-CHK-03, FR-CHK-08.
+
+\item{\textbf{T.FR.CHK.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A course attempt has completed zero checkpoints, and a
+second attempt has completed at least one checkpoint.
+
+\textbf{Input:} Drone crashes, select respawn. Drone crashes again, select restart level.
+
+\textbf{Output:} Application displays option to respawn and 
+restart level if checkpoints $\geq 1$ (FR-CHK-04).
+
+\textbf{Test Case Derivation:} Verifies FR-CHK-04, FR-CHK-05, FR-CHK-06, FR-CHK-07.
+\end{enumerate}
+
+\subsubsection{Timing and Performance Evaluation (S.2.4)}
+
+\begin{enumerate}
+\item{\textbf{T.FR.PER.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A new obstacle-course attempt is ready to start.
+
+\textbf{Input:} Run through multiple checkpoint segments, crash during one
+segment, record epoch time to completion.
+
+\textbf{Output:} Total timer measures active flight, retains time from
+crashed segments, stops during the recovery menu, does not reset on Respawn,
+and stops at completion. The section timer measures the current segment and
+resets at checkpoint completion and Respawn. The crash count increases once per
+crash (FR-PER-01--FR-PER-07, FR-PER-10).
+
+\textbf{Test Case Derivation:} Verifies FR-PER-01, FR-PER-02, FR-PER-03, FR-PER-04, FR-PER-05, FR-PER-06, FR-PER-07, FR-PER-10.
+
+\textbf{How test will be performed:} Check $\sum_{i=1}^{n} \epsilon_{s,i} \approx \epsilon_t$ where $\epsilon_{s,i}$ is the section time 
+for segment $i$ and $\epsilon_t$ is the total time.
+
+\item{\textbf{T.FR.PER.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone has finished a course attempt.
+
+\textbf{Input:} Complete attempts with known values of $T$ and $C$, including
+the score boundaries 0, 399, 400, 599, 600, 799, 800, and 1000.
+
+\textbf{Output:} The correct score and rating are calculated and displayed upon completion of a course (FR-PER-08, FR-PER-09).
+
+\textbf{How test will be performed:} The score equals
+$\max(0,1000-\lfloor T\rfloor-100C)$ and the rating is Needs Improvement for
+0--399, Bronze for 400--599, Silver for 600--799, and Gold for 800 or more.
+
+\textbf{Test Case Derivation:} Verifies FR-PER-08, FR-PER-09.
+\end{enumerate}
+
+\subsubsection{Player Accounts and Authentication (S.2.6)}
+
+\begin{enumerate}
+\item{\textbf{T.FR.ACC.01}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} The application has network connectivity and the
+username is not registered.
+
+\textbf{Input:} Register a new username with a valid password, repeat with the
+same username, and repeat with passwords shorter than 12 characters.
+
+\textbf{Output:} The valid registration succeeds. Duplicate usernames and
+short passwords are rejected with explanatory messages (FR-ACC-01, FR-ACC-02).
+
+\textbf{Test Case Derivation:} Verifies FR-ACC-01, FR-ACC-02.
+
+\item{\textbf{T.FR.ACC.02}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} A registered account exists.
+
+\textbf{Input:} Sign in with valid credentials, sign out, attempt sign-in with
+an invalid username and with an invalid password, and try to submit a result
+while signed out.
+
+\textbf{Output:} Valid credentials create a session, sign-out ends it, invalid
+credentials are rejected without identifying which field was wrong, and
+unauthenticated practice remains available while global submission requires
+authentication (FR-ACC-03--FR-ACC-05).
+
+\textbf{Test Case Derivation:} Verifies FR-ACC-03, FR-ACC-04, FR-ACC-05.
+\end{enumerate}
+
+\subsubsection{Result Storage and Leaderboards (S.2.7)}
+
+\begin{enumerate}
+\item{\textbf{T.FR.DAT.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A completed course result is available on an
+installation with no prior result for that level.
+
+\textbf{Input:} Save results with different scores, times, crash counts, and
+timestamps, then open the local leaderboard.
+
+\textbf{Output:} The local record contains the level, timestamp, total time,
+crash count, score, rating, and local player identifier. The leaderboard shows
+at least the top ten available results and orders them by descending score,
+shorter time, then earlier timestamp; local-only and synchronized states are
+distinguished (FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10.
+
+\item{\textbf{T.FR.DAT.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} An authenticated player has completed a course.
+
+\textbf{Input:} Submit once with connectivity, repeat while the online service
+is unavailable, restore connectivity, and retry synchronization. Open both
+leaderboards while the service is unavailable.
+
+\textbf{Output:} A connected result is associated with the player's account and
+appears globally. A failed submission remains local and can be synchronized
+after connectivity returns. Service unavailability is reported while the local
+leaderboard and training modes remain usable (FR-DAT-02, FR-DAT-03,
+FR-DAT-05, FR-DAT-08).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08.
+
+\item{\textbf{T.FR.DAT.03}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} A result has been synchronized for a registered player.
+
+\textbf{Input:} Sign out, sign in on another supported installation, and open
+the player's stored results.
+
+\textbf{Output:} The previously synchronized result is retrievable and shows
+the level, timestamp, total time, crash count, score, rating, and player
+identifier (FR-DAT-09, FR-REV-05).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-09, FR-REV-05.
+\end{enumerate}
+
+\subsubsection{Post-Flight Review and Intelligent Feedback (S.2.8, S.2.9)}
+
+\begin{enumerate}
+\item{\textbf{T.FR.REV.01}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} The user has completed an obstacle-course level.
+
+\textbf{Input:} Observe the review, retry the same level, choose another level,
+and return to the main menu.
+
+\textbf{Output:} The review appears immediately and shows the level, final
+completion time, completed checkpoints, crash count, score, and rating. Each
+navigation choice works without restarting the application (FR-REV-01--
+FR-REV-03).
+
+\textbf{Test Case Derivation:} Verifies FR-REV-01, FR-REV-02, FR-REV-03.
+
+\item{\textbf{T.FR.REV.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A course can be completed while the network and
+intelligent feedback service are independently available or unavailable.
+
+\textbf{Input:} Complete attempts in each service state and inspect the
+post-flight review.
+
+\textbf{Output:} The standard review is always displayed. When intelligent
+feedback is available, it is shown automatically and its natural-language
+observation is grounded in the attempt's time, checkpoint, and crash data.
+Feedback failure or unavailability does not block the standard review
+(FR-REV-04, FR-AI-01--FR-AI-03).
+
+\textbf{Test Case Derivation:} Verifies FR-REV-04, FR-AI-01, FR-AI-02, FR-AI-03.
+\end{enumerate}
 
 \subsection{Tests for Nonfunctional Requirements}
 
@@ -347,8 +592,34 @@ How test will be performed:
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\wss{Provide a table that shows which test cases are supporting which
-  requirements.}
+\begin{table}[htbp]
+\centering
+\caption{Traceability between functional requirements and system tests}
+\label{tab:fr-traceability}
+\begin{tabularx}{\textwidth}{p{0.29\textwidth}X}
+\toprule
+\textbf{Requirement(s)} & \textbf{System test case(s)}\\
+\midrule
+FR-FLT-01--06 & T.FR.FLT.01--03\\
+FR-LVL-01--02 & T.FR.MI.01\\
+FR-LVL-03--07 & T.FR.MI.02, T.FR.MI.04\\
+FR-CHK-01--03, FR-CHK-08 & T.FR.CHK.01\\
+FR-CHK-04--07 & T.FR.CHK.02\\
+FR-PER-01--07, FR-PER-10 & T.FR.PER.01\\
+FR-PER-08--09 & T.FR.PER.02\\
+FR-UI-01--03, FR-UI-06 & T.FR.UI.01\\
+FR-UI-04 & T.FR.MI.03, T.FR.MI.04\\
+FR-UI-05 & T.FR.MI.02\\
+FR-ACC-01--02 & T.FR.ACC.01\\
+FR-ACC-03--05 & T.FR.ACC.02\\
+FR-DAT-01, FR-DAT-04, FR-DAT-06--07, FR-DAT-10 & T.FR.DAT.01\\
+FR-DAT-02--03, FR-DAT-05, FR-DAT-08 & T.FR.DAT.02\\
+FR-DAT-09 & T.FR.DAT.03\\
+FR-REV-01--03 & T.FR.REV.01\\
+FR-REV-04--05, FR-AI-01--03 & T.FR.REV.02, T.FR.DAT.03\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{Unit Test Description}
 
