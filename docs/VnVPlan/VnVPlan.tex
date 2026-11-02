@@ -349,6 +349,14 @@ result submission. Each fault must cause its associated test to fail. Undetected
 will lead to a revised test and a repeat check. All mutations will be removed, and the
 unchanged production code must pass again.
 
+Ibrahim will check progress against SRS P.3: hardware and basic flight at the proof of
+concept; courses, recovery, and timing by module implementation; scoring and local
+review by Revision 0; and required online features and verification evidence by the V\&V
+Report. Missing tests or hardware will be reported as incomplete. A milestone is
+accepted only when its required checks pass and no unresolved defect prevents safe use,
+required gameplay, or data protection. Scope reductions require a documented
+requirements change. Tests will not be weakened solely to make a failing build pass.
+
 \subsection{Implementation Verification}
 
 \wss{You should at least point to the tests listed in this document and the unit
