@@ -360,16 +360,36 @@ requirements change. Tests will not be weakened solely to make a failing build p
 
 \subsection{Implementation Verification}
 
-\wss{You should at least point to the tests listed in this document and the unit
-  testing plan.}
+Implementation verification will combine code inspection with the system tests in
+Section 4 and the unit tests in Section 5. Section 5 will retain the scope and
+test-selection strategy now; detailed unit cases will be completed when module
+interfaces are defined. Tests will check specified outputs and exercise normal,
+boundary, invalid-input, and state-transition cases. Testing will proceed from isolated
+logic to integrated workflows and then to the installed application.
 
-\wss{In this section you would also give any details of any plans for static
-  verification of the implementation.  Potential techniques include code
-  walkthroughs, code inspection, static analyzers, etc.}
-
-\wss{The final class presentation in CAS 741 could be used as a code
-walkthrough.  There is also a possibility of using the final presentation (in
-CAS741) for a partial usability survey.}
+\begin{itemize}
+  \item \textbf{Unit tests:} Check controller-value validation, checkpoint ordering,
+  crash counting, timer updates, scoring, rating boundaries, record validation, and
+  leaderboard tie-breaking using controlled inputs. Expected scores will be calculated
+  independently from FR-PER-08; for example, \(T=95.7\) seconds and \(C=2\) must produce
+  705. Tests will include zero and boundary values, invalid inputs, and repeated events.
+  \item \textbf{Integration tests:} Exercise input-to-flight behaviour,
+  collision-to-recovery transitions, and completion-to-review-to-storage flows. Check
+  both normal and failed service responses, including interrupted saves, retry,
+  sign-out, and attempts to access another user's private records. Test doubles will
+  make failures repeatable; the selected service will also be tested with isolated test
+  accounts and records.
+  \item \textbf{System tests:} Run the complete training flow on the required hardware
+  pairs in Table 2. Inspect and fly every released course, including close misses,
+  high-speed contact, repeated or skipped gates, and each recovery point. Run the 20
+  consecutive crash-and-respawn cycles per required environment in NFR-REL-01 and verify
+  offline training, local saving, and review under NFR-OFF-01.
+  \item \textbf{Static verification:} A non-author will review each code change for
+  agreement with the design, units and bounds, event ordering, cleanup of event
+  subscriptions, error handling, and unintended shared state. Data-related changes will
+  also be checked for credential exposure and authorization errors. Compiler and
+  analyzer findings will be fixed or explicitly justified in the review record.
+\end{itemize}
 
 \subsection{Automated Testing and Verification Tools}
 
