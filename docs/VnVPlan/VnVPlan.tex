@@ -366,13 +366,26 @@ and as many tests as needed for edge cases.  Rather than create the details of t
 and output here, you could point to the unit testing code.  For this to work, you code 
 needs to be well-documented, with meaningful names for all of the tests.}
 
-\subsection{Unit Testing Scope}
+\subsection{Unit Testing Scope and Strategy}
+\label{sec:unit-scope}
 
-\wss{What modules are outside of the scope.  If there are modules that are
-  developed by someone else, then you would say here if you aren't planning on
-  verifying them.  There may also be modules that are part of your software, but
-  have a lower priority for verification than others.  If this is the case,
-  explain your rationale for the ranking of module importance.}
+\subsubsection{Scope}
+
+The unit testing scope covers the rule-based logic in each module:
+
+\begin{itemize}
+  \item Flight and Collision: gravity, crash rules, and crash events
+  \item Modes and Levels: attempt state and level validation
+  \item Checkpoint Progress and Recovery: checkpoint order, Respawn, and Restart
+  Level
+  \item Timing and Evaluation: timers, crash count, score, and rating
+  \item VR Interface and Input: input mapping and invalid or lost input
+  \item Post-Flight Review: review contents and availability
+  \item Accounts and Online Service: registration, sign-in, and submission rules
+  \item Results and Leaderboards: local results, ranking, and failed
+  synchronization
+  \item Intelligent Feedback: failure handling and isolation from result data
+\end{itemize}
 
 \subsection{Tests for Functional Requirements}
 
