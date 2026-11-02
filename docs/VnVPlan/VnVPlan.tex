@@ -465,6 +465,21 @@ Xbox-compatible gamepad \\
 \end{tabularx}
 \end{table}
 
+John will record the PC CPU, GPU, memory, controller model, runtime, headset software,
+and PCVR link. Ibrahim will record build settings, scene, refresh rate, and measurement
+method. Using the current SRS proposal, standalone performance checks will count
+application-rendered frames over 120 continuous seconds in each required environment and
+compare the average with 72 FPS. Frame-time spikes will also be reported. Headset
+refresh rate alone does not establish application FPS.
+
+Input-response measurements will use a common monotonic clock to timestamp each received
+input event and its first corresponding simulated state update. At least 95 of 100
+events must be within 100 ms under the current SRS proposal. Each required pairing will
+be measured and reported separately. This measures the software response from received
+input to simulated state update. Coverage runs will be kept separate from performance
+runs, and profiling overhead will be recorded. The thresholds remain subject to the
+reconciliation in Section 3.2.
+
 \subsection{Software Validation}
 
 \wss{If there is any external data that can be used for validation, you should
