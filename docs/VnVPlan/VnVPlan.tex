@@ -315,12 +315,48 @@ evidence that each review occurred.
 
 \subsection{Verification and Validation Plan Verification}
 
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
+The rotating QA reviewer will inspect this plan before submission and after major
+requirement or design changes. The assigned peer reviewers and TA will be asked to
+assess its clarity and feasibility during the VnV peer review. The checklist is:
 
-\wss{The review will include reviews by your classmates}
+\begin{itemize}
+  \item Every in-scope functional, non-functional, and applicable safety requirement has
+  a test or an explicitly justified inspection. Traceability works in both directions,
+  and proposed or deferred items have visible status. Critical recovery, scoring, and
+  data-protection rules have checks at both the logic and integrated-workflow levels.
+  \item Each test gives a unique ID, requirement links, configuration, initial state,
+  inputs, steps, expected result, pass criterion, and the reason for that expectation.
+  Boundary and failure cases are included, and expected values are derived independently
+  of the implementation being tested.
+  \item A different member can execute the procedure and reach the same pass/fail
+  decision. The reviewer will dry-run a checkpoint/recovery test and a performance
+  procedure when the required build is available.
+  \item Equipment, test data, owners, and time are available. Automated tests are
+  separated from headset and user checks, and no procedure requires exposing a
+  participant to deliberately unsafe visuals or physical conditions.
+  \item Section 4.2 contains two separate usability-related test procedures: beginners
+  assess the interface, and experienced FPV pilots assess realism. Section 6.2 contains
+  the shared usability questionnaire and additional questions for experienced FPV 
+  pilots. Section 5 retains the unit-testing strategy while detailed cases await the
+  MIS. The List of Figures and List of Tables remain in the document, as required by 
+  the rubric.
+\end{itemize}
 
-\wss{Create a checklists?}
+Once the relevant automated suites exist, their ability to detect faults will be checked
+using a small, controlled mutation exercise. On a temporary branch, the team will
+introduce one fault at a time: allow an out-of-order checkpoint, clear total time on
+Respawn, remove a crash penalty, change a rating boundary, or accept another account's
+result submission. Each fault must cause its associated test to fail. Undetected faults
+will lead to a revised test and a repeat check. All mutations will be removed, and the
+unchanged production code must pass again.
+
+Ibrahim will check progress against SRS P.3: hardware and basic flight at the proof of
+concept; courses, recovery, and timing by module implementation; scoring and local
+review by Revision 0; and required online features and verification evidence by the V\&V
+Report. Missing tests or hardware will be reported as incomplete. A milestone is
+accepted only when its required checks pass and no unresolved defect prevents safe use,
+required gameplay, or data protection. Scope reductions require a documented
+requirements change. Tests will not be weakened solely to make a failing build pass.
 
 \subsection{Implementation Verification}
 
