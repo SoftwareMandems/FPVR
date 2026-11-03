@@ -2382,7 +2382,7 @@ NFR-PERF-02 measures the time from an input event to the flight update.
 
 The system tests defined in Section 4 use symbolic constants to specify test conditions, acceptance thresholds, and expected results. Defining these parameters in one location ensures consistency across verification activities and allows their values to be updated without introducing conflicting test criteria.
 
-The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Software Requirements Specification (SRS) and the Hazard Analysis. The SRS provides the primary acceptance baseline, while differences between the two documents will be reconciled through the SRS verification process described in Section 3.2.
+The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Software Requirements Specification (SRS) and the Hazard Analysis. The SRS provides the primary acceptance baseline.
 
 \begin{table}[H]
 \centering
@@ -2492,10 +2492,6 @@ Proposed minimum rating from each experienced pilot for each realism item (Secti
 The validation-study parameters represent proposed evaluation targets rather than acceptance requirements established by the SRS. These targets will be reviewed with the supervisor before participant testing.
 
 The SRS also identifies proposed parameters for takeoff clearance, gravity verification, and performance-failure handling (PR-FLT-01, PR-FLT-02, and SR-04). Their numerical values remain subject to approval and will not be treated as finalized acceptance criteria until they are agreed upon and documented.
-
-The Hazard Analysis and SRS currently specify different frame-rate and input-response thresholds. These differences will be resolved through the review process in Section 3.2, with corresponding updates made to the system tests and symbolic parameters.
-
-Once the test cases in Sections 4 and 5 are finalized, this section will be reviewed to ensure every symbolic constant used in the tests is defined and that unused parameters are removed.
 
 \subsection{Usability Survey Questions}
 \label{sec:usability-survey}
