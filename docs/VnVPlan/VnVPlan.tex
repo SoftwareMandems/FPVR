@@ -144,14 +144,80 @@ taken from the SRS.
 
 \section{Plan}
 
-\wss{Introduce this section.  You can provide a roadmap of the sections to
-  come.}
+Verification will check that FPVR satisfies its specified requirements. Validation will
+check whether the simulator provides understandable controls, useful practice, and
+meaningful feedback for its intended users. This section assigns responsibilities and
+describes reviews of the requirements, design, test plan, and implementation, followed
+by the testing tools and user validation activities.
+
+The working baseline is the current Software Requirements Specification (SRS),
+especially S.2, S.6, and the environment rules in E.2--E.5. The Problem Statement
+supplies the training goals, and the Hazard Analysis supplies failure cases and safety
+priorities. Accounts, saved results, and leaderboards are included as required by the
+SRS. Intelligent feedback is conditional on the feasibility decision; multiplayer and
+dedicated FPV transmitters remain stretch goals. Unresolved differences between
+documents will be handled through the review in Section 3.2. All activities below are
+planned work.
+
+Every in-scope functional and non-functional requirement will have a planned
+verification method and recorded evidence. Functional system tests belong in Section
+4.1; non-functional tests, including the separate beginner interface and
+experienced-pilot realism studies, belong in Section 4.2. Section 4.3 will link these
+checks to requirements and applicable Hazard Analysis items. Requirements formally
+excluded from the academic-year scope will be listed with their rationale.
 
 \subsection{Verification and Validation Team}
 
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+Responsibilities follow the project roles in SRS P.1. Table 1 identifies the lead for
+each area. Every member will write tests for their work and review another member's
+work. The rotating quality assurance (QA) reviewer will not be the main author of the
+artifact being reviewed, and each pull request will require review by a different
+member.
+
+\begin{table}[!htbp]
+\centering
+\caption{FPVR verification and validation responsibilities}
+\label{tab:vnv-responsibilities}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Team member} &
+\textbf{Responsibility} \\
+\midrule
+Ibrahim Tariq &
+Coordinate V\&V milestones and defect priorities. Lead flight-model, gravity, camera,
+and rendering-performance checks, and the experienced-pilot realism study. \\
+John Cho &
+Lead headset, controller, installation, and interruption-recovery testing. Record
+hardware configurations and arrange supervisor and external reviews. \\
+Sankalpa Chhetri Dhakal &
+Check every course, obstacle type, and recovery position. Lead the beginner interface
+study and usability findings; evaluate optional intelligent feedback if included. \\
+Vikram Chandar &
+Lead tests of game states, checkpoint order, crash events, respawn, restart, and timers.
+Maintain repeatable state-transition fixtures. \\
+Arjun Sasidaran &
+Lead score, rating, review, account, storage, and leaderboard tests, including offline
+recovery and access control. Check expected results independently. \\
+Dr. Douglas Down &
+Review scope, flight realism, and unresolved acceptance criteria during the existing
+fortnightly meetings. Provide feedback on the Revision 0 demonstration. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The TA and assigned peer reviewers will be asked to review the SRS, design, and VnV Plan
+against the course expectations. Potential users and experienced pilots will provide
+validation feedback; their participation is not yet confirmed. John will coordinate
+invitations, but the project team remains responsible for completing the reviews and
+resolving findings.
+
+At weekly team meetings, Ibrahim will review open V\&V issues and upcoming milestones.
+Each finding will record its source---peer, TA, supervisor, instructor, or
+team---affected requirement or hazard, evidence, priority, one owner, requested
+correction, and a clear condition for closure in GitHub Issues. Larger findings will be
+split into tasks that one member can complete. The reviewer will check the correction or
+retest result before closure.
 
 \subsection{SRS Verification}
 
