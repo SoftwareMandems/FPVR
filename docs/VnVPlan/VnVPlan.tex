@@ -1293,7 +1293,7 @@ graduate attribute of Lifelong Learning.
   member pursue, and why did they make this choice?
 \end{enumerate}
 
-\subsection{Ibrahim Tariq}
+\subsection*{Ibrahim Tariq}
 
 \begin{enumerate}
   \item \textbf{What went well?}
@@ -1322,6 +1322,26 @@ graduate attribute of Lifelong Learning.
   tests with fixed inputs. I will prioritise writing tests, using tutorials as
   references, because this gives me practice isolating variables and reproducing
   failures.
+\end{enumerate}
+
+\subsection*{Sankalpa Chhetri Dhakal}
+
+\begin{enumerate}
+    \item \textbf{What went well while writing this deliverable?}
+
+    Having our finalized SRS and Hazard Analysis gave us a good foundation for developing the V\&V Plan since we already had a clear understanding of the system's requirements and potential risks. I primarily worked on the symbolic parameters and usability survey questions, which helped me think about how we would evaluate FPVR beyond just checking whether the software works. I also spent time reviewing my teammates' sections, which was useful for identifying missing details and making sure our verification strategies aligned with the requirements. Overall, dividing the document into sections made the workload more manageable.
+
+    \item \textbf{What pain points did you experience during this deliverable, and how did you resolve them?}
+
+    One of the main challenges was that different sections of the V\&V Plan were closely connected, making it difficult to complete everything independently. For example, my symbolic parameters depended on the system tests written by another teammate, while my usability survey needed to align with the validation procedures described earlier in the document. We also identified inconsistencies between our SRS and Hazard Analysis, particularly regarding performance thresholds and which features were considered core requirements. Rather than ignoring these differences, we documented them for further review and worked on aligning our testing procedures with the finalized SRS.
+
+    \item \textbf{What knowledge and skills will the team collectively need to acquire to successfully complete the verification and validation of your project?}
+
+    Our team will need to strengthen several technical and testing skills to properly evaluate FPVR. Ibrahim will need to develop experience validating drone flight physics and measuring VR performance using Unity's profiling tools. John will focus on testing controller mappings, headset tracking, and compatibility between standalone and PCVR configurations. Vikram will need to become familiar with automated unit and integration testing using Unity Test Framework and NUnit, especially for checkpoint progression and crash recovery. Arjun will focus on verifying scoring accuracy, data persistence, and authentication security. I will need to improve my understanding of usability testing, survey design, and user feedback analysis to determine whether our simulator is intuitive and effective for beginners.
+
+    \item \textbf{For each knowledge area and skill identified above, what are at least two approaches to acquiring the knowledge or mastering the skill? Which approaches will each team member pursue, and why?}
+
+    Each team member can develop these skills through studying technical documentation and tutorials or through practical experimentation with our project. Ibrahim will combine research on drone dynamics with controlled Unity simulations to compare expected and actual flight behaviour. John will use official XR documentation and build small hardware integration prototypes to identify compatibility issues early. Vikram will learn from NUnit tutorials and practise implementing automated tests for game-state functions, while Arjun will study secure data-handling practices and test scenarios involving failed saves and invalid authentication. I plan to review usability testing methods from HCI coursework and conduct structured sessions with potential users. We chose these approaches because combining theory with hands-on testing will help us develop the necessary skills while directly improving FPVR.
 \end{enumerate}
 
 \end{document}
