@@ -338,139 +338,144 @@ Continuous verification &
 
 \subsection{Design Verification}
 
-The Module Guide and Module Interface Specification will be reviewed as they are
-developed, first at Design Revision \(-\)1 and again before module implementation. These
-documents will define the modules that realize the logical responsibilities in SRS S.1.
-The area lead will present interfaces and state transitions to another member, and
-classmates will be asked to review the design through the scheduled peer review.
+The Module Guide (MG) and Module Interface Specification (MIS) will be verified through
+walkthroughs, peer review, and supervisor review, first for Design Document Rev \(-\)1
+(Nov.~16, 2026) and again for the Design Documentation (Jan.~18, 2027). Each area lead
+will walk a non-author member through their modules' interfaces and state transitions.
+Classmates will review the design using a checklist during the scheduled peer reviews
+(Nov.~19, 2026 and Jan.~25, 2027), and their feedback will be tracked in GitHub Issues.
+The design will use the nine modules of Section 5, so each module's unit tests trace to
+its requirements.
 
-The design inspection will check that:
+A review with Dr. Douglas Down will verify three critical aspects of the design: (1) the
+flight model and its match to the reference drone, (2) the state transitions for
+checkpoints, crash recovery, and timing, and (3) the handling of lost input and an
+unavailable online service, which must not block local training. Small prototypes will
+check uncertain hardware and performance assumptions before the review.
 
-\begin{itemize}
-  \item Every required behaviour has an owning module and a traceable interface. Inputs,
-  outputs, units, valid ranges, and failure results are specified, including the
-  controller-to-flight and result-to-storage boundaries.
-  \item State transitions preserve SRS E-I-02: only the next checkpoint counts, one
-  crash produces one penalty, menu time is excluded, Respawn preserves the attempt, and
-  Restart Level creates a fresh attempt. Reviewers will trace these values through a
-  complete example, including a crash before any checkpoint.
-  \item Loss of tracking or input, invalid course data, failed saves, and unavailable
-  services have defined handling. Online or optional AI failures cannot block local
-  training or the standard review. Account ownership and public leaderboard fields are
-  checked at the service boundary.
-  \item Both deployment modes can support the design. Flight-critical work does not wait
-  for network replies, and tests can supply controlled inputs, elapsed time, and service
-  responses without a person wearing the headset.
-\end{itemize}
-
-Interface gaps and conflicting transitions will be resolved before dependent modules are
-integrated. Small prototypes will check uncertain hardware or performance assumptions,
-and their results will inform the design review. The team will record review decisions
-and update the module-to-requirement mapping after design changes.
-
-Document inspections will use the existing team meetings, with about 30--45 minutes
-reserved for the changed portions at each review milestone. The author and non-author
-reviewer will read those portions beforehand and retain the completed checklist,
-decisions, and linked issues. This keeps nondynamic reviews focused and provides
-evidence that each review occurred.
+\begin{table}[!htbp]
+\centering
+\caption{Design verification checklist}
+\label{tab:design-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Focus area} & \textbf{Verification tasks} \\
+\midrule
+Module structure &
+\(\square\) Every requirement has an owning module\newline
+\(\square\) Modules match the nine modules in Section 5 \\
+Interfaces &
+\(\square\) Inputs, outputs, units, and valid ranges specified\newline
+\(\square\) Failure results specified \\
+State transitions &
+\(\square\) Checkpoint order and crash penalties preserved\newline
+\(\square\) Respawn and Restart Level behaviour defined \\
+Failure handling &
+\(\square\) Lost tracking and input handled\newline
+\(\square\) Online failures do not block local training \\
+Testability &
+\(\square\) Input, time, and services can be controlled in tests \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Verification and Validation Plan Verification}
 
-The rotating QA reviewer will inspect this plan before submission and after major
-requirement or design changes. The assigned peer reviewers and TA will be asked to
-assess its clarity and feasibility during the VnV peer review. The checklist is:
+The V\&V Plan will be verified through team and peer review. The QA reviewer, the
+assigned peer team, and the TA will check the plan's coverage and feasibility using a
+checklist during the VnV Plan peer review (issues due Nov.~5, 2026), and the QA reviewer
+will repeat the check after major requirement or design changes. Feedback will be
+tracked through GitHub Issues and addressed at the weekly team meetings.
 
-\begin{itemize}
-  \item Every in-scope functional, non-functional, and applicable safety requirement has
-  a test or an explicitly justified inspection. Traceability works in both directions,
-  and proposed or deferred items have visible status. Critical recovery, scoring, and
-  data-protection rules have checks at both the logic and integrated-workflow levels.
-  \item Each test gives a unique ID, requirement links, configuration, initial state,
-  inputs, steps, expected result, pass criterion, and the reason for that expectation.
-  Boundary and failure cases are included, and expected values are derived independently
-  of the implementation being tested.
-  \item A different member can execute the procedure and reach the same pass/fail
-  decision. The reviewer will dry-run a checkpoint/recovery test and a performance
-  procedure when the required build is available.
-  \item Equipment, test data, owners, and time are available. Automated tests are
-  separated from headset and user checks, and no procedure requires exposing a
-  participant to deliberately unsafe visuals or physical conditions.
-  \item Section 4.2 contains two separate usability-related test procedures: beginners
-  assess the interface, and experienced FPV pilots assess realism. Section 6.2 contains
-  the shared usability questionnaire and additional questions for experienced FPV 
-  pilots. Section 5 retains the unit-testing strategy while detailed cases await the
-  MIS. The List of Figures and List of Tables remain in the document, as required by 
-  the rubric.
-\end{itemize}
+To confirm that the tests can detect faults, the team will run a mutation exercise once
+the automated suites exist. Faults will be introduced one at a time on a temporary
+branch, such as allowing an out-of-order checkpoint, removing a crash penalty, or
+changing a rating boundary, and each must cause a test to fail. Progress will be measured
+by requirement coverage, the share of mutations detected, and the number of open review
+issues.
 
-Once the relevant automated suites exist, their ability to detect faults will be checked
-using a small, controlled mutation exercise. On a temporary branch, the team will
-introduce one fault at a time: allow an out-of-order checkpoint, clear total time on
-Respawn, remove a crash penalty, change a rating boundary, or accept another account's
-result submission. Each fault must cause its associated test to fail. Undetected faults
-will lead to a revised test and a repeat check. All mutations will be removed, and the
-unchanged production code must pass again.
-
-Ibrahim will check progress against SRS P.3: hardware and basic flight at the proof of
-concept; courses, recovery, and timing by module implementation; scoring and local
-review by Revision 0; and required online features and verification evidence by the V\&V
-Report. Missing tests or hardware will be reported as incomplete. A milestone is
-accepted only when its required checks pass and no unresolved defect prevents safe use,
-required gameplay, or data protection. Scope reductions require a documented
-requirements change. Tests will not be weakened solely to make a failing build pass.
+\begin{table}[!htbp]
+\centering
+\caption{V\&V plan verification checklist}
+\label{tab:plan-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Criteria} & \textbf{Verification tasks} \\
+\midrule
+Coverage &
+\(\square\) Every in-scope requirement has a test or inspection\newline
+\(\square\) Safety requirements are covered \\
+Test quality &
+\(\square\) Each test has inputs, an expected result, and a pass criterion\newline
+\(\square\) Expected results are derived independently \\
+Feasibility &
+\(\square\) Equipment, people, and time are available\newline
+\(\square\) No procedure is unsafe for participants \\
+Fault detection &
+\(\square\) Mutation exercise completed \\
+Process &
+\(\square\) Feedback tracked to closure \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Implementation Verification}
 
-Implementation verification will combine code inspection with the system tests in
-Section 4 and the unit tests in Section 5. Section 5 will retain the scope and
-test-selection strategy now; detailed unit cases will be completed when module
-interfaces are defined. Tests will check specified outputs and exercise normal,
-boundary, invalid-input, and state-transition cases. Testing will proceed from isolated
-logic to integrated workflows and then to the installed application.
+Implementation verification will use unit, integration, and system tests. The unit tests
+in Section 5 check each module's rules in isolation using the Unity Test Framework.
+Integration tests check the flows between modules, such as input to flight, crash to
+recovery, and completion to review and storage. The system tests in Section 4 check the
+complete application on the required hardware configurations in
+Table~\ref{tab:vnv-configurations}.
+
+Static verification will use code review and analyzers. Every pull request will be
+reviewed by a non-author against the Microsoft C\# Coding Conventions adopted in the
+Development Plan, and merged only after approval and a passing CI run. Reviews will
+focus on:
 
 \begin{itemize}
-  \item \textbf{Unit tests:} Check controller-value validation, checkpoint ordering,
-  crash counting, timer updates, scoring, rating boundaries, record validation, and
-  leaderboard tie-breaking using controlled inputs. Expected scores will be calculated
-  independently from FR-PER-08; for example, \(T=95.7\) seconds and \(C=2\) must produce
-  705. Tests will include zero and boundary values, invalid inputs, and repeated events.
-  \item \textbf{Integration tests:} Exercise input-to-flight behaviour,
-  collision-to-recovery transitions, and completion-to-review-to-storage flows. Check
-  both normal and failed service responses, including interrupted saves, retry,
-  sign-out, and attempts to access another user's private records. Test doubles will
-  make failures repeatable; the selected service will also be tested with isolated test
-  accounts and records.
-  \item \textbf{System tests:} Run the complete training flow on the required hardware
-  pairs in Table 2. Inspect and fly every released course, including close misses,
-  high-speed contact, repeated or skipped gates, and each recovery point. Run the 20
-  consecutive crash-and-respawn cycles per required environment in NFR-REL-01 and verify
-  offline training, local saving, and review under NFR-OFF-01.
-  \item \textbf{Static verification:} A non-author will review each code change for
-  agreement with the design, units and bounds, event ordering, cleanup of event
-  subscriptions, error handling, and unintended shared state. Data-related changes will
-  also be checked for credential exposure and authorization errors. Compiler and
-  analyzer findings will be fixed or explicitly justified in the review record.
+  \item Units, bounds, and event ordering in flight and game-state code
+  \item Cleanup of event subscriptions and unintended shared state
+  \item Credential exposure and authorization errors in account and storage code
 \end{itemize}
 
-Safety-related checks will cover the Hazard Analysis requirements applicable to the
-delivered features, including notices, pause/exit, tracking-loss handling, input checks,
-saved-data protection, break reminders, and constructive recovery messages. Timed
-reminders can be checked with a controlled clock; flashing effects and injected
-performance failures will be inspected without exposing participants. Detailed failure
-behaviour will use the reconciled requirements from Section 3.2.
+Performance testing will verify:
 
-Each run will record the build commit, test ID, requirement IDs, configuration, inputs,
-expected and actual results, and pass/fail/blocked status, with logs or screenshots
-where useful. Failures will become assigned GitHub issues. After a fix, the failing case
-and affected regression tests will be rerun. Changes to shared game state, input, or
-persistence will also trigger the complete core workflow. Third-party engine and service
-internals are outside the team's verification scope, but their integration and failure
-handling remain in scope.
+\begin{itemize}
+  \item Frame rate on the target headset (NFR-PERF-01)
+  \item Input response time (NFR-PERF-02)
+  \item Reliability over repeated crash and Respawn cycles (NFR-REL-01)
+\end{itemize}
 
-The V\&V Report will summarize passed, failed, blocked, and unexecuted tests, and show
-which requirements have supporting evidence. Proposed and formally deferred requirements
-will be listed separately so an untested item cannot appear to be covered by the passing
-results.
+Each failure will become a GitHub issue, and the failing case and affected regression
+tests will be rerun after the fix.
+
+\begin{table}[!htbp]
+\centering
+\caption{Implementation verification checklist}
+\label{tab:implementation-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Category} & \textbf{Verification tasks} \\
+\midrule
+Functionality &
+\(\square\) Unit tests for each module\newline
+\(\square\) Integration tests for module flows \\
+Quality &
+\(\square\) Static analysis completed\newline
+\(\square\) Code reviews conducted \\
+Performance &
+\(\square\) Frame-rate measurements\newline
+\(\square\) Input-response measurements \\
+Safety &
+\(\square\) Pause and exit verified\newline
+\(\square\) Tracking and input loss handled \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Automated Testing and Verification Tools}
 
