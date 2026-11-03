@@ -38,30 +38,13 @@ Date 2 & 1.1 & Notes\\
 \bottomrule
 \end{tabularx}
 
-~\\
-\wss{The intention of the VnV plan is to increase confidence in the software.
-However, this does not mean listing every verification and validation technique
-that has ever been devised.  The VnV plan should also be a \textbf{feasible}
-plan. Execution of the plan should be possible with the time and team available.
-If the full plan cannot be completed during the time available, it can either be
-modified to ``fake it'', or a better solution is to add a section describing
-what work has been completed and what work is still planned for the future.}
-
-\wss{The VnV plan is typically started after the requirements stage, but before
-the design stage.  This means that the sections related to unit testing cannot
-initially be completed.  The sections will be filled in after the design stage
-is complete.  the final version of the VnV plan should have all sections filled
-in.}
-
 \newpage
 
 \tableofcontents
 
 \listoftables
-\wss{Remove this section if it isn't needed}
 
 \listoffigures
-\wss{Remove this section if it isn't needed}
 
 \newpage
 
@@ -76,17 +59,9 @@ in.}
   \bottomrule
 \end{tabular}\\
 
-\wss{symbols, abbreviations, or acronyms --- you can simply reference the SRS
-  \citep{SRS} tables, if appropriate}
-
-\wss{Remove this section if it isn't needed}
-
 \newpage
 
 \pagenumbering{arabic}
-
-This document ... \wss{provide an introductory blurb and roadmap of the
-  Verification and Validation plan}
 
 \section{General Information}
 
@@ -102,14 +77,6 @@ The primary objective of this Verification and Validation plan is to build confi
 and testing compatibility across different VR headsets will remain out of scope. Additionally, testing the correctness of the underlying Unity VR libraries, frameworks, and headset-specific functionality will not be part of the project, as these are external components assumed to function according to their respective specifications. Verification efforts will instead focus on FPVR's implementation and integration of these components.
 
 \subsection{Custom Documents}
-
-\wss{Summarize the CDs (Custom Documents) that were tackled by this project.  CDs 
-can include usability testing, code walkthroughs, user documentation, formal
-proof, GenderMag personas, Design Thinking, etc.  CDs should have already
-been approved by the course instructor as included in your problem statement.
-You can use a pull request to update your CDs (in TeamComposition.csv or
-Repos.csv) if your plan changes as a result of the VnV planning exercise.}
-
 
 The project will include two Custom Documents: a Usability Report and a Design Thinking Report. The Usability Report will document a systematic and quantitative evaluation of FPVR's usability by having representative users complete predefined tasks within the simulator. The evaluation will establish testing goals, identify specific user tasks, collect feedback through structured questions and surveys, and measure usability outcomes to identify areas for improvement. The Design Thinking Report will document the human-centred design process used to understand the needs and challenges of beginner FPV drone pilots. This will include conducting user interviews, organizing findings through empathy maps, generating and evaluating potential solutions based on feasibility and desirability, and developing two rounds of prototypes to gather user feedback and refine the proposed design. These documents will help ensure that FPVR's design decisions are informed by user needs and that its usability is evaluated through structured user testing.
 
@@ -143,7 +110,6 @@ inspired by the Hazard Analysis therefore include failure and
 mitigation scenarios (for example invalid controller input, lost
 tracking, or unrealistic physics) in addition to the happy-path cases
 taken from the SRS.
-
 
 \section{Plan}
 
@@ -529,13 +495,13 @@ FPVR will be validated with the people it is built for, because requirement-base
 cannot show whether it is a useful trainer. Validation will use:
 
 \begin{itemize}
-  \item \textbf{Interface usability study (NF-UI-01):} About four beginners with little
+  \item \textbf{Interface usability study (T.NFR.USAB.02):} About four beginners with little
   or no FPV experience, split between the two configurations, and the experienced pilots
   below will complete core tasks without coaching: finding the control guide, starting a
   course, using Respawn and Restart Level, pausing and exiting, and reading the review.
   Task completion and questionnaire ratings (Section~\ref{sec:usability-survey}) will be
   recorded, with a target median of at least 4/5. Sankalpa leads this study.
-  \item \textbf{Flight realism study (NF-REAL-01):} About two experienced FPV pilots will
+  \item \textbf{Flight realism study:} About two experienced FPV pilots will
   fly agreed manoeuvres and rate how believable the flight response is, with a target of
   at least 4/5 on each item. Ibrahim leads this study, and the supervisor helps define
   the reference drone.
@@ -551,391 +517,1709 @@ will feed the Usability Report and Design Thinking Report.
 
 \section{System Tests}
 
-% \wss{There should be text between all headings, even if it is just a roadmap of
-% the contents of the subsections.}
-
 System tests are tests that are used to verify that FPVR satisfies the functional
 and non-functional requirements as specified in the SRS. This section will cover all
 system tests that will be performed end-to-end on the application.
 
 \subsection{Tests for Functional Requirements}
 
-% \wss{Subsets of the tests may be in related, so this section is divided into
-%   different areas.  If there are no identifiable subsets for the tests, this
-%   level of document structure can be removed.}
-
-% \wss{Include a blurb here to explain why the subsections below
-%   cover the requirements.  References to the SRS would be good here.}
-
-The following is a list of tests used to cover the functional requirements (S.2) of the SRS.
-Note that tests are not mutually exclusive to a single subset of requirements and can hit
-multiple similarly related major functional modules. 
+The following tests cover the functional requirements in SRS S.2, grouped by the SRS
+subsection they come from. Each test's output checks every requirement named in its
+derivation, and Table~\ref{tab:fr-traceability} lists the requirements for each test.
 
 \subsubsection{Realistic Flight Simulation (S.2.1)}
 
+These tests cover the flight model and crash detection in SRS S.2.1.
+
+{\sloppy
+\paragraph{First-Person View}
+
 \begin{enumerate}
 
-\item{\hypertarget{test-fr-flt-01}{}\textbf{T.FR.FLT.01}\\}
+\item{\hypertarget{test-fr-fl01}{}\textbf{T.FR.FLT.01}\\}
 \textbf{Control:} Manual
-					
-\textbf{Initial State:} System is running and displayed on a flat screen/monitor or VR headset.
-					
-\textbf{Input:} Move the drone using the corresponding input controller.
-					
-\textbf{Output:} The field of view of the drone changes in response to the input of the controller and moves in the expected direction
-within the environment (FR-FLT-01).
 
-\textbf{Test Case Derivation:} Verifies FR-FLT-01.
-					
-\item{\hypertarget{test-fr-flt-02}{}\textbf{T.FR.FLT.02}\\}
-\textbf{Control:} Automatic
-					
-\textbf{Initial State:} Simulated drone is at rest within an environment.
-					
-\textbf{Input:} Simple flight path that exercises each of the drone's control axes one by one.
-					
-\textbf{Output:} Drone behaves as expected and follows the path within a reasonable margin of error ($\leq 5\%$ of expected path).
+\textbf{Initial State:} Free flight on each configuration, with the drone hovering.
 
-\textbf{Test Case Derivation:} Verifies FR-FLT-02, FR-FLT-03, FR-FLT-05.
+\textbf{Input:} Fly forward, climb, and turn using yaw.
 
-\textbf{How test will be performed:} Starting at rest (FR-FLT-05), the drone begins by moving up and down, 
-tilting left, right, forward, backward, and rotating in place (FR-FLT-02), followed with sustained flight for a period of time (FR-FLT-03).
+\textbf{Output:} During each manoeuvre the view moves and rotates with the drone and
+stays at the drone's first-person camera position.
 
-\item{\hypertarget{test-fr-flt-03}{}\textbf{T.FR.FLT.03}\\}
-\textbf{Control:} Automatic
-					
-\textbf{Initial State:} Drone is suspended in flight within an environment.
-					
-\textbf{Input:} Drone is moving and projected to hit a collision object.
-					
-\textbf{Output:} Drone comes into contact with object, stops moving (FR-FLT-04), and 
-triggers exactly one logged crash event (FR-FLT-06).
+\textbf{Test Case Derivation:} \mbox{FR-FLT-01} requires the view to follow both the
+position and the orientation of the drone, so the manoeuvres include a translation, a
+climb, and a rotation.
 
-\textbf{Test Case Derivation:} Verifies FR-FLT-04, FR-FLT-06.
+\textbf{How test will be performed:} A tester performs each manoeuvre in the headset and
+records whether the view followed the drone.
 
 \end{enumerate}
+
+\paragraph{Independent Control Axes}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-fl02}{}\textbf{T.FR.FLT.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone hovering in an empty test scene.
+
+\textbf{Input:} Throttle, pitch, roll, and yaw inputs applied one at a time, each at
+half and at full deflection.
+
+\textbf{Output:} Each input changes only its matching motion (vertical speed, forward
+tilt, sideways tilt, or heading), and full deflection produces a larger change than half
+deflection.
+
+\textbf{Test Case Derivation:} \mbox{FR-FLT-02} requires each input to be independent
+and to produce a corresponding change. Applying one input at a time isolates each axis,
+and two magnitudes show that the inputs are variable rather than on or off.
+
+\textbf{How test will be performed:} A Play Mode test applies scripted inputs and
+records the drone's velocity and orientation after each one.
+
+\end{enumerate}
+
+\paragraph{Gravity Without Thrust}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-fl03}{}\textbf{T.FR.FLT.03}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone airborne at a fixed height with zero vertical velocity.
+
+\textbf{Input:} Zero throttle for 1.0 s of simulated time.
+
+\textbf{Output:} Vertical velocity decreases throughout the 1.0 s.
+
+\textbf{Test Case Derivation:} \mbox{FR-FLT-03} states that vertical velocity shall
+decrease when the drone is airborne and no upward thrust is applied, which is exactly
+this condition.
+
+\textbf{How test will be performed:} A Play Mode test records the vertical velocity
+every frame and checks that each value is lower than the one before.
+
+\end{enumerate}
+
+\paragraph{Contact Detection}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-fl04}{}\textbf{T.FR.FLT.04}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone in flight in a test course containing an obstacle and a
+ground surface.
+
+\textbf{Input:} Fly into the obstacle, then in a second run take off and descend onto
+the ground.
+
+\textbf{Output:} A contact is detected at the moment of impact in both runs.
+
+\textbf{Test Case Derivation:} \mbox{FR-FLT-04} requires contact detection for both
+course obstacles and ground surfaces, so one run covers each.
+
+\textbf{How test will be performed:} A Play Mode test flies scripted paths and checks
+for a contact event at the impact position.
+
+\end{enumerate}
+
+\paragraph{Crash Trigger Rules}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-fl05}{}\textbf{T.FR.FLT.05}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} New obstacle-course attempt with the drone resting on the
+starting surface.
+
+\textbf{Input:} (a) Remain on the ground before takeoff. (b) Take off, then touch the
+ground. (c) Fly into a designated obstacle.
+
+\textbf{Output:} (a) No crash. (b) A crash. (c) A crash.
+
+\textbf{Test Case Derivation:} \mbox{FR-FLT-05} treats initial ground contact
+differently from ground contact after takeoff and from obstacle contact, so each of the
+three cases is checked.
+
+\textbf{How test will be performed:} A Play Mode test runs each case from a fresh
+attempt and checks whether a crash was registered.
+
+\end{enumerate}
+
+\paragraph{Crash Event Handling}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-fl06}{}\textbf{T.FR.FLT.06}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone airborne in an obstacle course, and in a second run in
+free flight.
+
+\textbf{Input:} Hold the drone against an obstacle for 1.0 s, then apply flight input.
+
+\textbf{Output:} Exactly one crash event is produced, the flight input does not move the
+drone, and the recovery options for the current mode are shown.
+
+\textbf{Test Case Derivation:} \mbox{FR-FLT-06} requires one event per crash, suspended
+input, and mode-specific recovery. Holding the drone against the obstacle produces
+repeated contacts, which tests the single-event rule.
+
+\textbf{How test will be performed:} A Play Mode test counts crash events, applies input
+after the crash, and checks which recovery menu is displayed in each mode.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Menu Interface (S.2.2, S.2.5)}
 
+These tests cover the training modes in SRS S.2.2 and the user interface in S.2.5.
+
+{\sloppy
+\paragraph{Free-Flight Mode}
+
 \begin{enumerate}
+
 \item{\hypertarget{test-fr-mi-01}{}\textbf{T.FR.MI.01}\\}
 \textbf{Control:} Manual
-					
-\textbf{Initial State:} UI is running and main menu is displayed.
-					
-\textbf{Input:} Free-flight mode is selected from the menu.
-					
-\textbf{Output:} Free-flight mode is loaded and drone is placed in an area with no courses, 
-obstacles littered throughout the field that the drone can collide with (FR-LVL-02), and no attempt or 
-timer limitations (FR-LVL-01).
 
-\textbf{Test Case Derivation:} Verifies FR-LVL-01, FR-LVL-02.
+\textbf{Initial State:} Main menu displayed.
+
+\textbf{Input:} Select free flight and fly for 60 seconds.
+
+\textbf{Output:} No checkpoints, completion timer, numerical score, or performance
+rating appear at any time.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-01} lists four elements that free flight
+must not have, so the output checks the absence of each one.
+
+\textbf{How test will be performed:} A tester flies for 60 seconds and records any of
+the four elements that appear.
+
+\end{enumerate}
+
+\paragraph{Free-Flight Crash Recovery}
+
+\begin{enumerate}
 
 \item{\hypertarget{test-fr-mi-02}{}\textbf{T.FR.MI.02}\\}
 \textbf{Control:} Manual
-					
-\textbf{Initial State:} UI is running and main menu is displayed.
-					
-\textbf{Input:} User scrolls through the list of available courses, terrains/environments for selected course, 
-and hits the start button.
-					
-\textbf{Output:} Course is loaded and drone is initialized at the starting position of the course with all stale 
-data cleared (FR-LVL-07).
 
-\textbf{Test Case Derivation:} Verifies FR-LVL-07. Navigating through the course menu also indirectly verifies FR-LVL-03,
-FR-LVL-04, FR-LVL-05, FR-LVL-06, FR-UI-01, FR-UI-05.
+\textbf{Initial State:} Free flight with the drone airborne away from its starting
+position.
+
+\textbf{Input:} Crash into an obstacle, then select the free-flight recovery option.
+
+\textbf{Output:} The drone returns to the free-flight starting position and can be flown
+again without FPVR restarting.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-02} requires recovery to the starting
+position after a crash without restarting the application, so the test starts away from
+that position and includes a crash.
+
+\textbf{How test will be performed:} A tester performs the steps and confirms that the
+session continued and the drone responds to input.
+
+\end{enumerate}
+
+\paragraph{Level Selection}
+
+\begin{enumerate}
 
 \item{\hypertarget{test-fr-mi-03}{}\textbf{T.FR.MI.03}\\}
 \textbf{Control:} Manual
-					
-\textbf{Initial State:} System is running and drone is in a course.
-					
-\textbf{Input:} Button is pressed on the controller that brings up the help menu/controller guide.
-					
-\textbf{Output:} Small window pops up on the screen with a list of controls and their corresponding actions (FR-UI-04). 
 
-\textbf{Test Case Derivation:} Verifies FR-UI-04.
+\textbf{Initial State:} FPVR freshly installed with no saved progress, main menu
+displayed.
+
+\textbf{Input:} Open the obstacle-course level list and start each listed level.
+
+\textbf{Output:} At least three levels are listed and labelled introductory,
+intermediate, and advanced, each with a different obstacle or checkpoint arrangement,
+and every level starts immediately.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-03} requires three labelled levels with
+distinct arrangements, and \mbox{FR-LVL-05} requires every level to be available without
+unlocking. A fresh installation ensures that no earlier progress could have unlocked a
+level.
+
+\textbf{How test will be performed:} A tester records the level labels and arrangements
+and starts each level in turn.
+
 \end{enumerate}
+
+\paragraph{Virtual Environments}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-04}{}\textbf{T.FR.MI.04}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Main menu displayed.
+
+\textbf{Input:} Start an obstacle-course level in each available environment.
+
+\textbf{Output:} At least two visually distinct environments are available, and each has
+at least one playable obstacle-course level.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-04} requires two distinct environments with
+a playable level in each, so a level is started in every environment.
+
+\textbf{How test will be performed:} A tester records each environment and the level
+played in it.
+
+\end{enumerate}
+
+\paragraph{Attempt Initialization}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-05}{}\textbf{T.FR.MI.05}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A previous attempt on the level ended with 2 checkpoints
+completed, a total time of 120.0 s, and 3 crashes.
+
+\textbf{Input:} Start a new attempt on the same level.
+
+\textbf{Output:} Checkpoint progress is 0, both timers are 0.0 s, the crash count is 0,
+and the score state is at its initial value.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-07} requires all four values to be
+initialized. Starting after an attempt with non-zero values shows that they are reset
+rather than simply empty.
+
+\textbf{How test will be performed:} A Play Mode test sets up the previous attempt,
+starts a new one, and reads the four values.
+
+\end{enumerate}
+
+\paragraph{Return to Main Menu}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-06}{}\textbf{T.FR.MI.06}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Active flight in free flight, and in a second run in an obstacle
+course.
+
+\textbf{Input:} Select the option to return to the main menu.
+
+\textbf{Output:} The main menu is displayed in both runs without FPVR restarting.
+
+\textbf{Test Case Derivation:} \mbox{FR-LVL-06} covers both training modes, so the test
+is run from each.
+
+\textbf{How test will be performed:} A tester performs the steps and confirms that the
+session continued.
+
+\end{enumerate}
+
+\paragraph{Menu Interactions in the Headset}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-07}{}\textbf{T.FR.MI.07}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} FPVR running in the target headset with the main menu displayed.
+
+\textbf{Input:} Using only the headset and controller, choose a training mode, select a
+level, start flight, crash and recover, and return to the main menu.
+
+\textbf{Output:} Each action is available through a menu interaction, and the flight
+view and every menu are shown in the headset.
+
+\textbf{Test Case Derivation:} \mbox{FR-UI-05} lists these five interactions, and
+\mbox{FR-UI-01} requires the flight view and menus to appear in the headset, so the
+sequence covers each one.
+
+\textbf{How test will be performed:} A tester completes the sequence on each
+configuration and records any action that was not available.
+
+\end{enumerate}
+
+\paragraph{Control Guide Before Flight}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-08}{}\textbf{T.FR.MI.08}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} FPVR newly launched, once on each configuration.
+
+\textbf{Input:} Proceed from the main menu to the first flight.
+
+\textbf{Output:} Before flight begins, a control guide identifies the throttle, pitch,
+roll, and yaw inputs for the controller in use.
+
+\textbf{Test Case Derivation:} \mbox{FR-UI-04} requires the guide for each supported
+configuration before flight, and the assigned inputs differ between controllers, so each
+configuration is checked.
+
+\textbf{How test will be performed:} A tester compares the guide shown against the
+controller mapping for that configuration.
+
+\end{enumerate}
+
+\paragraph{Execution Modes}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-09}{}\textbf{T.FR.MI.09}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Release build installed on Quest 3S and on the reference PCVR
+computer.
+
+\textbf{Input:} Start FPVR standalone on the headset, then start it on the reference
+computer with the headset connected.
+
+\textbf{Output:} FPVR runs and can start a flight in both modes.
+
+\textbf{Test Case Derivation:} \mbox{FR-UI-02} requires both standalone and PCVR
+execution, so a flight is started in each mode.
+
+\textbf{How test will be performed:} A tester starts each mode and records whether a
+flight could be started.
+
+\end{enumerate}
+
+\paragraph{Controller Configurations}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-10}{}\textbf{T.FR.MI.10}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} FPVR running in free flight, once in each mode.
+
+\textbf{Input:} Use the throttle, pitch, roll, and yaw controls with the Quest motion
+controllers in standalone mode and with the standard gamepad in PCVR mode.
+
+\textbf{Output:} Each configuration provides all four controls, and each one moves the
+drone.
+
+\textbf{Test Case Derivation:} \mbox{FR-UI-03} requires a configuration for each
+controller and mode pair with all four controls, so every control is used in both
+configurations.
+
+\textbf{How test will be performed:} A tester records the result for each control in
+each configuration.
+
+\end{enumerate}
+
+\paragraph{Seated and Standing Operation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-mi-11}{}\textbf{T.FR.MI.11}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} FPVR running, with the tester in a marked stationary area.
+
+\textbf{Input:} Fly a course once seated and once standing.
+
+\textbf{Output:} The course can be flown in both positions without walking to control
+the drone.
+
+\textbf{Test Case Derivation:} \mbox{FR-UI-06} requires seated and standing operation
+without walking, so the same course is flown in each position.
+
+\textbf{How test will be performed:} A tester flies the course in each position and
+records any time they had to walk.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Checkpoint and Crash Recovery (S.2.3)}
 
+These tests cover checkpoint order, level completion, and the two recovery options in
+SRS S.2.3.
+
+{\sloppy
+\paragraph{Checkpoint Definitions}
+
 \begin{enumerate}
+
 \item{\hypertarget{test-fr-chk-01}{}\textbf{T.FR.CHK.01}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} A selectable obstacle-course level is loaded with its
-course definition available for inspection.
+\textbf{Initial State:} All released obstacle-course levels.
 
-\textbf{Input:} Pass through checkpoints in order, then attempt to pass through
-a later checkpoint before the next required checkpoint and finally reach the
-finish.
+\textbf{Input:} Load each level's course definition.
 
-\textbf{Output:} Level will record the number of checkpoints passed up until a checkpoint is skipped
-from which it will stop counting (FR-CHK-02, FR-CHK-03).
+\textbf{Output:} Every level has an ordered list of at least two checkpoints followed by
+a finish location.
 
-\textbf{Test Case Derivation:} Verifies FR-CHK-01, FR-CHK-02, FR-CHK-03, FR-CHK-08.
+\textbf{Test Case Derivation:} \mbox{FR-CHK-01} requires this structure for each level,
+so every level is checked.
+
+\textbf{How test will be performed:} An Edit Mode test loads each level definition and
+checks the checkpoint list and finish.
+
+\end{enumerate}
+
+\paragraph{Ordered Checkpoint Completion}
+
+\begin{enumerate}
 
 \item{\hypertarget{test-fr-chk-02}{}\textbf{T.FR.CHK.02}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} A course attempt has completed zero checkpoints, and a
-second attempt has completed at least one checkpoint.
+\textbf{Initial State:} Level with checkpoints A, B, and C, none completed.
 
-\textbf{Input:} Drone crashes, select respawn. Drone crashes again, select restart level.
+\textbf{Input:} Pass through B, then A, then B.
 
-\textbf{Output:} Application displays option to respawn and 
-restart level if checkpoints $\geq 1$ (FR-CHK-04).
+\textbf{Output:} After the first B: 0 completed. After A: 1 completed. After the second
+B: 2 completed.
 
-\textbf{Test Case Derivation:} Verifies FR-CHK-04, FR-CHK-05, FR-CHK-06, FR-CHK-07.
+\textbf{Test Case Derivation:} Passing B first skips A, so \mbox{FR-CHK-03} requires no
+progress. The later passes follow the order, so \mbox{FR-CHK-02} requires each to count.
+
+\textbf{How test will be performed:} A Play Mode test flies the drone through the
+checkpoints and reads progress after each pass.
+
 \end{enumerate}
+
+\paragraph{Level Completion}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-chk-03}{}\textbf{T.FR.CHK.03}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Level with checkpoints A, B, and C, with A and B completed.
+
+\textbf{Input:} Reach the finish, then complete C and reach the finish again.
+
+\textbf{Output:} The level is not complete after the first finish and is complete after
+the second.
+
+\textbf{Test Case Derivation:} \mbox{FR-CHK-08} requires every checkpoint in order
+before completion, so the first finish with C missing must not count.
+
+\textbf{How test will be performed:} A Play Mode test reads the completion state after
+each finish.
+
+\end{enumerate}
+
+\paragraph{Recovery Choices}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-chk-04}{}\textbf{T.FR.CHK.04}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Active obstacle-course attempt.
+
+\textbf{Input:} Crash into an obstacle.
+
+\textbf{Output:} The recovery menu shows the choices Respawn and Restart Level.
+
+\textbf{Test Case Derivation:} \mbox{FR-CHK-04} requires both named choices after a
+crash in an obstacle course.
+
+\textbf{How test will be performed:} A tester crashes on each configuration and records
+the choices shown.
+
+\end{enumerate}
+
+\paragraph{Respawn}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-chk-05}{}\textbf{T.FR.CHK.05}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} (a) Crash before any checkpoint. (b) Crash with checkpoint A
+completed, a total time of 40.0 s, and a crash count of 1.
+
+\textbf{Input:} Select Respawn in each case.
+
+\textbf{Output:} (a) The drone is at the level start. (b) The drone is at checkpoint A,
+A is still completed, the total time is 40.0 s, and the crash count is 1.
+
+\textbf{Test Case Derivation:} \mbox{FR-CHK-05} sets the respawn position with and
+without a completed checkpoint, so both cases are covered. \mbox{FR-CHK-06} requires
+progress, total time, and crash count to be kept, so case (b) uses non-zero values for
+each.
+
+\textbf{How test will be performed:} A Play Mode test sets up each case, selects
+Respawn, and reads the drone position and attempt values.
+
+\end{enumerate}
+
+\paragraph{Restart Level}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-chk-06}{}\textbf{T.FR.CHK.06}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Crash with checkpoint A completed, a total time of 40.0 s, a
+section time of 12.0 s, and a crash count of 1.
+
+\textbf{Input:} Select Restart Level.
+
+\textbf{Output:} The drone is at the level start, no checkpoints are completed, both
+timers are 0.0 s, the crash count is 0, and the score state is reset.
+
+\textbf{Test Case Derivation:} \mbox{FR-CHK-07} lists the values that Restart Level
+resets, and each starts non-zero so that the reset is visible.
+
+\textbf{How test will be performed:} A Play Mode test sets up the state, selects Restart
+Level, and reads each value.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Timing and Performance Evaluation (S.2.4)}
 
+These tests cover the timers, crash count, score, and rating in SRS S.2.4. Simulated
+time is used so that the expected values are exact.
+
+{\sloppy
+\paragraph{Total Timer}
+
 \begin{enumerate}
+
 \item{\hypertarget{test-fr-per-01}{}\textbf{T.FR.PER.01}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} A new obstacle-course attempt is ready to start.
+\textbf{Initial State:} New obstacle-course attempt using simulated time.
 
-\textbf{Input:} Run through multiple checkpoint segments, crash during one
-segment, record epoch time to completion.
+\textbf{Input:} Fly 10.0 s, crash, select Respawn, fly 20.0 s to the finish, then wait
+5.0 s.
 
-\textbf{Output:} Total timer measures active flight, retains time from
-crashed segments, stops during the recovery menu, does not reset on Respawn,
-and stops at completion. The section timer measures the current segment and
-resets at checkpoint completion and Respawn. The crash count increases once per
-crash (FR-PER-01--FR-PER-07, FR-PER-10).
+\textbf{Output:} The total timer reads 30.0 s at completion and still reads 30.0 s after
+the wait, and the score and review use 30.0 s.
 
-\textbf{Test Case Derivation:} Verifies FR-PER-01, FR-PER-02, FR-PER-03, FR-PER-04, FR-PER-05, FR-PER-06, FR-PER-07, FR-PER-10.
+\textbf{Test Case Derivation:} \mbox{FR-PER-01} counts active flight time (10.0 + 20.0 =
+30.0 s), \mbox{FR-PER-02} keeps the 10.0 s from the segment that ended in a crash, and
+\mbox{FR-PER-10} stops the timer at completion and uses its final value.
 
-\textbf{How test will be performed:} Check $\sum_{i=1}^{n} \epsilon_{s,i} \approx \epsilon_t$ where $\epsilon_{s,i}$ is the section time 
-for segment $i$ and $\epsilon_t$ is the total time.
+\textbf{How test will be performed:} A Play Mode test advances simulated time and reads
+the timer, score input, and review value.
+
+\end{enumerate}
+
+\paragraph{Section Timer}
+
+\begin{enumerate}
 
 \item{\hypertarget{test-fr-per-02}{}\textbf{T.FR.PER.02}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} Drone has finished a course attempt.
+\textbf{Initial State:} New obstacle-course attempt using simulated time.
 
-\textbf{Input:} Complete attempts with known values of $T$ and $C$, including
-the score boundaries 0, 399, 400, 599, 600, 799, 800, and 1000.
+\textbf{Input:} Fly 8.0 s and complete checkpoint A, fly 5.0 s, crash, and select
+Respawn.
 
-\textbf{Output:} The correct score and rating are calculated and displayed upon completion of a course (FR-PER-08, FR-PER-09).
+\textbf{Output:} The section timer reads 8.0 s before A, 0.0 s after A, 5.0 s at the
+crash, and 0.0 s after Respawn.
 
-\textbf{How test will be performed:} The score equals
-$\max(0,1000-\lfloor T\rfloor-100C)$ and the rating is Needs Improvement for
-0--399, Bronze for 400--599, Silver for 600--799, and Gold for 800 or more.
+\textbf{Test Case Derivation:} \mbox{FR-PER-03} times the current segment, and
+\mbox{FR-PER-04} resets it at checkpoint completion and at Respawn, so the timer is read
+before and after each event.
 
-\textbf{Test Case Derivation:} Verifies FR-PER-08, FR-PER-09.
+\textbf{How test will be performed:} A Play Mode test reads the section timer after each
+step.
+
 \end{enumerate}
+
+\paragraph{Timers After Recovery}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-per-03}{}\textbf{T.FR.PER.03}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Crash with a total time of 40.0 s.
+
+\textbf{Input:} Select Respawn and read the timers, then crash again and select Restart
+Level.
+
+\textbf{Output:} After Respawn the total time is 40.0 s. After Restart Level both timers
+are 0.0 s.
+
+\textbf{Test Case Derivation:} \mbox{FR-PER-05} keeps the total time on Respawn and
+resets both timers on Restart Level.
+
+\textbf{How test will be performed:} A Play Mode test reads both timers after each
+choice.
+
+\end{enumerate}
+
+\paragraph{Timers Paused in Recovery Menu}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-per-04}{}\textbf{T.FR.PER.04}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Active attempt with a total time of 30.0 s and a section time of
+8.0 s.
+
+\textbf{Input:} Crash, leave the recovery menu open for 5.0 s of simulated time, select
+Respawn, then fly 2.0 s.
+
+\textbf{Output:} Both timers are unchanged while the menu is open, and the total time is
+32.0 s after the flight.
+
+\textbf{Test Case Derivation:} \mbox{FR-PER-06} pauses both timers during the recovery
+menu and adds no menu time, so the 5.0 s must not appear in the total.
+
+\textbf{How test will be performed:} A Play Mode test reads the timers before, during,
+and after the menu.
+
+\end{enumerate}
+
+\paragraph{Crash Count}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-per-05}{}\textbf{T.FR.PER.05}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} New obstacle-course attempt.
+
+\textbf{Input:} Three separate crashes with Respawn after each, one of them with
+repeated contact against the same obstacle.
+
+\textbf{Output:} The crash count is 3.
+
+\textbf{Test Case Derivation:} \mbox{FR-PER-07} adds one per registered crash, so
+repeated contact within one crash must not add extra counts.
+
+\textbf{How test will be performed:} A Play Mode test performs the crashes and reads the
+count.
+
+\end{enumerate}
+
+\paragraph{Score Calculation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-per-06}{}\textbf{T.FR.PER.06}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Completed attempts with known values.
+
+\textbf{Input:} (a) \(T = 95.7\) s and \(C = 2\). (b) \(T = 950.0\) s and \(C = 1\).
+
+\textbf{Output:} (a) A score of 705. (b) A score of 0.
+
+\textbf{Test Case Derivation:} By \mbox{FR-PER-08}, (a) gives \(1000 - 95 - 200 = 705\)
+and (b) gives \(1000 - 950 - 100 = -50\), which the maximum with 0 raises to 0.
+
+\textbf{How test will be performed:} An automated test completes each attempt and
+compares the displayed score.
+
+\end{enumerate}
+
+\paragraph{Rating Bands}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-per-07}{}\textbf{T.FR.PER.07}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Rating logic for completed attempts.
+
+\textbf{Input:} Scores of 0, 399, 400, 599, 600, 799, 800, and 1000.
+
+\textbf{Output:} Needs Improvement for 0 and 399, Bronze for 400 and 599, Silver for 600
+and 799, and Gold for 800 and 1000.
+
+\textbf{Test Case Derivation:} \mbox{FR-PER-09} defines four bands, and these inputs are
+the boundaries of each band.
+
+\textbf{How test will be performed:} An automated test assigns each score and compares
+the rating.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Player Accounts and Authentication (S.2.6)}
 
+These tests cover registration, sign-in, and sign-out in SRS S.2.6. They use test
+accounts on the online service.
+
+{\sloppy
+\paragraph{Account Registration}
+
 \begin{enumerate}
+
 \item{\hypertarget{test-fr-acc-01}{}\textbf{T.FR.ACC.01}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} The application has network connectivity and the
-username is not registered.
+\textbf{Initial State:} Network connectivity and an unused username.
 
-\textbf{Input:} Register a new username with a valid password, repeat with the
-same username, and repeat with passwords shorter than 12 characters.
+\textbf{Input:} Register with the unused username and a 12-character password.
 
-\textbf{Output:} The valid registration succeeds. Duplicate usernames and
-short passwords are rejected with explanatory messages (FR-ACC-01, FR-ACC-02).
+\textbf{Output:} The account is created and can be used to sign in.
 
-\textbf{Test Case Derivation:} Verifies FR-ACC-01, FR-ACC-02.
+\textbf{Test Case Derivation:} \mbox{FR-ACC-01} requires registration with a unique
+username and password, and 12 characters is the shortest password \mbox{FR-ACC-02}
+allows.
+
+\textbf{How test will be performed:} A tester registers on a test account and then signs
+in with it.
+
+\end{enumerate}
+
+\paragraph{Registration Rejection}
+
+\begin{enumerate}
 
 \item{\hypertarget{test-fr-acc-02}{}\textbf{T.FR.ACC.02}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} A registered account exists.
+\textbf{Initial State:} Network connectivity and one existing account.
 
-\textbf{Input:} Sign in with valid credentials, sign out, attempt sign-in with
-an invalid username and with an invalid password, and try to submit a result
-while signed out.
+\textbf{Input:} Register with the existing username, then with a new username and an
+11-character password.
 
-\textbf{Output:} Valid credentials create a session, sign-out ends it, invalid
-credentials are rejected without identifying which field was wrong, and
-unauthenticated practice remains available while global submission requires
-authentication (FR-ACC-03--FR-ACC-05).
+\textbf{Output:} Both registrations are rejected, each with a message explaining the
+reason.
 
-\textbf{Test Case Derivation:} Verifies FR-ACC-03, FR-ACC-04, FR-ACC-05.
+\textbf{Test Case Derivation:} \mbox{FR-ACC-02} rejects duplicate usernames and
+passwords under 12 characters, so 11 characters is the boundary case.
+
+\textbf{How test will be performed:} A tester attempts each registration and records the
+message shown.
+
 \end{enumerate}
+
+\paragraph{Sign-In}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-acc-03}{}\textbf{T.FR.ACC.03}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} One registered account.
+
+\textbf{Input:} Sign in with valid credentials, then with a wrong password, then with an
+unknown username.
+
+\textbf{Output:} The valid sign-in succeeds, and both invalid attempts show the same
+message.
+
+\textbf{Test Case Derivation:} \mbox{FR-ACC-03} requires valid sign-in to succeed and
+invalid attempts not to reveal which field was wrong, so both invalid cases must give
+the same message.
+
+\textbf{How test will be performed:} A tester performs each sign-in and records the
+result and message.
+
+\end{enumerate}
+
+\paragraph{Sign-Out}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-acc-04}{}\textbf{T.FR.ACC.04}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Signed-in player.
+
+\textbf{Input:} Sign out, then try to submit a result to the global leaderboard.
+
+\textbf{Output:} The session ends, and the submission asks the player to sign in.
+
+\textbf{Test Case Derivation:} \mbox{FR-ACC-04} requires sign-out to end the session,
+which is shown by authentication being required again.
+
+\textbf{How test will be performed:} A tester performs the steps and records the session
+state.
+
+\end{enumerate}
+
+\paragraph{Practice Without an Account}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-acc-05}{}\textbf{T.FR.ACC.05}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} FPVR with no account signed in.
+
+\textbf{Input:} Use free flight, complete an obstacle course, then try to submit the
+result to the global leaderboard.
+
+\textbf{Output:} Both training modes work, and the submission is not sent until the
+player signs in.
+
+\textbf{Test Case Derivation:} \mbox{FR-ACC-05} allows practice without an account but
+requires authentication for global submission, so both parts are checked.
+
+\textbf{How test will be performed:} A tester performs the steps and confirms on the
+service that nothing was submitted.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Result Storage and Leaderboards (S.2.7)}
 
+These tests cover result storage, synchronization, and leaderboards in SRS S.2.7.
+
+{\sloppy
+\paragraph{Local Result Record}
+
 \begin{enumerate}
-\item{\hypertarget{test-fr-dat-01}{}\textbf{T.FR.DAT.01}\\}
+
+\item{\hypertarget{test-fr-da01}{}\textbf{T.FR.DAT.01}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} A completed course result is available on an
-installation with no prior result for that level.
+\textbf{Initial State:} Empty local storage.
 
-\textbf{Input:} Save results with different scores, times, crash counts, and
-timestamps, then open the local leaderboard.
+\textbf{Input:} Complete an obstacle-course attempt with known values.
 
-\textbf{Output:} The local record contains the level, timestamp, total time,
-crash count, score, rating, and local player identifier. The leaderboard shows
-at least the top ten available results and orders them by descending score,
-shorter time, then earlier timestamp; local-only and synchronized states are
-distinguished (FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10).
+\textbf{Output:} A local record is saved with the level identifier, completion
+timestamp, total time, crash count, score, rating, and local player identifier, each
+matching the attempt.
 
-\textbf{Test Case Derivation:} Verifies FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-01} lists these seven fields, so each is
+compared with the attempt.
 
-\item{\hypertarget{test-fr-dat-02}{}\textbf{T.FR.DAT.02}\\}
+\textbf{How test will be performed:} An automated test completes the attempt and reads
+the saved record.
+
+\end{enumerate}
+
+\paragraph{Online Result Submission}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da02}{}\textbf{T.FR.DAT.02}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} An authenticated player has completed a course.
+\textbf{Initial State:} Signed-in player with network connectivity.
 
-\textbf{Input:} Submit once with connectivity, repeat while the online service
-is unavailable, restore connectivity, and retry synchronization. Open both
-leaderboards while the service is unavailable.
+\textbf{Input:} Complete an obstacle-course attempt.
 
-\textbf{Output:} A connected result is associated with the player's account and
-appears globally. A failed submission remains local and can be synchronized
-after connectivity returns. Service unavailability is reported while the local
-leaderboard and training modes remain usable (FR-DAT-02, FR-DAT-03,
-FR-DAT-05, FR-DAT-08).
+\textbf{Output:} The result is stored by the online service and linked to the player's
+account.
 
-\textbf{Test Case Derivation:} Verifies FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-02} requires submission and association with
+the account, so the service record is checked for both.
 
-\item{\hypertarget{test-fr-dat-03}{}\textbf{T.FR.DAT.03}\\}
+\textbf{How test will be performed:} An automated test completes the attempt and queries
+the test service.
+
+\end{enumerate}
+
+\paragraph{Failed Submission and Retry}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da03}{}\textbf{T.FR.DAT.03}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Signed-in player with the online service unavailable.
+
+\textbf{Input:} Complete an attempt, restore the service, and retry synchronization.
+
+\textbf{Output:} Before the retry, the result is kept locally and marked as local only.
+After the retry, it is on the service and marked as synchronized.
+
+\textbf{Test Case Derivation:} \mbox{FR-DAT-03} requires the result to be kept and
+retried, and \mbox{FR-DAT-10} requires the two states to be distinguished, which this
+sequence shows.
+
+\textbf{How test will be performed:} An automated test switches the test service off and
+on and reads the result's state.
+
+\end{enumerate}
+
+\paragraph{Local Leaderboard}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da04}{}\textbf{T.FR.DAT.04}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} A result has been synchronized for a registered player.
+\textbf{Initial State:} Twelve local results for one level on the current installation.
 
-\textbf{Input:} Sign out, sign in on another supported installation, and open
-the player's stored results.
+\textbf{Input:} Open the local leaderboard for that level.
 
-\textbf{Output:} The previously synchronized result is retrievable and shows
-the level, timestamp, total time, crash count, score, rating, and player
-identifier (FR-DAT-09, FR-REV-05).
+\textbf{Output:} At least the top ten results are shown, each with rank, player display
+name, score, completion time, and crash count.
 
-\textbf{Test Case Derivation:} Verifies FR-DAT-09, FR-REV-05.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-04} requires a local leaderboard per level,
+and \mbox{FR-DAT-07} requires at least ten entries with these fields. Twelve results
+make it possible to check the ten-entry minimum.
+
+\textbf{How test will be performed:} A tester opens the leaderboard and checks each
+field.
+
 \end{enumerate}
+
+\paragraph{Global Leaderboard}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da05}{}\textbf{T.FR.DAT.05}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Online service with accepted results for one level, and one
+local result that was not synchronized.
+
+\textbf{Input:} Open the global leaderboard for that level.
+
+\textbf{Output:} The accepted results are shown, and the unsynchronized local result is
+not.
+
+\textbf{Test Case Derivation:} \mbox{FR-DAT-05} uses only results accepted by the online
+service, so an unsynchronized result must be absent.
+
+\textbf{How test will be performed:} An automated test compares the leaderboard with the
+service records.
+
+\end{enumerate}
+
+\paragraph{Leaderboard Ranking}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da06}{}\textbf{T.FR.DAT.06}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Results for one level: A (705, 195.0 s, 10:05), B (705, 95.0 s,
+10:10), C (705, 95.0 s, 10:00), and D (800, 150.0 s, 10:20).
+
+\textbf{Input:} Rank the results on the local and global leaderboards.
+
+\textbf{Output:} The order is D, C, B, A on both leaderboards.
+
+\textbf{Test Case Derivation:} \mbox{FR-DAT-06} ranks by score, then shorter time, then
+earlier timestamp. D has the highest score, A has the longest time, and C and B are
+separated by timestamp.
+
+\textbf{How test will be performed:} An automated test loads the results and reads both
+rankings.
+
+\end{enumerate}
+
+\paragraph{Online Leaderboard Unavailable}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da07}{}\textbf{T.FR.DAT.07}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Online service unavailable.
+
+\textbf{Input:} Open the global leaderboard, then the local leaderboard, then a training
+mode.
+
+\textbf{Output:} An availability message is shown, and the local leaderboard and
+training modes still work.
+
+\textbf{Test Case Derivation:} \mbox{FR-DAT-08} requires both the message and continued
+local use.
+
+\textbf{How test will be performed:} A tester blocks network access and follows the
+steps.
+
+\end{enumerate}
+
+\paragraph{Results on Another Installation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-da08}{}\textbf{T.FR.DAT.08}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Registered player with a synchronized result.
+
+\textbf{Input:} Sign in on a second supported installation and open the player's
+results.
+
+\textbf{Output:} The synchronized result is shown with the same values.
+
+\textbf{Test Case Derivation:} \mbox{FR-DAT-09} requires retrieval after signing in on
+another installation.
+
+\textbf{How test will be performed:} A tester compares the values on both installations.
+
+\end{enumerate}
+\par}
 
 \subsubsection{Post-Flight Review and Intelligent Feedback (S.2.8, S.2.9)}
 
+These tests cover the post-flight review in SRS S.2.8 and the optional intelligent
+feedback in S.2.9.
+
+{\sloppy
+\paragraph{Review Contents}
+
 \begin{enumerate}
+
 \item{\hypertarget{test-fr-rev-01}{}\textbf{T.FR.REV.01}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} The user has completed an obstacle-course level.
+\textbf{Initial State:} Introductory level completed with \(T = 95.7\) s, 3 of 3
+checkpoints, and \(C = 2\).
 
-\textbf{Input:} Observe the review, retry the same level, choose another level,
-and return to the main menu.
+\textbf{Input:} Finish the level.
 
-\textbf{Output:} The review appears immediately and shows the level, final
-completion time, completed checkpoints, crash count, score, and rating. Each
-navigation choice works without restarting the application (FR-REV-01--
-FR-REV-03).
+\textbf{Output:} The review appears immediately and shows the introductory level, 95.7
+s, 3 of 3 checkpoints, 2 crashes, a score of 705, and a Silver rating.
 
-\textbf{Test Case Derivation:} Verifies FR-REV-01, FR-REV-02, FR-REV-03.
+\textbf{Test Case Derivation:} \mbox{FR-REV-01} requires the review right after
+completion, and \mbox{FR-REV-02} lists these six values. By \mbox{FR-PER-08} and
+\mbox{FR-PER-09}, \(T = 95.7\) and \(C = 2\) give 705 and Silver.
 
-\item{\hypertarget{test-fr-rev-02}{}\textbf{T.FR.REV.02}\\}
-\textbf{Control:} Automatic
+\textbf{How test will be performed:} A tester completes the level with a scripted run
+and compares the review values.
 
-\textbf{Initial State:} A course can be completed while the network and
-intelligent feedback service are independently available or unavailable.
-
-\textbf{Input:} Complete attempts in each service state and inspect the
-post-flight review.
-
-\textbf{Output:} The standard review is always displayed. When intelligent
-feedback is available, it is shown automatically and its natural-language
-observation is grounded in the attempt's time, checkpoint, and crash data.
-Feedback failure or unavailability does not block the standard review
-(FR-REV-04, FR-AI-01--FR-AI-03).
-
-\textbf{Test Case Derivation:} Verifies FR-REV-04, FR-AI-01, FR-AI-02, FR-AI-03.
 \end{enumerate}
 
-\subsection{Tests for Nonfunctional Requirements}
-
-\wss{The nonfunctional requirements for accuracy will likely just reference the
-  appropriate functional tests from above.  The test cases should mention
-  reporting the relative error for these tests.  Not all projects will
-  necessarily have nonfunctional requirements related to accuracy.}
-
-\wss{For some nonfunctional tests, you won't be setting a target threshold for
-passing the test, but rather describing the experiment you will do to measure
-the quality for different inputs.  For instance, you could measure speed versus
-the problem size.  The output of the test isn't pass/fail, but rather a summary
-table or graph.}
-
-\wss{Tests related to usability could include conducting a usability test and
-  survey.  The survey will be in the Appendix.}
-
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
-format for the tests given below.}
-
-\wss{If you introduce static tests in your plan, you need to provide details.
-How will they be done?  In cases like code (or document) walkthroughs, who will
-be involved? Be specific.}
-
-\subsubsection{Area of Testing1}
-		
-\paragraph{Title for Test}
+\paragraph{Review Navigation}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{\hypertarget{test-fr-rev-02}{}\textbf{T.FR.REV.02}\\}
+\textbf{Control:} Manual
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Initial State:} Post-flight review displayed.
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+\textbf{Input:} Select retry, then from a new review select another level, then from a
+new review return to the main menu.
+
+\textbf{Output:} Each choice opens the expected screen without FPVR restarting.
+
+\textbf{Test Case Derivation:} \mbox{FR-REV-03} lists these three choices, so each is
+used once.
+
+\textbf{How test will be performed:} A tester performs each choice and records the
+screen reached.
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\paragraph{Review Without Services}
 
-...
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-rev-03}{}\textbf{T.FR.REV.03}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Network and intelligent feedback service unavailable.
+
+\textbf{Input:} Complete an obstacle-course level.
+
+\textbf{Output:} The standard review is displayed with all of its values.
+
+\textbf{Test Case Derivation:} \mbox{FR-REV-04} and \mbox{FR-AI-03} require the standard
+review even when these services are unavailable.
+
+\textbf{How test will be performed:} A tester blocks network access and completes the
+level.
+
+\end{enumerate}
+
+\paragraph{Prior Session Results}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-rev-04}{}\textbf{T.FR.REV.04}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Registered player with completed results from an earlier
+session.
+
+\textbf{Input:} Restart FPVR, sign in, and open the stored results.
+
+\textbf{Output:} The earlier results are shown with every field in \mbox{FR-DAT-01}.
+
+\textbf{Test Case Derivation:} \mbox{FR-REV-05} requires stored results from prior
+sessions with at least the \mbox{FR-DAT-01} fields.
+
+\textbf{How test will be performed:} A tester compares the shown results with the
+earlier records.
+
+\end{enumerate}
+
+\paragraph{Intelligent Feedback}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-fr-ai-01}{}\textbf{T.FR.AI.01}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} Build with intelligent feedback included and the feedback
+service available.
+
+\textbf{Input:} Complete an obstacle-course level with 2 crashes.
+
+\textbf{Output:} Without any extra request, the review shows a natural-language
+observation that refers to the attempt's time, checkpoints, or crashes.
+
+\textbf{Test Case Derivation:} \mbox{FR-AI-01} requires the observation to be based on
+the attempt data, and \mbox{FR-AI-02} requires it to appear automatically. This test
+applies only if intelligent feedback is included.
+
+\textbf{How test will be performed:} A tester compares the observation with the
+attempt's recorded values.
+
+\end{enumerate}
+\par}
+
+\subsection{Tests for Nonfunctional Requirements}
+
+This section describes the system tests for the nonfunctional requirements in SRS S.2,
+together with the safety requirements proposed in the SRS. Each subsection covers one
+quality area. Some tests produce measurements or survey results rather than a simple
+pass or fail, and those results are reported in the V\&V Report.
+
+\subsubsection{Installability and Compatibility}
+
+This area checks that FPVR installs and runs in both deployment modes with the required
+controllers.
+
+{\sloppy
+\paragraph{Standalone Installation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-ins01}{}\textbf{T.NFR.INST.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Meta Quest 3S with no FPVR build installed and no computer
+connected.
+
+\textbf{Input/Condition:} Install the release build on the headset and launch FPVR.
+
+\textbf{Output/Result:} FPVR installs and launches to the main menu without a connected
+computer. (\mbox{NFR-INST-01})
+
+\textbf{How test will be performed:} A tester installs the tagged release build and
+records the build, headset software version, and any errors.
+
+\end{enumerate}
+
+\paragraph{PCVR Launch}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-ins02}{}\textbf{T.NFR.INST.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Reference Windows 11 PC with the release build installed and
+Quest 3S connected through a supported PCVR link.
+
+\textbf{Input/Condition:} Launch FPVR from the reference PC.
+
+\textbf{Output/Result:} FPVR launches in PCVR mode and displays the main menu in the
+headset. (\mbox{NFR-INST-02})
+
+\textbf{How test will be performed:} A tester launches the build and records the PC
+configuration and PCVR link method.
+
+\end{enumerate}
+
+\paragraph{Controller Compatibility}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-comp-01}{}\textbf{T.NFR.COMP.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running in free flight, once in each configuration in
+Table~\ref{tab:vnv-configurations}.
+
+\textbf{Input/Condition:} Apply full throttle, pitch, roll, and yaw input one axis at a
+time with the Quest motion controllers in standalone mode and the Xbox-compatible
+gamepad in PCVR mode.
+
+\textbf{Output/Result:} Each input moves only the matching flight axis in both
+configurations. (\mbox{NFR-COMP-01})
+
+\textbf{How test will be performed:} A tester records the response of each axis for each
+configuration in a checklist.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Performance}
+
+This area checks that FPVR stays responsive on the target hardware. These tests produce
+measurements that are reported in tables as well as a pass or fail result.
+
+{\sloppy
+\paragraph{Rendering Frame Rate}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-perf-01}{}\textbf{T.NFR.PERF.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Standalone build running on Quest 3S in each of the two required
+environments.
+
+\textbf{Input/Condition:} 120 seconds of continuous normal flight in each environment.
+
+\textbf{Output/Result:} The average rendered frame rate is at least 72 FPS in each
+environment. Frame-time spikes are also reported. (\mbox{NFR-PERF-01})
+
+\textbf{How test will be performed:} Frame times are recorded with the Unity Profiler
+and headset performance metrics, and the average, minimum, and largest spikes are
+reported in a table for each environment.
+
+\end{enumerate}
+
+\paragraph{Input Response Time}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-perf-02}{}\textbf{T.NFR.PERF.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Drone in flight in the reference test environment, in each
+configuration.
+
+\textbf{Input/Condition:} 100 flight-control input events.
+
+\textbf{Output/Result:} At least 95 of the 100 events reach their first simulated state
+update within 100 ms. The median, 95th percentile, and maximum are reported.
+(\mbox{NFR-PERF-02})
+
+\textbf{How test will be performed:} A common clock timestamps each received input event
+and its first corresponding state update, and the results are reported separately for
+each configuration.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Reliability}
+
+This area checks that the crash recovery workflow, which users repeat often, stays
+stable.
+
+{\sloppy
+\paragraph{Crash Recovery Stress}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-rel-01}{}\textbf{T.NFR.REL.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Obstacle-course attempt with at least one checkpoint completed,
+in each required environment.
+
+\textbf{Input/Condition:} 20 consecutive crash-and-respawn cycles.
+
+\textbf{Output/Result:} FPVR does not terminate, and checkpoint progress stays the same
+after every cycle. (\mbox{NFR-REL-01})
+
+\textbf{How test will be performed:} A Play Mode test drives the crashes and respawns
+and checks checkpoint progress after each cycle.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Usability}
+
+This area checks that the control guide is easy to find and that beginners can learn the
+interface. The study follows Section 3.7, and its questions are in
+Section~\ref{sec:usability-survey}.
+
+{\sloppy
+\paragraph{Control Guide Access}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-usab-01}{}\textbf{T.NFR.USAB.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR newly launched on each configuration.
+
+\textbf{Input/Condition:} Open the control guide from the main menu, then start a first
+flight.
+
+\textbf{Output/Result:} The control guide is reachable from the main menu and is shown
+before the first flight of the session. (\mbox{NFR-USAB-01})
+
+\textbf{How test will be performed:} A tester follows the steps on each configuration
+and records whether each condition is met.
+
+\end{enumerate}
+
+\paragraph{Interface Usability Study}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-usab-02}{}\textbf{T.NFR.USAB.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Build with verified pause and exit, about four beginners with
+little or no FPV experience split between the two configurations, and the experienced
+pilots from the flight realism study in Section 3.7.
+
+\textbf{Input/Condition:} Participants complete the core tasks without coaching: find
+the control guide, start a course, use Respawn and Restart Level, pause and exit, and
+read the review. They then complete the questionnaire in
+Section~\ref{sec:usability-survey}.
+
+\textbf{Output/Result:} At least three of four beginners complete each task without
+help, all participants pause and exit successfully, and each questionnaire item has a
+median of at least 4/5. (\mbox{NFR-USAB-01}, \mbox{NFR-SAFE-01})
+
+\textbf{How test will be performed:} An observer records task completion, time, errors,
+and assistance. Results are reported by participant group, and findings become GitHub
+issues.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Safety}
+
+This area checks that users can stop safely and that FPVR handles failures without
+putting the user at risk. SR-01 to SR-08 are proposed in the SRS, so their tests apply
+only if the requirements are approved.
+
+{\sloppy
+\paragraph{Pause and Exit}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-01}{}\textbf{T.NFR.SAFE.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Active flight in free flight and in an obstacle course, on each
+configuration.
+
+\textbf{Input/Condition:} Open the in-application menu, pause, then exit the activity.
+
+\textbf{Output/Result:} The user can pause and leave without removing the headset, and
+flight and both timers stop while paused. (\mbox{NFR-SAFE-01}, \mbox{SR-03})
+
+\textbf{How test will be performed:} A tester performs the steps and records the timer
+values before and after the pause.
+
+\end{enumerate}
+
+\paragraph{Stationary Use}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-02}{}\textbf{T.NFR.SAFE.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running on each configuration.
+
+\textbf{Input/Condition:} Complete flight, menu, and recovery actions once seated and
+once standing in one place.
+
+\textbf{Output/Result:} Every action can be completed without walking, and no menu
+requires reaching the floor. (\mbox{NFR-SAFE-02}, \mbox{SR-03})
+
+\textbf{How test will be performed:} A tester performs the actions in a marked
+stationary area and records any action that required moving.
+
+\end{enumerate}
+
+\paragraph{Safety Notice}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-03}{}\textbf{T.NFR.SAFE.03}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR newly installed.
+
+\textbf{Input/Condition:} Launch FPVR and proceed to the first flight.
+
+\textbf{Output/Result:} The safety, age, space, posture, and discomfort information is
+shown before the first flight, with no unsupported medical or room claims.
+(\mbox{SR-01})
+
+\textbf{How test will be performed:} A tester compares the notice against the
+\mbox{SR-01} checklist.
+
+\end{enumerate}
+
+\paragraph{Loss of Tracking or Input}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-04}{}\textbf{T.NFR.SAFE.04}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Active obstacle-course flight.
+
+\textbf{Input/Condition:} Simulate loss of tracking, input focus, and controller
+connection, one at a time.
+
+\textbf{Output/Result:} Flight and both timers stop, stale controls are discarded, and
+resuming requires available input, neutral controls, and confirmation. (\mbox{SR-02})
+
+\textbf{How test will be performed:} A tester causes each loss, records the timer
+values, and attempts to resume without neutral controls.
+
+\end{enumerate}
+
+\paragraph{Sustained Low Frame Rate}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-05}{}\textbf{T.NFR.SAFE.05}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with a test hook that lowers the frame rate.
+
+\textbf{Input/Condition:} Hold the frame rate below the target for longer than the
+failure duration in the SRS.
+
+\textbf{Output/Result:} FPVR pauses, explains why, and resumes only after confirmation.
+(\mbox{SR-04})
+
+\textbf{How test will be performed:} A Play Mode test induces the drop and checks the
+pause state and message. No participant is exposed to the low frame rate.
+
+\end{enumerate}
+
+\paragraph{Invalid Input and Configuration}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-06}{}\textbf{T.NFR.SAFE.06}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} FPVR with test fixtures for input and level data.
+
+\textbf{Input/Condition:} Non-finite and out-of-range inputs, an invalid checkpoint
+order, and an intersecting recovery position.
+
+\textbf{Output/Result:} Invalid configuration is rejected before flight, runtime faults
+enter a recoverable error state, and progress, scores, and controls are unaffected.
+(\mbox{SR-05})
+
+\textbf{How test will be performed:} Automated tests inject each fault and compare the
+state before and after.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Security and Privacy}
+
+This area checks that account data is protected and that FPVR sends and keeps only the
+data it needs.
+
+{\sloppy
+\paragraph{Credential Protection}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-01}{}\textbf{T.NFR.SEC.01}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Automatic
+
+\textbf{Initial State:} Test account on the online service and FPVR with local storage
+cleared.
+
+\textbf{Input/Condition:} Register and sign in while capturing network traffic, then
+inspect local storage and the service's stored account record.
+
+\textbf{Output/Result:} Credentials are sent only over encrypted connections, and no
+password appears in plaintext on the device or the service. (\mbox{NFR-SEC-01})
+
+\textbf{How test will be performed:} Network traffic is captured with a proxy, and
+storage is searched for the known test password. The account code is also reviewed for
+credential handling.
+
+\end{enumerate}
+
+\paragraph{Access Control}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-02}{}\textbf{T.NFR.SEC.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Two test accounts with stored results.
+
+\textbf{Input/Condition:} Without signing in, request the other account's non-public
+data and submit a result using its identifier.
+
+\textbf{Output/Result:} Both requests are rejected, and no data is returned or changed.
+(\mbox{NFR-SEC-02})
+
+\textbf{How test will be performed:} Automated requests are sent to the service, and the
+stored records are compared before and after.
+
+\end{enumerate}
+
+\paragraph{Data Minimization}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-03}{}\textbf{T.NFR.SEC.03}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Manual
+
+\textbf{Initial State:} FPVR with network capture enabled.
+
+\textbf{Input/Condition:} Play and review several attempts while signed out, then sign
+in and submit a result.
+
+\textbf{Output/Result:} No attempt data is sent while signed out, only the result record
+fields (level, timestamp, total time, crash count, score, rating, and player) are sent
+after sign-in, and only result records remain in local storage. (\mbox{SR-06},
+\mbox{SR-07})
+
+\textbf{How test will be performed:} Network traffic and local storage are inspected
+after each step.
+
+\end{enumerate}
+
+\paragraph{Feedback Isolation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-04}{}\textbf{T.NFR.SEC.04}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Automatic
+
+\textbf{Initial State:} Build with intelligent feedback included.
+
+\textbf{Input/Condition:} Review the feedback provider's privacy and retention terms,
+then complete attempts with feedback available, timed out, and declined.
+
+\textbf{Output/Result:} Feedback is labelled advisory, cannot change checkpoint, timer,
+crash, score, or rating data, and the standard review stays intact in every case.
+(\mbox{SR-08})
+
+\textbf{How test will be performed:} The provider review is recorded, and automated
+tests compare result data before and after feedback.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Data Persistence and Offline Availability}
+
+This area checks that results are kept across sessions and that core training works
+without the online service.
+
+{\sloppy
+\paragraph{Result Persistence}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-da01}{}\textbf{T.NFR.DAT.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Signed-in player with a result confirmed as synchronized.
+
+\textbf{Input/Condition:} Sign out, restart FPVR, and sign in again.
+
+\textbf{Output/Result:} The synchronized result is still retrievable with the same
+values. (\mbox{NFR-DAT-01})
+
+\textbf{How test will be performed:} A tester records the result values before and after
+the steps.
+
+\end{enumerate}
+
+\paragraph{Offline Availability}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-off-01}{}\textbf{T.NFR.OFF.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running with the online service unreachable.
+
+\textbf{Input/Condition:} Use free flight, play a course, crash and recover, save the
+result, and open the review.
+
+\textbf{Output/Result:} Every listed action works, and only online features report that
+the service is unavailable. (\mbox{NFR-OFF-01})
+
+\textbf{How test will be performed:} A tester blocks network access and follows the
+steps on each configuration.
+
+\end{enumerate}
+\par}
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\begin{table}[htbp]
+This section links each system test to the requirements it verifies.
+Table~\ref{tab:fr-traceability} covers the functional requirements, and
+Table~\ref{tab:nfr-traceability} covers the nonfunctional requirements and the proposed
+safety requirements. The unit tests in Section 5 give additional evidence for the rules
+behind many of these requirements.
+
+\begin{table}[H]
 \centering
+\small
 \caption{Traceability between functional requirements and system tests}
 \label{tab:fr-traceability}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth}>{\raggedright\arraybackslash}X@{\hspace{1.5em}}p{0.18\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Test} & \textbf{Requirements} & \textbf{Test} & \textbf{Requirements}\\
+\midrule
+\hyperlink{test-fr-fl01}{T.FR.FLT.01} & FR-FLT-01 & \hyperlink{test-fr-per-02}{T.FR.PER.02} & FR-PER-03, FR-PER-04\\
+\hyperlink{test-fr-fl02}{T.FR.FLT.02} & FR-FLT-02 & \hyperlink{test-fr-per-03}{T.FR.PER.03} & FR-PER-05\\
+\hyperlink{test-fr-fl03}{T.FR.FLT.03} & FR-FLT-03 & \hyperlink{test-fr-per-04}{T.FR.PER.04} & FR-PER-06\\
+\hyperlink{test-fr-fl04}{T.FR.FLT.04} & FR-FLT-04 & \hyperlink{test-fr-per-05}{T.FR.PER.05} & FR-PER-07\\
+\hyperlink{test-fr-fl05}{T.FR.FLT.05} & FR-FLT-05 & \hyperlink{test-fr-per-06}{T.FR.PER.06} & FR-PER-08\\
+\hyperlink{test-fr-fl06}{T.FR.FLT.06} & FR-FLT-06 & \hyperlink{test-fr-per-07}{T.FR.PER.07} & FR-PER-09\\
+\hyperlink{test-fr-mi-01}{T.FR.MI.01} & FR-LVL-01 & \hyperlink{test-fr-acc-01}{T.FR.ACC.01} & FR-ACC-01\\
+\hyperlink{test-fr-mi-02}{T.FR.MI.02} & FR-LVL-02 & \hyperlink{test-fr-acc-02}{T.FR.ACC.02} & FR-ACC-02\\
+\hyperlink{test-fr-mi-03}{T.FR.MI.03} & FR-LVL-03, FR-LVL-05 & \hyperlink{test-fr-acc-03}{T.FR.ACC.03} & FR-ACC-03\\
+\hyperlink{test-fr-mi-04}{T.FR.MI.04} & FR-LVL-04 & \hyperlink{test-fr-acc-04}{T.FR.ACC.04} & FR-ACC-04\\
+\hyperlink{test-fr-mi-05}{T.FR.MI.05} & FR-LVL-07 & \hyperlink{test-fr-acc-05}{T.FR.ACC.05} & FR-ACC-05\\
+\hyperlink{test-fr-mi-06}{T.FR.MI.06} & FR-LVL-06 & \hyperlink{test-fr-da01}{T.FR.DAT.01} & FR-DAT-01\\
+\hyperlink{test-fr-mi-07}{T.FR.MI.07} & FR-UI-01, FR-UI-05 & \hyperlink{test-fr-da02}{T.FR.DAT.02} & FR-DAT-02\\
+\hyperlink{test-fr-mi-08}{T.FR.MI.08} & FR-UI-04 & \hyperlink{test-fr-da03}{T.FR.DAT.03} & FR-DAT-03, FR-DAT-10\\
+\hyperlink{test-fr-mi-09}{T.FR.MI.09} & FR-UI-02 & \hyperlink{test-fr-da04}{T.FR.DAT.04} & FR-DAT-04, FR-DAT-07\\
+\hyperlink{test-fr-mi-10}{T.FR.MI.10} & FR-UI-03 & \hyperlink{test-fr-da05}{T.FR.DAT.05} & FR-DAT-05\\
+\hyperlink{test-fr-mi-11}{T.FR.MI.11} & FR-UI-06 & \hyperlink{test-fr-da06}{T.FR.DAT.06} & FR-DAT-06\\
+\hyperlink{test-fr-chk-01}{T.FR.CHK.01} & FR-CHK-01 & \hyperlink{test-fr-da07}{T.FR.DAT.07} & FR-DAT-08\\
+\hyperlink{test-fr-chk-02}{T.FR.CHK.02} & FR-CHK-02, FR-CHK-03 & \hyperlink{test-fr-da08}{T.FR.DAT.08} & FR-DAT-09\\
+\hyperlink{test-fr-chk-03}{T.FR.CHK.03} & FR-CHK-08 & \hyperlink{test-fr-rev-01}{T.FR.REV.01} & FR-REV-01, FR-REV-02\\
+\hyperlink{test-fr-chk-04}{T.FR.CHK.04} & FR-CHK-04 & \hyperlink{test-fr-rev-02}{T.FR.REV.02} & FR-REV-03\\
+\hyperlink{test-fr-chk-05}{T.FR.CHK.05} & FR-CHK-05, FR-CHK-06 & \hyperlink{test-fr-rev-03}{T.FR.REV.03} & FR-REV-04, FR-AI-03\\
+\hyperlink{test-fr-chk-06}{T.FR.CHK.06} & FR-CHK-07 & \hyperlink{test-fr-rev-04}{T.FR.REV.04} & FR-REV-05\\
+\hyperlink{test-fr-per-01}{T.FR.PER.01} & FR-PER-01, FR-PER-02, FR-PER-10 & \hyperlink{test-fr-ai-01}{T.FR.AI.01} & FR-AI-01, FR-AI-02\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Traceability between nonfunctional requirements and system tests}
+\label{tab:nfr-traceability}
 \begin{tabularx}{\textwidth}{p{0.32\textwidth}X}
 \toprule
 \textbf{System test case ID} & \textbf{Requirements verified}\\
 \midrule
-\hyperlink{test-fr-flt-01}{T.FR.FLT.01} & FR-FLT-01\\
-\hyperlink{test-fr-flt-02}{T.FR.FLT.02} & FR-FLT-02, FR-FLT-03, FR-FLT-05\\
-\hyperlink{test-fr-flt-03}{T.FR.FLT.03} & FR-FLT-04, FR-FLT-06\\
-\hyperlink{test-fr-mi-01}{T.FR.MI.01} & FR-LVL-01, FR-LVL-02\\
-\hyperlink{test-fr-mi-02}{T.FR.MI.02} & FR-LVL-03--07, FR-UI-01, FR-UI-05\\
-\hyperlink{test-fr-mi-03}{T.FR.MI.03} & FR-UI-04\\
-\hyperlink{test-fr-chk-01}{T.FR.CHK.01} & FR-CHK-01--03, FR-CHK-08\\
-\hyperlink{test-fr-chk-02}{T.FR.CHK.02} & FR-CHK-04--07\\
-\hyperlink{test-fr-per-01}{T.FR.PER.01} & FR-PER-01--07, FR-PER-10\\
-\hyperlink{test-fr-per-02}{T.FR.PER.02} & FR-PER-08, FR-PER-09\\
-\hyperlink{test-fr-acc-01}{T.FR.ACC.01} & FR-ACC-01, FR-ACC-02\\
-\hyperlink{test-fr-acc-02}{T.FR.ACC.02} & FR-ACC-03--05\\
-\hyperlink{test-fr-dat-01}{T.FR.DAT.01} & FR-DAT-01, FR-DAT-04, FR-DAT-06--07, FR-DAT-10\\
-\hyperlink{test-fr-dat-02}{T.FR.DAT.02} & FR-DAT-02--03, FR-DAT-05, FR-DAT-08\\
-\hyperlink{test-fr-dat-03}{T.FR.DAT.03} & FR-DAT-09, FR-REV-05\\
-\hyperlink{test-fr-rev-01}{T.FR.REV.01} & FR-REV-01--03\\
-\hyperlink{test-fr-rev-02}{T.FR.REV.02} & FR-REV-04, FR-AI-01--03\\
+\hyperlink{test-nfr-ins01}{T.NFR.INST.01} & NFR-INST-01\\
+\hyperlink{test-nfr-ins02}{T.NFR.INST.02} & NFR-INST-02\\
+\hyperlink{test-nfr-comp-01}{T.NFR.COMP.01} & NFR-COMP-01\\
+\hyperlink{test-nfr-perf-01}{T.NFR.PERF.01} & NFR-PERF-01\\
+\hyperlink{test-nfr-perf-02}{T.NFR.PERF.02} & NFR-PERF-02\\
+\hyperlink{test-nfr-rel-01}{T.NFR.REL.01} & NFR-REL-01\\
+\hyperlink{test-nfr-usab-01}{T.NFR.USAB.01} & NFR-USAB-01\\
+\hyperlink{test-nfr-usab-02}{T.NFR.USAB.02} & NFR-USAB-01, NFR-SAFE-01\\
+\hyperlink{test-nfr-safe-01}{T.NFR.SAFE.01} & NFR-SAFE-01, SR-03\\
+\hyperlink{test-nfr-safe-02}{T.NFR.SAFE.02} & NFR-SAFE-02, SR-03\\
+\hyperlink{test-nfr-safe-03}{T.NFR.SAFE.03} & SR-01\\
+\hyperlink{test-nfr-safe-04}{T.NFR.SAFE.04} & SR-02\\
+\hyperlink{test-nfr-safe-05}{T.NFR.SAFE.05} & SR-04\\
+\hyperlink{test-nfr-safe-06}{T.NFR.SAFE.06} & SR-05\\
+\hyperlink{test-nfr-sec-01}{T.NFR.SEC.01} & NFR-SEC-01\\
+\hyperlink{test-nfr-sec-02}{T.NFR.SEC.02} & NFR-SEC-02\\
+\hyperlink{test-nfr-sec-03}{T.NFR.SEC.03} & SR-06, SR-07\\
+\hyperlink{test-nfr-sec-04}{T.NFR.SEC.04} & SR-08\\
+\hyperlink{test-nfr-da01}{T.NFR.DAT.01} & NFR-DAT-01\\
+\hyperlink{test-nfr-off-01}{T.NFR.OFF.01} & NFR-OFF-01\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -1557,8 +2841,6 @@ The findings will be documented in the Usability Report and used to inform chang
 \newpage{}
 
 \section{Appendix --- Reflection}
-
-\wss{This section is not required for CAS 741}
 
 The information in this section will be used to evaluate the team members on the
 graduate attribute of Lifelong Learning.
