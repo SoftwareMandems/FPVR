@@ -12,6 +12,7 @@
     urlcolor=blue
 }
 \usepackage[round]{natbib}
+\usepackage{amssymb}
 
 \input{../Comments.text}
 \input{../Common.text}
@@ -146,305 +147,360 @@ taken from the SRS.
 
 \section{Plan}
 
-Verification will check that FPVR satisfies its specified requirements. Validation will
-check whether the simulator provides understandable controls, useful practice, and
-meaningful feedback for its intended users. This section assigns responsibilities and
-describes reviews of the requirements, design, test plan, and implementation, followed
-by the testing tools and user validation activities.
+This section describes how FPVR will be verified and validated. It identifies the V\&V
+team, the plans for verifying the SRS, design, V\&V plan, and implementation, the
+automated tools that support them, and the plan for validating FPVR with its intended
+users. Every in-scope requirement will have a planned verification method, traced in
+Section 4.3 and reported in the V\&V Report.
 
-The working baseline is the current Software Requirements Specification (SRS),
-especially S.2, S.6, and the environment rules in E.2--E.5. The Problem Statement
-supplies the training goals, and the Hazard Analysis supplies failure cases and safety
-priorities. Accounts, saved results, and leaderboards are included as required by the
-SRS. Intelligent feedback is conditional on the feasibility decision; multiplayer and
-dedicated FPV transmitters remain stretch goals. Unresolved differences between
-documents will be handled through the review in Section 3.2. All activities below are
-planned work.
-
-Every in-scope functional and non-functional requirement will have a planned
-verification method and recorded evidence. Functional system tests belong in Section
-4.1; non-functional tests, including the separate beginner interface and
-experienced-pilot realism studies, belong in Section 4.2. Section 4.3 will link these
-checks to requirements and applicable Hazard Analysis items. Requirements formally
-excluded from the academic-year scope will be listed with their rationale.
-
-\subsection{Verification and Validation Team}
-
-Responsibilities follow the project roles in SRS P.1. Table 1 identifies the lead for
-each area. Every member will write tests for their work and review another member's
-work. The rotating quality assurance (QA) reviewer will not be the main author of the
-artifact being reviewed, and each pull request will require review by a different
-member.
+Table~\ref{tab:vnv-schedule} links these activities to the course milestones in SRS P.3
+and the evidence each one produces.
 
 \begin{table}[!htbp]
 \centering
-\caption{FPVR verification and validation responsibilities}
-\label{tab:vnv-responsibilities}
+\caption{V\&V activities by milestone}
+\label{tab:vnv-schedule}
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
 \toprule
-\textbf{Team member} &
-\textbf{Responsibility} \\
+\textbf{Milestone} &
+\textbf{V\&V activities} &
+\textbf{Evidence} \\
 \midrule
-Ibrahim Tariq &
-Coordinate V\&V milestones and defect priorities. Lead flight-model, gravity, camera,
-and rendering-performance checks, and the experienced-pilot realism study. \\
-John Cho &
-Lead headset, controller, installation, and interruption-recovery testing. Record
-hardware configurations and arrange supervisor and external reviews. \\
-Sankalpa Chhetri Dhakal &
-Check every course, obstacle type, and recovery position. Lead the beginner interface
-study and usability findings; evaluate optional intelligent feedback if included. \\
-Vikram Chandar &
-Lead tests of game states, checkpoint order, crash events, respawn, restart, and timers.
-Maintain repeatable state-transition fixtures. \\
-Arjun Sasidaran &
-Lead score, rating, review, account, storage, and leaderboard tests, including offline
-recovery and access control. Check expected results independently. \\
-Dr. Douglas Down &
-Review scope, flight realism, and unresolved acceptance criteria during the existing
-fortnightly meetings. Provide feedback on the Revision 0 demonstration. \\
+VnV Plan peer review &
+Peer and TA review of this plan (Section 3.4) &
+Logged issues and their resolution \\
+Design Document Rev \(-\)1 &
+Review of the MG and MIS, followed by peer review (Section 3.3) &
+Completed checklist and linked issues \\
+PoC Demonstration &
+Phases 1--2: deployment, input, safety, and free flight, including the first
+input-response measurement &
+Test records and measurement log \\
+Design Documentation &
+Review of the changed MG and MIS sections (Section 3.3) &
+Updated checklist and module-to-requirement mapping \\
+Module Implementation &
+Phase 3: courses, recovery, and timing, including frame-rate and crash-recovery checks;
+unit and integration suites running in CI &
+CI test results and coverage report \\
+Revision 0 Demonstration &
+Phase 4: scoring, review, and local results; supervisor demonstration (Section 3.7) &
+Demonstration checklist and supervisor feedback \\
+V\&V Report &
+Phase 5: accounts and online results; user studies, mutation exercise, and a full
+regression run &
+Study data, test summary, and the V\&V Report \\
+Final Demonstration &
+Phase 6 if included; retest of corrected defects &
+Retest results \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The TA and assigned peer reviewers will be asked to review the SRS, design, and VnV Plan
-against the course expectations. Potential users and experienced pilots will provide
-validation feedback; their participation is not yet confirmed. John will coordinate
-invitations, but the project team remains responsible for completing the reviews and
-resolving findings.
+\subsection{Verification and Validation Team}
 
-At weekly team meetings, Ibrahim will review open V\&V issues and upcoming milestones.
-Each finding will record its source---peer, TA, supervisor, instructor, or
-team---affected requirement or hazard, evidence, priority, one owner, requested
-correction, and a clear condition for closure in GitHub Issues. Larger findings will be
-split into tasks that one member can complete. The reviewer will check the correction or
-retest result before closure.
+The V\&V team follows the project roles in SRS P.1, so each area is verified by the
+member who knows it best:
+
+\begin{itemize}
+  \item \textbf{Ibrahim Tariq:} Team Lead and Flight Physics Developer. Coordinates V\&V
+  milestones and defect priorities, and leads flight-model, rendering-performance, and
+  flight-realism testing.
+  \item \textbf{John Cho:} Team Liaison and Hardware Integration Developer. Leads
+  headset, controller, installation, and interruption-recovery testing, and arranges
+  supervisor and external reviews.
+  \item \textbf{Sankalpa Chhetri Dhakal:} Training Environments Lead. Checks every
+  course, obstacle, and recovery position, and leads the interface usability study.
+  \item \textbf{Vikram Chandar:} Game State Developer. Leads tests of game states,
+  checkpoint order, crash events, Respawn, Restart Level, and timers.
+  \item \textbf{Arjun Sasidaran:} Scoring and Player Data Developer. Leads tests of
+  scoring, ratings, the post-flight review, accounts, result storage, and leaderboards.
+  \item \textbf{Dr. Douglas Down (Supervisor):} Reviews scope, flight realism, and
+  acceptance criteria at the fortnightly meetings, and gives feedback on the Revision 0
+  demonstration.
+\end{itemize}
+
+Review roles rotate on a fixed schedule so that no one verifies their own work and every
+member reviews every area during the project. The rotation follows the order Ibrahim,
+John, Sankalpa, Vikram, Arjun:
+
+\begin{itemize}
+  \item \textbf{Area reviewer:} Each lead keeps ownership of their area's tests, but the
+  member who reviews them changes at each milestone in Table~\ref{tab:vnv-schedule},
+  following the rounds in Table~\ref{tab:vnv-rotation}. After four milestones, every
+  member has reviewed every other member's area, and the rounds repeat.
+  \item \textbf{QA reviewer:} The quality assurance (QA) reviewer for each deliverable is
+  the next member in the order. If that member is the deliverable's main author, the
+  turn passes to the following member.
+  \item \textbf{Pull request reviewer:} Every pull request is approved by a member other
+  than its author, normally the current area reviewer for that code.
+\end{itemize}
+
+Assignments are recorded on the GitHub issue for each milestone. Members may swap a turn
+if the swap is recorded and neither member reviews their own work.
+
+\begin{table}[!htbp]
+\centering
+\caption{Area reviewer rotation}
+\label{tab:vnv-rotation}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}*{4}{>{\raggedright\arraybackslash}X}@{}}
+\toprule
+\textbf{Area lead} & \textbf{Round 1} & \textbf{Round 2} & \textbf{Round 3} &
+\textbf{Round 4} \\
+\midrule
+Ibrahim & John & Sankalpa & Vikram & Arjun \\
+John & Sankalpa & Vikram & Arjun & Ibrahim \\
+Sankalpa & Vikram & Arjun & Ibrahim & John \\
+Vikram & Arjun & Ibrahim & John & Sankalpa \\
+Arjun & Ibrahim & John & Sankalpa & Vikram \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{SRS Verification}
 
-The team will inspect the SRS before using it to finalize test expectations and repeat
-the affected checks whenever a requirement changes. Each area lead will prepare the
-relevant requirements, scenarios, and acceptance criteria for a different member to
-review. The inspection checklist is:
+The SRS will be verified through five activities: a checklist inspection, a supervisor
+review, peer and TA review, a traceability review, and continuous verification as the
+requirements change. Every finding is logged as a GitHub issue with an owner and a
+closing condition. Table~\ref{tab:srs-checklist} summarizes the activities.
+
+\subsubsection{Checklist Inspection}
+
+Each area lead will prepare the requirements for their area, and a different member will
+inspect them using the course SRS checklist. The inspection checks that each requirement
+is unambiguous, testable, complete, and consistent with the rest of the SRS. Two members
+will also independently calculate expected results from the scoring, rating, and
+leaderboard rules; different answers show that a rule is ambiguous.
+
+\subsubsection{Supervisor Review}
+
+A structured review will be held with Dr. Douglas Down at one of the fortnightly
+meetings. Before the meeting, the team will share a summary of the key requirements, the
+main training scenarios, and specific questions about high-risk areas. During the
+meeting, the team will walk through free flight, a course with a crash and Respawn, and a
+completed result, focusing on flight realism, the reference drone, and whether the score
+and feedback support beginner practice. Decisions will be recorded in the meeting
+minutes.
+
+\subsubsection{Peer and TA Review}
+
+Issues raised by the assigned peer team and feedback from the TA will be checked against
+the same checklist. Each one will either be accepted with an owner or declined with a
+recorded reason.
+
+\subsubsection{Traceability Review}
+
+A non-author will confirm that every requirement traces back to a project goal or hazard
+and forward to at least one test, and that each safety requirement in the Hazard
+Analysis is covered by an SRS requirement. Gaps will be logged as issues, and the result
+is the traceability table in Section 4.3.
+
+\subsubsection{Continuous Verification}
+
+Requirements will be reviewed again whenever they change, at the weekly team meetings.
+These reviews will:
 
 \begin{itemize}
-  \item \textbf{Clarity and testability:} Does each requirement have a unique ID, one
-  clear obligation, and an observable result? Are units, limits, timing boundaries, and
-  expected error behaviour defined?
-  \item \textbf{Completeness:} Are normal, boundary, and failure cases covered,
-  including first takeoff, repeated collisions, skipped checkpoints, recovery before the
-  first checkpoint, device disconnection, and failed saves?
-  \item \textbf{Consistency:} Do the requirements, scenarios, interfaces, environment
-  invariants, and acceptance criteria describe the same behaviour? Are required features
-  clearly separated from conditional features?
-  \item \textbf{Traceability and feasibility:} Can each requirement be traced to a
-  project goal or hazard and a planned check? Can that check be performed with the
-  available hardware, people, and schedule?
+  \item Assess the impact of each requirement change on the design and tests
+  \item Update the affected tests and traceability entries with the requirement
+  \item Confirm at the PoC Demonstration that the performance requirements can be met
+  on the target headset
 \end{itemize}
 
-The following known differences require explicit resolution:
-
-\begin{itemize}
-  \item \textbf{Scope:} The Problem Statement and Hazard Analysis still place accounts
-  and database storage among the stretch goals. SRS S.2 requires accounts, cloud
-  results, and leaderboards. Their security checks must therefore be included, and the
-  older roadmap must be reconciled with this scope.
-  \item \textbf{Performance:} Hazard Analysis NFR1 specifies 30 FPS, whereas SRS
-  NFR-PERF-01 proposes a 72-FPS average over 120 seconds in each required standalone
-  environment. Hazard Analysis NFR2 specifies a 50-ms response, whereas SRS NFR-PERF-02
-  proposes at most 100 ms for at least 95 of 100 input events. These measures and
-  thresholds must be agreed and both documents updated before the affected tests can
-  establish acceptance.
-  \item \textbf{Recovery and review:} SRS U-03 uses ``Restart'' for checkpoint recovery,
-  although FR-CHK-05--07 distinguish Respawn from Restart Level. IF-04 excludes
-  prior-session navigation, while FR-REV-05 requires historical results. U-04 also
-  describes recorded flight replay beyond the result-history requirements. The review
-  will align these passages with the agreed scope.
-\end{itemize}
-
-The team will arrange a structured supervisor review using a short agenda and the unresolved
-decisions. The team will walk through free flight, a course with a crash, and a
-completed result, then ask whether the proposed flight behaviour, score, and feedback
-support beginner practice. The supervisor will also be asked to help define the
-reference drone and acceptable realism limits. Peer feedback will be checked against the
-same checklist and logged as issues.
-
-SRS proposals PR-FLT-01--02, PR-CTL-01, and SR-01--08 will retain their proposed status
-until reviewed. Hazard Analysis identifiers such as SR1 will be recorded with their
-document name so they cannot be confused with SRS SR-01. Unset parameters, such as
-gravity-test tolerances, will be resolved before the corresponding test is accepted.
-Each approved change will update the source requirement, affected tests, and
-traceability entries together. Unresolved criteria will be reported as blocked.
+\begin{table}[!htbp]
+\centering
+\caption{SRS verification checklist}
+\label{tab:srs-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Activity} & \textbf{Verification tasks} \\
+\midrule
+Checklist inspection &
+\(\square\) Inspect each area's requirements\newline
+\(\square\) Calculate rule examples independently \\
+Supervisor review &
+\(\square\) Share the review package\newline
+\(\square\) Walk through the training scenarios\newline
+\(\square\) Record decisions \\
+Peer and TA review &
+\(\square\) Accept or decline every issue with a reason \\
+Traceability review &
+\(\square\) Trace requirements to goals, hazards, and tests\newline
+\(\square\) Log gaps as issues \\
+Continuous verification &
+\(\square\) Review requirement changes weekly\newline
+\(\square\) Confirm performance requirements at the PoC \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Design Verification}
 
-The Module Guide and Module Interface Specification will be reviewed as they are
-developed, first at Design Revision \(-\)1 and again before module implementation. These
-documents will define the modules that realize the logical responsibilities in SRS S.1.
-The area lead will present interfaces and state transitions to another member, and
-classmates will be asked to review the design through the scheduled peer review.
+The Module Guide (MG) and Module Interface Specification (MIS) will be verified through
+walkthroughs, peer review, and supervisor review, first for Design Document Rev \(-\)1
+(Nov.~16, 2026) and again for the Design Documentation (Jan.~18, 2027). Each area lead
+will walk a non-author member through their modules' interfaces and state transitions.
+Classmates will review the design using a checklist during the scheduled peer reviews
+(Nov.~19, 2026 and Jan.~25, 2027), and their feedback will be tracked in GitHub Issues.
+The design will use the nine modules of Section 5, so each module's unit tests trace to
+its requirements.
 
-The design inspection will check that:
+A review with Dr. Douglas Down will verify three critical aspects of the design: (1) the
+flight model and its match to the reference drone, (2) the state transitions for
+checkpoints, crash recovery, and timing, and (3) the handling of lost input and an
+unavailable online service, which must not block local training. Small prototypes will
+check uncertain hardware and performance assumptions before the review.
 
-\begin{itemize}
-  \item Every required behaviour has an owning module and a traceable interface. Inputs,
-  outputs, units, valid ranges, and failure results are specified, including the
-  controller-to-flight and result-to-storage boundaries.
-  \item State transitions preserve SRS E-I-02: only the next checkpoint counts, one
-  crash produces one penalty, menu time is excluded, Respawn preserves the attempt, and
-  Restart Level creates a fresh attempt. Reviewers will trace these values through a
-  complete example, including a crash before any checkpoint.
-  \item Loss of tracking or input, invalid course data, failed saves, and unavailable
-  services have defined handling. Online or optional AI failures cannot block local
-  training or the standard review. Account ownership and public leaderboard fields are
-  checked at the service boundary.
-  \item Both deployment modes can support the design. Flight-critical work does not wait
-  for network replies, and tests can supply controlled inputs, elapsed time, and service
-  responses without a person wearing the headset.
-\end{itemize}
-
-Interface gaps and conflicting transitions will be resolved before dependent modules are
-integrated. Small prototypes will check uncertain hardware or performance assumptions,
-and their results will inform the design review. The team will record review decisions
-and update the module-to-requirement mapping after design changes.
-
-Document inspections will use the existing team meetings, with about 30--45 minutes
-reserved for the changed portions at each review milestone. The author and non-author
-reviewer will read those portions beforehand and retain the completed checklist,
-decisions, and linked issues. This keeps nondynamic reviews focused and provides
-evidence that each review occurred.
+\begin{table}[!htbp]
+\centering
+\caption{Design verification checklist}
+\label{tab:design-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Focus area} & \textbf{Verification tasks} \\
+\midrule
+Module structure &
+\(\square\) Every requirement has an owning module\newline
+\(\square\) Modules match the nine modules in Section 5 \\
+Interfaces &
+\(\square\) Inputs, outputs, units, and valid ranges specified\newline
+\(\square\) Failure results specified \\
+State transitions &
+\(\square\) Checkpoint order and crash penalties preserved\newline
+\(\square\) Respawn and Restart Level behaviour defined \\
+Failure handling &
+\(\square\) Lost tracking and input handled\newline
+\(\square\) Online failures do not block local training \\
+Testability &
+\(\square\) Input, time, and services can be controlled in tests \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Verification and Validation Plan Verification}
 
-The rotating QA reviewer will inspect this plan before submission and after major
-requirement or design changes. The assigned peer reviewers and TA will be asked to
-assess its clarity and feasibility during the VnV peer review. The checklist is:
+The V\&V Plan will be verified through team and peer review. The QA reviewer, the
+assigned peer team, and the TA will check the plan's coverage and feasibility using a
+checklist during the VnV Plan peer review (issues due Nov.~5, 2026), and the QA reviewer
+will repeat the check after major requirement or design changes. Feedback will be
+tracked through GitHub Issues and addressed at the weekly team meetings.
 
-\begin{itemize}
-  \item Every in-scope functional, non-functional, and applicable safety requirement has
-  a test or an explicitly justified inspection. Traceability works in both directions,
-  and proposed or deferred items have visible status. Critical recovery, scoring, and
-  data-protection rules have checks at both the logic and integrated-workflow levels.
-  \item Each test gives a unique ID, requirement links, configuration, initial state,
-  inputs, steps, expected result, pass criterion, and the reason for that expectation.
-  Boundary and failure cases are included, and expected values are derived independently
-  of the implementation being tested.
-  \item A different member can execute the procedure and reach the same pass/fail
-  decision. The reviewer will dry-run a checkpoint/recovery test and a performance
-  procedure when the required build is available.
-  \item Equipment, test data, owners, and time are available. Automated tests are
-  separated from headset and user checks, and no procedure requires exposing a
-  participant to deliberately unsafe visuals or physical conditions.
-  \item Section 4.2 contains two separate usability-related test procedures: beginners
-  assess the interface, and experienced FPV pilots assess realism. Section 6.2 contains
-  the shared usability questionnaire and additional questions for experienced FPV 
-  pilots. Section 5 retains the unit-testing strategy while detailed cases await the
-  MIS. The List of Figures and List of Tables remain in the document, as required by 
-  the rubric.
-\end{itemize}
+To confirm that the tests can detect faults, the team will run a mutation exercise once
+the automated suites exist. Faults will be introduced one at a time on a temporary
+branch, such as allowing an out-of-order checkpoint, removing a crash penalty, or
+changing a rating boundary, and each must cause a test to fail. Progress will be measured
+by requirement coverage, the share of mutations detected, and the number of open review
+issues.
 
-Once the relevant automated suites exist, their ability to detect faults will be checked
-using a small, controlled mutation exercise. On a temporary branch, the team will
-introduce one fault at a time: allow an out-of-order checkpoint, clear total time on
-Respawn, remove a crash penalty, change a rating boundary, or accept another account's
-result submission. Each fault must cause its associated test to fail. Undetected faults
-will lead to a revised test and a repeat check. All mutations will be removed, and the
-unchanged production code must pass again.
-
-Ibrahim will check progress against SRS P.3: hardware and basic flight at the proof of
-concept; courses, recovery, and timing by module implementation; scoring and local
-review by Revision 0; and required online features and verification evidence by the V\&V
-Report. Missing tests or hardware will be reported as incomplete. A milestone is
-accepted only when its required checks pass and no unresolved defect prevents safe use,
-required gameplay, or data protection. Scope reductions require a documented
-requirements change. Tests will not be weakened solely to make a failing build pass.
+\begin{table}[!htbp]
+\centering
+\caption{V\&V plan verification checklist}
+\label{tab:plan-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Criteria} & \textbf{Verification tasks} \\
+\midrule
+Coverage &
+\(\square\) Every in-scope requirement has a test or inspection\newline
+\(\square\) Safety requirements are covered \\
+Test quality &
+\(\square\) Each test has inputs, an expected result, and a pass criterion\newline
+\(\square\) Expected results are derived independently \\
+Feasibility &
+\(\square\) Equipment, people, and time are available\newline
+\(\square\) No procedure is unsafe for participants \\
+Fault detection &
+\(\square\) Mutation exercise completed \\
+Process &
+\(\square\) Feedback tracked to closure \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Implementation Verification}
 
-Implementation verification will combine code inspection with the system tests in
-Section 4 and the unit tests in Section 5. Section 5 will retain the scope and
-test-selection strategy now; detailed unit cases will be completed when module
-interfaces are defined. Tests will check specified outputs and exercise normal,
-boundary, invalid-input, and state-transition cases. Testing will proceed from isolated
-logic to integrated workflows and then to the installed application.
+Implementation verification will use unit, integration, and system tests. The unit tests
+in Section 5 check each module's rules in isolation using the Unity Test Framework.
+Integration tests check the flows between modules, such as input to flight, crash to
+recovery, and completion to review and storage. The system tests in Section 4 check the
+complete application on the required hardware configurations in
+Table~\ref{tab:vnv-configurations}.
+
+Static verification will use code review and analyzers. Every pull request will be
+reviewed by a non-author against the Microsoft C\# Coding Conventions adopted in the
+Development Plan, and merged only after approval and a passing CI run. Reviews will
+focus on:
 
 \begin{itemize}
-  \item \textbf{Unit tests:} Check controller-value validation, checkpoint ordering,
-  crash counting, timer updates, scoring, rating boundaries, record validation, and
-  leaderboard tie-breaking using controlled inputs. Expected scores will be calculated
-  independently from FR-PER-08; for example, \(T=95.7\) seconds and \(C=2\) must produce
-  705. Tests will include zero and boundary values, invalid inputs, and repeated events.
-  \item \textbf{Integration tests:} Exercise input-to-flight behaviour,
-  collision-to-recovery transitions, and completion-to-review-to-storage flows. Check
-  both normal and failed service responses, including interrupted saves, retry,
-  sign-out, and attempts to access another user's private records. Test doubles will
-  make failures repeatable; the selected service will also be tested with isolated test
-  accounts and records.
-  \item \textbf{System tests:} Run the complete training flow on the required hardware
-  pairs in Table 2. Inspect and fly every released course, including close misses,
-  high-speed contact, repeated or skipped gates, and each recovery point. Run the 20
-  consecutive crash-and-respawn cycles per required environment in NFR-REL-01 and verify
-  offline training, local saving, and review under NFR-OFF-01.
-  \item \textbf{Static verification:} A non-author will review each code change for
-  agreement with the design, units and bounds, event ordering, cleanup of event
-  subscriptions, error handling, and unintended shared state. Data-related changes will
-  also be checked for credential exposure and authorization errors. Compiler and
-  analyzer findings will be fixed or explicitly justified in the review record.
+  \item Units, bounds, and event ordering in flight and game-state code
+  \item Cleanup of event subscriptions and unintended shared state
+  \item Credential exposure and authorization errors in account and storage code
 \end{itemize}
 
-Safety-related checks will cover the Hazard Analysis requirements applicable to the
-delivered features, including notices, pause/exit, tracking-loss handling, input checks,
-saved-data protection, break reminders, and constructive recovery messages. Timed
-reminders can be checked with a controlled clock; flashing effects and injected
-performance failures will be inspected without exposing participants. Detailed failure
-behaviour will use the reconciled requirements from Section 3.2.
+Performance testing will verify:
 
-Each run will record the build commit, test ID, requirement IDs, configuration, inputs,
-expected and actual results, and pass/fail/blocked status, with logs or screenshots
-where useful. Failures will become assigned GitHub issues. After a fix, the failing case
-and affected regression tests will be rerun. Changes to shared game state, input, or
-persistence will also trigger the complete core workflow. Third-party engine and service
-internals are outside the team's verification scope, but their integration and failure
-handling remain in scope.
+\begin{itemize}
+  \item Frame rate on the target headset (NFR-PERF-01)
+  \item Input response time (NFR-PERF-02)
+  \item Reliability over repeated crash and Respawn cycles (NFR-REL-01)
+\end{itemize}
 
-The V\&V Report will summarize passed, failed, blocked, and unexecuted tests, and show
-which requirements have supporting evidence. Proposed and formally deferred requirements
-will be listed separately so an untested item cannot appear to be covered by the passing
-results.
+Each failure will become a GitHub issue, and the failing case and affected regression
+tests will be rerun after the fix.
+
+\begin{table}[!htbp]
+\centering
+\caption{Implementation verification checklist}
+\label{tab:implementation-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Category} & \textbf{Verification tasks} \\
+\midrule
+Functionality &
+\(\square\) Unit tests for each module\newline
+\(\square\) Integration tests for module flows \\
+Quality &
+\(\square\) Static analysis completed\newline
+\(\square\) Code reviews conducted \\
+Performance &
+\(\square\) Frame-rate measurements\newline
+\(\square\) Input-response measurements \\
+Safety &
+\(\square\) Pause and exit verified\newline
+\(\square\) Tracking and input loss handled \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Automated Testing and Verification Tools}
 
-The planned tools fit the Unity/C\# environment in SRS P.2. Exact Unity, package,
-analyzer, and service versions will be recorded and checked for compatibility before the
-test environment is finalized.
+\textbf{Unit Testing Framework:} The Unity Test Framework, which is based on NUnit, will
+run Edit Mode tests for game rules and Play Mode tests for physics and scene behaviour.
+It was chosen because it is Unity's standard testing tool and runs in the CI pipeline.
 
-\begin{itemize}
-  \item \textbf{Unity Test Framework and NUnit:} Edit Mode tests will check isolated C\#
-  logic. Play Mode tests will check physics, scene objects, collision events, and
-  frame-dependent interactions. Controlled input, time, and service fixtures will
-  support repeatable cases.
-  \item \textbf{GitHub Actions:} Extend the existing documentation workflow with
-  compilation, configured analysis, and automated tests on pull requests using a
-  licensed Unity runner. Keep test-result files and logs with each run. If runner access
-  is unavailable, execute the same checks locally and attach the results before merging.
-  Headset tests will be recorded separately.
-  \item \textbf{Unity Code Coverage:} Report covered and executable lines by FPVR module
-  and overall. Exclude third-party, generated, and test code, and list the exclusions.
-  Review uncovered logic, especially safety, recovery, scoring, and access control; add
-  tests or document why another check is needed. Code coverage will be reported
-  separately from requirement coverage and mutation results.
-  \item \textbf{C\# compiler and Roslyn analyzers:} Use a compatible, versioned rule set
-  for correctness and the team's C\# coding conventions. Run these checks during
-  development and in the build workflow so findings are available to the whole team.
-  \item \textbf{Unity Profiler, headset metrics, and timestamp logs:} Collect
-  application frame times and input-to-state-update intervals on the target builds.
-  Preserve raw measurements and configuration details so the reported performance can be
-  reproduced.
-\end{itemize}
+\textbf{Code Coverage Tools and Plan for Summary:} The Unity Code Coverage package will
+report line coverage for each module and overall, excluding third-party and test code.
+The target is at least 80\% line coverage of the game-rule logic, such as checkpoint
+order, timing, scoring, and leaderboard ranking. Coverage reports will be kept with each
+CI run to track trends and identify untested code.
 
-The minimum hardware matrix follows FR-UI-03 and NFR-COMP-01. Additional controller/mode
-combinations will be claimed only after testing.
+\textbf{Linters and Static Analysis:} The C\# compiler and Roslyn analyzers will enforce
+the Microsoft C\# Coding Conventions and flag likely defects during development and in
+the CI build.
+
+\textbf{Continuous Integration:} GitHub Actions will be extended from building the
+documentation to building the project and running the automated tests on every pull
+request. A failing run blocks the merge.
+
+\textbf{Performance Measurement:} The Unity Profiler, headset performance metrics, and
+timestamped logs will measure frame rate and input response on the configurations in
+Table~\ref{tab:vnv-configurations}.
 
 \begin{table}[!htbp]
 \centering
@@ -467,242 +523,332 @@ Xbox-compatible gamepad \\
 \end{tabularx}
 \end{table}
 
-John will record the PC CPU, GPU, memory, controller model, runtime, headset software,
-and PCVR link. Ibrahim will record build settings, scene, refresh rate, and measurement
-method. Using the current SRS proposal, standalone performance checks will count
-application-rendered frames over 120 continuous seconds in each required environment and
-compare the average with 72 FPS. Frame-time spikes will also be reported. Headset
-refresh rate alone does not establish application FPS.
-
-Input-response measurements will use a common monotonic clock to timestamp each received
-input event and its first corresponding simulated state update. At least 95 of 100
-events must be within 100 ms under the current SRS proposal. Each required pairing will
-be measured and reported separately. This measures the software response from received
-input to simulated state update. Coverage runs will be kept separate from performance
-runs, and profiling overhead will be recorded. The thresholds remain subject to the
-reconciliation in Section 3.2.
-
 \subsection{Software Validation}
 
-Validation will address the Problem Statement's goals of accessible practice, responsive
-controls, varied challenges, and useful performance feedback. One study with two parts is
-planned under the non-functional tests in Section 4.2: \textbf{NF-UI-01} for both beginners'
-and experienced pilots' use of the interface and \textbf{NF-REAL-01} for just the experienced 
-pilots' assessment of flight realism. These are planned test IDs. Their procedures will use 
-the tasks and evidence below, with both parts of the question set reproduced in Section 6.2. 
-Beginner and pilot results will be analysed separately.
-
-\subsubsection{Beginner Interface Study}
-
-Sankalpa will lead NF-UI-01 with a non-author QA observer and a target of four non-team
-participants with little or no FPV experience. This study will assess discoverability,
-clarity, and ease of use for FR-UI-04--06, FR-CHK-04, FR-REV-02--03, NFR-USAB-01, and
-NFR-SAFE-01--02. Two participants will use standalone Quest motion controllers and two
-will use the PCVR gamepad configuration. Prior VR/game experience and seated or standing
-use will be recorded.
-
-After a common safety orientation, participants will use the application's instructions
-to perform these tasks without coaching:
-
-\begin{enumerate}
-  \item Find the control guide, identify throttle, pitch, roll, and yaw, and start free
-  flight.
-  \item Return to the menu, select the introductory course, and identify the next
-  required checkpoint.
-  \item After a simulated crash, use Respawn and Restart Level and explain the
-  difference between their effects on the attempt.
-  \item Pause and exit an active flight without removing the headset or walking away
-  from the starting position.
-  \item Read a completed attempt's review, explain its time, crashes, score, and rating,
-  and choose to retry the level.
-\end{enumerate}
-
-The observer will record each task's completion, elapsed time, errors, assistance, and
-comments. If a participant cannot complete the course, that outcome will be recorded and
-a clearly identified prepared result may be used for the review task. Using that result
-does not count as successful course completion. After phase 5, a focused follow-up task
-will ask users to retrieve a previous result using a test account and distinguish
-local-only from synchronized results.
-
-The beginner questionnaire will use the following statements, rated from \textbf{1
-(strongly disagree) to 5 (strongly agree):}
+FPVR will be validated with the people it is built for, because requirement-based tests
+cannot show whether it is a useful trainer. Validation will use:
 
 \begin{itemize}
-  \item \textbf{B1:} I could find and understand the flight-control instructions.
-  \item \textbf{B2:} I could choose a mode or level and return to the menu easily.
-  \item \textbf{B3:} I understood the difference between Respawn and Restart Level.
-  \item \textbf{B4:} I could find and use pause and exit when I wanted to stop.
-  \item \textbf{B5:} The review helped me understand how my time and crashes affected my
-  result.
+  \item \textbf{Interface usability study (NF-UI-01):} About four beginners with little
+  or no FPV experience, split between the two configurations, and the experienced pilots
+  below will complete core tasks without coaching: finding the control guide, starting a
+  course, using Respawn and Restart Level, pausing and exiting, and reading the review.
+  Task completion and questionnaire ratings (Section~\ref{sec:usability-survey}) will be
+  recorded, with a target median of at least 4/5. Sankalpa leads this study.
+  \item \textbf{Flight realism study (NF-REAL-01):} About two experienced FPV pilots will
+  fly agreed manoeuvres and rate how believable the flight response is, with a target of
+  at least 4/5 on each item. Ibrahim leads this study, and the supervisor helps define
+  the reference drone.
+  \item \textbf{Revision 0 demonstration:} At the Revision 0 Demonstration (Feb.\ 1--11,
+  2027), Dr. Douglas Down will review whether the functional requirements in phases 1--4
+  of SRS P.3 work on both configurations. It succeeds if they can all be demonstrated
+  and no open defect prevents safe use or the core training flow.
 \end{itemize}
 
-An open question will ask: \textbf{``Which part was most confusing, and what would make
-it clearer?''}
-
-For each task, report the number completed without assistance out of four, alongside
-individual completion times, errors, and hardware configuration. Report the median and
-range for each questionnaire item. The proposed targets are independent completion by at
-least three of four beginners for each task, successful pause/exit by all four, and a
-median of at least 4/5 for each item. Any pause/exit difficulty will require correction
-and retesting even if other targets are met. These observations will complement the
-functional checks of each required action.
-
-\subsubsection{Experienced-Pilot Realism Study}
-
-Ibrahim will lead NF-REAL-01 with a QA observer and a target of two non-team
-participants who have flown physical FPV drones. John will seek volunteers, including
-through the McMaster Drone Team if available, and record their experience and usual
-drone/controller setup. Participation is not yet confirmed. This study assesses
-perceived realism supporting FR-FLT-01--03 and the responsive-flight goals. Numerical
-physics-accuracy requirements remain subject to approval.
-
-Before testing, Ibrahim and Dr. Douglas Down will agree on the simulated drone
-configuration and the intended comparison with real flight. On the same build, each
-pilot will perform takeoff, steady hover, pitch/roll turns, yaw turns, and
-reduced-thrust descent in free flight, followed by a short introductory-course attempt.
-Each pilot will try both required controller configurations; their order will be
-reversed for the second pilot. Hardware differences and familiarity with gamepads will
-be recorded separately from criticisms of the simulated drone's behaviour.
-
-Pilots will rate the following statements from \textbf{1 (strongly disagree) to 5
-(strongly agree)}, with \textbf{``not assessed''} available if the manoeuvre could not
-be completed:
-
-\begin{itemize}
-  \item \textbf{P1:} Throttle changes produced believable climbing, hovering, and
-  descending behaviour for the agreed drone configuration.
-  \item \textbf{P2:} Pitch, roll, and yaw produced believable changes in movement and
-  orientation.
-  \item \textbf{P3:} The first-person view gave believable visual feedback about the
-  drone's movement.
-  \item \textbf{P4:} The drone responded promptly enough for deliberate manoeuvres.
-\end{itemize}
-
-An open question will ask: \textbf{``Which response differed most from a real FPV drone,
-and how could that difference mislead someone practising?''}
-
-The observer will record the triggering manoeuvre, controller, expected response,
-observed response, and suggested correction for each reported problem.
-
-Report each pilot's ratings by item and controller configuration, plus the specific
-realism issues. The proposed target is a rating of at least 4/5 from both pilots on each
-item, with no unresolved response identified as misleading for practice. Missing ratings
-and recruitment shortfalls will leave the affected comparison incomplete. Reported
-issues will be reviewed with the supervisor and the relevant manoeuvres repeated after a
-correction. Analytical gravity checks and measured input-response tests will provide
-separate objective evidence.
-
-\subsubsection{Schedule, Evidence, and Custom Documents}
-
-John will arrange a demonstration for Dr. Douglas Down shortly after Revision 0 to
-review scope, progression, and feedback before the two studies. The target is six
-initial sessions, each with about 15--20 minutes of headset use plus briefing,
-questions, and breaks. This bounds initial headset use to about two hours across the
-sample. Sessions will use one shared headset, the existing reference PC, and short
-repeatable tasks. Focused follow-ups will address identified problems and phase 5
-features before the V\&V Report. If pilots cannot be recruited, supervisor feedback may
-guide improvements, while the pilot study will remain incomplete.
-
-The targets above are proposed evaluation criteria. The team and supervisor will agree
-on them before testing and record any later change with its reason. Actual participant
-counts, assistance, incomplete tasks, and discomfort-related stops will be retained.
-Findings will become assigned issues, with safety and blocked core tasks addressed
-first.
-
-The two Custom Documents will use this work directly:
-
-\begin{itemize}
-  \item \textbf{Design Thinking Report:} Before the studies, record the user need,
-  considered alternatives, and reasons for the selected control guide, recovery menu,
-  and review presentation. After evaluation, connect each design change to the
-  observation that motivated it and the follow-up result.
-  \item \textbf{Usability Report:} Present the two studies separately, including
-  participant profiles, test versions, tasks, question sets, raw observations,
-  completion counts, ratings, issues, and retest results. Link the evidence to
-  requirements in the V\&V Report. Reusing the planned sessions keeps these documents
-  achievable without a separate large study.
-\end{itemize}
-
-The initial design rationale will support CD-Fall; study findings and subsequent
-revisions will support CD-Winter and the V\&V Report.
-
-\textbf{Participant safety and data:} Before recruitment, the QA reviewer will check the
-applicable headset instructions and course procedures. Testing will use a clear
-stationary space, an available observer, and a build with verified pause/exit and
-interruption handling. Participants will receive an explanation of the tasks and
-recorded data, may decline or stop at any time, and will stop immediately if discomfort
-occurs. No participant will be asked to continue to satisfy a test. Notes will use
-participant codes, and account tasks will use test credentials. Recording permissions,
-access, retention, and deletion will be agreed before data collection. Deliberate
-tracking, rendering, or visual-effect faults will be tested separately without exposing
-participants.
-
-If intelligent feedback is included, reviewers will compare its observations with known
-attempt data and assess usefulness, while confirming that failure leaves the standard
-review available. No external flight dataset is currently confirmed. These small studies
-will identify interface and realism problems; establishing transfer to real-world
-piloting or certification would require separate evaluation.
+Studies will use a clear stationary space, an observer, and a build with verified pause
+and exit, and participants may stop at any time. Findings will become GitHub issues and
+will feed the Usability Report and Design Thinking Report.
 
 \section{System Tests}
 
-\wss{There should be text between all headings, even if it is just a roadmap of
-the contents of the subsections.}
+% \wss{There should be text between all headings, even if it is just a roadmap of
+% the contents of the subsections.}
+
+System tests are tests that are used to verify that FPVR satisfies the functional
+and non-functional requirements as specified in the SRS. This section will cover all
+system tests that will be performed end-to-end on the application.
 
 \subsection{Tests for Functional Requirements}
 
-\wss{Subsets of the tests may be in related, so this section is divided into
-  different areas.  If there are no identifiable subsets for the tests, this
-  level of document structure can be removed.}
+% \wss{Subsets of the tests may be in related, so this section is divided into
+%   different areas.  If there are no identifiable subsets for the tests, this
+%   level of document structure can be removed.}
 
-\wss{Include a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.}
+% \wss{Include a blurb here to explain why the subsections below
+%   cover the requirements.  References to the SRS would be good here.}
 
-\subsubsection{Area of Testing1}
+The following is a list of tests used to cover the functional requirements (S.2) of the SRS.
+Note that tests are not mutually exclusive to a single subset of requirements and can hit
+multiple similarly related major functional modules. 
 
-\wss{It would be nice to have a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.  If a section
-  covers tests for input constraints, you should reference the data constraints
-  table in the SRS.}
-		
-\paragraph{Title for Test}
+\subsubsection{Realistic Flight Simulation (S.2.1)}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{\hypertarget{test-fr-flt-01}{}\textbf{T.FR.FLT.01}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} System is running and displayed on a flat screen/monitor or VR headset.
+					
+\textbf{Input:} Move the drone using the corresponding input controller.
+					
+\textbf{Output:} The field of view of the drone changes in response to the input of the controller and moves in the expected direction
+within the environment (FR-FLT-01).
 
-Control: Manual versus Automatic
+\textbf{Test Case Derivation:} Verifies FR-FLT-01.
 					
-Initial State: 
+\item{\hypertarget{test-fr-flt-02}{}\textbf{T.FR.FLT.02}\\}
+\textbf{Control:} Automatic
 					
-Input: 
+\textbf{Initial State:} Simulated drone is at rest within an environment.
 					
-Output: \wss{The expected result for the given inputs.  Output is not how you
-are going to return the results of the test.  The output is the expected
-result.}
+\textbf{Input:} Simple flight path that exercises each of the drone's control axes one by one.
+					
+\textbf{Output:} Drone behaves as expected and follows the path within a reasonable margin of error ($\leq 5\%$ of expected path).
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Test Case Derivation:} Verifies FR-FLT-02, FR-FLT-03, FR-FLT-05.
 
-Control: Manual versus Automatic
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{How test will be performed:} Starting at rest (FR-FLT-05), the drone begins by moving up and down, 
+tilting left, right, forward, backward, and rotating in place (FR-FLT-02), followed with sustained flight for a period of time (FR-FLT-03).
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+\item{\hypertarget{test-fr-flt-03}{}\textbf{T.FR.FLT.03}\\}
+\textbf{Control:} Automatic
+					
+\textbf{Initial State:} Drone is suspended in flight within an environment.
+					
+\textbf{Input:} Drone is moving and projected to hit a collision object.
+					
+\textbf{Output:} Drone comes into contact with object, stops moving (FR-FLT-04), and 
+triggers exactly one logged crash event (FR-FLT-06).
 
-How test will be performed: 
+\textbf{Test Case Derivation:} Verifies FR-FLT-04, FR-FLT-06.
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\subsubsection{Menu Interface (S.2.2, S.2.5)}
 
-...
+\begin{enumerate}
+\item{\hypertarget{test-fr-mi-01}{}\textbf{T.FR.MI.01}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} UI is running and main menu is displayed.
+					
+\textbf{Input:} Free-flight mode is selected from the menu.
+					
+\textbf{Output:} Free-flight mode is loaded and drone is placed in an area with no courses, 
+obstacles littered throughout the field that the drone can collide with (FR-LVL-02), and no attempt or 
+timer limitations (FR-LVL-01).
+
+\textbf{Test Case Derivation:} Verifies FR-LVL-01, FR-LVL-02.
+
+\item{\hypertarget{test-fr-mi-02}{}\textbf{T.FR.MI.02}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} UI is running and main menu is displayed.
+					
+\textbf{Input:} User scrolls through the list of available courses, terrains/environments for selected course, 
+and hits the start button.
+					
+\textbf{Output:} Course is loaded and drone is initialized at the starting position of the course with all stale 
+data cleared (FR-LVL-07).
+
+\textbf{Test Case Derivation:} Verifies FR-LVL-07. Navigating through the course menu also indirectly verifies FR-LVL-03,
+FR-LVL-04, FR-LVL-05, FR-LVL-06, FR-UI-01, FR-UI-05.
+
+\item{\hypertarget{test-fr-mi-03}{}\textbf{T.FR.MI.03}\\}
+\textbf{Control:} Manual
+					
+\textbf{Initial State:} System is running and drone is in a course.
+					
+\textbf{Input:} Button is pressed on the controller that brings up the help menu/controller guide.
+					
+\textbf{Output:} Small window pops up on the screen with a list of controls and their corresponding actions (FR-UI-04). 
+
+\textbf{Test Case Derivation:} Verifies FR-UI-04.
+\end{enumerate}
+
+\subsubsection{Checkpoint and Crash Recovery (S.2.3)}
+
+\begin{enumerate}
+\item{\hypertarget{test-fr-chk-01}{}\textbf{T.FR.CHK.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A selectable obstacle-course level is loaded with its
+course definition available for inspection.
+
+\textbf{Input:} Pass through checkpoints in order, then attempt to pass through
+a later checkpoint before the next required checkpoint and finally reach the
+finish.
+
+\textbf{Output:} Level will record the number of checkpoints passed up until a checkpoint is skipped
+from which it will stop counting (FR-CHK-02, FR-CHK-03).
+
+\textbf{Test Case Derivation:} Verifies FR-CHK-01, FR-CHK-02, FR-CHK-03, FR-CHK-08.
+
+\item{\hypertarget{test-fr-chk-02}{}\textbf{T.FR.CHK.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A course attempt has completed zero checkpoints, and a
+second attempt has completed at least one checkpoint.
+
+\textbf{Input:} Drone crashes, select respawn. Drone crashes again, select restart level.
+
+\textbf{Output:} Application displays option to respawn and 
+restart level if checkpoints $\geq 1$ (FR-CHK-04).
+
+\textbf{Test Case Derivation:} Verifies FR-CHK-04, FR-CHK-05, FR-CHK-06, FR-CHK-07.
+\end{enumerate}
+
+\subsubsection{Timing and Performance Evaluation (S.2.4)}
+
+\begin{enumerate}
+\item{\hypertarget{test-fr-per-01}{}\textbf{T.FR.PER.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A new obstacle-course attempt is ready to start.
+
+\textbf{Input:} Run through multiple checkpoint segments, crash during one
+segment, record epoch time to completion.
+
+\textbf{Output:} Total timer measures active flight, retains time from
+crashed segments, stops during the recovery menu, does not reset on Respawn,
+and stops at completion. The section timer measures the current segment and
+resets at checkpoint completion and Respawn. The crash count increases once per
+crash (FR-PER-01--FR-PER-07, FR-PER-10).
+
+\textbf{Test Case Derivation:} Verifies FR-PER-01, FR-PER-02, FR-PER-03, FR-PER-04, FR-PER-05, FR-PER-06, FR-PER-07, FR-PER-10.
+
+\textbf{How test will be performed:} Check $\sum_{i=1}^{n} \epsilon_{s,i} \approx \epsilon_t$ where $\epsilon_{s,i}$ is the section time 
+for segment $i$ and $\epsilon_t$ is the total time.
+
+\item{\hypertarget{test-fr-per-02}{}\textbf{T.FR.PER.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} Drone has finished a course attempt.
+
+\textbf{Input:} Complete attempts with known values of $T$ and $C$, including
+the score boundaries 0, 399, 400, 599, 600, 799, 800, and 1000.
+
+\textbf{Output:} The correct score and rating are calculated and displayed upon completion of a course (FR-PER-08, FR-PER-09).
+
+\textbf{How test will be performed:} The score equals
+$\max(0,1000-\lfloor T\rfloor-100C)$ and the rating is Needs Improvement for
+0--399, Bronze for 400--599, Silver for 600--799, and Gold for 800 or more.
+
+\textbf{Test Case Derivation:} Verifies FR-PER-08, FR-PER-09.
+\end{enumerate}
+
+\subsubsection{Player Accounts and Authentication (S.2.6)}
+
+\begin{enumerate}
+\item{\hypertarget{test-fr-acc-01}{}\textbf{T.FR.ACC.01}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} The application has network connectivity and the
+username is not registered.
+
+\textbf{Input:} Register a new username with a valid password, repeat with the
+same username, and repeat with passwords shorter than 12 characters.
+
+\textbf{Output:} The valid registration succeeds. Duplicate usernames and
+short passwords are rejected with explanatory messages (FR-ACC-01, FR-ACC-02).
+
+\textbf{Test Case Derivation:} Verifies FR-ACC-01, FR-ACC-02.
+
+\item{\hypertarget{test-fr-acc-02}{}\textbf{T.FR.ACC.02}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} A registered account exists.
+
+\textbf{Input:} Sign in with valid credentials, sign out, attempt sign-in with
+an invalid username and with an invalid password, and try to submit a result
+while signed out.
+
+\textbf{Output:} Valid credentials create a session, sign-out ends it, invalid
+credentials are rejected without identifying which field was wrong, and
+unauthenticated practice remains available while global submission requires
+authentication (FR-ACC-03--FR-ACC-05).
+
+\textbf{Test Case Derivation:} Verifies FR-ACC-03, FR-ACC-04, FR-ACC-05.
+\end{enumerate}
+
+\subsubsection{Result Storage and Leaderboards (S.2.7)}
+
+\begin{enumerate}
+\item{\hypertarget{test-fr-dat-01}{}\textbf{T.FR.DAT.01}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A completed course result is available on an
+installation with no prior result for that level.
+
+\textbf{Input:} Save results with different scores, times, crash counts, and
+timestamps, then open the local leaderboard.
+
+\textbf{Output:} The local record contains the level, timestamp, total time,
+crash count, score, rating, and local player identifier. The leaderboard shows
+at least the top ten available results and orders them by descending score,
+shorter time, then earlier timestamp; local-only and synchronized states are
+distinguished (FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-01, FR-DAT-04, FR-DAT-06, FR-DAT-07, FR-DAT-10.
+
+\item{\hypertarget{test-fr-dat-02}{}\textbf{T.FR.DAT.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} An authenticated player has completed a course.
+
+\textbf{Input:} Submit once with connectivity, repeat while the online service
+is unavailable, restore connectivity, and retry synchronization. Open both
+leaderboards while the service is unavailable.
+
+\textbf{Output:} A connected result is associated with the player's account and
+appears globally. A failed submission remains local and can be synchronized
+after connectivity returns. Service unavailability is reported while the local
+leaderboard and training modes remain usable (FR-DAT-02, FR-DAT-03,
+FR-DAT-05, FR-DAT-08).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08.
+
+\item{\hypertarget{test-fr-dat-03}{}\textbf{T.FR.DAT.03}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} A result has been synchronized for a registered player.
+
+\textbf{Input:} Sign out, sign in on another supported installation, and open
+the player's stored results.
+
+\textbf{Output:} The previously synchronized result is retrievable and shows
+the level, timestamp, total time, crash count, score, rating, and player
+identifier (FR-DAT-09, FR-REV-05).
+
+\textbf{Test Case Derivation:} Verifies FR-DAT-09, FR-REV-05.
+\end{enumerate}
+
+\subsubsection{Post-Flight Review and Intelligent Feedback (S.2.8, S.2.9)}
+
+\begin{enumerate}
+\item{\hypertarget{test-fr-rev-01}{}\textbf{T.FR.REV.01}\\}
+\textbf{Control:} Manual
+
+\textbf{Initial State:} The user has completed an obstacle-course level.
+
+\textbf{Input:} Observe the review, retry the same level, choose another level,
+and return to the main menu.
+
+\textbf{Output:} The review appears immediately and shows the level, final
+completion time, completed checkpoints, crash count, score, and rating. Each
+navigation choice works without restarting the application (FR-REV-01--
+FR-REV-03).
+
+\textbf{Test Case Derivation:} Verifies FR-REV-01, FR-REV-02, FR-REV-03.
+
+\item{\hypertarget{test-fr-rev-02}{}\textbf{T.FR.REV.02}\\}
+\textbf{Control:} Automatic
+
+\textbf{Initial State:} A course can be completed while the network and
+intelligent feedback service are independently available or unavailable.
+
+\textbf{Input:} Complete attempts in each service state and inspect the
+post-flight review.
+
+\textbf{Output:} The standard review is always displayed. When intelligent
+feedback is available, it is shown automatically and its natural-language
+observation is grounded in the attempt's time, checkpoint, and crash data.
+Feedback failure or unavailability does not block the standard review
+(FR-REV-04, FR-AI-01--FR-AI-03).
+
+\textbf{Test Case Derivation:} Verifies FR-REV-04, FR-AI-01, FR-AI-02, FR-AI-03.
+\end{enumerate}
 
 \subsection{Tests for Nonfunctional Requirements}
 
@@ -765,8 +911,34 @@ How test will be performed:
 
 \subsection{Traceability Between Test Cases and Requirements}
 
-\wss{Provide a table that shows which test cases are supporting which
-  requirements.}
+\begin{table}[htbp]
+\centering
+\caption{Traceability between functional requirements and system tests}
+\label{tab:fr-traceability}
+\begin{tabularx}{\textwidth}{p{0.32\textwidth}X}
+\toprule
+\textbf{System test case ID} & \textbf{Requirements verified}\\
+\midrule
+\hyperlink{test-fr-flt-01}{T.FR.FLT.01} & FR-FLT-01\\
+\hyperlink{test-fr-flt-02}{T.FR.FLT.02} & FR-FLT-02, FR-FLT-03, FR-FLT-05\\
+\hyperlink{test-fr-flt-03}{T.FR.FLT.03} & FR-FLT-04, FR-FLT-06\\
+\hyperlink{test-fr-mi-01}{T.FR.MI.01} & FR-LVL-01, FR-LVL-02\\
+\hyperlink{test-fr-mi-02}{T.FR.MI.02} & FR-LVL-03--07, FR-UI-01, FR-UI-05\\
+\hyperlink{test-fr-mi-03}{T.FR.MI.03} & FR-UI-04\\
+\hyperlink{test-fr-chk-01}{T.FR.CHK.01} & FR-CHK-01--03, FR-CHK-08\\
+\hyperlink{test-fr-chk-02}{T.FR.CHK.02} & FR-CHK-04--07\\
+\hyperlink{test-fr-per-01}{T.FR.PER.01} & FR-PER-01--07, FR-PER-10\\
+\hyperlink{test-fr-per-02}{T.FR.PER.02} & FR-PER-08, FR-PER-09\\
+\hyperlink{test-fr-acc-01}{T.FR.ACC.01} & FR-ACC-01, FR-ACC-02\\
+\hyperlink{test-fr-acc-02}{T.FR.ACC.02} & FR-ACC-03--05\\
+\hyperlink{test-fr-dat-01}{T.FR.DAT.01} & FR-DAT-01, FR-DAT-04, FR-DAT-06--07, FR-DAT-10\\
+\hyperlink{test-fr-dat-02}{T.FR.DAT.02} & FR-DAT-02--03, FR-DAT-05, FR-DAT-08\\
+\hyperlink{test-fr-dat-03}{T.FR.DAT.03} & FR-DAT-09, FR-REV-05\\
+\hyperlink{test-fr-rev-01}{T.FR.REV.01} & FR-REV-01--03\\
+\hyperlink{test-fr-rev-02}{T.FR.REV.02} & FR-REV-04, FR-AI-01--03\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{Unit Test Description}
 
@@ -1406,6 +1578,26 @@ graduate attribute of Lifelong Learning.
   question, what are at least two approaches to acquiring the knowledge or
   mastering the skill?  Of the identified approaches, which will each team
   member pursue, and why did they make this choice?
+\end{enumerate}
+
+\subsection*{Sankalpa Chhetri Dhakal}
+
+\begin{enumerate}
+    \item \textbf{What went well while writing this deliverable?}
+
+    Having our finalized SRS and Hazard Analysis gave us a good foundation for developing the V\&V Plan since we already had a clear understanding of the system's requirements and potential risks. I primarily worked on the symbolic parameters and usability survey questions, which helped me think about how we would evaluate FPVR beyond just checking whether the software works. I also spent time reviewing my teammates' sections, which was useful for identifying missing details and making sure our verification strategies aligned with the requirements. Overall, dividing the document into sections made the workload more manageable.
+
+    \item \textbf{What pain points did you experience during this deliverable, and how did you resolve them?}
+
+    One of the main challenges was that different sections of the V\&V Plan were closely connected, making it difficult to complete everything independently. For example, my symbolic parameters depended on the system tests written by another teammate, while my usability survey needed to align with the validation procedures described earlier in the document. We also identified inconsistencies between our SRS and Hazard Analysis, particularly regarding performance thresholds and which features were considered core requirements. Rather than ignoring these differences, we documented them for further review and worked on aligning our testing procedures with the finalized SRS.
+
+    \item \textbf{What knowledge and skills will the team collectively need to acquire to successfully complete the verification and validation of your project?}
+
+    Our team will need to strengthen several technical and testing skills to properly evaluate FPVR. Ibrahim will need to develop experience validating drone flight physics and measuring VR performance using Unity's profiling tools. John will focus on testing controller mappings, headset tracking, and compatibility between standalone and PCVR configurations. Vikram will need to become familiar with automated unit and integration testing using Unity Test Framework and NUnit, especially for checkpoint progression and crash recovery. Arjun will focus on verifying scoring accuracy, data persistence, and authentication security. I will need to improve my understanding of usability testing, survey design, and user feedback analysis to determine whether our simulator is intuitive and effective for beginners.
+
+    \item \textbf{For each knowledge area and skill identified above, what are at least two approaches to acquiring the knowledge or mastering the skill? Which approaches will each team member pursue, and why?}
+
+    Each team member can develop these skills through studying technical documentation and tutorials or through practical experimentation with our project. Ibrahim will combine research on drone dynamics with controlled Unity simulations to compare expected and actual flight behaviour. John will use official XR documentation and build small hardware integration prototypes to identify compatibility issues early. Vikram will learn from NUnit tutorials and practise implementing automated tests for game-state functions, while Arjun will study secure data-handling practices and test scenarios involving failed saves and invalid authentication. I plan to review usability testing methods from HCI coursework and conduct structured sessions with potential users. We chose these approaches because combining theory with hands-on testing will help us develop the necessary skills while directly improving FPVR.
 \end{enumerate}
 
 \end{document}
