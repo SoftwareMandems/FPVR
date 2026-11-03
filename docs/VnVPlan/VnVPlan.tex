@@ -11,6 +11,7 @@
     urlcolor=blue
 }
 \usepackage[round]{natbib}
+\usepackage{amssymb}
 
 \input{../Comments.text}
 \input{../Common.text}
@@ -145,136 +146,195 @@ taken from the SRS.
 
 \section{Plan}
 
-Verification will check that FPVR satisfies its specified requirements. Validation will
-check whether the simulator provides understandable controls, useful practice, and
-meaningful feedback for its intended users. This section assigns responsibilities and
-describes reviews of the requirements, design, test plan, and implementation, followed
-by the testing tools and user validation activities.
+This section describes how FPVR will be verified and validated. It identifies the V\&V
+team, the plans for verifying the SRS, design, V\&V plan, and implementation, the
+automated tools that support them, and the plan for validating FPVR with its intended
+users. Every in-scope requirement will have a planned verification method, traced in
+Section 4.3 and reported in the V\&V Report.
 
-The working baseline is the current Software Requirements Specification (SRS),
-especially S.2, S.6, and the environment rules in E.2--E.5. The Problem Statement
-supplies the training goals, and the Hazard Analysis supplies failure cases and safety
-priorities. Accounts, saved results, and leaderboards are included as required by the
-SRS. Intelligent feedback is conditional on the feasibility decision; multiplayer and
-dedicated FPV transmitters remain stretch goals. Unresolved differences between
-documents will be handled through the review in Section 3.2. All activities below are
-planned work.
-
-Every in-scope functional and non-functional requirement will have a planned
-verification method and recorded evidence. Functional system tests belong in Section
-4.1; non-functional tests, including the separate beginner interface and
-experienced-pilot realism studies, belong in Section 4.2. Section 4.3 will link these
-checks to requirements and applicable Hazard Analysis items. Requirements formally
-excluded from the academic-year scope will be listed with their rationale.
-
-\subsection{Verification and Validation Team}
-
-Responsibilities follow the project roles in SRS P.1. Table 1 identifies the lead for
-each area. Every member will write tests for their work and review another member's
-work. The rotating quality assurance (QA) reviewer will not be the main author of the
-artifact being reviewed, and each pull request will require review by a different
-member.
+Table~\ref{tab:vnv-schedule} links these activities to the course milestones in SRS P.3
+and the evidence each one produces.
 
 \begin{table}[!htbp]
 \centering
-\caption{FPVR verification and validation responsibilities}
-\label{tab:vnv-responsibilities}
+\caption{V\&V activities by milestone}
+\label{tab:vnv-schedule}
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
 \toprule
-\textbf{Team member} &
-\textbf{Responsibility} \\
+\textbf{Milestone} &
+\textbf{V\&V activities} &
+\textbf{Evidence} \\
 \midrule
-Ibrahim Tariq &
-Coordinate V\&V milestones and defect priorities. Lead flight-model, gravity, camera,
-and rendering-performance checks, and the experienced-pilot realism study. \\
-John Cho &
-Lead headset, controller, installation, and interruption-recovery testing. Record
-hardware configurations and arrange supervisor and external reviews. \\
-Sankalpa Chhetri Dhakal &
-Check every course, obstacle type, and recovery position. Lead the beginner interface
-study and usability findings; evaluate optional intelligent feedback if included. \\
-Vikram Chandar &
-Lead tests of game states, checkpoint order, crash events, respawn, restart, and timers.
-Maintain repeatable state-transition fixtures. \\
-Arjun Sasidaran &
-Lead score, rating, review, account, storage, and leaderboard tests, including offline
-recovery and access control. Check expected results independently. \\
-Dr. Douglas Down &
-Review scope, flight realism, and unresolved acceptance criteria during the existing
-fortnightly meetings. Provide feedback on the Revision 0 demonstration. \\
+VnV Plan peer review &
+Peer and TA review of this plan (Section 3.4) &
+Logged issues and their resolution \\
+Design Document Rev \(-\)1 &
+Review of the MG and MIS, followed by peer review (Section 3.3) &
+Completed checklist and linked issues \\
+PoC Demonstration &
+Phases 1--2: deployment, input, safety, and free flight, including the first
+input-response measurement &
+Test records and measurement log \\
+Design Documentation &
+Review of the changed MG and MIS sections (Section 3.3) &
+Updated checklist and module-to-requirement mapping \\
+Module Implementation &
+Phase 3: courses, recovery, and timing, including frame-rate and crash-recovery checks;
+unit and integration suites running in CI &
+CI test results and coverage report \\
+Revision 0 Demonstration &
+Phase 4: scoring, review, and local results; supervisor demonstration (Section 3.7) &
+Demonstration checklist and supervisor feedback \\
+V\&V Report &
+Phase 5: accounts and online results; user studies, mutation exercise, and a full
+regression run &
+Study data, test summary, and the V\&V Report \\
+Final Demonstration &
+Phase 6 if included; retest of corrected defects &
+Retest results \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The TA and assigned peer reviewers will be asked to review the SRS, design, and VnV Plan
-against the course expectations. Potential users and experienced pilots will provide
-validation feedback; their participation is not yet confirmed. John will coordinate
-invitations, but the project team remains responsible for completing the reviews and
-resolving findings.
+\subsection{Verification and Validation Team}
 
-At weekly team meetings, Ibrahim will review open V\&V issues and upcoming milestones.
-Each finding will record its source---peer, TA, supervisor, instructor, or
-team---affected requirement or hazard, evidence, priority, one owner, requested
-correction, and a clear condition for closure in GitHub Issues. Larger findings will be
-split into tasks that one member can complete. The reviewer will check the correction or
-retest result before closure.
+The V\&V team follows the project roles in SRS P.1, so each area is verified by the
+member who knows it best:
+
+\begin{itemize}
+  \item \textbf{Ibrahim Tariq:} Team Lead and Flight Physics Developer. Coordinates V\&V
+  milestones and defect priorities, and leads flight-model, rendering-performance, and
+  flight-realism testing.
+  \item \textbf{John Cho:} Team Liaison and Hardware Integration Developer. Leads
+  headset, controller, installation, and interruption-recovery testing, and arranges
+  supervisor and external reviews.
+  \item \textbf{Sankalpa Chhetri Dhakal:} Training Environments Lead. Checks every
+  course, obstacle, and recovery position, and leads the interface usability study.
+  \item \textbf{Vikram Chandar:} Game State Developer. Leads tests of game states,
+  checkpoint order, crash events, Respawn, Restart Level, and timers.
+  \item \textbf{Arjun Sasidaran:} Scoring and Player Data Developer. Leads tests of
+  scoring, ratings, the post-flight review, accounts, result storage, and leaderboards.
+  \item \textbf{Dr. Douglas Down (Supervisor):} Reviews scope, flight realism, and
+  acceptance criteria at the fortnightly meetings, and gives feedback on the Revision 0
+  demonstration.
+\end{itemize}
+
+Review roles rotate on a fixed schedule so that no one verifies their own work and every
+member reviews every area during the project. The rotation follows the order Ibrahim,
+John, Sankalpa, Vikram, Arjun:
+
+\begin{itemize}
+  \item \textbf{Area reviewer:} Each lead keeps ownership of their area's tests, but the
+  member who reviews them changes at each milestone in Table~\ref{tab:vnv-schedule},
+  following the rounds in Table~\ref{tab:vnv-rotation}. After four milestones, every
+  member has reviewed every other member's area, and the rounds repeat.
+  \item \textbf{QA reviewer:} The quality assurance (QA) reviewer for each deliverable is
+  the next member in the order. If that member is the deliverable's main author, the
+  turn passes to the following member.
+  \item \textbf{Pull request reviewer:} Every pull request is approved by a member other
+  than its author, normally the current area reviewer for that code.
+\end{itemize}
+
+Assignments are recorded on the GitHub issue for each milestone. Members may swap a turn
+if the swap is recorded and neither member reviews their own work.
+
+\begin{table}[!htbp]
+\centering
+\caption{Area reviewer rotation}
+\label{tab:vnv-rotation}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}*{4}{>{\raggedright\arraybackslash}X}@{}}
+\toprule
+\textbf{Area lead} & \textbf{Round 1} & \textbf{Round 2} & \textbf{Round 3} &
+\textbf{Round 4} \\
+\midrule
+Ibrahim & John & Sankalpa & Vikram & Arjun \\
+John & Sankalpa & Vikram & Arjun & Ibrahim \\
+Sankalpa & Vikram & Arjun & Ibrahim & John \\
+Vikram & Arjun & Ibrahim & John & Sankalpa \\
+Arjun & Ibrahim & John & Sankalpa & Vikram \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{SRS Verification}
 
-The team will inspect the SRS before using it to finalize test expectations and repeat
-the affected checks whenever a requirement changes. Each area lead will prepare the
-relevant requirements, scenarios, and acceptance criteria for a different member to
-review. The inspection checklist is:
+The SRS will be verified through five activities: a checklist inspection, a supervisor
+review, peer and TA review, a traceability review, and continuous verification as the
+requirements change. Every finding is logged as a GitHub issue with an owner and a
+closing condition. Table~\ref{tab:srs-checklist} summarizes the activities.
+
+\subsubsection{Checklist Inspection}
+
+Each area lead will prepare the requirements for their area, and a different member will
+inspect them using the course SRS checklist. The inspection checks that each requirement
+is unambiguous, testable, complete, and consistent with the rest of the SRS. Two members
+will also independently calculate expected results from the scoring, rating, and
+leaderboard rules; different answers show that a rule is ambiguous.
+
+\subsubsection{Supervisor Review}
+
+A structured review will be held with Dr. Douglas Down at one of the fortnightly
+meetings. Before the meeting, the team will share a summary of the key requirements, the
+main training scenarios, and specific questions about high-risk areas. During the
+meeting, the team will walk through free flight, a course with a crash and Respawn, and a
+completed result, focusing on flight realism, the reference drone, and whether the score
+and feedback support beginner practice. Decisions will be recorded in the meeting
+minutes.
+
+\subsubsection{Peer and TA Review}
+
+Issues raised by the assigned peer team and feedback from the TA will be checked against
+the same checklist. Each one will either be accepted with an owner or declined with a
+recorded reason.
+
+\subsubsection{Traceability Review}
+
+A non-author will confirm that every requirement traces back to a project goal or hazard
+and forward to at least one test, and that each safety requirement in the Hazard
+Analysis is covered by an SRS requirement. Gaps will be logged as issues, and the result
+is the traceability table in Section 4.3.
+
+\subsubsection{Continuous Verification}
+
+Requirements will be reviewed again whenever they change, at the weekly team meetings.
+These reviews will:
 
 \begin{itemize}
-  \item \textbf{Clarity and testability:} Does each requirement have a unique ID, one
-  clear obligation, and an observable result? Are units, limits, timing boundaries, and
-  expected error behaviour defined?
-  \item \textbf{Completeness:} Are normal, boundary, and failure cases covered,
-  including first takeoff, repeated collisions, skipped checkpoints, recovery before the
-  first checkpoint, device disconnection, and failed saves?
-  \item \textbf{Consistency:} Do the requirements, scenarios, interfaces, environment
-  invariants, and acceptance criteria describe the same behaviour? Are required features
-  clearly separated from conditional features?
-  \item \textbf{Traceability and feasibility:} Can each requirement be traced to a
-  project goal or hazard and a planned check? Can that check be performed with the
-  available hardware, people, and schedule?
+  \item Assess the impact of each requirement change on the design and tests
+  \item Update the affected tests and traceability entries with the requirement
+  \item Confirm at the PoC Demonstration that the performance requirements can be met
+  on the target headset
 \end{itemize}
 
-The following known differences require explicit resolution:
-
-\begin{itemize}
-  \item \textbf{Scope:} The Problem Statement and Hazard Analysis still place accounts
-  and database storage among the stretch goals. SRS S.2 requires accounts, cloud
-  results, and leaderboards. Their security checks must therefore be included, and the
-  older roadmap must be reconciled with this scope.
-  \item \textbf{Performance:} Hazard Analysis NFR1 specifies 30 FPS, whereas SRS
-  NFR-PERF-01 proposes a 72-FPS average over 120 seconds in each required standalone
-  environment. Hazard Analysis NFR2 specifies a 50-ms response, whereas SRS NFR-PERF-02
-  proposes at most 100 ms for at least 95 of 100 input events. These measures and
-  thresholds must be agreed and both documents updated before the affected tests can
-  establish acceptance.
-  \item \textbf{Recovery and review:} SRS U-03 uses ``Restart'' for checkpoint recovery,
-  although FR-CHK-05--07 distinguish Respawn from Restart Level. IF-04 excludes
-  prior-session navigation, while FR-REV-05 requires historical results. U-04 also
-  describes recorded flight replay beyond the result-history requirements. The review
-  will align these passages with the agreed scope.
-\end{itemize}
-
-The team will arrange a structured supervisor review using a short agenda and the unresolved
-decisions. The team will walk through free flight, a course with a crash, and a
-completed result, then ask whether the proposed flight behaviour, score, and feedback
-support beginner practice. The supervisor will also be asked to help define the
-reference drone and acceptable realism limits. Peer feedback will be checked against the
-same checklist and logged as issues.
-
-SRS proposals PR-FLT-01--02, PR-CTL-01, and SR-01--08 will retain their proposed status
-until reviewed. Hazard Analysis identifiers such as SR1 will be recorded with their
-document name so they cannot be confused with SRS SR-01. Unset parameters, such as
-gravity-test tolerances, will be resolved before the corresponding test is accepted.
-Each approved change will update the source requirement, affected tests, and
-traceability entries together. Unresolved criteria will be reported as blocked.
+\begin{table}[!htbp]
+\centering
+\caption{SRS verification checklist}
+\label{tab:srs-checklist}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.3\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Activity} & \textbf{Verification tasks} \\
+\midrule
+Checklist inspection &
+\(\square\) Inspect each area's requirements\newline
+\(\square\) Calculate rule examples independently \\
+Supervisor review &
+\(\square\) Share the review package\newline
+\(\square\) Walk through the training scenarios\newline
+\(\square\) Record decisions \\
+Peer and TA review &
+\(\square\) Accept or decline every issue with a reason \\
+Traceability review &
+\(\square\) Trace requirements to goals, hazards, and tests\newline
+\(\square\) Log gaps as issues \\
+Continuous verification &
+\(\square\) Review requirement changes weekly\newline
+\(\square\) Confirm performance requirements at the PoC \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \subsection{Design Verification}
 
