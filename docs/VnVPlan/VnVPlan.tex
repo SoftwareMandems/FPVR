@@ -2957,4 +2957,87 @@ graduate attribute of Lifelong Learning.
     I will primarily pursue the \hyperlink{abbr:VR}{VR} documentation and hands-on Quest 3S testing approaches because my responsibilities include headset, controller, installation, and interruption-recovery testing. I will also use small hardware-integration prototypes to find compatibility and recovery issues early. The other members will combine the approaches that best match their responsibilities: Ibrahim will study flight dynamics and compare controlled simulations, Sankalpa will study and playtest course designs, Vikram will document and unit-test state transitions, and Arjun will study existing scoring systems before calibrating the scoring and data-recording implementation with real runs. Combining research with practical experiments will give the team both the background needed to design meaningful tests and direct evidence that the implementation satisfies the requirements.
 \end{enumerate}
 
+\subsection*{Arjun Sasidaran}
+
+\begin{enumerate}
+  \item \textbf{What went well?}
+  Splitting the plan into one GitHub issue per subsection at the start made it
+  clear who owned each part and what each part had to contain. For the unit tests,
+  I chose the nine modules early, based on the logical responsibilities in \hyperlink{abbr:SRS}{SRS}
+  S.1, so that the tests would not need to be rewritten once the \hyperlink{abbr:MG}{MG} and \hyperlink{abbr:MIS}{MIS} are
+  done. Comparing our draft against plans from previous capstone teams also
+  helped me judge how much detail belongs in a plan and how much belongs in the
+  tests.
+
+  \item \textbf{Pain points and resolutions.}
+  My first unit test drafts crossed module boundaries. For example, one Respawn
+  test checked checkpoint progress, timers, and crash count at the same time,
+  which made it an integration test. I fixed this by making each test check one
+  module and replacing the others with fakes, and by moving the timer and crash
+  checks into the Timing and Evaluation tests. A similar problem appeared when
+  reviewing the system tests: several tests cited requirements that their
+  expected output never showed. I split them so that every test's output
+  demonstrates each requirement it names, and kept functional and nonfunctional
+  requirements in separate tests. Finally, with several people editing the same
+  LaTeX file, merge conflicts were common. Keeping each branch to one section and
+  checking it against the open pull requests before pushing reduced this.
+
+  \item \textbf{Knowledge and skills needed.}
+  I need to learn security and privacy testing for the account and online
+  result service. This includes confirming that credentials are only sent over
+  encrypted connections and never stored in plaintext, that one player cannot
+  read or submit another player's data, and that FPVR only sends and keeps the
+  data it needs. These checks are new to me, and they are the evidence for the
+  security tests in Section 4.2.
+
+  \item \textbf{Learning approaches and choices.}
+  One approach is to study the authentication, session, and access-control
+  sections of the OWASP Web Security Testing Guide and the documentation of the
+  online service we choose. Another is hands-on practice: capturing my own test
+  traffic with a proxy such as mitmproxy, inspecting local storage, and writing
+  automated access-control tests against a test account. I will focus on the
+  hands-on approach and use OWASP as a checklist. The online provider is still
+  undecided, so practising against a test service lets me build the checks now
+  and reuse them once the provider is chosen.
+\end{enumerate}
+
+\subsection*{Vikram Chandar}
+
+\begin{enumerate}
+  \item \textbf{What went well?}
+  Writing the General Information section first, including the summary,
+  objectives, custom documents, and relevant documentation, gave the team a
+  shared description of what FPVR is and what this plan covers. Later sections
+  could refer back to it instead of restating the scope. Because the \hyperlink{abbr:SRS}{SRS} and
+  Hazard Analysis were already complete, I could base each part directly on
+  them.
+
+  \item \textbf{Pain points and resolutions.}
+  While reviewing the functional system tests, I found tests that cited
+  requirements they did not actually exercise. For example, the free-flight test
+  claimed the free-flight crash recovery requirement without ever crashing the
+  drone, and one menu test claimed several level requirements just by loading a
+  course. I raised these in the pull request review so the tests could be split
+  into more specific ones. It was also difficult to keep the General Information
+  section short while still stating clearly what is out of scope, so I kept it to
+  the points the rest of the plan depends on.
+
+  \item \textbf{Knowledge and skills needed.}
+  I need to learn state-transition testing for the game state: the attempt
+  states, checkpoint progress, crashes, Respawn, Restart Level, and the timers.
+  Most of the rules I am responsible for depend on the order of events, such as a
+  crash before the first checkpoint, so testing single values is not enough.
+  I also need to learn how to write these tests in the Unity Test Framework so
+  they run automatically.
+
+  \item \textbf{Learning approaches and choices.}
+  One approach is to study state-transition testing as a technique, for example
+  through the ISTQB Foundation syllabus or the coverage criteria in Ammann and
+  Offutt's \emph{Introduction to Software Testing}. Another is to model the
+  attempt states as a diagram and write one Edit Mode test for each transition,
+  including invalid ones. I will start by building the state model and then write
+  the tests from it, because the model shows which transitions are missing tests
+  and gives the team something to review before the code is written.
+\end{enumerate}
+
 \end{document}
