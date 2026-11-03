@@ -529,13 +529,13 @@ FPVR will be validated with the people it is built for, because requirement-base
 cannot show whether it is a useful trainer. Validation will use:
 
 \begin{itemize}
-  \item \textbf{Interface usability study (NF-UI-01):} About four beginners with little
+  \item \textbf{Interface usability study (T.NFR.USAB.02):} About four beginners with little
   or no FPV experience, split between the two configurations, and the experienced pilots
   below will complete core tasks without coaching: finding the control guide, starting a
   course, using Respawn and Restart Level, pausing and exiting, and reading the review.
   Task completion and questionnaire ratings (Section~\ref{sec:usability-survey}) will be
   recorded, with a target median of at least 4/5. Sankalpa leads this study.
-  \item \textbf{Flight realism study (NF-REAL-01):} About two experienced FPV pilots will
+  \item \textbf{Flight realism study:} About two experienced FPV pilots will
   fly agreed manoeuvres and rate how believable the flight response is, with a target of
   at least 4/5 on each item. Ibrahim leads this study, and the supervisor helps define
   the reference drone.
@@ -1708,64 +1708,485 @@ attempt's recorded values.
 
 \subsection{Tests for Nonfunctional Requirements}
 
-\wss{The nonfunctional requirements for accuracy will likely just reference the
-  appropriate functional tests from above.  The test cases should mention
-  reporting the relative error for these tests.  Not all projects will
-  necessarily have nonfunctional requirements related to accuracy.}
+This section describes the system tests for the nonfunctional requirements in SRS S.2,
+together with the safety requirements proposed in the SRS. Each subsection covers one
+quality area. Some tests produce measurements or survey results rather than a simple
+pass or fail, and those results are reported in the V\&V Report.
 
-\wss{For some nonfunctional tests, you won't be setting a target threshold for
-passing the test, but rather describing the experiment you will do to measure
-the quality for different inputs.  For instance, you could measure speed versus
-the problem size.  The output of the test isn't pass/fail, but rather a summary
-table or graph.}
+\subsubsection{Installability and Compatibility}
 
-\wss{Tests related to usability could include conducting a usability test and
-  survey.  The survey will be in the Appendix.}
+This area checks that FPVR installs and runs in both deployment modes with the required
+controllers.
 
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
-format for the tests given below.}
-
-\wss{If you introduce static tests in your plan, you need to provide details.
-How will they be done?  In cases like code (or document) walkthroughs, who will
-be involved? Be specific.}
-
-\subsubsection{Area of Testing1}
-		
-\paragraph{Title for Test}
+{\sloppy
+\paragraph{Standalone Installation}
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item{\hypertarget{test-nfr-ins01}{}\textbf{T.NFR.INST.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Initial State:} Meta Quest 3S with no FPVR build installed and no computer
+connected.
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+\textbf{Input/Condition:} Install the release build on the headset and launch FPVR.
+
+\textbf{Output/Result:} FPVR installs and launches to the main menu without a connected
+computer. (\mbox{NFR-INST-01})
+
+\textbf{How test will be performed:} A tester installs the tagged release build and
+records the build, headset software version, and any errors.
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\paragraph{PCVR Launch}
 
-...
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-ins02}{}\textbf{T.NFR.INST.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Reference Windows 11 PC with the release build installed and
+Quest 3S connected through a supported PCVR link.
+
+\textbf{Input/Condition:} Launch FPVR from the reference PC.
+
+\textbf{Output/Result:} FPVR launches in PCVR mode and displays the main menu in the
+headset. (\mbox{NFR-INST-02})
+
+\textbf{How test will be performed:} A tester launches the build and records the PC
+configuration and PCVR link method.
+
+\end{enumerate}
+
+\paragraph{Controller Compatibility}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-comp-01}{}\textbf{T.NFR.COMP.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running in free flight, once in each configuration in
+Table~\ref{tab:vnv-configurations}.
+
+\textbf{Input/Condition:} Apply full throttle, pitch, roll, and yaw input one axis at a
+time with the Quest motion controllers in standalone mode and the Xbox-compatible
+gamepad in PCVR mode.
+
+\textbf{Output/Result:} Each input moves only the matching flight axis in both
+configurations. (\mbox{NFR-COMP-01})
+
+\textbf{How test will be performed:} A tester records the response of each axis for each
+configuration in a checklist.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Performance}
+
+This area checks that FPVR stays responsive on the target hardware. These tests produce
+measurements that are reported in tables as well as a pass or fail result.
+
+{\sloppy
+\paragraph{Rendering Frame Rate}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-perf-01}{}\textbf{T.NFR.PERF.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Standalone build running on Quest 3S in each of the two required
+environments.
+
+\textbf{Input/Condition:} 120 seconds of continuous normal flight in each environment.
+
+\textbf{Output/Result:} The average rendered frame rate is at least 72 FPS in each
+environment. Frame-time spikes are also reported. (\mbox{NFR-PERF-01})
+
+\textbf{How test will be performed:} Frame times are recorded with the Unity Profiler
+and headset performance metrics, and the average, minimum, and largest spikes are
+reported in a table for each environment.
+
+\end{enumerate}
+
+\paragraph{Input Response Time}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-perf-02}{}\textbf{T.NFR.PERF.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Drone in flight in the reference test environment, in each
+configuration.
+
+\textbf{Input/Condition:} 100 flight-control input events.
+
+\textbf{Output/Result:} At least 95 of the 100 events reach their first simulated state
+update within 100 ms. The median, 95th percentile, and maximum are reported.
+(\mbox{NFR-PERF-02})
+
+\textbf{How test will be performed:} A common clock timestamps each received input event
+and its first corresponding state update, and the results are reported separately for
+each configuration.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Reliability}
+
+This area checks that the crash recovery workflow, which users repeat often, stays
+stable.
+
+{\sloppy
+\paragraph{Crash Recovery Stress}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-rel-01}{}\textbf{T.NFR.REL.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Obstacle-course attempt with at least one checkpoint completed,
+in each required environment.
+
+\textbf{Input/Condition:} 20 consecutive crash-and-respawn cycles.
+
+\textbf{Output/Result:} FPVR does not terminate, and checkpoint progress stays the same
+after every cycle. (\mbox{NFR-REL-01})
+
+\textbf{How test will be performed:} A Play Mode test drives the crashes and respawns
+and checks checkpoint progress after each cycle.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Usability}
+
+This area checks that the control guide is easy to find and that beginners can learn the
+interface. The study follows Section 3.7, and its questions are in
+Section~\ref{sec:usability-survey}.
+
+{\sloppy
+\paragraph{Control Guide Access}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-usab-01}{}\textbf{T.NFR.USAB.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR newly launched on each configuration.
+
+\textbf{Input/Condition:} Open the control guide from the main menu, then start a first
+flight.
+
+\textbf{Output/Result:} The control guide is reachable from the main menu and is shown
+before the first flight of the session. (\mbox{NFR-USAB-01})
+
+\textbf{How test will be performed:} A tester follows the steps on each configuration
+and records whether each condition is met.
+
+\end{enumerate}
+
+\paragraph{Interface Usability Study}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-usab-02}{}\textbf{T.NFR.USAB.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Build with verified pause and exit, about four beginners with
+little or no FPV experience split between the two configurations, and the experienced
+pilots from the flight realism study in Section 3.7.
+
+\textbf{Input/Condition:} Participants complete the core tasks without coaching: find
+the control guide, start a course, use Respawn and Restart Level, pause and exit, and
+read the review. They then complete the questionnaire in
+Section~\ref{sec:usability-survey}.
+
+\textbf{Output/Result:} At least three of four beginners complete each task without
+help, all participants pause and exit successfully, and each questionnaire item has a
+median of at least 4/5. (\mbox{NFR-USAB-01}, \mbox{NFR-SAFE-01})
+
+\textbf{How test will be performed:} An observer records task completion, time, errors,
+and assistance. Results are reported by participant group, and findings become GitHub
+issues.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Safety}
+
+This area checks that users can stop safely and that FPVR handles failures without
+putting the user at risk. SR-01 to SR-08 are proposed in the SRS, so their tests apply
+only if the requirements are approved.
+
+{\sloppy
+\paragraph{Pause and Exit}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-01}{}\textbf{T.NFR.SAFE.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Active flight in free flight and in an obstacle course, on each
+configuration.
+
+\textbf{Input/Condition:} Open the in-application menu, pause, then exit the activity.
+
+\textbf{Output/Result:} The user can pause and leave without removing the headset, and
+flight and both timers stop while paused. (\mbox{NFR-SAFE-01}, \mbox{SR-03})
+
+\textbf{How test will be performed:} A tester performs the steps and records the timer
+values before and after the pause.
+
+\end{enumerate}
+
+\paragraph{Stationary Use}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-02}{}\textbf{T.NFR.SAFE.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running on each configuration.
+
+\textbf{Input/Condition:} Complete flight, menu, and recovery actions once seated and
+once standing in one place.
+
+\textbf{Output/Result:} Every action can be completed without walking, and no menu
+requires reaching the floor. (\mbox{NFR-SAFE-02}, \mbox{SR-03})
+
+\textbf{How test will be performed:} A tester performs the actions in a marked
+stationary area and records any action that required moving.
+
+\end{enumerate}
+
+\paragraph{Safety Notice}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-03}{}\textbf{T.NFR.SAFE.03}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR newly installed.
+
+\textbf{Input/Condition:} Launch FPVR and proceed to the first flight.
+
+\textbf{Output/Result:} The safety, age, space, posture, and discomfort information is
+shown before the first flight, with no unsupported medical or room claims.
+(\mbox{SR-01})
+
+\textbf{How test will be performed:} A tester compares the notice against the
+\mbox{SR-01} checklist.
+
+\end{enumerate}
+
+\paragraph{Loss of Tracking or Input}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-04}{}\textbf{T.NFR.SAFE.04}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Active obstacle-course flight.
+
+\textbf{Input/Condition:} Simulate loss of tracking, input focus, and controller
+connection, one at a time.
+
+\textbf{Output/Result:} Flight and both timers stop, stale controls are discarded, and
+resuming requires available input, neutral controls, and confirmation. (\mbox{SR-02})
+
+\textbf{How test will be performed:} A tester causes each loss, records the timer
+values, and attempts to resume without neutral controls.
+
+\end{enumerate}
+
+\paragraph{Sustained Low Frame Rate}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-05}{}\textbf{T.NFR.SAFE.05}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with a test hook that lowers the frame rate.
+
+\textbf{Input/Condition:} Hold the frame rate below the target for longer than the
+failure duration in the SRS.
+
+\textbf{Output/Result:} FPVR pauses, explains why, and resumes only after confirmation.
+(\mbox{SR-04})
+
+\textbf{How test will be performed:} A Play Mode test induces the drop and checks the
+pause state and message. No participant is exposed to the low frame rate.
+
+\end{enumerate}
+
+\paragraph{Invalid Input and Configuration}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-safe-06}{}\textbf{T.NFR.SAFE.06}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} FPVR with test fixtures for input and level data.
+
+\textbf{Input/Condition:} Non-finite and out-of-range inputs, an invalid checkpoint
+order, and an intersecting recovery position.
+
+\textbf{Output/Result:} Invalid configuration is rejected before flight, runtime faults
+enter a recoverable error state, and progress, scores, and controls are unaffected.
+(\mbox{SR-05})
+
+\textbf{How test will be performed:} Automated tests inject each fault and compare the
+state before and after.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Security and Privacy}
+
+This area checks that account data is protected and that FPVR sends and keeps only the
+data it needs.
+
+{\sloppy
+\paragraph{Credential Protection}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-01}{}\textbf{T.NFR.SEC.01}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Automatic
+
+\textbf{Initial State:} Test account on the online service and FPVR with local storage
+cleared.
+
+\textbf{Input/Condition:} Register and sign in while capturing network traffic, then
+inspect local storage and the service's stored account record.
+
+\textbf{Output/Result:} Credentials are sent only over encrypted connections, and no
+password appears in plaintext on the device or the service. (\mbox{NFR-SEC-01})
+
+\textbf{How test will be performed:} Network traffic is captured with a proxy, and
+storage is searched for the known test password. The account code is also reviewed for
+credential handling.
+
+\end{enumerate}
+
+\paragraph{Access Control}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-02}{}\textbf{T.NFR.SEC.02}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Two test accounts with stored results.
+
+\textbf{Input/Condition:} Without signing in, request the other account's non-public
+data and submit a result using its identifier.
+
+\textbf{Output/Result:} Both requests are rejected, and no data is returned or changed.
+(\mbox{NFR-SEC-02})
+
+\textbf{How test will be performed:} Automated requests are sent to the service, and the
+stored records are compared before and after.
+
+\end{enumerate}
+
+\paragraph{Data Minimization}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-03}{}\textbf{T.NFR.SEC.03}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Manual
+
+\textbf{Initial State:} FPVR with network capture enabled.
+
+\textbf{Input/Condition:} Play and review several attempts while signed out, then sign
+in and submit a result.
+
+\textbf{Output/Result:} No attempt data is sent while signed out, only the result record
+fields (level, timestamp, total time, crash count, score, rating, and player) are sent
+after sign-in, and only result records remain in local storage. (\mbox{SR-06},
+\mbox{SR-07})
+
+\textbf{How test will be performed:} Network traffic and local storage are inspected
+after each step.
+
+\end{enumerate}
+
+\paragraph{Feedback Isolation}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-sec-04}{}\textbf{T.NFR.SEC.04}\\}
+\textbf{Type:} Nonfunctional, Static and Dynamic, Automatic
+
+\textbf{Initial State:} Build with intelligent feedback included.
+
+\textbf{Input/Condition:} Review the feedback provider's privacy and retention terms,
+then complete attempts with feedback available, timed out, and declined.
+
+\textbf{Output/Result:} Feedback is labelled advisory, cannot change checkpoint, timer,
+crash, score, or rating data, and the standard review stays intact in every case.
+(\mbox{SR-08})
+
+\textbf{How test will be performed:} The provider review is recorded, and automated
+tests compare result data before and after feedback.
+
+\end{enumerate}
+\par}
+
+\subsubsection{Data Persistence and Offline Availability}
+
+This area checks that results are kept across sessions and that core training works
+without the online service.
+
+{\sloppy
+\paragraph{Result Persistence}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-da01}{}\textbf{T.NFR.DAT.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} Signed-in player with a result confirmed as synchronized.
+
+\textbf{Input/Condition:} Sign out, restart FPVR, and sign in again.
+
+\textbf{Output/Result:} The synchronized result is still retrievable with the same
+values. (\mbox{NFR-DAT-01})
+
+\textbf{How test will be performed:} A tester records the result values before and after
+the steps.
+
+\end{enumerate}
+
+\paragraph{Offline Availability}
+
+\begin{enumerate}
+
+\item{\hypertarget{test-nfr-off-01}{}\textbf{T.NFR.OFF.01}\\}
+\textbf{Type:} Nonfunctional, Dynamic, Manual
+
+\textbf{Initial State:} FPVR running with the online service unreachable.
+
+\textbf{Input/Condition:} Use free flight, play a course, crash and recover, save the
+result, and open the review.
+
+\textbf{Output/Result:} Every listed action works, and only online features report that
+the service is unavailable. (\mbox{NFR-OFF-01})
+
+\textbf{How test will be performed:} A tester blocks network access and follows the
+steps on each configuration.
+
+\end{enumerate}
+\par}
 
 \subsection{Traceability Between Test Cases and Requirements}
+
+This section links each system test to the requirements it verifies.
+Table~\ref{tab:fr-traceability} covers the functional requirements, and
+Table~\ref{tab:nfr-traceability} covers the nonfunctional requirements and the proposed
+safety requirements. The unit tests in Section 5 give additional evidence for the rules
+behind many of these requirements.
 
 \begin{table}[H]
 \centering
@@ -1801,6 +2222,38 @@ How test will be performed:
 \hyperlink{test-fr-chk-05}{T.FR.CHK.05} & FR-CHK-05, FR-CHK-06 & \hyperlink{test-fr-rev-03}{T.FR.REV.03} & FR-REV-04, FR-AI-03\\
 \hyperlink{test-fr-chk-06}{T.FR.CHK.06} & FR-CHK-07 & \hyperlink{test-fr-rev-04}{T.FR.REV.04} & FR-REV-05\\
 \hyperlink{test-fr-per-01}{T.FR.PER.01} & FR-PER-01, FR-PER-02, FR-PER-10 & \hyperlink{test-fr-ai-01}{T.FR.AI.01} & FR-AI-01, FR-AI-02\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Traceability between nonfunctional requirements and system tests}
+\label{tab:nfr-traceability}
+\begin{tabularx}{\textwidth}{p{0.32\textwidth}X}
+\toprule
+\textbf{System test case ID} & \textbf{Requirements verified}\\
+\midrule
+\hyperlink{test-nfr-ins01}{T.NFR.INST.01} & NFR-INST-01\\
+\hyperlink{test-nfr-ins02}{T.NFR.INST.02} & NFR-INST-02\\
+\hyperlink{test-nfr-comp-01}{T.NFR.COMP.01} & NFR-COMP-01\\
+\hyperlink{test-nfr-perf-01}{T.NFR.PERF.01} & NFR-PERF-01\\
+\hyperlink{test-nfr-perf-02}{T.NFR.PERF.02} & NFR-PERF-02\\
+\hyperlink{test-nfr-rel-01}{T.NFR.REL.01} & NFR-REL-01\\
+\hyperlink{test-nfr-usab-01}{T.NFR.USAB.01} & NFR-USAB-01\\
+\hyperlink{test-nfr-usab-02}{T.NFR.USAB.02} & NFR-USAB-01, NFR-SAFE-01\\
+\hyperlink{test-nfr-safe-01}{T.NFR.SAFE.01} & NFR-SAFE-01, SR-03\\
+\hyperlink{test-nfr-safe-02}{T.NFR.SAFE.02} & NFR-SAFE-02, SR-03\\
+\hyperlink{test-nfr-safe-03}{T.NFR.SAFE.03} & SR-01\\
+\hyperlink{test-nfr-safe-04}{T.NFR.SAFE.04} & SR-02\\
+\hyperlink{test-nfr-safe-05}{T.NFR.SAFE.05} & SR-04\\
+\hyperlink{test-nfr-safe-06}{T.NFR.SAFE.06} & SR-05\\
+\hyperlink{test-nfr-sec-01}{T.NFR.SEC.01} & NFR-SEC-01\\
+\hyperlink{test-nfr-sec-02}{T.NFR.SEC.02} & NFR-SEC-02\\
+\hyperlink{test-nfr-sec-03}{T.NFR.SEC.03} & SR-06, SR-07\\
+\hyperlink{test-nfr-sec-04}{T.NFR.SEC.04} & SR-08\\
+\hyperlink{test-nfr-da01}{T.NFR.DAT.01} & NFR-DAT-01\\
+\hyperlink{test-nfr-off-01}{T.NFR.OFF.01} & NFR-OFF-01\\
 \bottomrule
 \end{tabularx}
 \end{table}
