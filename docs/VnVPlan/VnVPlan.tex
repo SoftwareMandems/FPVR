@@ -845,48 +845,67 @@ How test will be performed:
 ...
 
 \subsection{Tests for Nonfunctional Requirements}
+\label{sec:unit-nfr}
 
-\wss{If there is a module that needs to be independently assessed for
-  performance, those test cases can go here.  In some projects, planning for
-  nonfunctional tests of units will not be that relevant.}
+Most nonfunctional requirements depend on the full system or target hardware, so
+they are tested in section 4.2. For example, rendering performance (NFR-PERF-01)
+must be measured on the headset. The tests below give earlier evidence at the
+module level. The input response test is the one exception to isolation, because
+NFR-PERF-02 measures the time from an input event to the flight update.
 
-\wss{These tests may involve collecting performance data from previously
-  mentioned functional tests.}
+\subsubsection{VR Interface and Input}
 
-\subsubsection{Module ?}
-		
 \begin{enumerate}
 
-\item{test-id1\\}
+\item \texttt{ProcessInput\_HundredEvents\_MeetsResponseLimit}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input/Condition: 
-					
-Output/Result: 
-					
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
 
-Type: Functional, Dynamic, Manual, Static etc.
-					
-Initial State: 
-					
-Input: 
-					
-Output: 
-					
-How test will be performed: 
+\textbf{Initial State:} Active drone in an empty Play Mode test scene on the reference PCVR computer.
+
+\textbf{Input:} 100 simulated flight input events.
+
+\textbf{Expected Output:} At least 95\% of events are within the NFR-PERF-02 limit. Median, 95th percentile, and maximum response times are recorded in a table.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-PERF-02 (input response).\par}
 
 \end{enumerate}
 
-\subsubsection{Module ?}
+\subsubsection{Checkpoint Progress and Recovery}
 
-...
+\begin{enumerate}
+
+\item \texttt{RespawnCycle\_TwentyCrashes\_KeepsProgress}
+
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Attempt with two checkpoints complete.
+
+\textbf{Input:} 20 crash-and-respawn cycles.
+
+\textbf{Expected Output:} Both checkpoints remain complete, and no exceptions occur.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-REL-01 (crash-recovery reliability).\par}
+
+\end{enumerate}
+
+\subsubsection{Accounts and Online Service}
+
+\begin{enumerate}
+
+\item \texttt{Register\_ValidPassword\_NoPlaintextStored}
+
+\textbf{Type:} Nonfunctional, Dynamic, Automatic
+
+\textbf{Initial State:} Empty local storage and a fake online service.
+
+\textbf{Input:} Registration with a known test password.
+
+\textbf{Expected Output:} The password does not appear in any locally saved data.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-SEC-01 (credential protection).\par}
+
+\end{enumerate}
 
 \subsection{Traceability Between Test Cases and Modules}
 
