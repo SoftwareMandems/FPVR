@@ -95,22 +95,8 @@ The system features free-flight practice, progressively challenging obstacle cou
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
-
-\wss{You should also list the objectives that are out of scope.  You don't have 
-the resources to do everything, so what will you be leaving out.  For instance, 
-if you are not going to verify the quality of usability, state this.  It is also 
-worthwhile to justify why the objectives are left out.}
-
-\wss{The objectives are important because they highlight that you are aware of 
-limitations in your resources for verification and validation.  You can't do everything, 
-so what are you going to prioritize?  As an example, if your system depends on an 
-external library, you can explicitly state that you will assume that external library 
-has already been verified by its implementation team.}
+The primary objective of this Verification and Validation plan is to build confidence in the correctness, reliability, usability, performance, and flight realism of FPVR by verifying and demonstrating that all requirements specified in the Software Requirements Specification (SRS) are satisfied. These qualities are major objectives of the SRS and therefore receive explicit attention throughout verification and validation. Verification and validation efforts will be guided by the Hazard Analysis Document, which will be used to prioritize functionality based on its mission criticality, potential impact, and associated risks. Features that are essential to the safe and reliable operation of the simulator will receive the greatest testing attention to ensure that critical system behaviours are thoroughly evaluated. Due to limitations in project time and resources, validating the long-term effectiveness of VR-based training, 
+and testing compatibility across different VR headsets will remain out of scope. Additionally, testing the correctness of the underlying Unity VR libraries, frameworks, and headset-specific functionality will not be part of the project, as these are external components assumed to function according to their respective specifications. Verification efforts will instead focus on FPVR's implementation and integration of these components.
 
 \subsection{Custom Documents}
 
