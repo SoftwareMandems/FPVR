@@ -570,12 +570,7 @@ Their values are defined in this section for easy maintenance.
         verification, VnV-plan verification, implementation verification,
         automated tools, and software validation):} Both tools were used
         to check that these subsections still follow the template (roles
-        rather than a name list, a structured SRS review rather than ``the
-        supervisor will read it,'' pointers to system and unit tests,
-        named tools rather than generic ``testing,'' and validation
-        through supervisor demo and user testing). Where the team had not
-        yet written a subsection, AI output was kept as review notes, not
-        pasted in.
+        rather than a name list. 
 
         \item \textbf{System tests:} GPT-6 Astra was used to brainstorm
         groupings of functional tests (flight, courses, menus, recovery,
@@ -584,8 +579,7 @@ Their values are defined in this section for easy maintenance.
         template format and to attach requirement identifiers. Happy-path
         cases were taken from the SRS; failure cases (invalid controller
         input, lost tracking, crash recovery) were taken from the Hazard
-        Analysis. AI was not used to invent expected numeric outputs for
-        physics or scoring.
+        Analysis.
 
         \item \textbf{Traceability:} Claude was used to draft or check
         mappings from test identifiers to SRS requirement identifiers and
@@ -598,12 +592,9 @@ Their values are defined in this section for easy maintenance.
         tests for Flight and Collision, Modes and Levels, Checkpoint
         Progress and Recovery, Timing and Evaluation, VR Interface and
         Input, Post-Flight Review, Accounts and Online Service, Results
-        and Leaderboards, and Intelligent Feedback. Test names follow
-        \texttt{Method\_Condition\_ExpectedResult}. GPT-6 Astra was used
+        and Leaderboards, and Intelligent Feedback. GPT-6 Astra was used
         as a second pass to suggest extra edge cases (for example repeated
         contact producing one crash event, or no crash before takeoff).
-        Expected outputs were taken from SRS rules such as FR-FLT-03,
-        FR-FLT-05, and FR-FLT-06, not from AI-invented physics.
 
         \item \textbf{Usability survey appendix:} GPT-6 Astra helped
         brainstorm Likert items and background questions. Claude drafted
@@ -611,8 +602,7 @@ Their values are defined in this section for easy maintenance.
         three SRS user profiles), the task script (control guide, free
         flight, course and crash recovery, post-flight review), the
         five-point rating items, qualitative follow-ups, and the analysis
-        plan. The survey is written to support NFR-USAB-01, NFR-SAFE-01,
-        NFR-SAFE-02, and the Usability Report custom document.
+        plan. 
 
         \item \textbf{Wording and consistency review:} Both tools were
         used throughout to shorten sentences, to keep terminology aligned
