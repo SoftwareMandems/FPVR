@@ -783,13 +783,66 @@ and as many tests as needed for edge cases.  Rather than create the details of t
 and output here, you could point to the unit testing code.  For this to work, you code 
 needs to be well-documented, with meaningful names for all of the tests.}
 
-\subsection{Unit Testing Scope}
+\subsection{Unit Testing Scope and Strategy}
+\label{sec:unit-scope}
 
-\wss{What modules are outside of the scope.  If there are modules that are
-  developed by someone else, then you would say here if you aren't planning on
-  verifying them.  There may also be modules that are part of your software, but
-  have a lower priority for verification than others.  If this is the case,
-  explain your rationale for the ranking of module importance.}
+\subsubsection{Scope}
+
+The unit testing scope covers the rule-based logic in each module:
+
+\begin{itemize}
+  \item Flight and Collision: gravity, crash rules, and crash events
+  \item Modes and Levels: attempt state and level validation
+  \item Checkpoint Progress and Recovery: checkpoint order, Respawn, and Restart
+  Level
+  \item Timing and Evaluation: timers, crash count, score, and rating
+  \item VR Interface and Input: input mapping and invalid or lost input
+  \item Post-Flight Review: review contents and availability
+  \item Accounts and Online Service: registration, sign-in, and submission rules
+  \item Results and Leaderboards: local results, ranking, and failed
+  synchronization
+  \item Intelligent Feedback: failure handling and isolation from result data
+\end{itemize}
+
+Testing effort follows the priorities in section S.5 of the SRS and the Hazard
+Analysis. Rules that determine a player's recorded result come first, because an
+error there can look correct in the headset while still producing a wrong score
+or ranking. Intelligent Feedback comes last because core training does not
+depend on it.
+
+Out of scope for unit testing:
+
+\begin{itemize}
+  \item External software, including Unity, its physics engine, the OpenXR
+  Plugin, the XR Interaction Toolkit, and Meta Quest 3S system software
+  \item The online service itself, because the provider is undecided (FPVR's
+  client code is tested against a fake service)
+  \item Scene content, level layouts, menu appearance, and headset behaviour
+  (addressed through system and usability testing in section 4)
+  \item The quality of AI-generated feedback (only failure handling is unit
+  tested)
+  \item Multiplayer and dedicated FPV transmitters, which are stretch goals
+  (LC-08)
+\end{itemize}
+
+\subsubsection{Testing Strategy}
+
+The unit testing strategy uses both black-box and white-box approaches:
+
+\begin{itemize}
+  \item \textbf{Black-box testing:} Inputs and expected outputs come from the
+  SRS and the MIS. Each access program has one test for normal behaviour and
+  additional tests for edge cases, boundary values, and invalid input.
+  \item \textbf{White-box testing:} The Unity Code Coverage package identifies
+  untested branches, which guide additional tests of internal state transitions,
+  such as crash and recovery states.
+  \item \textbf{Mocking and isolation:} The online service and intelligent
+  feedback service are replaced by fakes, and timers use simulated time, so
+  results do not depend on a network or real time.
+  \item \textbf{Test modes:} Logic that does not need a running scene uses Edit
+  Mode tests. Behaviour that depends on physics or frame updates uses Play Mode
+  tests. Game rules are kept in plain C\# classes so they can run in Edit Mode.
+\end{itemize}
 
 \subsection{Tests for Functional Requirements}
 
