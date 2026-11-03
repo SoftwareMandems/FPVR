@@ -507,36 +507,210 @@ Their values are defined in this section for easy maintenance.
 
 \section{Appendix --- Generative AI Use Disclosure}
 
-\wss{ChatGPT (version 5) was used to brainstorm ideas for the template for this disclose section.}
-
 \subsection{AI Tools Used}
 
-\wss{Give the name of the AI tool(s) used and the version.}
+\begin{itemize}
+    \item Claude Opus 5.5, Anthropic
+    \item GPT-6 Astra, OpenAI
+\end{itemize}
 
 \subsection{How and Where Used}
 
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
+\begin{enumerate}
+    \item \textbf{How were the AI tools used?}
 
-\wss{For each of the uses, identify which parts of the document were affected.}
+    Claude Opus 5.5 and GPT-6 Astra were used as drafting, reviewing, and
+    consistency-checking aids. GPT-6 Astra was used mainly to brainstorm
+    section structure, propose candidate tests and survey questions, and
+    rephrase technical writing so it followed the course template fields
+    (control, initial state, input, expected output, derivation, and how
+    the test will be performed). Claude Opus 5.5 was used mainly to turn
+    the team's existing SRS, Hazard Analysis, Development Plan, and Problem
+    Statement into draft paragraphs, to keep requirement identifiers and
+    module names consistent across sections, and to apply the same test
+    layout repeatedly. Both tools were also used to compare this plan
+    against the template and to flag missing subsections, unmatched
+    requirement identifiers, unused template comments, and wording that
+    treated a planned activity as a completed result.
 
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
+    The tools did not choose the product scope, the two custom documents,
+    the testing priorities, or the out-of-scope items. Those decisions
+    were made by the team. AI-assisted text was written to match them, and
+    unused suggestions were discarded.
+
+    \item \textbf{Which parts of the document were affected by AI
+    assistance?}
+
+    \begin{itemize}
+        \item \textbf{Summary:} GPT-6 Astra produced a first-pass overview
+        of FPVR as the software under test. Claude then rewrote it against
+        the Problem Statement and SRS so the summary named the actual
+        product functions (VR FPV training, free flight, obstacle courses,
+        checkpoints, performance metrics, accounts, and leaderboards)
+        rather than generic simulator features.
+
+        \item \textbf{Objectives:} GPT-6 Astra suggested candidate VnV
+        qualities (correctness, reliability, usability) and a list of
+        possible exclusions. Claude drafted the in-scope objective as
+        verifying FPVR's own implementation against the SRS, with Hazard
+        Analysis used to rank mission-critical behaviour, and wrote the
+        out-of-scope list (long-term training effectiveness, other VR
+        headsets, and Unity or vendor headset software). Those exclusions
+        were then checked against the Development Plan.
+
+        \item \textbf{Custom Documents:} Claude drafted the descriptions of
+        the Usability Report and the Design Thinking Report after the team
+        confirmed those two custom documents from the Problem Statement.
+        The draft states what each report will contain (task-based
+        usability evaluation with surveys; interviews, empathy maps,
+        ideation, and two prototype rounds) and why they belong in this
+        VnV plan rather than as unrelated extras.
+
+        \item \textbf{Relevant Documentation:} Claude drafted the
+        explanation of how the SRS supplies goals, functional and
+        non-functional requirements, and identifiers for traceability, and
+        how the Hazard Analysis supplies failure modes and safety
+        requirements that add invalid-input, tracking-loss, and
+        unrealistic-physics tests. Claude also drafted the BibTeX entries
+        that point at the team's SRS and Hazard Analysis PDFs; the URLs
+        were supplied by the team.
+
+        \item \textbf{Plan sections (team, SRS verification, design
+        verification, VnV-plan verification, implementation verification,
+        automated tools, and software validation):} Both tools were used
+        to check that these subsections still follow the template (roles
+        rather than a name list. 
+
+        \item \textbf{System tests:} GPT-6 Astra was used to brainstorm
+        groupings of functional tests (flight, courses, menus, recovery,
+        accounts) and non-functional tests (performance, usability,
+        safety) from the SRS. Claude was used to keep each test in the
+        template format and to attach requirement identifiers. Happy-path
+        cases were taken from the SRS; failure cases (invalid controller
+        input, lost tracking, crash recovery) were taken from the Hazard
+        Analysis.
+
+        \item \textbf{Traceability:} Claude was used to draft or check
+        mappings from test identifiers to SRS requirement identifiers and
+        from unit tests to the nine logical modules in SRS section S.1, so
+        that a requirement was not left with no planned verification.
+
+        \item \textbf{Unit Test Description:} Claude drafted the
+        introduction, the in-scope and out-of-scope module lists, the
+        black-box / white-box / mocking strategy, and the named automated
+        tests for Flight and Collision, Modes and Levels, Checkpoint
+        Progress and Recovery, Timing and Evaluation, VR Interface and
+        Input, Post-Flight Review, Accounts and Online Service, Results
+        and Leaderboards, and Intelligent Feedback. GPT-6 Astra was used
+        as a second pass to suggest extra edge cases (for example repeated
+        contact producing one crash event, or no crash before takeoff).
+
+        \item \textbf{Usability survey appendix:} GPT-6 Astra helped
+        brainstorm Likert items and background questions. Claude drafted
+        the participant procedure (approximately 6--9 people from the
+        three SRS user profiles), the task script (control guide, free
+        flight, course and crash recovery, post-flight review), the
+        five-point rating items, qualitative follow-ups, and the analysis
+        plan. 
+
+        \item \textbf{Wording and consistency review:} Both tools were
+        used throughout to shorten sentences, to keep terminology aligned
+        (requirement identifiers, module names, ``system test'' versus
+        ``unit test,'' stretch goals versus required tests), and to remove
+        leftover template comments from sections the team had already
+        filled.
+
+        \item \textbf{This disclosure:} Claude Opus 5.5 drafted this
+        appendix from the course template and from the team's record of
+        which sections were AI-assisted. GPT-6 Astra was not used to
+        invent a list of uses that did not occur.
+    \end{itemize}
+
+    AI-generated suggestions were used as drafts and review notes, not as
+    final text. No figures or diagrams in this document were generated by
+    AI. Citations were not invented by AI.
+\end{enumerate}
 
 \subsection{Verification of AI-Generated Content}
 
-\wss{\begin{itemize}
-    \item Describe how the team checked AI-generated or AI-assisted material
-    before including it in the document.
-    \item In particular, verify factual claims, technical assertions,
-    requirements, calculations, references, and other information for which an
-    AI system may produce incorrect or fabricated results.
-    \item \textbf{The team is responsible for the accuracy, completeness,
-consistency, and appropriateness of the submitted document, regardless of
-whether material was generated by a human or an AI system.}
-\end{itemize}}
+\begin{enumerate}
+    \item \textbf{How the team checked AI-generated or AI-assisted material
+    before including it in the document.}
+
+    Every AI-assisted change was reviewed by the author of that section
+    before it was committed, and again through pull-request review by
+    another team member before it was merged. Drafts were compared with
+    their sources rather than accepted because they sounded complete: the
+    summary and custom documents against the Problem Statement, objectives
+    and tooling against the Development Plan, system and unit tests against
+    SRS identifiers, and failure and safety tests against the Hazard
+    Analysis. When a tool proposed a new feature, a numeric target, or a
+    change of scope, the team confirmed the decision independently. Several
+    suggestions were rejected for that reason, including treating Unity,
+    OpenXR, or Meta system software as in-scope for FPVR unit tests,
+    treating stretch-goal multiplayer or dedicated transmitters as required
+    tests, and stating headset-wide compatibility testing that the
+    objectives section explicitly excludes. Agreement between Claude and
+    GPT-6 Astra was not treated as verification.
+
+    \item \textbf{How the team verified factual claims, technical
+    assertions, requirements, calculations, and references.}
+
+    \begin{itemize}
+        \item \textbf{Requirements and traceability:} Test cases that name
+        a requirement (for example FR-FLT-03, FR-FLT-05, NFR-USAB-01) were
+        checked against the identifiers defined in the SRS. Tests that name
+        a hazard or safety requirement were checked against the Hazard
+        Analysis. If a draft test cited an identifier that does not exist,
+        or described behaviour that the SRS marks as a stretch goal or
+        likely change, the test was rewritten or marked as applying only if
+        that requirement is in scope.
+        \item \textbf{Technical assertions:} Claims about Unity Test
+        Framework, NUnit, Unity Code Coverage, Edit Mode and Play Mode
+        tests, and the Microsoft C\# coding standard were checked against
+        the Development Plan and the vendor documentation for those tools.
+        They are recorded as the team's planned tools, not as evidence that
+        the tests have already been executed.
+        \item \textbf{Calculations and expected outputs:} Expected results
+        in unit tests (for example one crash event from repeated contact,
+        or a decrease in vertical velocity under zero throttle) were
+        derived from the corresponding SRS rules and checked by a team
+        member. Where the flight model is still under review, tests state
+        the direction of change rather than a fabricated numeric
+        trajectory. Score, rating, and timing oracles will use the formulae
+        in the SRS; they are not taken from an AI-produced example.
+        \item \textbf{Usability procedure:} Participant counts, user
+        profiles, and task scripts were checked against Section G.8 of the
+        SRS and the Custom Documents section of this plan so that the
+        survey cannot silently invent a different study. Likert items were
+        reviewed to ensure they measure the intended qualities (control
+        clarity, navigation, comfort, feedback) rather than implementation
+        details the participant cannot observe.
+        \item \textbf{References:} AI tools were not used to invent
+        citations. Bibliographic entries for the SRS and Hazard Analysis
+        were written by the team and point at the project repository. The
+        document was compiled with \texttt{pdflatex} after substantive
+        edits, and the log was checked for undefined citations and missing
+        labels.
+        \item \textbf{Plans versus results:} AI-assisted wording was edited
+        so that this document remains a plan. Coverage targets, frame-rate
+        or latency numbers, and usability scores are treated as quantities
+        to be measured later and reported in the VnV Report, not as
+        verified outcomes of the present draft.
+    \end{itemize}
+
+    \item \textbf{Who is responsible for the accuracy, completeness,
+    consistency, and appropriateness of the submitted document.}
+
+    The team is responsible for the accuracy, completeness, consistency,
+    and appropriateness of this Verification and Validation Plan, whether
+    a passage was written by a team member or drafted with AI assistance.
+    Claude Opus 5.5 and GPT-6 Astra can miss requirements, invent
+    identifiers, or describe tests the team cannot run with the time and
+    hardware available. Human review against the SRS, Hazard Analysis,
+    Development Plan, and course template is therefore the check that the
+    plan is feasible, internally consistent, and appropriate for FPVR.
+\end{enumerate}
 
 \newpage{}
 
