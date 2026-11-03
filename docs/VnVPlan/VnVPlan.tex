@@ -221,17 +221,59 @@ retest result before closure.
 
 \subsection{SRS Verification}
 
-\wss{List any approaches you intend to use for SRS verification.  This may
-  include ad hoc feedback from reviewers, like your classmates (like your
-  primary reviewer), or you may plan for something more rigorous/systematic.}
+The team will inspect the SRS before using it to finalize test expectations and repeat
+the affected checks whenever a requirement changes. Each area lead will prepare the
+relevant requirements, scenarios, and acceptance criteria for a different member to
+review. The inspection checklist is:
 
-\wss{If you have a supervisor for the project, you shouldn't just say they will
-read over the SRS.  You should explain your structured approach to the review.
-Will you have a meeting?  What will you present?  What questions will you ask?
-Will you give them instructions for a task-based inspection?  Will you use your
-issue tracker?}
+\begin{itemize}
+  \item \textbf{Clarity and testability:} Does each requirement have a unique ID, one
+  clear obligation, and an observable result? Are units, limits, timing boundaries, and
+  expected error behaviour defined?
+  \item \textbf{Completeness:} Are normal, boundary, and failure cases covered,
+  including first takeoff, repeated collisions, skipped checkpoints, recovery before the
+  first checkpoint, device disconnection, and failed saves?
+  \item \textbf{Consistency:} Do the requirements, scenarios, interfaces, environment
+  invariants, and acceptance criteria describe the same behaviour? Are required features
+  clearly separated from conditional features?
+  \item \textbf{Traceability and feasibility:} Can each requirement be traced to a
+  project goal or hazard and a planned check? Can that check be performed with the
+  available hardware, people, and schedule?
+\end{itemize}
 
-\wss{Maybe create an SRS checklist?}
+The following known differences require explicit resolution:
+
+\begin{itemize}
+  \item \textbf{Scope:} The Problem Statement and Hazard Analysis still place accounts
+  and database storage among the stretch goals. SRS S.2 requires accounts, cloud
+  results, and leaderboards. Their security checks must therefore be included, and the
+  older roadmap must be reconciled with this scope.
+  \item \textbf{Performance:} Hazard Analysis NFR1 specifies 30 FPS, whereas SRS
+  NFR-PERF-01 proposes a 72-FPS average over 120 seconds in each required standalone
+  environment. Hazard Analysis NFR2 specifies a 50-ms response, whereas SRS NFR-PERF-02
+  proposes at most 100 ms for at least 95 of 100 input events. These measures and
+  thresholds must be agreed and both documents updated before the affected tests can
+  establish acceptance.
+  \item \textbf{Recovery and review:} SRS U-03 uses ``Restart'' for checkpoint recovery,
+  although FR-CHK-05--07 distinguish Respawn from Restart Level. IF-04 excludes
+  prior-session navigation, while FR-REV-05 requires historical results. U-04 also
+  describes recorded flight replay beyond the result-history requirements. The review
+  will align these passages with the agreed scope.
+\end{itemize}
+
+John will arrange a structured supervisor review using a short agenda and the unresolved
+decisions. The team will walk through free flight, a course with a crash, and a
+completed result, then ask whether the proposed flight behaviour, score, and feedback
+support beginner practice. The supervisor will also be asked to help define the
+reference drone and acceptable realism limits. Peer feedback will be checked against the
+same checklist and logged as issues.
+
+SRS proposals PR-FLT-01--02, PR-CTL-01, and SR-01--08 will retain their proposed status
+until reviewed. Hazard Analysis identifiers such as SR1 will be recorded with their
+document name so they cannot be confused with SRS SR-01. Unset parameters, such as
+gravity-test tolerances, will be resolved before the corresponding test is accepted.
+Each approved change will update the source requirement, affected tests, and
+traceability entries together. Unresolved criteria will be reported as blocked.
 
 \subsection{Design Verification}
 
