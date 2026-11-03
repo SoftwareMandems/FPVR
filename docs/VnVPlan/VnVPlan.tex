@@ -792,57 +792,469 @@ needs to be well-documented, with meaningful names for all of the tests.}
   explain your rationale for the ranking of module importance.}
 
 \subsection{Tests for Functional Requirements}
+\label{sec:unit-fr}
 
-\wss{Most of the verification will be through automated unit testing.  If
-  appropriate specific modules can be verified by a non-testing based
-  technique.  That can also be documented in this section.}
+Most verification of these modules is through automated unit testing. Test names
+follow the format \texttt{Method\_Condition\_ExpectedResult}. The results of
+these tests are recorded in the VnV Report. Each test checks one module, and any
+other module it depends on is replaced by a fake. SR requirements are still
+proposed in the SRS, so tests that trace to them apply only if they are approved.
 
-\subsubsection{Module 1}
+\subsubsection{Flight and Collision}
 
-\wss{Include a blurb here to explain why the subsections below cover the module.
-  References to the MIS would be good.  You will want tests from a black box
-  perspective and from a white box perspective.  Explain to the reader how the
-  tests were selected.}
+This module tests gravity and the rules that decide when a crash is recorded, supporting the Realistic Flight Simulation system tests in section 4.1. The flight model is under review, so tests check the direction of change, not exact values.
 
 \begin{enumerate}
 
-\item{test-id1\\}
+\item \texttt{UpdateFlight\_NoThrust\_ReducesVerticalVelocity}
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{Type:} Functional, Dynamic, Automatic
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+\textbf{Initial State:} Airborne drone with zero vertical velocity.
 
-How test will be performed: 
-					
-\item{test-id2\\}
+\textbf{Input:} Zero throttle for 1.0 s of simulated time.
 
-Type: \wss{Functional, Dynamic, Manual, Automatic, Static etc. Most will
-  be automatic}
-					
-Initial State: 
-					
-Input: 
-					
-Output: \wss{The expected result for the given inputs}
+\textbf{Expected Output:} Vertical velocity is lower than at the start of the test.
 
-Test Case Derivation: \wss{Justify the expected value given in the Output field}
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-03 (simulated gravity).\par}
 
-How test will be performed: 
+\item \texttt{HandleContact\_GroundBeforeTakeoff\_NoCrash}
 
-\item{...\\}
-    
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Drone on its starting surface and not yet airborne.
+
+\textbf{Input:} Ground contact event.
+
+\textbf{Expected Output:} No crash event is raised.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-05 (crash trigger rules).\par}
+
+\item \texttt{HandleContact\_RepeatedContact\_OneCrashEvent}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Airborne drone.
+
+\textbf{Input:} 10 consecutive contact events with the same obstacle.
+
+\textbf{Expected Output:} Exactly one crash event is raised.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-FLT-06 (single crash event).\par}
+
 \end{enumerate}
 
-\subsubsection{Module 2}
+\subsubsection{Modes and Levels}
 
-...
+This module holds the attempt state machine that connects flight, checkpoints, timers, and recovery, supporting the Menu Interface system tests in section 4.1. The other modules are replaced by fakes, so these tests check the attempt state and the requests this module makes.
+
+\begin{enumerate}
+
+\item \texttt{StartAttempt\_AfterPriorRun\_ResetsAttemptState}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} A previous attempt has ended.
+
+\textbf{Input:} A new attempt is started on the same level.
+
+\textbf{Expected Output:} The attempt enters its initial state and requests a reset of checkpoint progress, both timers, crash count, and score state.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-LVL-07 (attempt initialization).\par}
+
+\item \texttt{RecoverFreeFlight\_AfterCrash\_RestoresStart}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Free-flight mode with the drone crashed.
+
+\textbf{Input:} Player selects recovery.
+
+\textbf{Expected Output:} Drone returns to the free-flight starting position without restarting the application.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-LVL-02 (free-flight recovery).\par}
+
+\item \texttt{PauseFlight\_ActiveAttempt\_FreezesAttempt}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active obstacle-course attempt in flight.
+
+\textbf{Input:} Player selects pause from the in-application menu.
+
+\textbf{Expected Output:} Attempt enters the paused state and requests that flight input and both timers stop.
+
+{\sloppy\textbf{Requirement Traceability:} Supports NFR-SAFE-01 and SR-03 (in-application pause).\par}
+
+\item \texttt{ResumeAttempt\_ControlsNotNeutral\_StaysPaused}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Attempt paused after input loss, with input available again and the controls not at neutral.
+
+\textbf{Input:} Player confirms resume.
+
+\textbf{Expected Output:} Attempt stays paused.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-02 (resume conditions).\par}
+
+\item \texttt{LoadLevel\_InvalidCheckpointOrder\_RejectsLevel}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Level definition with a duplicated checkpoint position in its ordered list.
+
+\textbf{Input:} Request to load the level.
+
+\textbf{Expected Output:} Level is rejected before flight, and no attempt starts.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-05 (invalid configuration).\par}
+
+\end{enumerate}
+
+\subsubsection{Checkpoint Progress and Recovery}
+
+This module tests checkpoint order and the two recovery options, supporting the Checkpoint and Crash Recovery system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{CompleteCheckpoint\_OutOfOrder\_NoProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Ordered checkpoints A, B, and C, with none completed.
+
+\textbf{Input:} Drone crosses checkpoint B.
+
+\textbf{Expected Output:} Zero checkpoints completed, and A is still the next required checkpoint.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-02 and FR-CHK-03 (ordered completion and skip prevention).\par}
+
+\item \texttt{CompleteLevel\_MissingCheckpoint\_NotComplete}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Ordered checkpoints A, B, and C, with A and B completed.
+
+\textbf{Input:} Drone reaches the finish.
+
+\textbf{Expected Output:} Level is not declared complete.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-08 (level completion).\par}
+
+\item \texttt{Respawn\_AfterCrash\_KeepsProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Checkpoint A complete, with the drone crashed.
+
+\textbf{Input:} Player selects Respawn.
+
+\textbf{Expected Output:} Recovery position is checkpoint A, and A is still complete.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-05 and FR-CHK-06 (respawn and progress preservation).\par}
+
+\item \texttt{RestartLevel\_AfterCrash\_ClearsProgress}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Checkpoint A complete, with the drone crashed.
+
+\textbf{Input:} Player selects Restart Level.
+
+\textbf{Expected Output:} Recovery position is the level start, and zero checkpoints are completed.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-07 (level restart).\par}
+
+\end{enumerate}
+
+\subsubsection{Timing and Evaluation}
+
+This module tests timer rules, score calculation, and ratings, supporting the Timing and Performance Evaluation system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{CalculateScore\_TimeAndCrashes\_ReturnsScore}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed obstacle-course attempt.
+
+\textbf{Input:} $T = 95.7$ s, $C = 2$.
+
+\textbf{Expected Output:} Score of 705.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-08 ($\max(0, 1000 - 95 - 200) = 705$).\par}
+
+\item \texttt{CalculateScore\_LargePenalty\_ReturnsZero}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed obstacle-course attempt.
+
+\textbf{Input:} $T = 950.0$ s, $C = 1$.
+
+\textbf{Expected Output:} Score of 0.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-08 ($1000 - 950 - 100 = -50$, which is raised to 0).\par}
+
+\item \texttt{AssignRating\_BandBoundaries\_ReturnsRating}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Rating logic loaded.
+
+\textbf{Input:} Scores of 0, 399, 400, 599, 600, 799, 800, and 1000.
+
+\textbf{Expected Output:} Needs Improvement (0, 399), Bronze (400, 599), Silver (600, 799), and Gold (800, 1000).
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-09 (rating bands).\par}
+
+\item \texttt{UpdateTimers\_RecoveryMenuOpen\_StaysPaused}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active attempt with a total time of 30.0 s and a section time of 8.0 s.
+
+\textbf{Input:} Recovery menu opens, then 5.0 s of simulated time passes.
+
+\textbf{Expected Output:} Total time stays at 30.0 s and section time stays at 8.0 s.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-06 (timer pause during recovery).\par}
+
+\item \texttt{RecordCrash\_TwoCrashEvents\_CountsTwo}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active attempt with 0 crashes.
+
+\textbf{Input:} Two crash events.
+
+\textbf{Expected Output:} Crash count of 2.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-PER-07 (crash counting).\par}
+
+\item \texttt{ApplyRecovery\_Respawn\_KeepsTotalTime}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Total time 40.0 s, section time 12.0 s, and 1 crash.
+
+\textbf{Input:} Respawn recovery event.
+
+\textbf{Expected Output:} Total time 40.0 s, section time 0.0 s, and 1 crash.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-06, FR-PER-04, and FR-PER-05 (respawn timer rules).\par}
+
+\item \texttt{ApplyRecovery\_Restart\_ResetsTimers}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Total time 40.0 s, section time 12.0 s, and 1 crash.
+
+\textbf{Input:} Restart Level recovery event.
+
+\textbf{Expected Output:} Both timers at 0.0 s, 0 crashes, and score state at its initial value.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-CHK-07 and FR-PER-05 (restart timer rules).\par}
+
+\end{enumerate}
+
+\subsubsection{VR Interface and Input}
+
+This module tests how controller input reaches the flight model, supporting the Menu Interface system tests in section 4.1. Appearance and headset behaviour are covered by section 4.
+
+\begin{enumerate}
+
+\item \texttt{MapInput\_EachConfiguration\_ReturnsFourAxes}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Quest motion controller and standard gamepad configurations loaded.
+
+\textbf{Input:} Full deflection of the throttle, pitch, roll, and yaw controls, one at a time, in each configuration.
+
+\textbf{Expected Output:} Only the matching flight axis changes for each control.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-UI-03 and NFR-COMP-01 (controller support).\par}
+
+\item \texttt{ReadInput\_InvalidValue\_DiscardsInput}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with the last valid input stored.
+
+\textbf{Input:} Non-finite and out-of-range values on each flight axis.
+
+\textbf{Expected Output:} Values are discarded, and the last valid input is kept.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-05 (invalid input).\par}
+
+\item \texttt{HandleDisconnect\_DuringFlight\_ReportsUnavailable}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Active flight with a connected controller.
+
+\textbf{Input:} Controller connection is lost.
+
+\textbf{Expected Output:} Input is reported as unavailable, and stale controls are discarded.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-02 (loss of input).\par}
+
+\end{enumerate}
+
+\subsubsection{Post-Flight Review}
+
+This module tests the contents and availability of the standard review, supporting the Post-Flight Review and Intelligent Feedback system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{BuildReview\_CompletedAttempt\_ReturnsFinalValues}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Final result for the introductory level: 95.7 s, 3 of 3 checkpoints, 2 crashes, a score of 705, and a Silver rating.
+
+\textbf{Input:} Review is requested.
+
+\textbf{Expected Output:} Review contains all six values unchanged.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-REV-02 (review metrics).\par}
+
+\item \texttt{ShowReview\_ServicesUnavailable\_ShowsReview}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt, with the fake online and feedback services set to unavailable.
+
+\textbf{Input:} Level completion event.
+
+\textbf{Expected Output:} Standard review is produced with all of its fields.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-REV-01 and FR-REV-04 (review without network).\par}
+
+\end{enumerate}
+
+\subsubsection{Accounts and Online Service}
+
+This module tests account rules and online access, supporting the Player Accounts and Authentication system tests in section 4.1. The online service is replaced by a fake.
+
+\begin{enumerate}
+
+\item \texttt{Register\_PasswordLengthBoundary\_AppliesRule}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Fake online service with no existing accounts.
+
+\textbf{Input:} Unique usernames with an 11-character and a 12-character password.
+
+\textbf{Expected Output:} The 11-character password is rejected with an explanatory message, and the 12-character password is accepted.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-02 (registration validation).\par}
+
+\item \texttt{SignIn\_InvalidCredentials\_ReturnsGenericError}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Fake online service with one registered account.
+
+\textbf{Input:} Sign-in with a wrong password, then with an unknown username.
+
+\textbf{Expected Output:} Both attempts are rejected with the same message.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-03 (secure sign-in).\par}
+
+\item \texttt{SubmitResult\_NoSession\_RejectsSubmission}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Guest player with a completed result.
+
+\textbf{Input:} Global leaderboard submission.
+
+\textbf{Expected Output:} Submission is rejected, and no data is sent to the fake service.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-ACC-05 and SR-06 (authenticated submission).\par}
+
+\end{enumerate}
+
+\subsubsection{Results and Leaderboards}
+
+This module tests local results and ranking, which must work without the online service, supporting the Result Storage and Leaderboards system tests in section 4.1.
+
+\begin{enumerate}
+
+\item \texttt{SaveResult\_CompletedAttempt\_WritesAllFields}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Empty local storage.
+
+\textbf{Input:} Completed result with level identifier, timestamp, total time, crash count, score, rating, and local player identifier.
+
+\textbf{Expected Output:} Reading the record back returns all seven fields unchanged.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-01 (local result storage).\par}
+
+\item \texttt{RankResults\_EqualScores\_AppliesTiebreakers}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Local results loaded for one level.
+
+\textbf{Input:} Three results with a score of 705: A (195.0 s, 10:05), B (95.0 s, 10:10), and C (95.0 s, 10:00).
+
+\textbf{Expected Output:} Ranked order of C, B, A.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-06 (shorter time, then earlier timestamp, breaks ties).\par}
+
+\item \texttt{SyncResult\_ServiceUnavailable\_KeepsLocalResult}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Authenticated player, a locally saved result, and a fake service set to fail.
+
+\textbf{Input:} Online result submission.
+
+\textbf{Expected Output:} Local result is kept, marked as not synchronized, and available to retry.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-DAT-03 and FR-DAT-10 (failed submission recovery and synchronization status).\par}
+
+\end{enumerate}
+
+\subsubsection{Intelligent Feedback}
+
+This module tests that the optional feedback feature cannot affect the standard review or recorded results.
+
+\begin{enumerate}
+
+\item \texttt{RequestFeedback\_ServiceTimeout\_ReturnsUnavailable}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt with the fake feedback service set to time out.
+
+\textbf{Input:} Feedback request.
+
+\textbf{Expected Output:} An unavailable result is returned without raising an error.
+
+{\sloppy\textbf{Requirement Traceability:} Supports FR-AI-03 (feedback failure isolation).\par}
+
+\item \texttt{ApplyFeedback\_AnyResponse\_LeavesResultUnchanged}
+
+\textbf{Type:} Functional, Dynamic, Automatic
+
+\textbf{Initial State:} Completed attempt with a stored result.
+
+\textbf{Input:} Feedback response from the fake service.
+
+\textbf{Expected Output:} Checkpoint, timer, crash, score, and rating data are identical to the stored result.
+
+{\sloppy\textbf{Requirement Traceability:} Supports SR-08 (feedback isolation).\par}
+
+\end{enumerate}
 
 \subsection{Tests for Nonfunctional Requirements}
 
