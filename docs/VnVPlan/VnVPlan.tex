@@ -50,14 +50,41 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations, and Acronyms}
 
+The symbols, abbreviations, and acronyms used in this document are listed below. Each
+abbreviation in the text links back to its entry in this table.
+
+\begin{table}[H]
+\centering
+\caption{Symbols, abbreviations, and acronyms}
+\label{tab:symbols}
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{l l} 
-  \toprule		
-  \textbf{symbol} & \textbf{description}\\
-  \midrule 
-  T & Test\\
-  \bottomrule
-\end{tabular}\\
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Term} & \textbf{Description}\\
+\midrule
+\(C\) & Number of registered crashes in an attempt, used in the score\\
+\(T\) & Total active flight time of an attempt in seconds, used in the score\\
+AI\hypertarget{abbr:AI}{} & Artificial intelligence, used for the optional intelligent feedback\\
+CI\hypertarget{abbr:CI}{} & Continuous integration\\
+FPS\hypertarget{abbr:FPS}{} & Frames per second\\
+FPV\hypertarget{abbr:FPV}{} & First-person view: presentation from the simulated drone's viewpoint\\
+HCI\hypertarget{abbr:HCI}{} & Human-computer interaction\\
+MG\hypertarget{abbr:MG}{} & Module Guide\\
+MIS\hypertarget{abbr:MIS}{} & Module Interface Specification\\
+PC\hypertarget{abbr:PC}{} & Personal computer\\
+PCVR\hypertarget{abbr:PCVR}{} & PC-based virtual reality: FPVR runs on a PC and displays through the headset\\
+PoC\hypertarget{abbr:PoC}{} & Proof of concept\\
+QA\hypertarget{abbr:QA}{} & Quality assurance\\
+SRS\hypertarget{abbr:SRS}{} & Software Requirements Specification\\
+TA\hypertarget{abbr:TA}{} & Teaching assistant\\
+V\&V, VnV\hypertarget{abbr:VnV}{} & Verification and validation\\
+VR\hypertarget{abbr:VR}{} & Virtual reality: an immersive presentation viewed through a headset\\
+XR\hypertarget{abbr:XR}{} & Extended reality, the umbrella term that includes VR\\
+FR, NFR, SR & Prefixes of SRS functional, nonfunctional, and proposed safety requirement identifiers\\
+T.FR, T.NFR & Prefixes of the functional and nonfunctional system test identifiers in Section 4\\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \newpage
 
@@ -67,34 +94,34 @@ Date 2 & 1.1 & Notes\\
 
 \subsection{Summary}
 
-FPVR is a virtual reality (VR)-based first-person-view (FPV) drone training simulator designed to help beginners develop and improve their drone piloting skills in a safe and accessible environment. Instead of requiring a physical drone, users can operate a simulated drone using VR controls and practise essential flight manoeuvres without the risks of equipment damage or unsafe flying conditions. It is also meant as a tool for experienced Drone fliers to be able to practice in a safe and controlled environment without the pressure of piloting a very expensive piece of equipment.
+FPVR is a virtual reality (\hyperlink{abbr:VR}{VR})-based first-person-view (\hyperlink{abbr:FPV}{FPV}) drone training simulator designed to help beginners develop and improve their drone piloting skills in a safe and accessible environment. Instead of requiring a physical drone, users can operate a simulated drone using \hyperlink{abbr:VR}{VR} controls and practise essential flight manoeuvres without the risks of equipment damage or unsafe flying conditions. It is also meant as a tool for experienced Drone fliers to be able to practice in a safe and controlled environment without the pressure of piloting a very expensive piece of equipment.
 
-The system features free-flight practice, progressively challenging obstacle courses, multiple virtual environments, and checkpoints to create a structured learning experience. Users can track their performance through metrics such as completion time, checkpoint progress, and performance ratings, with potential AI-driven feedback to help identify areas for improvement. FPVR also supports registered accounts, saved performance records, attempt history, and local and global leaderboards, allowing users to monitor their progress and compare results with others. Overall, FPVR aims to make learning FPV drone piloting more accessible, engaging, and cost-effective through an immersive virtual training experience.  
+The system features free-flight practice, progressively challenging obstacle courses, multiple virtual environments, and checkpoints to create a structured learning experience. Users can track their performance through metrics such as completion time, checkpoint progress, and performance ratings, with potential AI-driven feedback to help identify areas for improvement. FPVR also supports registered accounts, saved performance records, attempt history, and local and global leaderboards, allowing users to monitor their progress and compare results with others. Overall, FPVR aims to make learning \hyperlink{abbr:FPV}{FPV} drone piloting more accessible, engaging, and cost-effective through an immersive virtual training experience.  
 
 \subsection{Objectives}
 
-The primary objective of this Verification and Validation plan is to build confidence in the correctness, reliability, usability, performance, and flight realism of FPVR by verifying and demonstrating that all requirements specified in the Software Requirements Specification (SRS) are satisfied. These qualities are major objectives of the SRS and therefore receive explicit attention throughout verification and validation. Verification and validation efforts will be guided by the Hazard Analysis Document, which will be used to prioritize functionality based on its mission criticality, potential impact, and associated risks. Features that are essential to the safe and reliable operation of the simulator will receive the greatest testing attention to ensure that critical system behaviours are thoroughly evaluated. Due to limitations in project time and resources, validating the long-term effectiveness of VR-based training, 
-and testing compatibility across different VR headsets will remain out of scope. Additionally, testing the correctness of the underlying Unity VR libraries, frameworks, and headset-specific functionality will not be part of the project, as these are external components assumed to function according to their respective specifications. Verification efforts will instead focus on FPVR's implementation and integration of these components.
+The primary objective of this Verification and Validation plan is to build confidence in the correctness, reliability, usability, performance, and flight realism of FPVR by verifying and demonstrating that all requirements specified in the Software Requirements Specification (\hyperlink{abbr:SRS}{SRS}) are satisfied. These qualities are major objectives of the \hyperlink{abbr:SRS}{SRS} and therefore receive explicit attention throughout verification and validation. Verification and validation efforts will be guided by the Hazard Analysis Document, which will be used to prioritize functionality based on its mission criticality, potential impact, and associated risks. Features that are essential to the safe and reliable operation of the simulator will receive the greatest testing attention to ensure that critical system behaviours are thoroughly evaluated. Due to limitations in project time and resources, validating the long-term effectiveness of VR-based training, 
+and testing compatibility across different \hyperlink{abbr:VR}{VR} headsets will remain out of scope. Additionally, testing the correctness of the underlying Unity \hyperlink{abbr:VR}{VR} libraries, frameworks, and headset-specific functionality will not be part of the project, as these are external components assumed to function according to their respective specifications. Verification efforts will instead focus on FPVR's implementation and integration of these components.
 
 \subsection{Custom Documents}
 
-The project will include two Custom Documents: a Usability Report and a Design Thinking Report. The Usability Report will document a systematic and quantitative evaluation of FPVR's usability by having representative users complete predefined tasks within the simulator. The evaluation will establish testing goals, identify specific user tasks, collect feedback through structured questions and surveys, and measure usability outcomes to identify areas for improvement. The Design Thinking Report will document the human-centred design process used to understand the needs and challenges of beginner FPV drone pilots. This will include conducting user interviews, organizing findings through empathy maps, generating and evaluating potential solutions based on feasibility and desirability, and developing two rounds of prototypes to gather user feedback and refine the proposed design. These documents will help ensure that FPVR's design decisions are informed by user needs and that its usability is evaluated through structured user testing.
+The project will include two Custom Documents: a Usability Report and a Design Thinking Report. The Usability Report will document a systematic and quantitative evaluation of FPVR's usability by having representative users complete predefined tasks within the simulator. The evaluation will establish testing goals, identify specific user tasks, collect feedback through structured questions and surveys, and measure usability outcomes to identify areas for improvement. The Design Thinking Report will document the human-centred design process used to understand the needs and challenges of beginner \hyperlink{abbr:FPV}{FPV} drone pilots. This will include conducting user interviews, organizing findings through empathy maps, generating and evaluating potential solutions based on feasibility and desirability, and developing two rounds of prototypes to gather user feedback and refine the proposed design. These documents will help ensure that FPVR's design decisions are informed by user needs and that its usability is evaluated through structured user testing.
 
 \subsection{Relevant Documentation}
 
-This VnV plan is derived from two project documents: the Software
-Requirements Specification (SRS)~\citep{SRS} and the Hazard
+This \hyperlink{abbr:VnV}{VnV} plan is derived from two project documents: the Software
+Requirements Specification (\hyperlink{abbr:SRS}{SRS})~\citep{SRS} and the Hazard
 Analysis~\citep{HazardAnalysis}. Together they define what FPVR is
 supposed to do and which failures would be unacceptable, which is the
 information needed to choose tests and interpret results.
 
-The SRS~\citep{SRS} is the statement of the software requirements. It
+The \hyperlink{abbr:SRS}{SRS}~\citep{SRS} is the statement of the software requirements. It
 records the goals of FPVR, the functional requirements (for example
 flight control, checkpoint behaviour, and session flow), and the
 non-functional requirements (for example performance, usability, and
 safety-related qualities). System tests in this plan are written
 against those requirements so that a passing test set is evidence that
-the implemented product matches the specified behaviour. The SRS also
+the implemented product matches the specified behaviour. The \hyperlink{abbr:SRS}{SRS} also
 supplies identifiers, assumptions, and environmental constraints that
 this plan uses for traceability: each system test should map back to
 one or more requirements.
@@ -113,13 +140,13 @@ taken from the SRS.
 
 \section{Plan}
 
-This section describes how FPVR will be verified and validated. It identifies the V\&V
-team, the plans for verifying the SRS, design, V\&V plan, and implementation, the
+This section describes how FPVR will be verified and validated. It identifies the \hyperlink{abbr:VnV}{V\&V}
+team, the plans for verifying the \hyperlink{abbr:SRS}{SRS}, design, \hyperlink{abbr:VnV}{V\&V} plan, and implementation, the
 automated tools that support them, and the plan for validating FPVR with its intended
 users. Every in-scope requirement will have a planned verification method, traced in
-Section 4.3 and reported in the V\&V Report.
+Section 4.3 and reported in the \hyperlink{abbr:VnV}{V\&V} Report.
 
-Table~\ref{tab:vnv-schedule} links these activities to the course milestones in SRS P.3
+Table~\ref{tab:vnv-schedule} links these activities to the course milestones in \hyperlink{abbr:SRS}{SRS} P.3
 and the evidence each one produces.
 
 \begin{table}[!htbp]
@@ -133,30 +160,30 @@ and the evidence each one produces.
 \textbf{V\&V activities} &
 \textbf{Evidence} \\
 \midrule
-VnV Plan peer review &
-Peer and TA review of this plan (Section 3.4) &
+\hyperlink{abbr:VnV}{VnV} Plan peer review &
+Peer and \hyperlink{abbr:TA}{TA} review of this plan (Section 3.4) &
 Logged issues and their resolution \\
 Design Document Rev \(-\)1 &
-Review of the MG and MIS, followed by peer review (Section 3.3) &
+Review of the \hyperlink{abbr:MG}{MG} and \hyperlink{abbr:MIS}{MIS}, followed by peer review (Section 3.3) &
 Completed checklist and linked issues \\
-PoC Demonstration &
+\hyperlink{abbr:PoC}{PoC} Demonstration &
 Phases 1--2: deployment, input, safety, and free flight, including the first
 input-response measurement &
 Test records and measurement log \\
 Design Documentation &
-Review of the changed MG and MIS sections (Section 3.3) &
+Review of the changed \hyperlink{abbr:MG}{MG} and \hyperlink{abbr:MIS}{MIS} sections (Section 3.3) &
 Updated checklist and module-to-requirement mapping \\
 Module Implementation &
 Phase 3: courses, recovery, and timing, including frame-rate and crash-recovery checks;
-unit and integration suites running in CI &
-CI test results and coverage report \\
+unit and integration suites running in \hyperlink{abbr:CI}{CI} &
+\hyperlink{abbr:CI}{CI} test results and coverage report \\
 Revision 0 Demonstration &
 Phase 4: scoring, review, and local results; supervisor demonstration (Section 3.7) &
 Demonstration checklist and supervisor feedback \\
-V\&V Report &
+\hyperlink{abbr:VnV}{V\&V} Report &
 Phase 5: accounts and online results; user studies, mutation exercise, and a full
 regression run &
-Study data, test summary, and the V\&V Report \\
+Study data, test summary, and the \hyperlink{abbr:VnV}{V\&V} Report \\
 Final Demonstration &
 Phase 6 if included; retest of corrected defects &
 Retest results \\
@@ -166,11 +193,11 @@ Retest results \\
 
 \subsection{Verification and Validation Team}
 
-The V\&V team follows the project roles in SRS P.1, so each area is verified by the
+The \hyperlink{abbr:VnV}{V\&V} team follows the project roles in \hyperlink{abbr:SRS}{SRS} P.1, so each area is verified by the
 member who knows it best:
 
 \begin{itemize}
-  \item \textbf{Ibrahim Tariq:} Team Lead and Flight Physics Developer. Coordinates V\&V
+  \item \textbf{Ibrahim Tariq:} Team Lead and Flight Physics Developer. Coordinates \hyperlink{abbr:VnV}{V\&V}
   milestones and defect priorities, and leads flight-model, rendering-performance, and
   flight-realism testing.
   \item \textbf{John Cho:} Team Liaison and Hardware Integration Developer. Leads
@@ -196,7 +223,7 @@ John, Sankalpa, Vikram, Arjun:
   member who reviews them changes at each milestone in Table~\ref{tab:vnv-schedule},
   following the rounds in Table~\ref{tab:vnv-rotation}. After four milestones, every
   member has reviewed every other member's area, and the rounds repeat.
-  \item \textbf{QA reviewer:} The quality assurance (QA) reviewer for each deliverable is
+  \item \textbf{QA reviewer:} The quality assurance (\hyperlink{abbr:QA}{QA}) reviewer for each deliverable is
   the next member in the order. If that member is the deliverable's main author, the
   turn passes to the following member.
   \item \textbf{Pull request reviewer:} Every pull request is approved by a member other
@@ -227,15 +254,15 @@ Arjun & Ibrahim & John & Sankalpa & Vikram \\
 
 \subsection{SRS Verification}
 
-The SRS will be verified through five activities: a checklist inspection, a supervisor
-review, peer and TA review, a traceability review, and continuous verification as the
+The \hyperlink{abbr:SRS}{SRS} will be verified through five activities: a checklist inspection, a supervisor
+review, peer and \hyperlink{abbr:TA}{TA} review, a traceability review, and continuous verification as the
 requirements change. Every finding is logged as a GitHub issue with an owner and a
 closing condition. Table~\ref{tab:srs-checklist} summarizes the activities.
 
 \subsubsection{Checklist Inspection}
 
 Each area lead will prepare the requirements for their area, and a different member will
-inspect them using the course SRS checklist. The inspection checks that each requirement
+inspect them using the course \hyperlink{abbr:SRS}{SRS} checklist. The inspection checks that each requirement
 is unambiguous, testable, complete, and consistent with the rest of the SRS. Two members
 will also independently calculate expected results from the scoring, rating, and
 leaderboard rules; different answers show that a rule is ambiguous.
@@ -252,7 +279,7 @@ minutes.
 
 \subsubsection{Peer and TA Review}
 
-Issues raised by the assigned peer team and feedback from the TA will be checked against
+Issues raised by the assigned peer team and feedback from the \hyperlink{abbr:TA}{TA} will be checked against
 the same checklist. Each one will either be accepted with an owner or declined with a
 recorded reason.
 
@@ -260,7 +287,7 @@ recorded reason.
 
 A non-author will confirm that every requirement traces back to a project goal or hazard
 and forward to at least one test, and that each safety requirement in the Hazard
-Analysis is covered by an SRS requirement. Gaps will be logged as issues, and the result
+Analysis is covered by an \hyperlink{abbr:SRS}{SRS} requirement. Gaps will be logged as issues, and the result
 is the traceability table in Section 4.3.
 
 \subsubsection{Continuous Verification}
@@ -271,7 +298,7 @@ These reviews will:
 \begin{itemize}
   \item Assess the impact of each requirement change on the design and tests
   \item Update the affected tests and traceability entries with the requirement
-  \item Confirm at the PoC Demonstration that the performance requirements can be met
+  \item Confirm at the \hyperlink{abbr:PoC}{PoC} Demonstration that the performance requirements can be met
   on the target headset
 \end{itemize}
 
@@ -291,21 +318,21 @@ Supervisor review &
 \(\square\) Share the review package\newline
 \(\square\) Walk through the training scenarios\newline
 \(\square\) Record decisions \\
-Peer and TA review &
+Peer and \hyperlink{abbr:TA}{TA} review &
 \(\square\) Accept or decline every issue with a reason \\
 Traceability review &
 \(\square\) Trace requirements to goals, hazards, and tests\newline
 \(\square\) Log gaps as issues \\
 Continuous verification &
 \(\square\) Review requirement changes weekly\newline
-\(\square\) Confirm performance requirements at the PoC \\
+\(\square\) Confirm performance requirements at the \hyperlink{abbr:PoC}{PoC} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
 \subsection{Design Verification}
 
-The Module Guide (MG) and Module Interface Specification (MIS) will be verified through
+The Module Guide (\hyperlink{abbr:MG}{MG}) and Module Interface Specification (\hyperlink{abbr:MIS}{MIS}) will be verified through
 walkthroughs, peer review, and supervisor review, first for Design Document Rev \(-\)1
 (Nov.~16, 2026) and again for the Design Documentation (Jan.~18, 2027). Each area lead
 will walk a non-author member through their modules' interfaces and state transitions.
@@ -349,9 +376,9 @@ Testability &
 
 \subsection{Verification and Validation Plan Verification}
 
-The V\&V Plan will be verified through team and peer review. The QA reviewer, the
-assigned peer team, and the TA will check the plan's coverage and feasibility using a
-checklist during the VnV Plan peer review (issues due Nov.~5, 2026), and the QA reviewer
+The \hyperlink{abbr:VnV}{V\&V} Plan will be verified through team and peer review. The \hyperlink{abbr:QA}{QA} reviewer, the
+assigned peer team, and the \hyperlink{abbr:TA}{TA} will check the plan's coverage and feasibility using a
+checklist during the \hyperlink{abbr:VnV}{VnV} Plan peer review (issues due Nov.~5, 2026), and the \hyperlink{abbr:QA}{QA} reviewer
 will repeat the check after major requirement or design changes. Feedback will be
 tracked through GitHub Issues and addressed at the weekly team meetings.
 
@@ -399,7 +426,7 @@ Table~\ref{tab:vnv-configurations}.
 
 Static verification will use code review and analyzers. Every pull request will be
 reviewed by a non-author against the Microsoft C\# Coding Conventions adopted in the
-Development Plan, and merged only after approval and a passing CI run. Reviews will
+Development Plan, and merged only after approval and a passing \hyperlink{abbr:CI}{CI} run. Reviews will
 focus on:
 
 \begin{itemize}
@@ -448,17 +475,17 @@ Safety &
 
 \textbf{Unit Testing Framework:} The Unity Test Framework, which is based on NUnit, will
 run Edit Mode tests for game rules and Play Mode tests for physics and scene behaviour.
-It was chosen because it is Unity's standard testing tool and runs in the CI pipeline.
+It was chosen because it is Unity's standard testing tool and runs in the \hyperlink{abbr:CI}{CI} pipeline.
 
 \textbf{Code Coverage Tools and Plan for Summary:} The Unity Code Coverage package will
 report line coverage for each module and overall, excluding third-party and test code.
 The target is at least 80\% line coverage of the game-rule logic, such as checkpoint
 order, timing, scoring, and leaderboard ranking. Coverage reports will be kept with each
-CI run to track trends and identify untested code.
+\hyperlink{abbr:CI}{CI} run to track trends and identify untested code.
 
 \textbf{Linters and Static Analysis:} The C\# compiler and Roslyn analyzers will enforce
 the Microsoft C\# Coding Conventions and flag likely defects during development and in
-the CI build.
+the \hyperlink{abbr:CI}{CI} build.
 
 \textbf{Continuous Integration:} GitHub Actions will be extended from building the
 documentation to building the project and running the automated tests on every pull
@@ -482,8 +509,8 @@ Table~\ref{tab:vnv-configurations}.
 Standalone &
 FPVR runs on Meta Quest 3S without a connected PC. &
 Quest motion controllers \\
-PCVR &
-FPVR runs on the Windows 11 reference PC and displays through Quest 3S. &
+\hyperlink{abbr:PCVR}{PCVR} &
+FPVR runs on the Windows 11 reference \hyperlink{abbr:PC}{PC} and displays through Quest 3S. &
 Xbox-compatible gamepad \\
 \bottomrule
 \end{tabularx}
@@ -496,18 +523,18 @@ cannot show whether it is a useful trainer. Validation will use:
 
 \begin{itemize}
   \item \textbf{Interface usability study (T.NFR.USAB.02):} About four beginners with little
-  or no FPV experience, split between the two configurations, and the experienced pilots
+  or no \hyperlink{abbr:FPV}{FPV} experience, split between the two configurations, and the experienced pilots
   below will complete core tasks without coaching: finding the control guide, starting a
   course, using Respawn and Restart Level, pausing and exiting, and reading the review.
   Task completion and questionnaire ratings (Section~\ref{sec:usability-survey}) will be
   recorded, with a target median of at least 4/5. Sankalpa leads this study.
-  \item \textbf{Flight realism study:} About two experienced FPV pilots will
+  \item \textbf{Flight realism study:} About two experienced \hyperlink{abbr:FPV}{FPV} pilots will
   fly agreed manoeuvres and rate how believable the flight response is, with a target of
   at least 4/5 on each item. Ibrahim leads this study, and the supervisor helps define
   the reference drone.
   \item \textbf{Revision 0 demonstration:} At the Revision 0 Demonstration (Feb.\ 1--11,
   2027), Dr. Douglas Down will review whether the functional requirements in phases 1--4
-  of SRS P.3 work on both configurations. It succeeds if they can all be demonstrated
+  of \hyperlink{abbr:SRS}{SRS} P.3 work on both configurations. It succeeds if they can all be demonstrated
   and no open defect prevents safe use or the core training flow.
 \end{itemize}
 
@@ -523,13 +550,13 @@ system tests that will be performed end-to-end on the application.
 
 \subsection{Tests for Functional Requirements}
 
-The following tests cover the functional requirements in SRS S.2, grouped by the SRS
+The following tests cover the functional requirements in \hyperlink{abbr:SRS}{SRS} S.2, grouped by the \hyperlink{abbr:SRS}{SRS}
 subsection they come from. Each test's output checks every requirement named in its
 derivation, and Table~\ref{tab:fr-traceability} lists the requirements for each test.
 
 \subsubsection{Realistic Flight Simulation (S.2.1)}
 
-These tests cover the flight model and crash detection in SRS S.2.1.
+These tests cover the flight model and crash detection in \hyperlink{abbr:SRS}{SRS} S.2.1.
 
 {\sloppy
 \paragraph{First-Person View}
@@ -676,7 +703,7 @@ after the crash, and checks which recovery menu is displayed in each mode.
 
 \subsubsection{Menu Interface (S.2.2, S.2.5)}
 
-These tests cover the training modes in SRS S.2.2 and the user interface in S.2.5.
+These tests cover the training modes in \hyperlink{abbr:SRS}{SRS} S.2.2 and the user interface in S.2.5.
 
 {\sloppy
 \paragraph{Free-Flight Mode}
@@ -873,7 +900,7 @@ controller mapping for that configuration.
 \item{\hypertarget{test-fr-mi-09}{}\textbf{T.FR.MI.09}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} Release build installed on Quest 3S and on the reference PCVR
+\textbf{Initial State:} Release build installed on Quest 3S and on the reference \hyperlink{abbr:PCVR}{PCVR}
 computer.
 
 \textbf{Input:} Start FPVR standalone on the headset, then start it on the reference
@@ -881,7 +908,7 @@ computer with the headset connected.
 
 \textbf{Output:} FPVR runs and can start a flight in both modes.
 
-\textbf{Test Case Derivation:} \mbox{FR-UI-02} requires both standalone and PCVR
+\textbf{Test Case Derivation:} \mbox{FR-UI-02} requires both standalone and \hyperlink{abbr:PCVR}{PCVR}
 execution, so a flight is started in each mode.
 
 \textbf{How test will be performed:} A tester starts each mode and records whether a
@@ -899,7 +926,7 @@ flight could be started.
 \textbf{Initial State:} FPVR running in free flight, once in each mode.
 
 \textbf{Input:} Use the throttle, pitch, roll, and yaw controls with the Quest motion
-controllers in standalone mode and with the standard gamepad in PCVR mode.
+controllers in standalone mode and with the standard gamepad in \hyperlink{abbr:PCVR}{PCVR} mode.
 
 \textbf{Output:} Each configuration provides all four controls, and each one moves the
 drone.
@@ -939,7 +966,7 @@ records any time they had to walk.
 \subsubsection{Checkpoint and Crash Recovery (S.2.3)}
 
 These tests cover checkpoint order, level completion, and the two recovery options in
-SRS S.2.3.
+\hyperlink{abbr:SRS}{SRS} S.2.3.
 
 {\sloppy
 \paragraph{Checkpoint Definitions}
@@ -1080,7 +1107,7 @@ Level, and reads each value.
 
 \subsubsection{Timing and Performance Evaluation (S.2.4)}
 
-These tests cover the timers, crash count, score, and rating in SRS S.2.4. Simulated
+These tests cover the timers, crash count, score, and rating in \hyperlink{abbr:SRS}{SRS} S.2.4. Simulated
 time is used so that the expected values are exact.
 
 {\sloppy
@@ -1247,7 +1274,7 @@ the rating.
 
 \subsubsection{Player Accounts and Authentication (S.2.6)}
 
-These tests cover registration, sign-in, and sign-out in SRS S.2.6. They use test
+These tests cover registration, sign-in, and sign-out in \hyperlink{abbr:SRS}{SRS} S.2.6. They use test
 accounts on the online service.
 
 {\sloppy
@@ -1367,7 +1394,7 @@ service that nothing was submitted.
 
 \subsubsection{Result Storage and Leaderboards (S.2.7)}
 
-These tests cover result storage, synchronization, and leaderboards in SRS S.2.7.
+These tests cover result storage, synchronization, and leaderboards in \hyperlink{abbr:SRS}{SRS} S.2.7.
 
 {\sloppy
 \paragraph{Local Result Record}
@@ -1554,7 +1581,7 @@ another installation.
 
 \subsubsection{Post-Flight Review and Intelligent Feedback (S.2.8, S.2.9)}
 
-These tests cover the post-flight review in SRS S.2.8 and the optional intelligent
+These tests cover the post-flight review in \hyperlink{abbr:SRS}{SRS} S.2.8 and the optional intelligent
 feedback in S.2.9.
 
 {\sloppy
@@ -1674,10 +1701,10 @@ attempt's recorded values.
 
 \subsection{Tests for Nonfunctional Requirements}
 
-This section describes the system tests for the nonfunctional requirements in SRS S.2,
+This section describes the system tests for the nonfunctional requirements in \hyperlink{abbr:SRS}{SRS} S.2,
 together with the safety requirements proposed in the SRS. Each subsection covers one
 quality area. Some tests produce measurements or survey results rather than a simple
-pass or fail, and those results are reported in the V\&V Report.
+pass or fail, and those results are reported in the \hyperlink{abbr:VnV}{V\&V} Report.
 
 \subsubsection{Installability and Compatibility}
 
@@ -1712,16 +1739,16 @@ records the build, headset software version, and any errors.
 \item{\hypertarget{test-nfr-ins02}{}\textbf{T.NFR.INST.02}\\}
 \textbf{Type:} Nonfunctional, Dynamic, Manual
 
-\textbf{Initial State:} Reference Windows 11 PC with the release build installed and
-Quest 3S connected through a supported PCVR link.
+\textbf{Initial State:} Reference Windows 11 \hyperlink{abbr:PC}{PC} with the release build installed and
+Quest 3S connected through a supported \hyperlink{abbr:PCVR}{PCVR} link.
 
 \textbf{Input/Condition:} Launch FPVR from the reference PC.
 
-\textbf{Output/Result:} FPVR launches in PCVR mode and displays the main menu in the
+\textbf{Output/Result:} FPVR launches in \hyperlink{abbr:PCVR}{PCVR} mode and displays the main menu in the
 headset. (\mbox{NFR-INST-02})
 
-\textbf{How test will be performed:} A tester launches the build and records the PC
-configuration and PCVR link method.
+\textbf{How test will be performed:} A tester launches the build and records the \hyperlink{abbr:PC}{PC}
+configuration and \hyperlink{abbr:PCVR}{PCVR} link method.
 
 \end{enumerate}
 
@@ -1737,7 +1764,7 @@ Table~\ref{tab:vnv-configurations}.
 
 \textbf{Input/Condition:} Apply full throttle, pitch, roll, and yaw input one axis at a
 time with the Quest motion controllers in standalone mode and the Xbox-compatible
-gamepad in PCVR mode.
+gamepad in \hyperlink{abbr:PCVR}{PCVR} mode.
 
 \textbf{Output/Result:} Each input moves only the matching flight axis in both
 configurations. (\mbox{NFR-COMP-01})
@@ -1766,7 +1793,7 @@ environments.
 
 \textbf{Input/Condition:} 120 seconds of continuous normal flight in each environment.
 
-\textbf{Output/Result:} The average rendered frame rate is at least 72 FPS in each
+\textbf{Output/Result:} The average rendered frame rate is at least 72 \hyperlink{abbr:FPS}{FPS} in each
 environment. Frame-time spikes are also reported. (\mbox{NFR-PERF-01})
 
 \textbf{How test will be performed:} Frame times are recorded with the Unity Profiler
@@ -1860,7 +1887,7 @@ and records whether each condition is met.
 \textbf{Type:} Nonfunctional, Dynamic, Manual
 
 \textbf{Initial State:} Build with verified pause and exit, about four beginners with
-little or no FPV experience split between the two configurations, and the experienced
+little or no \hyperlink{abbr:FPV}{FPV} experience split between the two configurations, and the experienced
 pilots from the flight realism study in Section 3.7.
 
 \textbf{Input/Condition:} Participants complete the core tasks without coaching: find
@@ -1882,7 +1909,7 @@ issues.
 \subsubsection{Safety}
 
 This area checks that users can stop safely and that FPVR handles failures without
-putting the user at risk. SR-01 to SR-08 are proposed in the SRS, so their tests apply
+putting the user at risk. SR-01 to SR-08 are proposed in the \hyperlink{abbr:SRS}{SRS}, so their tests apply
 only if the requirements are approved.
 
 {\sloppy
@@ -2382,7 +2409,7 @@ NFR-PERF-02 measures the time from an input event to the flight update.
 
 The system tests defined in Section 4 use symbolic constants to specify test conditions, acceptance thresholds, and expected results. Defining these parameters in one location ensures consistency across verification activities and allows their values to be updated without introducing conflicting test criteria.
 
-The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Software Requirements Specification (SRS) and the Hazard Analysis. The SRS provides the primary acceptance baseline.
+The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Software Requirements Specification (\hyperlink{abbr:SRS}{SRS}) and the Hazard Analysis. The \hyperlink{abbr:SRS}{SRS} provides the primary acceptance baseline.
 
 \begin{table}[H]
 \centering
@@ -2394,7 +2421,7 @@ The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Soft
 \textbf{Constant} & \textbf{Value} & \textbf{Description and Requirements} \\
 \midrule
 
-\texttt{FPS\_MIN} & 72 FPS &
+\texttt{FPS\_MIN} & 72 \hyperlink{abbr:FPS}{FPS} &
 Minimum average rendered frame rate in standalone mode (NFR-PERF-01). \\
 
 \texttt{T\_FPS} & 120 s &
@@ -2491,18 +2518,18 @@ Proposed minimum rating from each experienced pilot for each realism item (Secti
 
 The validation-study parameters represent proposed evaluation targets rather than acceptance requirements established by the SRS. These targets will be reviewed with the supervisor before participant testing.
 
-The SRS also identifies proposed parameters for takeoff clearance, gravity verification, and performance-failure handling (PR-FLT-01, PR-FLT-02, and SR-04). Their numerical values remain subject to approval and will not be treated as finalized acceptance criteria until they are agreed upon and documented.
+The \hyperlink{abbr:SRS}{SRS} also identifies proposed parameters for takeoff clearance, gravity verification, and performance-failure handling (PR-FLT-01, PR-FLT-02, and SR-04). Their numerical values remain subject to approval and will not be treated as finalized acceptance criteria until they are agreed upon and documented.
 
 \subsection{Usability Survey Questions}
 \label{sec:usability-survey}
 
-The usability evaluation aims to determine whether FPVR provides an intuitive, comfortable, and useful introductory drone training experience. The survey will assess the clarity of controller instructions, ease of navigation, perceived control responsiveness, effectiveness of training feedback, and overall VR experience.
+The usability evaluation aims to determine whether FPVR provides an intuitive, comfortable, and useful introductory drone training experience. The survey will assess the clarity of controller instructions, ease of navigation, perceived control responsiveness, effectiveness of training feedback, and overall \hyperlink{abbr:VR}{VR} experience.
 
 The survey supports the evaluation of NFR-USAB-01, NFR-SAFE-01, and NFR-SAFE-02, as well as related functional requirements concerning flight controls, training environments, crash recovery, and post-flight reviews. The results will contribute to the project's Usability Report, identified as a Custom Document in the Problem Statement.
 
 \subsubsection{Participants and Evaluation Procedure}
 
-Participants will be selected from the three intended user profiles identified in Section G.8 of the SRS: novice FPV pilots, casual gamers or technology enthusiasts, and experienced FPV pilots. The study will aim to include approximately 6--9 participants, with representation from each profile where feasible.
+Participants will be selected from the three intended user profiles identified in Section G.8 of the SRS: novice \hyperlink{abbr:FPV}{FPV} pilots, casual gamers or technology enthusiasts, and experienced \hyperlink{abbr:FPV}{FPV} pilots. The study will aim to include approximately 6--9 participants, with representation from each profile where feasible.
 
 Each participant will receive a brief explanation of the simulator, its limitations, and the evaluation procedure. Participation will be voluntary, and participants may stop the session at any time if they experience discomfort. The headset will be used in a clear, stationary testing area, with a team member supervising the session.
 
@@ -2525,11 +2552,11 @@ The team will observe whether participants complete tasks successfully, request 
 Before beginning the evaluation, participants will answer the following questions to help interpret their feedback in relation to their experience.
 
 \begin{enumerate}
-    \item[\textbf{Q1.}] How much previous experience do you have operating FPV drones?
+    \item[\textbf{Q1.}] How much previous experience do you have operating \hyperlink{abbr:FPV}{FPV} drones?
 
     \textit{Options:} No experience, Beginner, Intermediate, Experienced.
 
-    \item[\textbf{Q2.}] How familiar are you with virtual reality headsets and VR applications?
+    \item[\textbf{Q2.}] How familiar are you with virtual reality headsets and \hyperlink{abbr:VR}{VR} applications?
 
     \textit{Options:} Not familiar, Slightly familiar, Moderately familiar, Very familiar, Extremely familiar.
 
@@ -2538,7 +2565,7 @@ Before beginning the evaluation, participants will answer the following question
     \textit{Options:} Meta Quest motion controllers, Xbox-compatible controller.
 \end{enumerate}
 
-The execution mode (standalone VR or PCVR) will also be recorded by the evaluator.
+The execution mode (standalone \hyperlink{abbr:VR}{VR} or \hyperlink{abbr:PCVR}{PCVR}) will also be recorded by the evaluator.
 
 \subsubsection{Usability Evaluation Questions}
 
@@ -2560,7 +2587,7 @@ Participants may select \textit{Not Applicable} for features they did not experi
 
     \item[\textbf{Q6.}] The drone's movement was predictable and easy to understand while practising.
 
-    \item[\textbf{Q7.}] The first-person VR view made it easy to understand the drone's position and direction of movement.
+    \item[\textbf{Q7.}] The first-person \hyperlink{abbr:VR}{VR} view made it easy to understand the drone's position and direction of movement.
 \end{enumerate}
 
 \paragraph{Navigation and Training Experience}
@@ -2588,7 +2615,7 @@ Participants may select \textit{Not Applicable} for features they did not experi
 \begin{enumerate}
     \item[\textbf{Q14.}] I was able to operate the simulator comfortably while remaining seated or standing in one location.
 
-    \item[\textbf{Q15.}] The pause and exit options were easy to find and use without removing the VR headset.
+    \item[\textbf{Q15.}] The pause and exit options were easy to find and use without removing the \hyperlink{abbr:VR}{VR} headset.
 
     \item[\textbf{Q16.}] The simulator clearly communicated that success in virtual training does not guarantee the ability to safely fly a real drone.
 \end{enumerate}
@@ -2604,7 +2631,7 @@ Participants may select \textit{Not Applicable} for features they did not experi
 The following questions will collect qualitative feedback that may not be captured by the numerical ratings.
 
 \begin{enumerate}
-    \item[\textbf{Q18.}] Did you experience any discomfort during the VR session, such as dizziness, nausea, eye strain, or disorientation? If so, please describe it. Participants may choose not to answer.
+    \item[\textbf{Q18.}] Did you experience any discomfort during the \hyperlink{abbr:VR}{VR} session, such as dizziness, nausea, eye strain, or disorientation? If so, please describe it. Participants may choose not to answer.
 
     \item[\textbf{Q19.}] Which aspect of the simulator did you find most helpful for learning or practising drone controls?
 
@@ -2612,14 +2639,14 @@ The following questions will collect qualitative feedback that may not be captur
 
     \item[\textbf{Q21.}] What changes would most improve your overall training experience?
 
-    \item[\textbf{Q22.}] For participants with previous FPV drone experience: How did the simulated drone's behaviour compare with your experience operating a physical drone? Were any movements or control responses noticeably unrealistic?
+    \item[\textbf{Q22.}] For participants with previous \hyperlink{abbr:FPV}{FPV} drone experience: How did the simulated drone's behaviour compare with your experience operating a physical drone? Were any movements or control responses noticeably unrealistic?
 \end{enumerate}
 
 \subsubsection{Evaluation and Analysis}
 
 The results of the survey will be analyzed using both quantitative and qualitative methods. For each Likert-scale question, the team will calculate the average rating and summarize the distribution of responses. Responses marked \textit{Not Applicable} will be excluded from the corresponding numerical calculations.
 
-Results will be grouped by participants' prior FPV drone experience where the sample size permits. This will help determine whether beginners and experienced pilots encounter different usability problems or have different expectations regarding flight realism and training feedback.
+Results will be grouped by participants' prior \hyperlink{abbr:FPV}{FPV} drone experience where the sample size permits. This will help determine whether beginners and experienced pilots encounter different usability problems or have different expectations regarding flight realism and training feedback.
 
 The team will also record task completion, required assistance, observed navigation errors, and reported discomfort. Open-ended responses will be reviewed to identify recurring usability concerns and suggestions for improvement.
 
@@ -2639,7 +2666,7 @@ The findings will be documented in the Usability Report and used to inform chang
 \subsection{How and Where Used}
 
 \begin{enumerate}
-    \item \textbf{How were the AI tools used?}
+    \item \textbf{How were the \hyperlink{abbr:AI}{AI} tools used?}
 
     Claude Opus 5.5 and GPT-6 Astra were used as drafting, reviewing, and
     consistency-checking aids. GPT-6 Astra was used mainly to brainstorm
@@ -2647,7 +2674,7 @@ The findings will be documented in the Usability Report and used to inform chang
     rephrase technical writing so it followed the course template fields
     (control, initial state, input, expected output, derivation, and how
     the test will be performed). Claude Opus 5.5 was used mainly to turn
-    the team's existing SRS, Hazard Analysis, Development Plan, and Problem
+    the team's existing \hyperlink{abbr:SRS}{SRS}, Hazard Analysis, Development Plan, and Problem
     Statement into draft paragraphs, to keep requirement identifiers and
     module names consistent across sections, and to apply the same test
     layout repeatedly. Both tools were also used to compare this plan
@@ -2660,23 +2687,23 @@ The findings will be documented in the Usability Report and used to inform chang
     were made by the team. AI-assisted text was written to match them, and
     unused suggestions were discarded.
 
-    \item \textbf{Which parts of the document were affected by AI
+    \item \textbf{Which parts of the document were affected by \hyperlink{abbr:AI}{AI}
     assistance?}
 
     \begin{itemize}
         \item \textbf{Summary:} GPT-6 Astra produced a first-pass overview
         of FPVR as the software under test. Claude then rewrote it against
-        the Problem Statement and SRS so the summary named the actual
-        product functions (VR FPV training, free flight, obstacle courses,
+        the Problem Statement and \hyperlink{abbr:SRS}{SRS} so the summary named the actual
+        product functions (\hyperlink{abbr:VR}{VR} \hyperlink{abbr:FPV}{FPV} training, free flight, obstacle courses,
         checkpoints, performance metrics, accounts, and leaderboards)
         rather than generic simulator features.
 
-        \item \textbf{Objectives:} GPT-6 Astra suggested candidate VnV
+        \item \textbf{Objectives:} GPT-6 Astra suggested candidate \hyperlink{abbr:VnV}{VnV}
         qualities (correctness, reliability, usability) and a list of
         possible exclusions. Claude drafted the in-scope objective as
-        verifying FPVR's own implementation against the SRS, with Hazard
+        verifying FPVR's own implementation against the \hyperlink{abbr:SRS}{SRS}, with Hazard
         Analysis used to rank mission-critical behaviour, and wrote the
-        out-of-scope list (long-term training effectiveness, other VR
+        out-of-scope list (long-term training effectiveness, other \hyperlink{abbr:VR}{VR}
         headsets, and Unity or vendor headset software). Those exclusions
         were then checked against the Development Plan.
 
@@ -2686,18 +2713,18 @@ The findings will be documented in the Usability Report and used to inform chang
         The draft states what each report will contain (task-based
         usability evaluation with surveys; interviews, empathy maps,
         ideation, and two prototype rounds) and why they belong in this
-        VnV plan rather than as unrelated extras.
+        \hyperlink{abbr:VnV}{VnV} plan rather than as unrelated extras.
 
         \item \textbf{Relevant Documentation:} Claude drafted the
-        explanation of how the SRS supplies goals, functional and
+        explanation of how the \hyperlink{abbr:SRS}{SRS} supplies goals, functional and
         non-functional requirements, and identifiers for traceability, and
         how the Hazard Analysis supplies failure modes and safety
         requirements that add invalid-input, tracking-loss, and
         unrealistic-physics tests. Claude also drafted the BibTeX entries
-        that point at the team's SRS and Hazard Analysis PDFs; the URLs
+        that point at the team's \hyperlink{abbr:SRS}{SRS} and Hazard Analysis PDFs; the URLs
         were supplied by the team.
 
-        \item \textbf{Plan sections (team, SRS verification, design
+        \item \textbf{Plan sections (team, \hyperlink{abbr:SRS}{SRS} verification, design
         verification, VnV-plan verification, implementation verification,
         automated tools, and software validation):} Both tools were used
         to check that these subsections still follow the template (roles
@@ -2708,20 +2735,20 @@ The findings will be documented in the Usability Report and used to inform chang
         accounts) and non-functional tests (performance, usability,
         safety) from the SRS. Claude was used to keep each test in the
         template format and to attach requirement identifiers. Happy-path
-        cases were taken from the SRS; failure cases (invalid controller
+        cases were taken from the \hyperlink{abbr:SRS}{SRS}; failure cases (invalid controller
         input, lost tracking, crash recovery) were taken from the Hazard
         Analysis.
 
         \item \textbf{Traceability:} Claude was used to draft or check
-        mappings from test identifiers to SRS requirement identifiers and
-        from unit tests to the nine logical modules in SRS section S.1, so
+        mappings from test identifiers to \hyperlink{abbr:SRS}{SRS} requirement identifiers and
+        from unit tests to the nine logical modules in \hyperlink{abbr:SRS}{SRS} section S.1, so
         that a requirement was not left with no planned verification.
 
         \item \textbf{Unit Test Description:} Claude drafted the
         introduction, the in-scope and out-of-scope module lists, the
         black-box / white-box / mocking strategy, and the named automated
         tests for Flight and Collision, Modes and Levels, Checkpoint
-        Progress and Recovery, Timing and Evaluation, VR Interface and
+        Progress and Recovery, Timing and Evaluation, \hyperlink{abbr:VR}{VR} Interface and
         Input, Post-Flight Review, Accounts and Online Service, Results
         and Leaderboards, and Intelligent Feedback. GPT-6 Astra was used
         as a second pass to suggest extra edge cases (for example repeated
@@ -2730,7 +2757,7 @@ The findings will be documented in the Usability Report and used to inform chang
         \item \textbf{Usability survey appendix:} GPT-6 Astra helped
         brainstorm Likert items and background questions. Claude drafted
         the participant procedure (approximately 6--9 people from the
-        three SRS user profiles), the task script (control guide, free
+        three \hyperlink{abbr:SRS}{SRS} user profiles), the task script (control guide, free
         flight, course and crash recovery, post-flight review), the
         five-point rating items, qualitative follow-ups, and the analysis
         plan. 
@@ -2765,7 +2792,7 @@ The findings will be documented in the Usability Report and used to inform chang
     their sources rather than accepted because they sounded complete: the
     summary and custom documents against the Problem Statement, objectives
     and tooling against the Development Plan, system and unit tests against
-    SRS identifiers, and failure and safety tests against the Hazard
+    \hyperlink{abbr:SRS}{SRS} identifiers, and failure and safety tests against the Hazard
     Analysis. When a tool proposed a new feature, a numeric target, or a
     change of scope, the team confirmed the decision independently. Several
     suggestions were rejected for that reason, including treating Unity,
@@ -2784,7 +2811,7 @@ The findings will be documented in the Usability Report and used to inform chang
         checked against the identifiers defined in the SRS. Tests that name
         a hazard or safety requirement were checked against the Hazard
         Analysis. If a draft test cited an identifier that does not exist,
-        or described behaviour that the SRS marks as a stretch goal or
+        or described behaviour that the \hyperlink{abbr:SRS}{SRS} marks as a stretch goal or
         likely change, the test was rewritten or marked as applying only if
         that requirement is in scope.
         \item \textbf{Technical assertions:} Claims about Unity Test
@@ -2796,20 +2823,20 @@ The findings will be documented in the Usability Report and used to inform chang
         \item \textbf{Calculations and expected outputs:} Expected results
         in unit tests (for example one crash event from repeated contact,
         or a decrease in vertical velocity under zero throttle) were
-        derived from the corresponding SRS rules and checked by a team
+        derived from the corresponding \hyperlink{abbr:SRS}{SRS} rules and checked by a team
         member. Where the flight model is still under review, tests state
         the direction of change rather than a fabricated numeric
         trajectory. Score, rating, and timing oracles will use the formulae
-        in the SRS; they are not taken from an AI-produced example.
+        in the \hyperlink{abbr:SRS}{SRS}; they are not taken from an AI-produced example.
         \item \textbf{Usability procedure:} Participant counts, user
         profiles, and task scripts were checked against Section G.8 of the
-        SRS and the Custom Documents section of this plan so that the
+        \hyperlink{abbr:SRS}{SRS} and the Custom Documents section of this plan so that the
         survey cannot silently invent a different study. Likert items were
         reviewed to ensure they measure the intended qualities (control
         clarity, navigation, comfort, feedback) rather than implementation
         details the participant cannot observe.
-        \item \textbf{References:} AI tools were not used to invent
-        citations. Bibliographic entries for the SRS and Hazard Analysis
+        \item \textbf{References:} \hyperlink{abbr:AI}{AI} tools were not used to invent
+        citations. Bibliographic entries for the \hyperlink{abbr:SRS}{SRS} and Hazard Analysis
         were written by the team and point at the project repository. The
         document was compiled with \texttt{pdflatex} after substantive
         edits, and the log was checked for undefined citations and missing
@@ -2817,7 +2844,7 @@ The findings will be documented in the Usability Report and used to inform chang
         \item \textbf{Plans versus results:} AI-assisted wording was edited
         so that this document remains a plan. Coverage targets, frame-rate
         or latency numbers, and usability scores are treated as quantities
-        to be measured later and reported in the VnV Report, not as
+        to be measured later and reported in the \hyperlink{abbr:VnV}{VnV} Report, not as
         verified outcomes of the present draft.
     \end{itemize}
 
@@ -2826,10 +2853,10 @@ The findings will be documented in the Usability Report and used to inform chang
 
     The team is responsible for the accuracy, completeness, consistency,
     and appropriateness of this Verification and Validation Plan, whether
-    a passage was written by a team member or drafted with AI assistance.
+    a passage was written by a team member or drafted with \hyperlink{abbr:AI}{AI} assistance.
     Claude Opus 5.5 and GPT-6 Astra can miss requirements, invent
     identifiers, or describe tests the team cannot run with the time and
-    hardware available. Human review against the SRS, Hazard Analysis,
+    hardware available. Human review against the \hyperlink{abbr:SRS}{SRS}, Hazard Analysis,
     Development Plan, and course template is therefore the check that the
     plan is feasible, internally consistent, and appropriate for FPVR.
 \end{enumerate}
@@ -2862,12 +2889,12 @@ graduate attribute of Lifelong Learning.
 
 \begin{enumerate}
   \item \textbf{What went well?}
-  Using the SRS and Hazard Analysis gave us a clear starting point for choosing
+  Using the \hyperlink{abbr:SRS}{SRS} and Hazard Analysis gave us a clear starting point for choosing
   tests. Dividing responsibilities helped me focus on flight behaviour and
   performance while connecting my work to the broader plan.
 
   \item \textbf{Pain points and resolutions.}
-  The main challenge was making flight realism and VR comfort testable. I
+  The main challenge was making flight realism and \hyperlink{abbr:VR}{VR} comfort testable. I
   addressed this by separating measurable physics and performance checks from
   user feedback. Conflicting acceptance thresholds still need agreement before
   those tests can establish a pass.
@@ -2894,19 +2921,19 @@ graduate attribute of Lifelong Learning.
 \begin{enumerate}
     \item \textbf{What went well while writing this deliverable?}
 
-    Having our finalized SRS and Hazard Analysis gave us a good foundation for developing the V\&V Plan since we already had a clear understanding of the system's requirements and potential risks. I primarily worked on the symbolic parameters and usability survey questions, which helped me think about how we would evaluate FPVR beyond just checking whether the software works. I also spent time reviewing my teammates' sections, which was useful for identifying missing details and making sure our verification strategies aligned with the requirements. Overall, dividing the document into sections made the workload more manageable.
+    Having our finalized \hyperlink{abbr:SRS}{SRS} and Hazard Analysis gave us a good foundation for developing the \hyperlink{abbr:VnV}{V\&V} Plan since we already had a clear understanding of the system's requirements and potential risks. I primarily worked on the symbolic parameters and usability survey questions, which helped me think about how we would evaluate FPVR beyond just checking whether the software works. I also spent time reviewing my teammates' sections, which was useful for identifying missing details and making sure our verification strategies aligned with the requirements. Overall, dividing the document into sections made the workload more manageable.
 
     \item \textbf{What pain points did you experience during this deliverable, and how did you resolve them?}
 
-    One of the main challenges was that different sections of the V\&V Plan were closely connected, making it difficult to complete everything independently. For example, my symbolic parameters depended on the system tests written by another teammate, while my usability survey needed to align with the validation procedures described earlier in the document. We also identified inconsistencies between our SRS and Hazard Analysis, particularly regarding performance thresholds and which features were considered core requirements. Rather than ignoring these differences, we documented them for further review and worked on aligning our testing procedures with the finalized SRS.
+    One of the main challenges was that different sections of the \hyperlink{abbr:VnV}{V\&V} Plan were closely connected, making it difficult to complete everything independently. For example, my symbolic parameters depended on the system tests written by another teammate, while my usability survey needed to align with the validation procedures described earlier in the document. We also identified inconsistencies between our \hyperlink{abbr:SRS}{SRS} and Hazard Analysis, particularly regarding performance thresholds and which features were considered core requirements. Rather than ignoring these differences, we documented them for further review and worked on aligning our testing procedures with the finalized SRS.
 
     \item \textbf{What knowledge and skills will the team collectively need to acquire to successfully complete the verification and validation of your project?}
 
-    Our team will need to strengthen several technical and testing skills to properly evaluate FPVR. Ibrahim will need to develop experience validating drone flight physics and measuring VR performance using Unity's profiling tools. John will focus on testing controller mappings, headset tracking, and compatibility between standalone and PCVR configurations. Vikram will need to become familiar with automated unit and integration testing using Unity Test Framework and NUnit, especially for checkpoint progression and crash recovery. Arjun will focus on verifying scoring accuracy, data persistence, and authentication security. I will need to improve my understanding of usability testing, survey design, and user feedback analysis to determine whether our simulator is intuitive and effective for beginners.
+    Our team will need to strengthen several technical and testing skills to properly evaluate FPVR. Ibrahim will need to develop experience validating drone flight physics and measuring \hyperlink{abbr:VR}{VR} performance using Unity's profiling tools. John will focus on testing controller mappings, headset tracking, and compatibility between standalone and \hyperlink{abbr:PCVR}{PCVR} configurations. Vikram will need to become familiar with automated unit and integration testing using Unity Test Framework and NUnit, especially for checkpoint progression and crash recovery. Arjun will focus on verifying scoring accuracy, data persistence, and authentication security. I will need to improve my understanding of usability testing, survey design, and user feedback analysis to determine whether our simulator is intuitive and effective for beginners.
 
     \item \textbf{For each knowledge area and skill identified above, what are at least two approaches to acquiring the knowledge or mastering the skill? Which approaches will each team member pursue, and why?}
 
-    Each team member can develop these skills through studying technical documentation and tutorials or through practical experimentation with our project. Ibrahim will combine research on drone dynamics with controlled Unity simulations to compare expected and actual flight behaviour. John will use official XR documentation and build small hardware integration prototypes to identify compatibility issues early. Vikram will learn from NUnit tutorials and practise implementing automated tests for game-state functions, while Arjun will study secure data-handling practices and test scenarios involving failed saves and invalid authentication. I plan to review usability testing methods from HCI coursework and conduct structured sessions with potential users. We chose these approaches because combining theory with hands-on testing will help us develop the necessary skills while directly improving FPVR.
+    Each team member can develop these skills through studying technical documentation and tutorials or through practical experimentation with our project. Ibrahim will combine research on drone dynamics with controlled Unity simulations to compare expected and actual flight behaviour. John will use official \hyperlink{abbr:XR}{XR} documentation and build small hardware integration prototypes to identify compatibility issues early. Vikram will learn from NUnit tutorials and practise implementing automated tests for game-state functions, while Arjun will study secure data-handling practices and test scenarios involving failed saves and invalid authentication. I plan to review usability testing methods from \hyperlink{abbr:HCI}{HCI} coursework and conduct structured sessions with potential users. We chose these approaches because combining theory with hands-on testing will help us develop the necessary skills while directly improving FPVR.
 \end{enumerate}
 
 \subsection*{John Cho}
@@ -2914,7 +2941,7 @@ graduate attribute of Lifelong Learning.
 \begin{enumerate}
     \item \textbf{What went well while writing this deliverable?}
 
-    Having a detailed Software Requirements Specification (SRS) made it much easier to write the system tests for this verification plan. The SRS provided specific requirements, expected behaviours, constraints, and acceptance criteria that could be converted into test objectives and observable pass or fail conditions. Instead of having to decide from scratch what the system tests should cover, I could trace each test back to a requirement and use the requirement's wording to determine the inputs, the expected result, and the evidence that should be collected. This was especially helpful for tests involving controller mappings, headset tracking, installation, and interruption recovery, because the SRS clarified what the user should experience without forcing the test to depend on a particular implementation. The detailed requirements also made it easier to identify missing cases and to check that the system tests covered normal operation as well as important edge cases. I likely would've had a much harder time writing functional tests without a detailed SRS otherwise.
+    Having a detailed Software Requirements Specification (\hyperlink{abbr:SRS}{SRS}) made it much easier to write the system tests for this verification plan. The \hyperlink{abbr:SRS}{SRS} provided specific requirements, expected behaviours, constraints, and acceptance criteria that could be converted into test objectives and observable pass or fail conditions. Instead of having to decide from scratch what the system tests should cover, I could trace each test back to a requirement and use the requirement's wording to determine the inputs, the expected result, and the evidence that should be collected. This was especially helpful for tests involving controller mappings, headset tracking, installation, and interruption recovery, because the \hyperlink{abbr:SRS}{SRS} clarified what the user should experience without forcing the test to depend on a particular implementation. The detailed requirements also made it easier to identify missing cases and to check that the system tests covered normal operation as well as important edge cases. I likely would've had a much harder time writing functional tests without a detailed \hyperlink{abbr:SRS}{SRS} otherwise.
 
     \item \textbf{What pain points did you experience during this deliverable, and how did you resolve them?}
 
@@ -2922,13 +2949,13 @@ graduate attribute of Lifelong Learning.
 
     \item \textbf{What knowledge and skills will the team collectively need to acquire to successfully complete the verification and validation of your project?}
 
-    The team will need knowledge of Unity and C\# development, VR development on the Meta Quest 3S with OpenXR, drone flight dynamics, level and environment design, machine learning (optionally), state-machine design, testing, and generally good game design. These skills are needed to verify that the simulator behaves correctly, provides responsive and usable VR interactions, represents flight realistically, supports coherent training environments, preserves consistent game states, and reports meaningful performance results.
+    The team will need knowledge of Unity and C\# development, \hyperlink{abbr:VR}{VR} development on the Meta Quest 3S with OpenXR, drone flight dynamics, level and environment design, machine learning (optionally), state-machine design, testing, and generally good game design. These skills are needed to verify that the simulator behaves correctly, provides responsive and usable \hyperlink{abbr:VR}{VR} interactions, represents flight realistically, supports coherent training environments, preserves consistent game states, and reports meaningful performance results.
 
     \item \textbf{For each knowledge area and skill identified above, what are at least two approaches to acquiring the knowledge or mastering the skill? Which approaches will each team member pursue, and why?}
 
-    The team can acquire these skills through a combination of structured study and hands-on implementation. For Unity and C\#, one approach is to use Unity Learn tutorials and the Unity manual, while a second approach is to build small prototypes before implementing full features. For VR development, the team can study Meta, OpenXR, and XR Interaction Toolkit documentation and sample projects, or test early builds on the Quest 3S while measuring tracking, input, frame rate, and latency. For flight dynamics, the team can read about quadcopter dynamics and the reference drone, or compare the simulator with established FPV simulators. Level design can be learned by studying existing FPV courses and by conducting teammate playtests. Machine-learning skills can be developed through model documentation and small experiments on recorded flight data. State-machine testing can be developed by documenting transitions formally and writing unit tests for each transition. Scoring and flight-data skills can be developed by studying scoring systems in existing simulators and by calibrating an initial scoring formula with recorded team flights.
+    The team can acquire these skills through a combination of structured study and hands-on implementation. For Unity and C\#, one approach is to use Unity Learn tutorials and the Unity manual, while a second approach is to build small prototypes before implementing full features. For \hyperlink{abbr:VR}{VR} development, the team can study Meta, OpenXR, and \hyperlink{abbr:XR}{XR} Interaction Toolkit documentation and sample projects, or test early builds on the Quest 3S while measuring tracking, input, frame rate, and latency. For flight dynamics, the team can read about quadcopter dynamics and the reference drone, or compare the simulator with established \hyperlink{abbr:FPV}{FPV} simulators. Level design can be learned by studying existing \hyperlink{abbr:FPV}{FPV} courses and by conducting teammate playtests. Machine-learning skills can be developed through model documentation and small experiments on recorded flight data. State-machine testing can be developed by documenting transitions formally and writing unit tests for each transition. Scoring and flight-data skills can be developed by studying scoring systems in existing simulators and by calibrating an initial scoring formula with recorded team flights.
 
-    I will primarily pursue the VR documentation and hands-on Quest 3S testing approaches because my responsibilities include headset, controller, installation, and interruption-recovery testing. I will also use small hardware-integration prototypes to find compatibility and recovery issues early. The other members will combine the approaches that best match their responsibilities: Ibrahim will study flight dynamics and compare controlled simulations, Sankalpa will study and playtest course designs, Vikram will document and unit-test state transitions, and Arjun will study existing scoring systems before calibrating the scoring and data-recording implementation with real runs. Combining research with practical experiments will give the team both the background needed to design meaningful tests and direct evidence that the implementation satisfies the requirements.
+    I will primarily pursue the \hyperlink{abbr:VR}{VR} documentation and hands-on Quest 3S testing approaches because my responsibilities include headset, controller, installation, and interruption-recovery testing. I will also use small hardware-integration prototypes to find compatibility and recovery issues early. The other members will combine the approaches that best match their responsibilities: Ibrahim will study flight dynamics and compare controlled simulations, Sankalpa will study and playtest course designs, Vikram will document and unit-test state transitions, and Arjun will study existing scoring systems before calibrating the scoring and data-recording implementation with real runs. Combining research with practical experiments will give the team both the background needed to design meaningful tests and direct evidence that the implementation satisfies the requirements.
 \end{enumerate}
 
 \end{document}
