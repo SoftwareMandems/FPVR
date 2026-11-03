@@ -14,7 +14,8 @@
 
 \input{../Comments.text}
 \input{../Common.text}
-
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 \begin{document}
 
 \title{System Verification and Validation Plan for \progname{}} 
@@ -906,9 +907,137 @@ This is where you can place additional information.
 The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
 Their values are defined in this section for easy maintenance.
 
-\subsection{Usability Survey Questions?}
+\subsection{Usability Survey Questions}
+\label{sec:usability-survey}
 
-\wss{This is a section that would be appropriate for some projects.}
+The usability evaluation aims to determine whether FPVR provides an intuitive, comfortable, and useful introductory drone training experience. The survey will assess the clarity of controller instructions, ease of navigation, perceived control responsiveness, effectiveness of training feedback, and overall VR experience.
+
+The survey supports the evaluation of NFR-USAB-01, NFR-SAFE-01, and NFR-SAFE-02, as well as related functional requirements concerning flight controls, training environments, crash recovery, and post-flight reviews. The results will contribute to the project's Usability Report, identified as a Custom Document in the Problem Statement.
+
+\subsubsection{Participants and Evaluation Procedure}
+
+Participants will be selected from the three intended user profiles identified in Section G.8 of the SRS: novice FPV pilots, casual gamers or technology enthusiasts, and experienced FPV pilots. The study will aim to include approximately 6--9 participants, with representation from each profile where feasible.
+
+Each participant will receive a brief explanation of the simulator, its limitations, and the evaluation procedure. Participation will be voluntary, and participants may stop the session at any time if they experience discomfort. The headset will be used in a clear, stationary testing area, with a team member supervising the session.
+
+Participants will be asked to complete the following activities:
+
+\begin{enumerate}
+    \item Locate the control guide and identify the throttle, pitch, roll, and yaw controls.
+
+    \item Enter free-flight mode, practise basic drone movement, and return to the main menu.
+
+    \item Select an introductory obstacle course, navigate checkpoints, and interact with the crash-recovery options if a crash occurs.
+
+    \item Complete an obstacle course where feasible and review the recorded performance information, including completion time, crash count, score, and rating.
+\end{enumerate}
+
+The team will observe whether participants complete tasks successfully, request assistance, encounter navigation difficulties, or experience discomfort. These observations will supplement the survey responses.
+
+\subsubsection{Participant Background}
+
+Before beginning the evaluation, participants will answer the following questions to help interpret their feedback in relation to their experience.
+
+\begin{enumerate}
+    \item[\textbf{Q1.}] How much previous experience do you have operating FPV drones?
+
+    \textit{Options:} No experience, Beginner, Intermediate, Experienced.
+
+    \item[\textbf{Q2.}] How familiar are you with virtual reality headsets and VR applications?
+
+    \textit{Options:} Not familiar, Slightly familiar, Moderately familiar, Very familiar, Extremely familiar.
+
+    \item[\textbf{Q3.}] Which controller configuration did you use during the evaluation?
+
+    \textit{Options:} Meta Quest motion controllers, Xbox-compatible controller.
+\end{enumerate}
+
+The execution mode (standalone VR or PCVR) will also be recorded by the evaluator.
+
+\subsubsection{Usability Evaluation Questions}
+
+Participants will rate the following statements on a five-point Likert scale:
+
+\begin{center}
+\textbf{1 = Strongly Disagree, 2 = Disagree, 3 = Neutral,}\\
+\textbf{4 = Agree, 5 = Strongly Agree}
+\end{center}
+
+Participants may select \textit{Not Applicable} for features they did not experience.
+
+\paragraph{Controller Interaction and Flight Experience}
+
+\begin{enumerate}
+    \item[\textbf{Q4.}] The instructions clearly explained how to use the throttle, pitch, roll, and yaw controls.
+
+    \item[\textbf{Q5.}] The drone responded to my controller inputs without noticeable delay.
+
+    \item[\textbf{Q6.}] The drone's movement was predictable and easy to understand while practising.
+
+    \item[\textbf{Q7.}] The first-person VR view made it easy to understand the drone's position and direction of movement.
+\end{enumerate}
+
+\paragraph{Navigation and Training Experience}
+
+\begin{enumerate}
+    \item[\textbf{Q8.}] I could easily navigate the menus and select the training mode or level I wanted.
+
+    \item[\textbf{Q9.}] The obstacle-course objectives and checkpoint progression were easy to understand.
+
+    \item[\textbf{Q10.}] The difference between restarting a level and respawning at the last completed checkpoint was clear.
+
+    \item[\textbf{Q11.}] The free-flight mode provided a useful environment for becoming familiar with the controls before attempting obstacle courses.
+\end{enumerate}
+
+\paragraph{Performance Feedback}
+
+\begin{enumerate}
+    \item[\textbf{Q12.}] The post-flight review clearly communicated my performance through completion time, crashes, score, and rating.
+
+    \item[\textbf{Q13.}] The performance feedback helped me identify areas where I could improve my next attempt.
+\end{enumerate}
+
+\paragraph{VR Comfort and Safety}
+
+\begin{enumerate}
+    \item[\textbf{Q14.}] I was able to operate the simulator comfortably while remaining seated or standing in one location.
+
+    \item[\textbf{Q15.}] The pause and exit options were easy to find and use without removing the VR headset.
+
+    \item[\textbf{Q16.}] The simulator clearly communicated that success in virtual training does not guarantee the ability to safely fly a real drone.
+\end{enumerate}
+
+\paragraph{Overall Experience}
+
+\begin{enumerate}
+    \item[\textbf{Q17.}] Overall, FPVR provided an understandable and useful environment for introductory drone flight practice.
+\end{enumerate}
+
+\subsubsection{Additional Feedback Questions}
+
+The following questions will collect qualitative feedback that may not be captured by the numerical ratings.
+
+\begin{enumerate}
+    \item[\textbf{Q18.}] Did you experience any discomfort during the VR session, such as dizziness, nausea, eye strain, or disorientation? If so, please describe it. Participants may choose not to answer.
+
+    \item[\textbf{Q19.}] Which aspect of the simulator did you find most helpful for learning or practising drone controls?
+
+    \item[\textbf{Q20.}] What difficulties or confusing interactions did you encounter while using the simulator?
+
+    \item[\textbf{Q21.}] What changes would most improve your overall training experience?
+
+    \item[\textbf{Q22.}] For participants with previous FPV drone experience: How did the simulated drone's behaviour compare with your experience operating a physical drone? Were any movements or control responses noticeably unrealistic?
+\end{enumerate}
+
+\subsubsection{Evaluation and Analysis}
+
+The results of the survey will be analyzed using both quantitative and qualitative methods. For each Likert-scale question, the team will calculate the average rating and summarize the distribution of responses. Responses marked \textit{Not Applicable} will be excluded from the corresponding numerical calculations.
+
+Results will be grouped by participants' prior FPV drone experience where the sample size permits. This will help determine whether beginners and experienced pilots encounter different usability problems or have different expectations regarding flight realism and training feedback.
+
+The team will also record task completion, required assistance, observed navigation errors, and reported discomfort. Open-ended responses will be reviewed to identify recurring usability concerns and suggestions for improvement.
+
+The findings will be documented in the Usability Report and used to inform changes to the controller guide, interface navigation, training environments, crash-recovery interactions, and performance feedback. Due to the limited number of participants, the results will be treated as formative usability evidence rather than definitive proof of improved real-world drone piloting ability.
 
 \newpage{}
 
