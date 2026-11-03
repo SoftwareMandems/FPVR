@@ -2,6 +2,7 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{float}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -670,8 +671,124 @@ This is where you can place additional information.
 
 \subsection{Symbolic Parameters}
 
-The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.
+\label{sec:symbolic-parameters}
+
+The system tests defined in Section 4 use symbolic constants to specify test conditions, acceptance thresholds, and expected results. Defining these parameters in one location ensures consistency across verification activities and allows their values to be updated without introducing conflicting test criteria.
+
+The constants in Table~\ref{tab:vnv-system-parameters} are derived from the Software Requirements Specification (SRS) and the Hazard Analysis. The SRS provides the primary acceptance baseline, while differences between the two documents will be reconciled through the SRS verification process described in Section 3.2.
+
+\begin{table}[H]
+\centering
+\caption{Symbolic Constants for System Tests}
+\label{tab:vnv-system-parameters}
+\small
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Constant} & \textbf{Value} & \textbf{Description and Requirements} \\
+\midrule
+
+\texttt{FPS\_MIN} & 72 FPS &
+Minimum average rendered frame rate in standalone mode (NFR-PERF-01). \\
+
+\texttt{T\_FPS} & 120 s &
+Duration of each rendering performance test (NFR-PERF-01). \\
+
+\texttt{T\_INPUT} & 100 ms &
+Maximum input-to-state-update time for qualifying events (NFR-PERF-02). \\
+
+\texttt{N\_INPUT} & 100 &
+Number of input events evaluated during response testing (NFR-PERF-02). \\
+
+\texttt{P\_INPUT} & 95\% &
+Minimum proportion of input events meeting the response-time threshold (NFR-PERF-02). \\
+
+\texttt{N\_RECOVERY} & 20 &
+Consecutive crash-and-respawn cycles per required obstacle-course environment (NFR-REL-01). \\
+
+\texttt{N\_ENV} & 2 &
+Minimum number of distinct virtual environments (FR-LVL-04). \\
+
+\texttt{N\_LEVEL} & 3 &
+Minimum number of selectable obstacle-course levels (FR-LVL-03). \\
+
+\texttt{N\_CHECKPOINT} & 2 &
+Minimum number of ordered checkpoints per obstacle course (FR-CHK-01). \\
+
+\texttt{S\_BASE} & 1000 &
+Initial score used in the performance calculation (FR-PER-08). \\
+
+\texttt{P\_CRASH} & 100 &
+Score penalty for each registered crash (FR-PER-08). \\
+
+\texttt{S\_GOLD} & 800 &
+Minimum score for a Gold rating (FR-PER-09). \\
+
+\texttt{S\_SILVER} & 600 &
+Minimum score for a Silver rating (FR-PER-09). \\
+
+\texttt{S\_BRONZE} & 400 &
+Minimum score for a Bronze rating (FR-PER-09). \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The numerical score is defined in FR-PER-08 as
+
+\[
+S = \max(0, S_{\mathrm{BASE}} - \lfloor T \rfloor
+    - P_{\mathrm{CRASH}}C),
+\]
+
+where $T$ is the accumulated active flight time in seconds and $C$ is the number of registered crashes. Ratings are assigned using the thresholds in Table~\ref{tab:vnv-system-parameters}, with scores below \texttt{S\_BRONZE} classified as Needs Improvement.
+
+Additional parameters from the Hazard Analysis and the planned validation studies are provided in Table~\ref{tab:vnv-additional-parameters}.
+
+\begin{table}[H]
+\centering
+\caption{Additional Safety and Validation Parameters}
+\label{tab:vnv-additional-parameters}
+\small
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Constant} & \textbf{Value} & \textbf{Description and Source} \\
+\midrule
+
+\texttt{T\_BREAK} & 30 min &
+Continuous-play duration before displaying a break reminder (Hazard Analysis SR21). \\
+
+\texttt{F\_FLASH} & 3 per second &
+Maximum permitted number of flashes within any one-second period (Hazard Analysis SR22). \\
+
+\texttt{N\_CRASH\_SUG} & 3 &
+Consecutive crashes within the same checkpoint section before suggesting free-flight practice (Hazard Analysis SR24). \\
+
+\texttt{N\_BEGINNER} & 4 &
+Target number of participants for the beginner interface study (Section 3.7). \\
+
+\texttt{N\_PILOT} & 2 &
+Target number of participants for the experienced-pilot realism study (Section 3.7). \\
+
+\texttt{B\_TASK\_PASS} & 3 of 4 &
+Proposed minimum number of beginners completing each core task without assistance (Section 3.7). \\
+
+\texttt{B\_RATING} & 4/5 &
+Proposed minimum median beginner survey rating for each item (Section 3.7). \\
+
+\texttt{P\_RATING} & 4/5 &
+Proposed minimum rating from each experienced pilot for each realism item (Section 3.7). \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The validation-study parameters represent proposed evaluation targets rather than acceptance requirements established by the SRS. These targets will be reviewed with the supervisor before participant testing.
+
+The SRS also identifies proposed parameters for takeoff clearance, gravity verification, and performance-failure handling (PR-FLT-01, PR-FLT-02, and SR-04). Their numerical values remain subject to approval and will not be treated as finalized acceptance criteria until they are agreed upon and documented.
+
+The Hazard Analysis and SRS currently specify different frame-rate and input-response thresholds. These differences will be resolved through the review process in Section 3.2, with corresponding updates made to the system tests and symbolic parameters.
+
+Once the test cases in Sections 4 and 5 are finalized, this section will be reviewed to ensure every symbolic constant used in the tests is defined and that unused parameters are removed.
 
 \subsection{Usability Survey Questions?}
 
