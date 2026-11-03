@@ -360,20 +360,18 @@ How test will be performed:
   requirements.}
 
 \section{Unit Test Description}
+\label{sec:unit}
 
-\wss{This section should not be filled in until after the MIS (detailed design
-  document) has been completed.}
+This section describes the unit testing for the nine FPVR modules at the code
+level. These tests complement the system tests in section 4 by checking the
+rules behind each requirement in isolation, such as score calculation,
+checkpoint order, and leaderboard ranking.
 
-\wss{Reference your MIS (detailed design document) and explain your overall
-philosophy for test case selection.}  
-
-\wss{To save space and time, it may be an option to provide less detail in this section.  
-For the unit tests you can potentially layout your testing strategy here.  That is, you 
-can explain how tests will be selected for each module.  For instance, your test building 
-approach could be test cases for each access program, including one test for normal behaviour 
-and as many tests as needed for edge cases.  Rather than create the details of the input 
-and output here, you could point to the unit testing code.  For this to work, you code 
-needs to be well-documented, with meaningful names for all of the tests.}
+The modules follow the logical responsibilities in section S.1 of the SRS, and
+the MG and MIS will use the same nine modules. The first eight are core modules.
+Intelligent Feedback is optional and depends on the scope decision recorded in
+the SRS. Unit tests are organized by module and will run in the continuous
+integration pipeline using the Unity Test Framework, which is based on NUnit.
 
 \subsection{Unit Testing Scope}
 
