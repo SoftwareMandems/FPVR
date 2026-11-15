@@ -142,6 +142,7 @@ other shows the relation between anticipated changes and the modules. Section
 \ref{SecUse} describes the use relation between modules.
 
 
+
 \section{Anticipated and Unlikely Changes} \label{SecChange}
 
 This section identifies potential changes to the FPVR system that may
@@ -311,19 +312,72 @@ and FR-REV-04.
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
-The module design should be as general as possible. However, a general system is
-more complex. Sometimes this complexity is not necessary. Fixing some design
-decisions at the system architecture stage can simplify the software design. If
-these decision should later need to be changed, then many parts of the design
-will potentially need to be modified. Hence, it is not intended that these
-decisions will be changed.
+Although the modular design should accommodate anticipated changes,
+certain fundamental architectural and scope decisions are expected
+to remain stable. Designing the system to support arbitrary changes
+to these decisions would introduce unnecessary complexity. The
+following decisions are therefore classified as unlikely changes.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
-\end{description}
 
+\item[\refstepcounter{ucnum} \uctheucnum
+\label{ucSimulation}:]
+\textbf{Simulation-Based Drone Operation.}
+FPVR will remain a virtual training system rather than a system for
+controlling physical drones. All drone movement, collisions, and
+training activities will occur within simulated environments.
+Communication with or control of physical drones is outside the
+project's scope. Consequently, the system architecture does not
+need to accommodate physical drone communication or real-world
+flight-control hardware interfaces.
+
+\item[\refstepcounter{ucnum} \uctheucnum
+\label{ucAxes}:]
+\textbf{Fundamental Drone Control Axes.}
+The primary flight controls will remain throttle, pitch, roll, and
+yaw. These four control axes form the basis of FPV drone operation
+within the simulator and are required regardless of the specific
+controller device or flight physics implementation. Although input
+mappings and flight response algorithms may change, the fundamental
+control interface is expected to remain consistent.
+
+\item[\refstepcounter{ucnum} \uctheucnum
+\label{ucPlatform}:]
+\textbf{Primary Development Platform and VR Requirement.}
+FPVR will continue to use Unity and C\# as its primary development
+technologies, with the Meta Quest 3S as the target VR headset.
+The system is designed to support standalone and PCVR execution,
+and a compatible VR headset will remain necessary for operation.
+Although the underlying runtime integration and rendering
+implementation may change, replacing the primary development
+platform or removing the VR requirement is not anticipated.
+
+\item[\refstepcounter{ucnum} \uctheucnum
+\label{ucTraining}:]
+\textbf{Core Training Structure.}
+The fundamental training structure will continue to consist of
+free-flight practice and structured obstacle-course levels.
+Free-flight mode will provide unrestricted practice, while
+obstacle-course levels will use ordered checkpoints, crash recovery,
+and performance evaluation. The specific environments, course
+layouts, and evaluation algorithms may change, but these core
+training capabilities are expected to remain part of the system.
+
+\item[\refstepcounter{ucnum} \uctheucnum
+\label{ucPerformance}:]
+\textbf{Core Performance Tracking and Account Capabilities.}
+FPVR will continue to provide performance tracking through
+completion times, crash counts, scores, and performance ratings.
+The system will also retain support for player accounts, local
+result storage, cloud-backed records, and leaderboards. Although
+the algorithms and storage technologies may change, the ability
+to evaluate and retain training results is a fundamental part of
+the intended user experience. Core flight training and local
+performance review will remain available without an internet
+connection, while online account and synchronization features
+may require network connectivity.
+
+\end{description}
 \section{Module Hierarchy} \label{SecMH}
 
 This section provides an overview of the module design. Modules are summarized
