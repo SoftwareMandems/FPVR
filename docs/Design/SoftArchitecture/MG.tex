@@ -226,18 +226,38 @@ actually be implemented.
 \label{TblMH}
 \end{table}
 
-\section{Connection Between Requirements and Design} \label{SecConnection}
+\section{Connection Between Requirements and Design}
+\label{SecConnection}
 
-The design of the system is intended to satisfy the requirements developed in
-the SRS. In this stage, the system is decomposed into modules. The connection
-between requirements and modules is listed in Table~\ref{TblRT}.
+The design of FPVR is intended to satisfy the requirements
+established in the Software Requirements Specification (SRS).
+The following key design decisions were made to address
+specific requirements while maintaining modularity and
+information hiding.
 
-\wss{The intention of this section is to document decisions that are made
-  ``between'' the requirements and the design.  To satisfy some requirements,
-  design decisions need to be made.  Rather than make these decisions implicit,
-  they are explicitly recorded here.  For instance, if a program has security
-  requirements, a specific design decision may be made to satisfy those
-  requirements with a password.}
+\begin{itemize}
+
+    \item \textbf{VR Platform Interface (\mref{mXR}):}
+    To satisfy FR-UI-01--02, NFR-INST-01--02, and
+    NFR-PERF-01, a dedicated module abstracts headset tracking,
+    rendering, and VR runtime integration, allowing standalone
+    and PCVR implementations to be managed independently of
+    the core simulation.
+
+    \item \textbf{Controller Input Interface (\mref{mController}):}
+    To satisfy FR-UI-03--04, NFR-COMP-01, and NFR-PERF-02,
+    controller-specific input mappings are isolated in a module
+    that translates supported device inputs into standardized
+    throttle, pitch, roll, and yaw commands.
+
+    \item \textbf{User Interface (\mref{mUI}):}
+    To satisfy FR-UI-01, FR-UI-04--06, FR-REV-01--05,
+    and NFR-USAB-01, a dedicated interface module handles
+    menus, control instructions, in-flight displays, and
+    post-flight reviews without exposing the underlying
+    simulation logic.
+
+\end{itemize}
 
 \section{Module Decomposition} \label{SecMD}
 
