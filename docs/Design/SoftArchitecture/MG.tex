@@ -185,16 +185,58 @@ decisions will be changed.
 
 \section{Module Hierarchy} \label{SecMH}
 
-This section provides an overview of the module design. Modules are summarized
-in a hierarchy decomposed by secrets in Table \ref{TblMH}. The modules listed
-below, which are leaves in the hierarchy tree, are the modules that will
-actually be implemented.
+This section provides an overview of the modular design of FPVR.
+The system is decomposed according to the principle of information
+hiding. The modules are organized into hardware-hiding,
+behaviour-hiding, and software decision modules.
+
+Each module encapsulates a specific responsibility or design
+decision to minimize the impact of changes on other modules.
+The leaf modules intended for implementation are listed below
+and summarized in Table \ref{TblMH}.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
-\end{description}
 
+\item[\refstepcounter{mnum} \mthemnum \label{mXR}:]
+VR Platform Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mController}:]
+Controller Input Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mUI}:]
+User Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mTraining}:]
+Training Session Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mEnvironment}:]
+Course and Environment Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mFlightState}:]
+Flight State and Crash Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mCheckpoint}:]
+Checkpoint and Recovery Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mPerformance}:]
+Timing and Performance Evaluation Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mAccount}:]
+Account and Authentication Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mLeaderboard}:]
+Results and Leaderboard Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mPhysics}:]
+Flight Dynamics Model
+
+\item[\refstepcounter{mnum} \mthemnum \label{mStorage}:]
+Data Persistence Module
+
+\item[\refstepcounter{mnum} \mthemnum \label{mAI}:]
+Intelligent Feedback Analyzer (Optional)
+
+\end{description}
 
 \begin{table}[h!]
 \centering
