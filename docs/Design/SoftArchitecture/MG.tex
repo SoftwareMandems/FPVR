@@ -145,239 +145,110 @@ other shows the relation between anticipated changes and the modules. Section
 
 \section{Anticipated and Unlikely Changes} \label{SecChange}
 
-This section identifies potential changes to the FPVR system that may
-affect its software architecture. These changes are classified into
-anticipated changes, which the modular design should accommodate, and
-unlikely changes, which are expected to remain stable throughout
-development.
-
-The classification is based on the requirements and constraints
-established in the FPVR Software Requirements Specification (SRS).
-Anticipated changes guide the separation of responsibilities between
-modules, while unlikely changes establish architectural decisions
-that do not require the same degree of flexibility.
-
+This section identifies possible changes to the FPVR system.
+Changes are classified as anticipated or unlikely based on their
+expected likelihood during development.
 
 \subsection{Anticipated Changes} \label{SecAchange}
 
-Anticipated changes represent aspects of the system's requirements,
-design, or implementation that may evolve as development progresses.
-Following the principle of information hiding, these decisions should
-be encapsulated within individual modules wherever possible,
-minimizing the impact of modifications on the rest of the system.
+Anticipated changes represent design or implementation decisions that
+may evolve during development. Ideally, each change is hidden within
+a module so that modifications have minimal impact on other modules.
 
 \begin{description}
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acController}:]
-\textbf{Controller Input Mapping and Integration.}
-The specific methods used to detect, configure, and map controller
-inputs may change as different input devices are tested. FPVR is
-required to support Meta Quest motion controllers and a compatible
-gamepad, but the underlying input-handling mechanisms, axis mappings,
-calibration procedures, and device-specific integration may evolve.
-These details should be isolated so that controller configurations
-can be modified without changing the flight simulation logic.
-This change relates to SRS requirements FR-UI-02--04 and NFR-COMP-01.
+\item[\refstepcounter{acnum} \actheacnum \label{acController}:]
+The controller input mappings, calibration procedures, and integration
+methods may change as different supported controllers are tested.
+(Related SRS: FR-UI-02--04, NFR-COMP-01.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acPhysics}:]
-\textbf{Drone Flight Physics Model.}
-The algorithms and parameters used to simulate drone flight behaviour
-may change as the team evaluates the realism and responsiveness of
-the simulation. This includes the modelling of thrust, gravity,
-acceleration, rotation, and momentum. The project may adopt or refine
-an existing flight model to improve accuracy. Such changes should be
-isolated from the training environments, controller interfaces, and
-performance evaluation components.
-This change relates to SRS requirements FR-FLT-01--06.
+\item[\refstepcounter{acnum} \actheacnum \label{acPhysics}:]
+The algorithms and parameters used to simulate drone thrust, gravity,
+rotation, and momentum may change to improve flight realism and
+responsiveness. (Related SRS: FR-FLT-01--06.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acEnvironment}:]
-\textbf{Training Environments and Course Configurations.}
-The layouts, obstacles, checkpoint placements, and difficulty of
-training environments are expected to change as new courses are
-developed and user feedback is collected. FPVR must support multiple
-environments and obstacle-course levels, but their specific
-configurations may be modified or expanded. Separating environment
-and course definitions from the underlying flight and training logic
-will allow new training scenarios to be introduced without modifying
-unrelated modules.
-This change relates to SRS requirements FR-LVL-01--07 and FR-CHK-01.
+\item[\refstepcounter{acnum} \actheacnum \label{acEnvironment}:]
+Training environment layouts, obstacles, and checkpoint configurations
+may change as new courses are developed and user feedback is collected.
+(Related SRS: FR-LVL-01--07, FR-CHK-01.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acCheckpoint}:]
-\textbf{Checkpoint and Crash Recovery Implementation.}
-The internal representation and algorithms used to track checkpoint
-progression, detect valid checkpoint completion, and restore the drone
-following a crash may change during development. While the SRS
-specifies the required checkpoint ordering and recovery behaviour,
-the data structures and implementation methods used to satisfy these
-requirements may be refined. Encapsulating this functionality will
-allow changes without affecting the flight physics or scoring
-implementations.
-This change relates to SRS requirements FR-CHK-01--08.
+\item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
+The internal data structures and algorithms used for checkpoint
+tracking, collision handling, and drone respawning may change to
+improve reliability and maintainability.
+(Related SRS: FR-CHK-01--08.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acScoring}:]
-\textbf{Performance Evaluation and Scoring Algorithms.}
-The scoring formula, performance rating thresholds, and methods used
-to evaluate flight performance may change following testing and
-feedback. The current SRS defines an initial scoring formula based
-on completion time and crashes, along with corresponding performance
-rating categories. These criteria may require adjustment to better
-reflect training difficulty and user performance. Any changes to the
-specified scoring requirements must also be reflected in the SRS and
-associated verification tests. Separating performance evaluation
-from flight simulation and training progression will minimize the
-impact of such changes.
-This change relates to SRS requirements FR-PER-01--10.
+\item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
+The scoring formula, performance rating thresholds, and evaluation
+methods may change based on testing and feedback to better reflect
+user performance. (Related SRS: FR-PER-01--10.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acUI}:]
-\textbf{User Interface Design.}
-The layout, presentation, and interaction methods of the user
-interface may change based on usability testing and user feedback.
-This includes the main menu, level selection, in-flight displays,
-crash recovery menus, controller instructions, and post-flight
-performance reviews. The underlying interface design should remain
-adaptable without requiring changes to the modules responsible for
-flight simulation, training progression, or performance calculations.
-This change relates to SRS requirements FR-UI-04--06 and
-FR-REV-01--05.
+\item[\refstepcounter{acnum} \actheacnum \label{acUI}:]
+The layout and design of the user interface, including menus,
+in-flight displays, and performance reviews, may change to improve
+usability. (Related SRS: FR-UI-04--06, FR-REV-01--05.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acVR}:]
-\textbf{VR Runtime Integration and Rendering Implementation.}
-The specific methods used to communicate with the VR runtime,
-manage headset tracking, and render the simulated environment may
-change as the team evaluates compatibility and performance. FPVR
-must support both standalone and PCVR execution, but the underlying
-runtime integration, headset connection mechanisms, and rendering
-optimizations may require modification. These implementation
-details should be isolated so that changes to the VR platform
-integration do not affect the core simulation and training
-functionality.
-This change relates to SRS requirements FR-UI-01--03,
-NFR-INST-01--02, and NFR-PERF-01.
+\item[\refstepcounter{acnum} \actheacnum \label{acVR}:]
+The VR runtime integration, headset communication methods, and
+rendering optimizations may change to improve compatibility and
+performance across standalone and PCVR modes.
+(Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acStorage}:]
-\textbf{Data Storage and Synchronization Implementation.}
-The database technology, data structures, storage formats, and
-synchronization mechanisms used to maintain player results may
-change as the persistence system is developed. FPVR requires local
-result storage, cloud-backed performance records, and local and
-global leaderboards. However, the underlying database schema,
-storage provider, and methods for synchronizing offline results
-with the online service may evolve. Encapsulating these decisions
-will allow the storage implementation to change without affecting
-the performance evaluation and training modules.
-This change relates to SRS requirements FR-DAT-01--10
-and NFR-DAT-01.
+\item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
+The database technology, storage schema, and synchronization
+mechanisms may change as local and cloud-based result storage
+is developed. (Related SRS: FR-DAT-01--10, NFR-DAT-01.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acAuthentication}:]
-\textbf{Account Authentication and Online Service Integration.}
-The implementation of player authentication and communication with
-online services may change based on security requirements and the
-selected backend technologies. This includes the authentication
-provider, session management mechanisms, and communication
-interfaces used for account registration, sign-in, and protected
-result submission. These decisions should be isolated from the
-core training functionality so that authentication and online-service
-implementations can evolve independently while preserving the
-required account and security behaviour.
-This change relates to SRS requirements FR-ACC-01--05
-and NFR-SEC-01--02.
+\item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
+The authentication provider, session management, and online service
+communication methods may change based on security requirements
+and backend implementation choices.
+(Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
 
-\item[\refstepcounter{acnum} \actheacnum
-\label{acAI}:]
-\textbf{Intelligent Flight Feedback Implementation.}
-The algorithms, models, and technologies used to generate intelligent
-flight feedback may change as the team evaluates feasibility and
-effectiveness. The implementation may use rule-based analysis, an
-existing AI model, or an external analysis service. The specific
-approach, input data representation, and feedback-generation methods
-have not yet been finalized. This functionality should be isolated
-from the standard performance evaluation and post-flight review
-modules, ensuring that changes to or the unavailability of
-intelligent feedback do not affect the core training experience.
-This capability remains subject to feasibility evaluation.
-This change relates to SRS requirements FR-AI-01--03
-and FR-REV-04.
+\item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
+The algorithms, AI models, or external services used to generate
+intelligent flight feedback may change as their feasibility and
+effectiveness are evaluated. This functionality remains optional.
+(Related SRS: FR-AI-01--03, FR-REV-04.)
 
 \end{description}
 
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
-Although the modular design should accommodate anticipated changes,
-certain fundamental architectural and scope decisions are expected
-to remain stable. Designing the system to support arbitrary changes
-to these decisions would introduce unnecessary complexity. The
-following decisions are therefore classified as unlikely changes.
+Certain fundamental design and scope decisions are expected to remain
+stable throughout development. Supporting arbitrary changes to these
+decisions would introduce unnecessary complexity.
 
 \begin{description}
 
-\item[\refstepcounter{ucnum} \uctheucnum
-\label{ucSimulation}:]
-\textbf{Simulation-Based Drone Operation.}
-FPVR will remain a virtual training system rather than a system for
-controlling physical drones. All drone movement, collisions, and
-training activities will occur within simulated environments.
-Communication with or control of physical drones is outside the
-project's scope. Consequently, the system architecture does not
-need to accommodate physical drone communication or real-world
-flight-control hardware interfaces.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucSimulation}:]
+FPVR will remain a virtual drone training simulator and will not
+communicate with or control physical drones.
 
-\item[\refstepcounter{ucnum} \uctheucnum
-\label{ucAxes}:]
-\textbf{Fundamental Drone Control Axes.}
-The primary flight controls will remain throttle, pitch, roll, and
-yaw. These four control axes form the basis of FPV drone operation
-within the simulator and are required regardless of the specific
-controller device or flight physics implementation. Although input
-mappings and flight response algorithms may change, the fundamental
-control interface is expected to remain consistent.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucAxes}:]
+The four fundamental drone control axes (throttle, pitch, roll,
+and yaw) will remain the primary inputs for simulated flight.
 
-\item[\refstepcounter{ucnum} \uctheucnum
-\label{ucPlatform}:]
-\textbf{Primary Development Platform and VR Requirement.}
-FPVR will continue to use Unity and C\# as its primary development
-technologies, with the Meta Quest 3S as the target VR headset.
-The system is designed to support standalone and PCVR execution,
-and a compatible VR headset will remain necessary for operation.
-Although the underlying runtime integration and rendering
-implementation may change, replacing the primary development
-platform or removing the VR requirement is not anticipated.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlatform}:]
+Unity and C\# will remain the primary development technologies,
+with the Meta Quest 3S as the target VR headset. Both standalone
+and PCVR execution will remain supported.
 
-\item[\refstepcounter{ucnum} \uctheucnum
-\label{ucTraining}:]
-\textbf{Core Training Structure.}
-The fundamental training structure will continue to consist of
-free-flight practice and structured obstacle-course levels.
-Free-flight mode will provide unrestricted practice, while
-obstacle-course levels will use ordered checkpoints, crash recovery,
-and performance evaluation. The specific environments, course
-layouts, and evaluation algorithms may change, but these core
-training capabilities are expected to remain part of the system.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucTraining}:]
+The core training structure will continue to include free-flight
+practice and obstacle-course levels with checkpoints, crash
+recovery, and performance evaluation.
 
-\item[\refstepcounter{ucnum} \uctheucnum
-\label{ucPerformance}:]
-\textbf{Core Performance Tracking and Account Capabilities.}
-FPVR will continue to provide performance tracking through
-completion times, crash counts, scores, and performance ratings.
-The system will also retain support for player accounts, local
-result storage, cloud-backed records, and leaderboards. Although
-the algorithms and storage technologies may change, the ability
-to evaluate and retain training results is a fundamental part of
-the intended user experience. Core flight training and local
-performance review will remain available without an internet
-connection, while online account and synchronization features
-may require network connectivity.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPerformance}:]
+FPVR will continue to support performance tracking, player accounts,
+local and cloud-based result storage, and leaderboards. Core training
+and local performance review will remain available without an
+internet connection.
 
 \end{description}
+
+
 \section{Module Hierarchy} \label{SecMH}
 
 This section provides an overview of the module design. Modules are summarized
