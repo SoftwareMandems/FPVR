@@ -159,23 +159,155 @@ that do not require the same degree of flexibility.
 
 \subsection{Anticipated Changes} \label{SecAchange}
 
-Anticipated changes are the source of the information that is to be hidden
-inside the modules. Ideally, changing one of the anticipated changes will only
-require changing the one module that hides the associated decision. The approach
-adapted here is called design for
-change.
+Anticipated changes represent aspects of the system's requirements,
+design, or implementation that may evolve as development progresses.
+Following the principle of information hiding, these decisions should
+be encapsulated within individual modules wherever possible,
+minimizing the impact of modifications on the rest of the system.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
-  hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acController}:]
+\textbf{Controller Input Mapping and Integration.}
+The specific methods used to detect, configure, and map controller
+inputs may change as different input devices are tested. FPVR is
+required to support Meta Quest motion controllers and a compatible
+gamepad, but the underlying input-handling mechanisms, axis mappings,
+calibration procedures, and device-specific integration may evolve.
+These details should be isolated so that controller configurations
+can be modified without changing the flight simulation logic.
+This change relates to SRS requirements FR-UI-02--04 and NFR-COMP-01.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acPhysics}:]
+\textbf{Drone Flight Physics Model.}
+The algorithms and parameters used to simulate drone flight behaviour
+may change as the team evaluates the realism and responsiveness of
+the simulation. This includes the modelling of thrust, gravity,
+acceleration, rotation, and momentum. The project may adopt or refine
+an existing flight model to improve accuracy. Such changes should be
+isolated from the training environments, controller interfaces, and
+performance evaluation components.
+This change relates to SRS requirements FR-FLT-01--06.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acEnvironment}:]
+\textbf{Training Environments and Course Configurations.}
+The layouts, obstacles, checkpoint placements, and difficulty of
+training environments are expected to change as new courses are
+developed and user feedback is collected. FPVR must support multiple
+environments and obstacle-course levels, but their specific
+configurations may be modified or expanded. Separating environment
+and course definitions from the underlying flight and training logic
+will allow new training scenarios to be introduced without modifying
+unrelated modules.
+This change relates to SRS requirements FR-LVL-01--07 and FR-CHK-01.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acCheckpoint}:]
+\textbf{Checkpoint and Crash Recovery Implementation.}
+The internal representation and algorithms used to track checkpoint
+progression, detect valid checkpoint completion, and restore the drone
+following a crash may change during development. While the SRS
+specifies the required checkpoint ordering and recovery behaviour,
+the data structures and implementation methods used to satisfy these
+requirements may be refined. Encapsulating this functionality will
+allow changes without affecting the flight physics or scoring
+implementations.
+This change relates to SRS requirements FR-CHK-01--08.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acScoring}:]
+\textbf{Performance Evaluation and Scoring Algorithms.}
+The scoring formula, performance rating thresholds, and methods used
+to evaluate flight performance may change following testing and
+feedback. The current SRS defines an initial scoring formula based
+on completion time and crashes, along with corresponding performance
+rating categories. These criteria may require adjustment to better
+reflect training difficulty and user performance. Any changes to the
+specified scoring requirements must also be reflected in the SRS and
+associated verification tests. Separating performance evaluation
+from flight simulation and training progression will minimize the
+impact of such changes.
+This change relates to SRS requirements FR-PER-01--10.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acUI}:]
+\textbf{User Interface Design.}
+The layout, presentation, and interaction methods of the user
+interface may change based on usability testing and user feedback.
+This includes the main menu, level selection, in-flight displays,
+crash recovery menus, controller instructions, and post-flight
+performance reviews. The underlying interface design should remain
+adaptable without requiring changes to the modules responsible for
+flight simulation, training progression, or performance calculations.
+This change relates to SRS requirements FR-UI-04--06 and
+FR-REV-01--05.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acVR}:]
+\textbf{VR Runtime Integration and Rendering Implementation.}
+The specific methods used to communicate with the VR runtime,
+manage headset tracking, and render the simulated environment may
+change as the team evaluates compatibility and performance. FPVR
+must support both standalone and PCVR execution, but the underlying
+runtime integration, headset connection mechanisms, and rendering
+optimizations may require modification. These implementation
+details should be isolated so that changes to the VR platform
+integration do not affect the core simulation and training
+functionality.
+This change relates to SRS requirements FR-UI-01--03,
+NFR-INST-01--02, and NFR-PERF-01.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acStorage}:]
+\textbf{Data Storage and Synchronization Implementation.}
+The database technology, data structures, storage formats, and
+synchronization mechanisms used to maintain player results may
+change as the persistence system is developed. FPVR requires local
+result storage, cloud-backed performance records, and local and
+global leaderboards. However, the underlying database schema,
+storage provider, and methods for synchronizing offline results
+with the online service may evolve. Encapsulating these decisions
+will allow the storage implementation to change without affecting
+the performance evaluation and training modules.
+This change relates to SRS requirements FR-DAT-01--10
+and NFR-DAT-01.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acAuthentication}:]
+\textbf{Account Authentication and Online Service Integration.}
+The implementation of player authentication and communication with
+online services may change based on security requirements and the
+selected backend technologies. This includes the authentication
+provider, session management mechanisms, and communication
+interfaces used for account registration, sign-in, and protected
+result submission. These decisions should be isolated from the
+core training functionality so that authentication and online-service
+implementations can evolve independently while preserving the
+required account and security behaviour.
+This change relates to SRS requirements FR-ACC-01--05
+and NFR-SEC-01--02.
+
+\item[\refstepcounter{acnum} \actheacnum
+\label{acAI}:]
+\textbf{Intelligent Flight Feedback Implementation.}
+The algorithms, models, and technologies used to generate intelligent
+flight feedback may change as the team evaluates feasibility and
+effectiveness. The implementation may use rule-based analysis, an
+existing AI model, or an external analysis service. The specific
+approach, input data representation, and feedback-generation methods
+have not yet been finalized. This functionality should be isolated
+from the standard performance evaluation and post-flight review
+modules, ensuring that changes to or the unavailability of
+intelligent feedback do not affect the core training experience.
+This capability remains subject to feasibility evaluation.
+This change relates to SRS requirements FR-AI-01--03
+and FR-REV-04.
+
 \end{description}
 
-\wss{Anticipated changes relate to changes that would be made in requirements,
-design or implementation choices.  They are not related to changes that are made
-at run-time, like the values of parameters.}
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
