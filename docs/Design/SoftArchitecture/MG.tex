@@ -278,6 +278,29 @@ Intelligent Feedback Analyzer (Optional)
 \label{TblMH}
 \end{table}
 
+The hardware-hiding modules abstract the VR runtime and controller
+hardware. The behaviour-hiding modules implement the functionality
+specified in the SRS, including training, checkpoint progression,
+performance evaluation, and account management.
+
+The software decision modules encapsulate internal algorithms and
+implementation choices, including flight dynamics, data persistence,
+and intelligent feedback.
+
+The Flight State and Crash Manager (\mref{mFlightState}) maintains
+flight state and registers crash events, while the Checkpoint and
+Recovery Manager (\mref{mCheckpoint}) handles checkpoint progression
+and respawning.
+
+The Results and Leaderboard Manager (\mref{mLeaderboard}) manages
+result synchronization and ranking behaviour, while the Data
+Persistence Module (\mref{mStorage}) hides the underlying storage
+implementation.
+
+The Intelligent Feedback Analyzer (\mref{mAI}) remains optional
+and subject to feasibility evaluation. All other modules support
+the core functionality defined in the SRS.
+
 \section{Connection Between Requirements and Design} \label{SecConnection}
 
 The design of the system is intended to satisfy the requirements developed in
