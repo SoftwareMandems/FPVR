@@ -257,6 +257,37 @@ information hiding.
     post-flight reviews without exposing the underlying
     simulation logic.
 
+    \item \textbf{Training Session Manager (\mref{mTraining}):}
+    To satisfy FR-LVL-01--02, FR-LVL-06--07, and FR-REV-03,
+    a session manager coordinates training modes, level
+    initialization, session transitions, and restarting or
+    exiting activities.
+
+    \item \textbf{Course and Environment Manager (\mref{mEnvironment}):}
+    To satisfy FR-LVL-03--05 and FR-CHK-01, a separate module
+    manages training environments, obstacle-course
+    configurations, and level selection, allowing course
+    content to change independently of flight mechanics.
+
+    \item \textbf{Flight State and Crash Manager (\mref{mFlightState}):}
+    To satisfy FR-FLT-04--06, a dedicated module maintains
+    the drone's flight state and manages collision and crash
+    events, ensuring that each crash is registered once and
+    normal flight is suspended appropriately.
+
+    \item \textbf{Checkpoint and Recovery Manager (\mref{mCheckpoint}):}
+    To satisfy FR-CHK-01--08 and NFR-REL-01, checkpoint
+    progression and recovery behaviour are encapsulated in
+    a separate module to maintain consistent checkpoint
+    ordering, respawning, and level restart operations.
+
+    \item \textbf{Timing and Performance Evaluation Manager
+    (\mref{mPerformance}):}
+    To satisfy FR-PER-01--10 and FR-REV-02, a dedicated
+    module manages flight timers, crash counts, scoring
+    calculations, and performance ratings independently
+    of the flight simulation and user interface.
+
 \end{itemize}
 
 \section{Module Decomposition} \label{SecMD}
