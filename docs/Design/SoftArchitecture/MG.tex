@@ -288,6 +288,39 @@ information hiding.
     calculations, and performance ratings independently
     of the flight simulation and user interface.
 
+    \item \textbf{Account and Authentication Manager (\mref{mAccount}):}
+    To satisfy FR-ACC-01--05 and NFR-SEC-01--02, account
+    registration, authentication, and session management
+    are separated from gameplay to protect user information
+    and support authenticated online features.
+
+    \item \textbf{Results and Leaderboard Manager (\mref{mLeaderboard}):}
+    To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
+    module manages result synchronization, leaderboard
+    rankings, and access to previous results while keeping
+    online service failures independent of core training.
+
+    \item \textbf{Flight Dynamics Model (\mref{mPhysics}):}
+    To satisfy FR-FLT-02--03, the mathematical algorithms
+    governing drone movement, thrust, rotation, and gravity
+    are isolated, allowing the flight model to be refined
+    without modifying controller input or training logic.
+
+    \item \textbf{Data Persistence Module (\mref{mStorage}):}
+    To satisfy FR-DAT-01--03, FR-DAT-09, and NFR-DAT-01,
+    local and cloud storage implementations are
+    encapsulated behind a common interface, allowing
+    database technologies and storage structures to change
+    independently of the modules using them.
+
+    \item \textbf{Intelligent Feedback Analyzer (\mref{mAI},
+    Optional):}
+    To support FR-AI-01--03 and FR-REV-04, intelligent
+    feedback generation is isolated from standard performance
+    evaluation. This allows the feedback algorithm or service
+    to change or become unavailable without preventing the
+    standard post-flight review.
+
 \end{itemize}
 
 \section{Module Decomposition} \label{SecMD}
