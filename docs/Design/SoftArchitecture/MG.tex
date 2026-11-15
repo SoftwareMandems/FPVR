@@ -238,33 +238,43 @@ Intelligent Feedback Analyzer (Optional)
 
 \end{description}
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabularx}{\textwidth}{p{0.32\textwidth} X}
+
 \toprule
-\textbf{Level 1} & \textbf{Level 2}\\
+\textbf{Level 1} & \textbf{Level 2} \\
 \midrule
 
-{Hardware-Hiding Module} & ~ \\
+\multirow{2}{0.32\textwidth}{Hardware-Hiding Modules}
+& \mref{mXR}: VR Platform Interface \\
+& \mref{mController}: Controller Input Interface \\
+
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{8}{0.32\textwidth}{Behaviour-Hiding Modules}
+& \mref{mUI}: User Interface \\
+& \mref{mTraining}: Training Session Manager \\
+& \mref{mEnvironment}: Course and Environment Manager \\
+& \mref{mFlightState}: Flight State and Crash Manager \\
+& \mref{mCheckpoint}: Checkpoint and Recovery Manager \\
+& \mref{mPerformance}: Timing and Performance Evaluation Manager \\
+& \mref{mAccount}: Account and Authentication Manager \\
+& \mref{mLeaderboard}: Results and Leaderboard Manager \\
+
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{3}{0.32\textwidth}{Software Decision Modules}
+& \mref{mPhysics}: Flight Dynamics Model \\
+& \mref{mStorage}: Data Persistence Module \\
+& \mref{mAI}: Intelligent Feedback Analyzer (Optional) \\
+
 \bottomrule
+\end{tabularx}
 
-\end{tabular}
-\caption{Module Hierarchy}
+\caption{FPVR Module Hierarchy}
 \label{TblMH}
 \end{table}
 
