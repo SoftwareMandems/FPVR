@@ -15,6 +15,8 @@
     linkcolor=red,
     urlcolor=blue
 }
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \input{../../Comments.text}
 \input{../../Common.text}
@@ -144,16 +146,21 @@ other shows the relation between anticipated changes and the modules. Section
 
 
 \section{Anticipated and Unlikely Changes} \label{SecChange}
+This section identifies potential changes to the FPVR system that may affect its software architecture. 
+These changes are classified into anticipated changes, which the modular design should accommodate, and 
+unlikely changes, which are expected to remain stable throughout development.
 
-This section identifies possible changes to the FPVR system.
-Changes are classified as anticipated or unlikely based on their
-expected likelihood during development.
+The classification is based on the requirements and constraints established in the FPVR Software 
+Requirements Specification (SRS). Anticipated changes guide the separation of responsibilities between 
+modules, while unlikely changes establish architectural decisions that do not require the same degree of 
+flexibility.
 
 \subsection{Anticipated Changes} \label{SecAchange}
 
-Anticipated changes represent design or implementation decisions that
-may evolve during development. Ideally, each change is hidden within
-a module so that modifications have minimal impact on other modules.
+Anticipated changes represent aspects of the system's requirements, design, or
+ implementation that may evolve as development progresses. Following the principle 
+ of information hiding, these decisions should be encapsulated within individual 
+ modules wherever possible, minimizing the impact of modifications on the rest of the system.
 
 \begin{description}
 
