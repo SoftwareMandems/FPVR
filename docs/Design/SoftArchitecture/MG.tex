@@ -309,30 +309,211 @@ Abstract Object.
 \end{description}
 
 
-\subsection{Behaviour-Hiding Module}
+\subsection{Behaviour-Hiding Modules}
+
+Behaviour-hiding modules encapsulate the functionality
+required by the SRS. They provide the externally observable
+behaviour of FPVR while hiding the internal details of
+how that behaviour is implemented.
+
+
+\subsubsection{User Interface (\mref{mUI})}
 
 \begin{description}
-\item[Secrets:]The contents of the required behaviours.
-\item[Services:]Includes programs that provide externally visible behaviour of
-  the system as specified in the software requirements specification (SRS)
-  documents. This module serves as a communication layer between the
-  hardware-hiding module and the software decision module. The programs in this
-  module will need to change if there are changes in the SRS.
-\item[Implemented By:] --
+
+\item[Secrets:]
+The layout, presentation logic, and interaction methods
+used for menus, in-flight displays, control instructions,
+and performance reviews.
+
+\item[Services:]
+Displays training menus, flight information, crash recovery
+choices, performance results, and user notifications.
+Accepts user selections and communicates them to the
+appropriate modules.
+
+\item[Implemented By:]
+Unity/C\# using Unity's user interface components.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
+
+\subsubsection{Training Session Manager (\mref{mTraining})}
 
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
-  input parameters module.
-\item[Implemented By:] [Your Program Name Here]
-\item[Type of Module:] [Record, Library, Abstract Object, or Abstract Data Type]
-  [Information to include for leaf modules in the decomposition by secrets tree.]
+
+\item[Secrets:]
+The internal session state representation and logic
+governing transitions between free flight, obstacle
+courses, recovery, and completed sessions.
+
+\item[Services:]
+Initializes and manages training sessions, coordinates
+mode selection, and handles session restarts, completion,
+and return-to-menu operations. Coordinates the reset of
+attempt-related state across the relevant modules.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
 
-\subsubsection{Etc.}
+
+\subsubsection{Course and Environment Manager (\mref{mEnvironment})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal representation of training environments,
+obstacle layouts, course configurations, and level
+difficulty definitions.
+
+\item[Services:]
+Loads and manages training environments, provides
+available course configurations, and supplies obstacle,
+checkpoint, and starting-position information to
+other modules.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using Unity scenes and
+environment assets.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Flight State and Crash Manager (\mref{mFlightState})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal representation of drone position,
+orientation, velocity, airborne status, and crash
+state, including the rules used to recognize and
+register crash events.
+
+\item[Services:]
+Maintains the current drone flight state, processes
+collision events, identifies valid crashes, and ensures
+each crash generates a single event before normal
+flight is suspended. Applies state updates calculated
+by the Flight Dynamics Model.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using Unity collision
+detection and flight-state management.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Checkpoint and Recovery Manager (\mref{mCheckpoint})}
+
+\begin{description}
+
+\item[Secrets:]
+The data structures and logic used to track checkpoint
+progression, validate checkpoint ordering, and determine
+recovery positions.
+
+\item[Services:]
+Tracks completed checkpoints, validates course
+progression, and determines checkpoint respawn or
+level restart positions. Preserves or resets checkpoint
+progress as required, while coordinating with the
+session manager for recovery and restart operations.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Timing and Performance Evaluation Manager
+(\mref{mPerformance})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal timer management, crash-count tracking,
+score calculation algorithms, and performance
+rating thresholds.
+
+\item[Services:]
+Tracks total and section flight times, records crash
+penalties from registered crash events, calculates
+final scores, assigns performance ratings, and
+provides results for post-flight review.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Account and Authentication Manager (\mref{mAccount})}
+
+\begin{description}
+
+\item[Secrets:]
+The authentication mechanisms, session management
+implementation, and methods used to validate and
+protect player credentials.
+
+\item[Services:]
+Provides account registration, sign-in, sign-out,
+and authenticated-session management. Controls access
+to account-related online functionality.
+
+\item[Implemented By:]
+FPVR application code integrated with a secure
+authentication service.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Results and Leaderboard Manager (\mref{mLeaderboard})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal result synchronization workflow,
+leaderboard ranking procedures, and methods used
+to coordinate local and online performance records.
+
+\item[Services:]
+Manages completed flight results, coordinates cloud
+synchronization and retries, retrieves previous
+results, and provides local and global leaderboard
+rankings using the required ordering rules.
+
+\item[Implemented By:]
+FPVR application code with integration to the
+Data Persistence Module (\mref{mStorage}).
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
 
 
 \subsection{Software Decision Module}
