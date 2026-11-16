@@ -240,6 +240,7 @@ between requirements and modules is listed in Table~\ref{TblRT}.
   requirements with a password.}
 
 
+
 \section{Module Decomposition} \label{SecMD}
 
 Modules are decomposed according to the principle of information
@@ -516,20 +517,90 @@ Abstract Object.
 \end{description}
 
 
-\subsection{Software Decision Module}
+\subsection{Software Decision Modules}
+
+Software decision modules encapsulate internal algorithms,
+data structures, and implementation choices that are not
+directly specified by the externally observable requirements.
+These modules allow underlying technical decisions to change
+without affecting the rest of the system.
+
+
+\subsubsection{Flight Dynamics Model (\mref{mPhysics})}
 
 \begin{description}
-\item[Secrets:] The design decision based on mathematical theorems, physical
-  facts, or programming considerations. The secrets of this module are
-  \emph{not} described in the SRS.
-\item[Services:] Includes data structure and algorithms used in the system that
-  do not provide direct interaction with the user. 
-  % Changes in these modules are more likely to be motivated by a desire to
-  % improve performance than by externally imposed changes.
-\item[Implemented By:] --
+
+\item[Secrets:]
+The mathematical equations, physical parameters, and
+numerical methods used to calculate drone movement,
+including thrust, gravity, acceleration, and rotation.
+
+\item[Services:]
+Calculates changes in simulated drone motion from
+the current flight state and standardized controller
+inputs. Provides the resulting state updates to the
+flight-state management functionality.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using the selected flight
+dynamics model.
+
+\item[Type of Module:]
+Library.
+
 \end{description}
 
-\subsubsection{Etc.}
+
+\subsubsection{Data Persistence Module (\mref{mStorage})}
+
+\begin{description}
+
+\item[Secrets:]
+The database technology, storage schemas, serialization
+formats, and implementation details used for local
+and cloud-based result persistence.
+
+\item[Services:]
+Provides interfaces to store, retrieve, and update
+player results and synchronization status without
+exposing the underlying storage implementation.
+
+\item[Implemented By:]
+FPVR application code integrated with local storage
+and a cloud database service.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Intelligent Feedback Analyzer
+(\mref{mAI}) -- Optional}
+
+\begin{description}
+
+\item[Secrets:]
+The algorithms, AI models, data-processing techniques,
+and external service integrations used to generate
+natural-language flight feedback.
+
+\item[Services:]
+Analyzes completed attempt data, including flight time,
+checkpoint progression, and crashes, to generate
+performance observations. Reports unavailable analysis
+without preventing the standard post-flight review.
+
+\item[Implemented By:]
+FPVR application code using a selected feedback
+algorithm or AI service, subject to feasibility
+evaluation.
+
+\item[Type of Module:]
+Library.
+
+\end{description}
+
 
 \section{Traceability Matrix} \label{SecTM}
 
