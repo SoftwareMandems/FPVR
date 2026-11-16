@@ -239,32 +239,75 @@ between requirements and modules is listed in Table~\ref{TblRT}.
   requirements, a specific design decision may be made to satisfy those
   requirements with a password.}
 
+
 \section{Module Decomposition} \label{SecMD}
 
-Modules are decomposed according to the principle of ``information hiding''
-proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
-decomposition is a brief statement of the design decision hidden by the
-module. The \emph{Services} field specifies \emph{what} the module will do
-without documenting \emph{how} to do it. For each module, a suggestion for the
-implementing software is given under the \emph{Implemented By} title. If the
-entry is \emph{OS}, this means that the module is provided by the operating
-system or by standard programming language libraries.  \emph{\progname{}} means the
-module will be implemented by the \progname{} software.
+Modules are decomposed according to the principle of information
+hiding proposed by \citet{ParnasEtAl1984}. The \emph{Secrets}
+field describes the design decisions hidden by each module,
+while the \emph{Services} field specifies what the module
+provides without describing how it is implemented.
 
-Only the leaf modules in the hierarchy have to be implemented. If a dash
-(\emph{--}) is shown, this means that the module is not a leaf and will not have
-to be implemented.
+The \emph{Implemented By} field identifies the intended
+implementation technology, and the \emph{Type of Module}
+field identifies the module's abstraction.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+
+\subsection{Hardware-Hiding Modules}
+
+Hardware-hiding modules encapsulate the details of interacting
+with physical devices and platform-specific services, allowing
+the remaining system components to operate independently
+of hardware implementation details.
+
+
+\subsubsection{VR Platform Interface (\mref{mXR})}
 
 \begin{description}
-\item[Secrets:]The data structure and algorithm used to implement the virtual
-  hardware.
-\item[Services:]Serves as a virtual hardware used by the rest of the
-  system. This module provides the interface between the hardware and the
-  software. So, the system can use it to display outputs or to accept inputs.
-\item[Implemented By:] OS
+
+\item[Secrets:]
+The VR runtime integration, headset tracking mechanisms,
+rendering interfaces, and platform-specific differences
+between standalone and PCVR execution.
+
+\item[Services:]
+Provides access to headset pose, tracking status, and VR
+display services. Manages communication with the supported
+VR runtime.
+
+\item[Implemented By:]
+Unity/C\# using compatible Unity XR and Meta Quest runtime
+integrations.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
+
+
+\subsubsection{Controller Input Interface (\mref{mController})}
+
+\begin{description}
+
+\item[Secrets:]
+The device-specific controller mappings, input calibration
+methods, and mechanisms used to detect and process
+controller signals.
+
+\item[Services:]
+Converts inputs from supported motion controllers and
+gamepads into standardized throttle, pitch, roll, and yaw
+commands. Provides controller connection and input
+availability information.
+
+\item[Implemented By:]
+Unity/C\# using the supported controller input interfaces.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
 
 \subsection{Behaviour-Hiding Module}
 
