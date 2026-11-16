@@ -182,8 +182,12 @@ role.
   \begin{itemize}
     \item The \texttt{main} branch is kept stable and is the source of the
     published documents.
-    \item Work is done on a separate branch for each issue, named after the
-    issue number (e.g.\ \texttt{feature/18}).
+    \item Work is done on a separate branch for each issue, named by the
+    type of work and issue number (e.g.\ \texttt{feature/18} or
+    \texttt{bug/18}).
+    \item Since branch names identify the type of work and issue number, no
+    formal commit naming convention is required. Commit messages should be
+    short and descriptive, summarizing the change made.
     \item Changes are merged into \texttt{main} through pull requests, which
     must be reviewed and approved by at least one other team member and pass
     CI before merging. Each pull request links the issue it resolves (e.g.\
