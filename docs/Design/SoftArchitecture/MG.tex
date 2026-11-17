@@ -519,29 +519,69 @@ NFR-OFF-01 (Offline availability)
 \endgroup
 
 
+%----------------------------------------------------------
+% Table 3: Anticipated Changes to Modules
+%----------------------------------------------------------
+
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabularx}{\textwidth}{p{0.38\textwidth} X}
+
 \toprule
-\textbf{AC} & \textbf{Modules}\\
+\textbf{Anticipated Change (AC)}
+& \textbf{Modules} \\
 \midrule
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+
+\acref{acController}
+& \mref{mController} \\
+
+\acref{acPhysics}
+& \mref{mPhysics} \\
+
+\acref{acEnvironment}
+& \mref{mEnvironment} \\
+
+\acref{acCheckpoint}
+& \mref{mFlightState}, \mref{mCheckpoint} \\
+
+\acref{acScoring}
+& \mref{mPerformance} \\
+
+\acref{acUI}
+& \mref{mUI} \\
+
+\acref{acVR}
+& \mref{mXR} \\
+
+\acref{acStorage}
+& \mref{mLeaderboard}, \mref{mStorage} \\
+
+\acref{acAuthentication}
+& \mref{mAccount}, \mref{mLeaderboard} \\
+
+\acref{acAI}
+& \mref{mAI} \\
+
 \bottomrule
-\end{tabular}
+
+\end{tabularx}
+
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
+
+
+The requirements-to-modules matrix establishes traceability
+between the SRS and the proposed architecture. The
+anticipated-changes matrix identifies which modules encapsulate
+the implementation decisions most likely to evolve.
+
+The Intelligent Feedback Analyzer (\mref{mAI}) remains optional
+and subject to feasibility evaluation. Its unavailability must
+not affect the standard post-flight review provided by the
+core modules.
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
