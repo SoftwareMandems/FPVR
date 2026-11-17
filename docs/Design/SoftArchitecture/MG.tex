@@ -368,20 +368,102 @@ Intelligent Feedback Analyzer (Optional)
 \label{TblMH}
 \end{table}
 
-The hardware-hiding modules provide interfaces between the application and the VR hardware, including headset tracking and controller input. The behaviour-hiding modules implement the externally observable functionality specified in the SRS, such as training sessions, checkpoint progression, performance evaluation, and account management. The software decision modules encapsulate internal algorithms and implementation choices, including flight dynamics, data persistence, and intelligent feedback.
+\section{Connection Between Requirements and Design}
+\label{SecConnection}
 
-\section{Connection Between Requirements and Design} \label{SecConnection}
+The design of FPVR is intended to satisfy the requirements
+established in the Software Requirements Specification (SRS).
+The following key design decisions were made to address
+specific requirements while maintaining modularity and
+information hiding.
 
-The design of the system is intended to satisfy the requirements developed in
-the SRS. In this stage, the system is decomposed into modules. The connection
-between requirements and modules is listed in Table~\ref{TblRT}.
+\begin{itemize}
 
-\wss{The intention of this section is to document decisions that are made
-  ``between'' the requirements and the design.  To satisfy some requirements,
-  design decisions need to be made.  Rather than make these decisions implicit,
-  they are explicitly recorded here.  For instance, if a program has security
-  requirements, a specific design decision may be made to satisfy those
-  requirements with a password.}
+    \item \textbf{VR Platform Interface (\mref{mXR}):}
+    To satisfy FR-UI-01--02, NFR-INST-01--02, and
+    NFR-PERF-01, a dedicated module abstracts headset tracking,
+    rendering, and VR runtime integration, allowing standalone
+    and PCVR implementations to be managed independently of
+    the core simulation.
+
+    \item \textbf{Controller Input Interface (\mref{mController}):}
+    To satisfy FR-UI-03--04, NFR-COMP-01, and NFR-PERF-02,
+    controller-specific input mappings are isolated in a module
+    that translates supported device inputs into standardized
+    throttle, pitch, roll, and yaw commands.
+
+    \item \textbf{User Interface (\mref{mUI}):}
+    To satisfy FR-UI-01, FR-UI-04--06, FR-REV-01--05,
+    and NFR-USAB-01, a dedicated interface module handles
+    menus, control instructions, in-flight displays, and
+    post-flight reviews without exposing the underlying
+    simulation logic.
+
+    \item \textbf{Training Session Manager (\mref{mTraining}):}
+    To satisfy FR-LVL-01--02, FR-LVL-06--07, and FR-REV-03,
+    a session manager coordinates training modes, level
+    initialization, session transitions, and restarting or
+    exiting activities.
+
+    \item \textbf{Course and Environment Manager (\mref{mEnvironment}):}
+    To satisfy FR-LVL-03--05 and FR-CHK-01, a separate module
+    manages training environments, obstacle-course
+    configurations, and level selection, allowing course
+    content to change independently of flight mechanics.
+
+    \item \textbf{Flight State and Crash Manager (\mref{mFlightState}):}
+    To satisfy FR-FLT-04--06, a dedicated module maintains
+    the drone's flight state and manages collision and crash
+    events, ensuring that each crash is registered once and
+    normal flight is suspended appropriately.
+
+    \item \textbf{Checkpoint and Recovery Manager (\mref{mCheckpoint}):}
+    To satisfy FR-CHK-01--08 and NFR-REL-01, checkpoint
+    progression and recovery behaviour are encapsulated in
+    a separate module to maintain consistent checkpoint
+    ordering, respawning, and level restart operations.
+
+    \item \textbf{Timing and Performance Evaluation Manager
+    (\mref{mPerformance}):}
+    To satisfy FR-PER-01--10 and FR-REV-02, a dedicated
+    module manages flight timers, crash counts, scoring
+    calculations, and performance ratings independently
+    of the flight simulation and user interface.
+
+    \item \textbf{Account and Authentication Manager (\mref{mAccount}):}
+    To satisfy FR-ACC-01--05 and NFR-SEC-01--02, account
+    registration, authentication, and session management
+    are separated from gameplay to protect user information
+    and support authenticated online features.
+
+    \item \textbf{Results and Leaderboard Manager (\mref{mLeaderboard}):}
+    To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
+    module manages result synchronization, leaderboard
+    rankings, and access to previous results while keeping
+    online service failures independent of core training.
+
+    \item \textbf{Flight Dynamics Model (\mref{mPhysics}):}
+    To satisfy FR-FLT-02--03, the mathematical algorithms
+    governing drone movement, thrust, rotation, and gravity
+    are isolated, allowing the flight model to be refined
+    without modifying controller input or training logic.
+
+    \item \textbf{Data Persistence Module (\mref{mStorage}):}
+    To satisfy FR-DAT-01--03, FR-DAT-09, and NFR-DAT-01,
+    local and cloud storage implementations are
+    encapsulated behind a common interface, allowing
+    database technologies and storage structures to change
+    independently of the modules using them.
+
+    \item \textbf{Intelligent Feedback Analyzer (\mref{mAI},
+    Optional):}
+    To support FR-AI-01--03 and FR-REV-04, intelligent
+    feedback generation is isolated from standard performance
+    evaluation. This allows the feedback algorithm or service
+    to change or become unavailable without preventing the
+    standard post-flight review.
+
+\end{itemize}
 
 
 
