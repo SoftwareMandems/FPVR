@@ -15,6 +15,8 @@
     linkcolor=red,
     urlcolor=blue
 }
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \input{../../Comments.text}
 \input{../../Common.text}
@@ -140,47 +142,133 @@ the completeness of the design against the requirements provided in the SRS. The
 other shows the relation between anticipated changes and the modules. Section
 \ref{SecUse} describes the use relation between modules.
 
-\section{Anticipated and Unlikely Changes} \label{SecChange}
 
-This section lists possible changes to the system. According to the likeliness
-of the change, the possible changes are classified into two
-categories. Anticipated changes are listed in Section \ref{SecAchange}, and
-unlikely changes are listed in Section \ref{SecUchange}.
+
+\section{Anticipated and Unlikely Changes} \label{SecChange}
+This section identifies potential changes to the FPVR system that may affect its software architecture. 
+These changes are classified into anticipated changes, which the modular design should accommodate, and 
+unlikely changes, which are expected to remain stable throughout development.
+
+The classification is based on the requirements and constraints established in the FPVR Software 
+Requirements Specification (SRS). Anticipated changes guide the separation of responsibilities between 
+modules, while unlikely changes establish architectural decisions that do not require the same degree of 
+flexibility.
 
 \subsection{Anticipated Changes} \label{SecAchange}
 
-Anticipated changes are the source of the information that is to be hidden
-inside the modules. Ideally, changing one of the anticipated changes will only
-require changing the one module that hides the associated decision. The approach
-adapted here is called design for
-change.
+Anticipated changes represent aspects of the system's requirements, design, or
+ implementation that may evolve as development progresses. Following the principle 
+ of information hiding, these decisions should be encapsulated within individual 
+ modules wherever possible, minimizing the impact of modifications on the rest of the system.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
-  hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
+
+\item[\refstepcounter{acnum} \actheacnum \label{acController}:]
+The controller input mappings, calibration procedures, and integration
+methods may change as different supported controllers are tested.
+(Related SRS: FR-UI-02--04, NFR-COMP-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acPhysics}:]
+The algorithms and parameters used to simulate drone thrust, gravity,
+rotation, and momentum may change to improve flight realism and
+responsiveness. (Related SRS: FR-FLT-01--06.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acEnvironment}:]
+Training environment layouts, obstacles, and checkpoint configurations
+may change as new courses are developed and user feedback is collected.
+(Related SRS: FR-LVL-01--07, FR-CHK-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
+The internal data structures and algorithms used for checkpoint
+tracking, collision handling, and drone respawning may change to
+improve reliability and maintainability.
+(Related SRS: FR-CHK-01--08.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
+The scoring formula, performance rating thresholds, and evaluation
+methods may change based on testing and feedback to better reflect
+user performance. (Related SRS: FR-PER-01--10.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acUI}:]
+The layout and design of the user interface, including menus,
+in-flight displays, and performance reviews, may change to improve
+usability. (Related SRS: FR-UI-04--06, FR-REV-01--05.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acVR}:]
+The VR runtime integration, headset communication methods, and
+rendering optimizations may change to improve compatibility and
+performance across standalone and PCVR modes.
+(Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
+The database technology, storage schema, and synchronization
+mechanisms may change as local and cloud-based result storage
+is developed. (Related SRS: FR-DAT-01--10, NFR-DAT-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
+The authentication provider, session management, and online service
+communication methods may change based on security requirements
+and backend implementation choices.
+(Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
+The algorithms, AI models, or external services used to generate
+intelligent flight feedback may change as their feasibility and
+effectiveness are evaluated. This functionality remains optional.
+(Related SRS: FR-AI-01--03, FR-REV-04.)
+
 \end{description}
 
-\wss{Anticipated changes relate to changes that would be made in requirements,
-design or implementation choices.  They are not related to changes that are made
-at run-time, like the values of parameters.}
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
-The module design should be as general as possible. However, a general system is
-more complex. Sometimes this complexity is not necessary. Fixing some design
-decisions at the system architecture stage can simplify the software design. If
-these decision should later need to be changed, then many parts of the design
-will potentially need to be modified. Hence, it is not intended that these
-decisions will be changed.
+The following changes are possible but unlikely to occur
+within the current project scope. These decisions are
+expected to remain stable, and the module design does
+not need to accommodate them.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucSimulation}:]
+\textbf{Integration with Physical Drones.}
+FPVR could be extended to communicate with or control
+physical drones, but this is unlikely because it would
+introduce additional hardware, safety, and regulatory
+requirements beyond the project's scope.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucAxes}:]
+\textbf{Changes to Fundamental Flight Controls.}
+The four primary flight-control axes (throttle, pitch,
+roll, and yaw) could be replaced by a different control
+model, but this is unlikely because they are fundamental
+to the intended FPV training experience.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlatform}:]
+\textbf{Changes to Development Platform and VR Hardware.}
+Unity/C\# or the Meta Quest 3S could be replaced with
+alternative development technologies or VR hardware,
+but this is unlikely because the project has already
+committed to these technologies for development
+and testing.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucTraining}:]
+\textbf{Changes to Core Training Structure.}
+The free-flight and obstacle-course training modes
+could be replaced by a different training structure,
+but this is unlikely because both modes are
+fundamental to the training objectives defined
+in the SRS.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPerformance}:]
+\textbf{Transition to Online-Dependent Training.}
+FPVR could be redesigned to require an internet
+connection for all training activities, but this is
+unlikely because the SRS explicitly requires core
+flight training and local performance reviews to
+remain available offline.
+
 \end{description}
+
 
 \section{Module Hierarchy} \label{SecMH}
 
