@@ -141,21 +141,26 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+\multirow{2}{0.3\textwidth}{Hardware-Hiding}
+& M1: VR Platform Interface\\
+& M2: Controller Input Interface\\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
-& Control Module\\
-& Specification Parameters Module\\
+\multirow{8}{0.3\textwidth}{Behaviour-Hiding}
+& M3: User Interface\\
+& M4: Training Session Manager\\
+& M5: Course and Environment Manager\\
+& M6: Flight State and Crash Manager\\
+& M7: Checkpoint and Recovery Manager\\
+& M8: Timing and Performance Evaluation Manager\\
+& M9: Account and Authentication Manager\\
+& M10: Results and Leaderboard Manager\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{3}{0.3\textwidth}{Software Decision}
+& M11: Flight Dynamics Model\\
+& M12: Data Persistence Module\\
+& M13: Intelligent Feedback Analyzer (Optional)\\
 \bottomrule
 
 \end{tabular}
