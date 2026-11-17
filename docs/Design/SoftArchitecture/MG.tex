@@ -5,6 +5,7 @@
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
@@ -15,6 +16,8 @@
     linkcolor=red,
     urlcolor=blue
 }
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 
 \input{../../Comments.text}
 \input{../../Common.text}
@@ -29,8 +32,9 @@
 
 \newcounter{mnum}
 \newcommand{\mthemnum}{M\themnum}
-\newcommand{\mref}[1]{M\ref{#1}}
-
+\newcommand{\mref}[1]{\hyperref[#1]{M\ref*{#1}}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 \begin{document}
 
 \title{Module Guide for \progname{}} 
@@ -141,88 +145,226 @@ the completeness of the design against the requirements provided in the SRS. The
 other shows the relation between anticipated changes and the modules. Section
 \ref{SecUse} describes the use relation between modules.
 
-\section{Anticipated and Unlikely Changes} \label{SecChange}
 
-This section lists possible changes to the system. According to the likeliness
-of the change, the possible changes are classified into two
-categories. Anticipated changes are listed in Section \ref{SecAchange}, and
-unlikely changes are listed in Section \ref{SecUchange}.
+
+\section{Anticipated and Unlikely Changes} \label{SecChange}
+This section identifies potential changes to the FPVR system that may affect its software architecture. 
+These changes are classified into anticipated changes, which the modular design should accommodate, and 
+unlikely changes, which are expected to remain stable throughout development.
+
+The classification is based on the requirements and constraints established in the FPVR Software 
+Requirements Specification (SRS). Anticipated changes guide the separation of responsibilities between 
+modules, while unlikely changes establish architectural decisions that do not require the same degree of 
+flexibility.
 
 \subsection{Anticipated Changes} \label{SecAchange}
 
-Anticipated changes are the source of the information that is to be hidden
-inside the modules. Ideally, changing one of the anticipated changes will only
-require changing the one module that hides the associated decision. The approach
-adapted here is called design for
-change.
+Anticipated changes represent aspects of the system's requirements, design, or
+ implementation that may evolve as development progresses. Following the principle 
+ of information hiding, these decisions should be encapsulated within individual 
+ modules wherever possible, minimizing the impact of modifications on the rest of the system.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
-  hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
+
+\item[\refstepcounter{acnum} \actheacnum \label{acController}:]
+The controller input mappings, calibration procedures, and integration
+methods may change as different supported controllers are tested.
+(Related SRS: FR-UI-02--04, NFR-COMP-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acPhysics}:]
+The algorithms and parameters used to simulate drone thrust, gravity,
+rotation, and momentum may change to improve flight realism and
+responsiveness. (Related SRS: FR-FLT-01--06.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acEnvironment}:]
+Training environment layouts, obstacles, and checkpoint configurations
+may change as new courses are developed and user feedback is collected.
+(Related SRS: FR-LVL-01--07, FR-CHK-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
+The internal data structures and algorithms used for checkpoint
+tracking, collision handling, and drone respawning may change to
+improve reliability and maintainability.
+(Related SRS: FR-CHK-01--08.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
+The scoring formula, performance rating thresholds, and evaluation
+methods may change based on testing and feedback to better reflect
+user performance. (Related SRS: FR-PER-01--10.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acUI}:]
+The layout and design of the user interface, including menus,
+in-flight displays, and performance reviews, may change to improve
+usability. (Related SRS: FR-UI-04--06, FR-REV-01--05.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acVR}:]
+The VR runtime integration, headset communication methods, and
+rendering optimizations may change to improve compatibility and
+performance across standalone and PCVR modes.
+(Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
+The database technology, storage schema, and synchronization
+mechanisms may change as local and cloud-based result storage
+is developed. (Related SRS: FR-DAT-01--10, NFR-DAT-01.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
+The authentication provider, session management, and online service
+communication methods may change based on security requirements
+and backend implementation choices.
+(Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
+The algorithms, AI models, or external services used to generate
+intelligent flight feedback may change as their feasibility and
+effectiveness are evaluated. This functionality remains optional.
+(Related SRS: FR-AI-01--03, FR-REV-04.)
+
 \end{description}
 
-\wss{Anticipated changes relate to changes that would be made in requirements,
-design or implementation choices.  They are not related to changes that are made
-at run-time, like the values of parameters.}
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
-The module design should be as general as possible. However, a general system is
-more complex. Sometimes this complexity is not necessary. Fixing some design
-decisions at the system architecture stage can simplify the software design. If
-these decision should later need to be changed, then many parts of the design
-will potentially need to be modified. Hence, it is not intended that these
-decisions will be changed.
+The following changes are possible but unlikely to occur
+within the current project scope. These decisions are
+expected to remain stable, and the module design does
+not need to accommodate them.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucSimulation}:]
+\textbf{Integration with Physical Drones.}
+FPVR could be extended to communicate with or control
+physical drones, but this is unlikely because it would
+introduce additional hardware, safety, and regulatory
+requirements beyond the project's scope.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucAxes}:]
+\textbf{Changes to Fundamental Flight Controls.}
+The four primary flight-control axes (throttle, pitch,
+roll, and yaw) could be replaced by a different control
+model, but this is unlikely because they are fundamental
+to the intended FPV training experience.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlatform}:]
+\textbf{Changes to Development Platform and VR Hardware.}
+Unity/C\# or the Meta Quest 3S could be replaced with
+alternative development technologies or VR hardware,
+but this is unlikely because the project has already
+committed to these technologies for development
+and testing.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucTraining}:]
+\textbf{Changes to Core Training Structure.}
+The free-flight and obstacle-course training modes
+could be replaced by a different training structure,
+but this is unlikely because both modes are
+fundamental to the training objectives defined
+in the SRS.
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPerformance}:]
+\textbf{Transition to Online-Dependent Training.}
+FPVR could be redesigned to require an internet
+connection for all training activities, but this is
+unlikely because the SRS explicitly requires core
+flight training and local performance reviews to
+remain available offline.
+
 \end{description}
+
 
 \section{Module Hierarchy} \label{SecMH}
 
-This section provides an overview of the module design. Modules are summarized
-in a hierarchy decomposed by secrets in Table \ref{TblMH}. The modules listed
-below, which are leaves in the hierarchy tree, are the modules that will
-actually be implemented.
+This section provides an overview of the modular design of FPVR.
+The system is decomposed according to the principle of information
+hiding. The modules are organized into hardware-hiding,
+behaviour-hiding, and software decision modules.
+
+Each module encapsulates a specific responsibility or design
+decision to minimize the impact of changes on other modules.
+The leaf modules intended for implementation are listed below
+and summarized in Table \ref{TblMH}.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
+
+\item[\refstepcounter{mnum} \mthemnum \label{mXR}:]
+VR Platform Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mController}:]
+Controller Input Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mUI}:]
+User Interface
+
+\item[\refstepcounter{mnum} \mthemnum \label{mTraining}:]
+Training Session Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mEnvironment}:]
+Course and Environment Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mFlightState}:]
+Flight State and Crash Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mCheckpoint}:]
+Checkpoint and Recovery Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mPerformance}:]
+Timing and Performance Evaluation Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mAccount}:]
+Account and Authentication Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mLeaderboard}:]
+Results and Leaderboard Manager
+
+\item[\refstepcounter{mnum} \mthemnum \label{mPhysics}:]
+Flight Dynamics Model
+
+\item[\refstepcounter{mnum} \mthemnum \label{mStorage}:]
+Data Persistence Module
+
+\item[\refstepcounter{mnum} \mthemnum \label{mAI}:]
+Intelligent Feedback Analyzer (Optional)
+
 \end{description}
 
-
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabularx}{\textwidth}{p{0.32\textwidth} X}
+
 \toprule
-\textbf{Level 1} & \textbf{Level 2}\\
+\textbf{Level 1} & \textbf{Level 2} \\
 \midrule
 
-{Hardware-Hiding Module} & ~ \\
+\multirow{2}{0.32\textwidth}{Hardware-Hiding Modules}
+& \mref{mXR}: VR Platform Interface \\
+& \mref{mController}: Controller Input Interface \\
+
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{8}{0.32\textwidth}{Behaviour-Hiding Modules}
+& \mref{mUI}: User Interface \\
+& \mref{mTraining}: Training Session Manager \\
+& \mref{mEnvironment}: Course and Environment Manager \\
+& \mref{mFlightState}: Flight State and Crash Manager \\
+& \mref{mCheckpoint}: Checkpoint and Recovery Manager \\
+& \mref{mPerformance}: Timing and Performance Evaluation Manager \\
+& \mref{mAccount}: Account and Authentication Manager \\
+& \mref{mLeaderboard}: Results and Leaderboard Manager \\
+
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{3}{0.32\textwidth}{Software Decision Modules}
+& \mref{mPhysics}: Flight Dynamics Model \\
+& \mref{mStorage}: Data Persistence Module \\
+& \mref{mAI}: Intelligent Feedback Analyzer (Optional) \\
+
 \bottomrule
+\end{tabularx}
 
-\end{tabular}
-\caption{Module Hierarchy}
+\caption{FPVR Module Hierarchy}
 \label{TblMH}
 \end{table}
 
@@ -323,127 +465,643 @@ information hiding.
 
 \end{itemize}
 
+
+
 \section{Module Decomposition} \label{SecMD}
 
-Modules are decomposed according to the principle of ``information hiding''
-proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
-decomposition is a brief statement of the design decision hidden by the
-module. The \emph{Services} field specifies \emph{what} the module will do
-without documenting \emph{how} to do it. For each module, a suggestion for the
-implementing software is given under the \emph{Implemented By} title. If the
-entry is \emph{OS}, this means that the module is provided by the operating
-system or by standard programming language libraries.  \emph{\progname{}} means the
-module will be implemented by the \progname{} software.
+Modules are decomposed according to the principle of information
+hiding proposed by \citet{ParnasEtAl1984}. The \emph{Secrets}
+field describes the design decisions hidden by each module,
+while the \emph{Services} field specifies what the module
+provides without describing how it is implemented.
 
-Only the leaf modules in the hierarchy have to be implemented. If a dash
-(\emph{--}) is shown, this means that the module is not a leaf and will not have
-to be implemented.
+The \emph{Implemented By} field identifies the intended
+implementation technology, and the \emph{Type of Module}
+field identifies the module's abstraction.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
 
-\begin{description}
-\item[Secrets:]The data structure and algorithm used to implement the virtual
-  hardware.
-\item[Services:]Serves as a virtual hardware used by the rest of the
-  system. This module provides the interface between the hardware and the
-  software. So, the system can use it to display outputs or to accept inputs.
-\item[Implemented By:] OS
-\end{description}
+\subsection{Hardware-Hiding Modules}
 
-\subsection{Behaviour-Hiding Module}
+Hardware-hiding modules encapsulate the details of interacting
+with physical devices and platform-specific services, allowing
+the remaining system components to operate independently
+of hardware implementation details.
+
+
+\subsubsection{VR Platform Interface (\mref{mXR})}
 
 \begin{description}
-\item[Secrets:]The contents of the required behaviours.
-\item[Services:]Includes programs that provide externally visible behaviour of
-  the system as specified in the software requirements specification (SRS)
-  documents. This module serves as a communication layer between the
-  hardware-hiding module and the software decision module. The programs in this
-  module will need to change if there are changes in the SRS.
-\item[Implemented By:] --
+
+\item[Secrets:]
+The VR runtime integration, headset tracking mechanisms,
+rendering interfaces, and platform-specific differences
+between standalone and PCVR execution.
+
+\item[Services:]
+Provides access to headset pose, tracking status, and VR
+display services. Manages communication with the supported
+VR runtime.
+
+\item[Implemented By:]
+Unity/C\# using compatible Unity XR and Meta Quest runtime
+integrations.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
 
-\subsubsection{Input Format Module (\mref{mInput})}
+
+\subsubsection{Controller Input Interface (\mref{mController})}
 
 \begin{description}
-\item[Secrets:]The format and structure of the input data.
-\item[Services:]Converts the input data into the data structure used by the
-  input parameters module.
-\item[Implemented By:] [Your Program Name Here]
-\item[Type of Module:] [Record, Library, Abstract Object, or Abstract Data Type]
-  [Information to include for leaf modules in the decomposition by secrets tree.]
+
+\item[Secrets:]
+The device-specific controller mappings, input calibration
+methods, and mechanisms used to detect and process
+controller signals.
+
+\item[Services:]
+Converts inputs from supported motion controllers and
+gamepads into standardized throttle, pitch, roll, and yaw
+commands. Provides controller connection and input
+availability information.
+
+\item[Implemented By:]
+Unity/C\# using the supported controller input interfaces.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
 
-\subsubsection{Etc.}
+
+\subsection{Behaviour-Hiding Modules}
+
+Behaviour-hiding modules encapsulate the functionality
+required by the SRS. They provide the externally observable
+behaviour of FPVR while hiding the internal details of
+how that behaviour is implemented.
 
 
-\subsection{Software Decision Module}
+\subsubsection{User Interface (\mref{mUI})}
 
 \begin{description}
-\item[Secrets:] The design decision based on mathematical theorems, physical
-  facts, or programming considerations. The secrets of this module are
-  \emph{not} described in the SRS.
-\item[Services:] Includes data structure and algorithms used in the system that
-  do not provide direct interaction with the user. 
-  % Changes in these modules are more likely to be motivated by a desire to
-  % improve performance than by externally imposed changes.
-\item[Implemented By:] --
+
+\item[Secrets:]
+The layout, presentation logic, and interaction methods
+used for menus, in-flight displays, control instructions,
+and performance reviews.
+
+\item[Services:]
+Displays training menus, flight information, crash recovery
+choices, performance results, and user notifications.
+Accepts user selections and communicates them to the
+appropriate modules.
+
+\item[Implemented By:]
+Unity/C\# using Unity's user interface components.
+
+\item[Type of Module:]
+Abstract Object.
+
 \end{description}
 
-\subsubsection{Etc.}
+
+\subsubsection{Training Session Manager (\mref{mTraining})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal session state representation and logic
+governing transitions between free flight, obstacle
+courses, recovery, and completed sessions.
+
+\item[Services:]
+Initializes and manages training sessions, coordinates
+mode selection, and handles session restarts, completion,
+and return-to-menu operations. Coordinates the reset of
+attempt-related state across the relevant modules.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Course and Environment Manager (\mref{mEnvironment})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal representation of training environments,
+obstacle layouts, course configurations, and level
+difficulty definitions.
+
+\item[Services:]
+Loads and manages training environments, provides
+available course configurations, and supplies obstacle,
+checkpoint, and starting-position information to
+other modules.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using Unity scenes and
+environment assets.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Flight State and Crash Manager (\mref{mFlightState})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal representation of drone position,
+orientation, velocity, airborne status, and crash
+state, including the rules used to recognize and
+register crash events.
+
+\item[Services:]
+Maintains the current drone flight state, processes
+collision events, identifies valid crashes, and ensures
+each crash generates a single event before normal
+flight is suspended. Applies state updates calculated
+by the Flight Dynamics Model.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using Unity collision
+detection and flight-state management.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Checkpoint and Recovery Manager (\mref{mCheckpoint})}
+
+\begin{description}
+
+\item[Secrets:]
+The data structures and logic used to track checkpoint
+progression, validate checkpoint ordering, and determine
+recovery positions.
+
+\item[Services:]
+Tracks completed checkpoints, validates course
+progression, and determines checkpoint respawn or
+level restart positions. Preserves or resets checkpoint
+progress as required, while coordinating with the
+session manager for recovery and restart operations.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Timing and Performance Evaluation Manager
+(\mref{mPerformance})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal timer management, crash-count tracking,
+score calculation algorithms, and performance
+rating thresholds.
+
+\item[Services:]
+Tracks total and section flight times, records crash
+penalties from registered crash events, calculates
+final scores, assigns performance ratings, and
+provides results for post-flight review.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Account and Authentication Manager (\mref{mAccount})}
+
+\begin{description}
+
+\item[Secrets:]
+The authentication mechanisms, session management
+implementation, and methods used to validate and
+protect player credentials.
+
+\item[Services:]
+Provides account registration, sign-in, sign-out,
+and authenticated-session management. Controls access
+to account-related online functionality.
+
+\item[Implemented By:]
+FPVR application code integrated with a secure
+authentication service.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Results and Leaderboard Manager (\mref{mLeaderboard})}
+
+\begin{description}
+
+\item[Secrets:]
+The internal result synchronization workflow,
+leaderboard ranking procedures, and methods used
+to coordinate local and online performance records.
+
+\item[Services:]
+Manages completed flight results, coordinates cloud
+synchronization and retries, retrieves previous
+results, and provides local and global leaderboard
+rankings using the required ordering rules.
+
+\item[Implemented By:]
+FPVR application code with integration to the
+Data Persistence Module (\mref{mStorage}).
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsection{Software Decision Modules}
+
+Software decision modules encapsulate internal algorithms,
+data structures, and implementation choices that are not
+directly specified by the externally observable requirements.
+These modules allow underlying technical decisions to change
+without affecting the rest of the system.
+
+
+\subsubsection{Flight Dynamics Model (\mref{mPhysics})}
+
+\begin{description}
+
+\item[Secrets:]
+The mathematical equations, physical parameters, and
+numerical methods used to calculate drone movement,
+including thrust, gravity, acceleration, and rotation.
+
+\item[Services:]
+Calculates changes in simulated drone motion from
+the current flight state and standardized controller
+inputs. Provides the resulting state updates to the
+flight-state management functionality.
+
+\item[Implemented By:]
+FPVR Unity/C\# application using the selected flight
+dynamics model.
+
+\item[Type of Module:]
+Library.
+
+\end{description}
+
+
+\subsubsection{Data Persistence Module (\mref{mStorage})}
+
+\begin{description}
+
+\item[Secrets:]
+The database technology, storage schemas, serialization
+formats, and implementation details used for local
+and cloud-based result persistence.
+
+\item[Services:]
+Provides interfaces to store, retrieve, and update
+player results and synchronization status without
+exposing the underlying storage implementation.
+
+\item[Implemented By:]
+FPVR application code integrated with local storage
+and a cloud database service.
+
+\item[Type of Module:]
+Abstract Object.
+
+\end{description}
+
+
+\subsubsection{Intelligent Feedback Analyzer
+(\mref{mAI}) -- Optional}
+
+\begin{description}
+
+\item[Secrets:]
+The algorithms, AI models, data-processing techniques,
+and external service integrations used to generate
+natural-language flight feedback.
+
+\item[Services:]
+Analyzes completed attempt data, including flight time,
+checkpoint progression, and crashes, to generate
+performance observations. Reports unavailable analysis
+without preventing the standard post-flight review.
+
+\item[Implemented By:]
+FPVR application code using a selected feedback
+algorithm or AI service, subject to feasibility
+evaluation.
+
+\item[Type of Module:]
+Library.
+
+\end{description}
+
+
 
 \section{Traceability Matrix} \label{SecTM}
 
-This section shows two traceability matrices: between the modules and the
-requirements and between the modules and the anticipated changes.
+This section presents two traceability matrices: one showing
+the relationships between the requirements in the Software
+Requirements Specification (SRS) and the modules defined in
+Section \ref{SecMH}, and another showing the relationships
+between anticipated changes and modules.
 
-% the table should use mref, the requirements should be named, use something
-% like fref
-\begin{table}[H]
-\centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{Req.} & \textbf{Modules}\\
-\midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
-\bottomrule
-\end{tabular}
+These matrices help verify that the module decomposition
+addresses the system requirements and that anticipated
+changes are isolated within appropriate modules.
+
+
+%----------------------------------------------------------
+% Table 2: Requirements to Modules
+%----------------------------------------------------------
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.15}
+
+\begin{longtable}{p{0.61\textwidth} p{0.30\textwidth}}
+
 \caption{Trace Between Requirements and Modules}
-\label{TblRT}
-\end{table}
+\label{TblRT}\\
+
+\toprule
+\textbf{Requirement(s)} & \textbf{Modules} \\
+\midrule
+\endfirsthead
+
+\multicolumn{2}{l}{\textit{Table \thetable\ continued}}\\
+\toprule
+\textbf{Requirement(s)} & \textbf{Modules} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\textit{Continued on next page}}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+\multicolumn{2}{l}{\textbf{Drone Flight Simulation}}\\
+
+FR-FLT-01 (First-person flight view)
+& \mref{mXR}, \mref{mFlightState} \\
+
+FR-FLT-02--03 (Flight controls and gravity)
+& \mref{mController}, \mref{mFlightState},
+\mref{mPhysics} \\
+
+FR-FLT-04--06 (Collisions and crash handling)
+& \mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Training Modes and Level Management}}\\
+
+FR-LVL-01--02 (Free-flight mode and recovery)
+& \mref{mTraining}, \mref{mEnvironment},
+\mref{mCheckpoint} \\
+
+FR-LVL-03--05 (Course selection and environments)
+& \mref{mUI}, \mref{mTraining},
+\mref{mEnvironment} \\
+
+FR-LVL-06--07 (Exit and attempt initialization)
+& \mref{mUI}, \mref{mTraining},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Checkpoints and Crash Recovery}}\\
+
+FR-CHK-01--03 (Checkpoint ordering and progression)
+& \mref{mEnvironment}, \mref{mCheckpoint} \\
+
+FR-CHK-04--05 (Recovery choices and respawning)
+& \mref{mUI}, \mref{mFlightState},
+\mref{mCheckpoint} \\
+
+FR-CHK-06--07 (Recovery and restart state)
+& \mref{mTraining}, \mref{mCheckpoint},
+\mref{mPerformance} \\
+
+FR-CHK-08 (Level completion)
+& \mref{mTraining}, \mref{mCheckpoint} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Timing and Performance Evaluation}}\\
+
+FR-PER-01--06 (Flight timers and recovery timing)
+& \mref{mTraining}, \mref{mCheckpoint},
+\mref{mPerformance} \\
+
+FR-PER-07--10 (Crash penalties, scores, and ratings)
+& \mref{mFlightState}, \mref{mPerformance} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{VR Interface and Controller Input}}\\
+
+FR-UI-01--02 (VR display and execution modes)
+& \mref{mXR}, \mref{mUI} \\
+
+FR-UI-03--04 (Controller support and instructions)
+& \mref{mController}, \mref{mUI} \\
+
+FR-UI-05--06 (Menus and stationary operation)
+& \mref{mController}, \mref{mUI},
+\mref{mTraining} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Player Accounts and Authentication}}\\
+
+FR-ACC-01--04 (Registration and authentication)
+& \mref{mUI}, \mref{mAccount} \\
+
+FR-ACC-05 (Guest access and authenticated submission)
+& \mref{mTraining}, \mref{mAccount},
+\mref{mLeaderboard} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Result Storage and Leaderboards}}\\
+
+FR-DAT-01--03 (Local results and cloud synchronization)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+FR-DAT-04--07 (Leaderboards and ranking rules)
+& \mref{mUI}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+FR-DAT-08 (Online leaderboard unavailability)
+& \mref{mUI}, \mref{mTraining},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+FR-DAT-09--10 (Historical results and synchronization status)
+& \mref{mUI}, \mref{mAccount},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Post-Flight Review}}\\
+
+FR-REV-01--03 (Performance review and navigation)
+& \mref{mUI}, \mref{mTraining},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+FR-REV-04 (Review availability)
+& \mref{mUI}, \mref{mPerformance},
+\mref{mAI} \\
+
+FR-REV-05 (Previous session results)
+& \mref{mUI}, \mref{mAccount},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Intelligent Feedback}}\\
+
+FR-AI-01--03 (Intelligent feedback --- optional)
+& \mref{mUI}, \mref{mPerformance},
+\mref{mAI} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Non-Functional Requirements}}\\
+
+NFR-INST-01--02 (Standalone and PCVR installation)
+& \mref{mXR}, \mref{mController} \\
+
+NFR-COMP-01 (Controller compatibility)
+& \mref{mXR}, \mref{mController} \\
+
+NFR-PERF-01 (Rendering performance)
+& \mref{mXR}, \mref{mUI},
+\mref{mEnvironment} \\
+
+NFR-PERF-02 (Input response time)
+& \mref{mController}, \mref{mFlightState},
+\mref{mPhysics} \\
+
+NFR-REL-01 (Crash-recovery reliability)
+& \mref{mTraining}, \mref{mFlightState},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+NFR-USAB-01 (Control guide accessibility)
+& \mref{mController}, \mref{mUI} \\
+
+NFR-SAFE-01--02 (VR safety and stationary operation)
+& \mref{mXR}, \mref{mController},
+\mref{mUI}, \mref{mTraining} \\
+
+NFR-SEC-01--02 (Credential protection and access control)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+NFR-DAT-01 (Result persistence)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+NFR-OFF-01 (Offline availability)
+& \mref{mUI}, \mref{mTraining},
+\mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint}, \mref{mPerformance},
+\mref{mLeaderboard}, \mref{mPhysics},
+\mref{mStorage} \\
+
+\end{longtable}
+\endgroup
+
+
+%----------------------------------------------------------
+% Table 3: Anticipated Changes to Modules
+%----------------------------------------------------------
 
 \begin{table}[H]
 \centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabularx}{\textwidth}{p{0.38\textwidth} X}
+
 \toprule
-\textbf{AC} & \textbf{Modules}\\
+\textbf{Anticipated Change (AC)}
+& \textbf{Modules} \\
 \midrule
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+
+\acref{acController}
+& \mref{mController} \\
+
+\acref{acPhysics}
+& \mref{mPhysics} \\
+
+\acref{acEnvironment}
+& \mref{mEnvironment} \\
+
+\acref{acCheckpoint}
+& \mref{mFlightState}, \mref{mCheckpoint} \\
+
+\acref{acScoring}
+& \mref{mPerformance} \\
+
+\acref{acUI}
+& \mref{mUI} \\
+
+\acref{acVR}
+& \mref{mXR} \\
+
+\acref{acStorage}
+& \mref{mLeaderboard}, \mref{mStorage} \\
+
+\acref{acAuthentication}
+& \mref{mAccount}, \mref{mLeaderboard} \\
+
+\acref{acAI}
+& \mref{mAI} \\
+
 \bottomrule
-\end{tabular}
+
+\end{tabularx}
+
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
+
+
+The requirements-to-modules matrix establishes traceability
+between the SRS and the proposed architecture. The
+anticipated-changes matrix identifies which modules encapsulate
+the implementation decisions most likely to evolve.
+
+The Intelligent Feedback Analyzer (\mref{mAI}) remains optional
+and subject to feasibility evaluation. Its unavailability must
+not affect the standard post-flight review provided by the
+core modules.
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
@@ -478,14 +1136,72 @@ arrows in the diagram typically correspond to the presence of import statement.}
 
 \section{User Interfaces}
 
-\wss{Design of user interface for software and hardware.  Attach an appendix if
-needed. Drawings, Sketches, Figma}
+The following diagrams and pictures illustrate the typical user interface of the main application. Note
+that the interface is subject to change as it continues to be developed and refined.
+% \wss{Design of user interface for software and hardware.  Attach an appendix if
+% needed. Drawings, Sketches, Figma}
+\subsection{Software User Interfaces}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{media/ui_start_course.png}
+  \caption{Start Screen for a Demo Course}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{media/ui_in_flight.png}
+  \caption{Drone Flying through Course, 3rd Person View}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{media/ui_crash_screen.png}
+  \caption{Crash Screen}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{media/ui_path_diagram.png}
+  \caption{Crude Diagram of Optimal Path Generation for a Course}
+\end{figure}
+
+\subsection{Hardware User Interfaces}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{media/ui_rc_mapping.png}
+  \caption{FPV-Style Remote Controller Mappings}
+\end{figure}
 
 \section{Design of Communication Protocols}
 
-\wss{If there is communication between hardware and software, it may be necessary 
-to explain the design of the communication protocol.  This section should be filled 
-in with NA if it is not appropriate for a given project.}
+% \wss{If there is communication between hardware and software, it may be necessary 
+% to explain the design of the communication protocol.  This section should be filled 
+% in with NA if it is not appropriate for a given project.}
+As stated in P.5 of the SRS, if the project were to expand beyond its original scope and
+its stretch goals implemented, additional consideration would be required to design a hardware stack
+suited for bridging RC communication with FPVR. 
+
+Nearly all drones use a LoRa based radio link for reliable,
+long range control and telemetry, and many such RF protocols exist to support this. Among them, the most common open source
+protocol is called ExpressLRS (ELRS), which is built on top of Semtech's SX127x/SX1280 LoRa transceivers which can operate in
+frequency bands of 900MHz to 2.4GHz. Due to its popularity, platform-agnostic nature, and above average performance compared to 
+its competitors, ELRS will be used as the protocol of choice.
+
+\subsection{Hardware Component Diagram}
+The overall hardware architecture of the system is depicted in Figure \ref{fig:hardware_component_diagram}.
+The E22-M series of chips are variants of the SX1262 transceiver which has additional advantages over its SX127x
+predecessors. Specifically, we will be using an E22-900M22S module which operates in 900Mhz and thus
+will require a 900Mhz RC transmitter on the controller side. This module is connected to a STM32
+microcontroller over SPI running custom ELRS firmware to include support for SX1262 and passing the analog
+stick commands through UART to the simulated flight controller in the main application. How this data is formatted
+and sent through serial is still to be determined.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{media/hardware_diagram.png}
+  \caption{Hardware Architecture Diagram}
+  \label{fig:hardware_component_diagram}
+\end{figure}
+
+Unity is capable of communicating with external hardware over serial ports using the \\
+\texttt{System.IO.Ports.SerialPort} class provided by the .NET Framework.
 
 \section{Database Design}
 

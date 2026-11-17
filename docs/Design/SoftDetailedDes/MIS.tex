@@ -35,7 +35,8 @@ urlcolor=cyan          % color of external links
 
 \input{../../Comments.text}
 \input{../../Common.text}
-
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 \begin{document}
 
 \title{Module Interface Specification for \progname{}}
@@ -62,9 +63,10 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \wss{give url}
+See SRS Documentation at \url{https://softwaremandems.github.io/FPVR/SRS/SRS.pdf}
+in the Glossary section for the full table of symbols, abbreviations and acronyms.
 
-\wss{Also add any additional symbols, abbreviations or acronyms}
+% \wss{Also add any additional symbols, abbreviations or acronyms}
 
 \newpage
 
@@ -77,16 +79,20 @@ See SRS Documentation at \wss{give url}
 \section{Introduction}
 
 The following document details the Module Interface Specifications for
-\wss{Fill in your project name and description}
+FPVR: An FPV drone simulation game. The application is designed to provide a realistic
+virtual environment for pilots to hone their skills by completing increasingly difficult
+courses. FPVR is powered by the Unity Game Engine, connected to a backend server and database to
+manage user accounts and scores, hardware controller compatible, and features an AI-assisted interface
+to generate feedback and suggestions for improvement.
 
 Complementary documents include the System Requirement Specifications
 and Module Guide.  The full documentation and implementation can be
-found at \url{...}.  \wss{provide the url for your repo}
+found at \url{https://github.com/SoftwareMandems/FPVR}.
 
 \section{Notation}
 
-\wss{You should describe your notation.  You can use what is below as
-  a starting point.}
+% \wss{You should describe your notation.  You can use what is below as
+%   a starting point.}
 
 The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
@@ -108,17 +114,21 @@ character & char & a single symbol or digit\\
 integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
+boolean & $\mathbb{B}$ & a value that is either true ($\top$) or false ($\bot$)\\
+string & $\Sigma^*$ & a sequence of characters (char)\\
+enumerate & $\{\text{E}_i \:|\: i \leq n, \text{E}_i \in \Sigma^*\}$ & a finite unordered list of named constants\\
+sequence & seq of T & an ordered list of elements of type T\\
+tuple & (T$_1$, T$_2$, ..., T$_n$) & a finite ordered list of values of types T$_1$, T$_2$, ..., T$_n$\\
+dictionary & dict of T$_1$ to T$_2$ & a key-value pairing from type T$_1$ to type T$_2$\\
+function & T$_1$ $\rightarrow$ T$_2$ & a mapping from type T$_1$ to type T$_2$\\
 \bottomrule
 \end{tabular} 
 \end{center}
 
 \noindent
-The specification of \progname \ uses some derived data types: sequences, strings, and
-tuples. Sequences are lists filled with elements of the same data type. Strings
-are sequences of characters. Tuples contain a list of values, potentially of
-different types. In addition, \progname \ uses functions, which
-are defined by the data types of their inputs and outputs. Local functions are
-described by giving their type signature followed by their specification.
+In addition, \progname \ uses abstract data types (Insert examples here in the future) which
+are constructed using the primitive data types listed above and represent higher level data structures
+to better obscure implementation details.
 
 \section{Module Decomposition}
 
