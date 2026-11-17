@@ -5,6 +5,7 @@
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
@@ -307,35 +308,216 @@ to be implemented.
 
 \subsubsection{Etc.}
 
+
 \section{Traceability Matrix} \label{SecTM}
 
-This section shows two traceability matrices: between the modules and the
-requirements and between the modules and the anticipated changes.
+This section presents two traceability matrices: one showing
+the relationships between the requirements in the Software
+Requirements Specification (SRS) and the modules defined in
+Section \ref{SecMH}, and another showing the relationships
+between anticipated changes and modules.
 
-% the table should use mref, the requirements should be named, use something
-% like fref
-\begin{table}[H]
-\centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
-\toprule
-\textbf{Req.} & \textbf{Modules}\\
-\midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
-\bottomrule
-\end{tabular}
+These matrices help verify that the module decomposition
+addresses the system requirements and that anticipated
+changes are isolated within appropriate modules.
+
+
+%----------------------------------------------------------
+% Table 2: Requirements to Modules
+%----------------------------------------------------------
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.15}
+
+\begin{longtable}{p{0.61\textwidth} p{0.30\textwidth}}
+
 \caption{Trace Between Requirements and Modules}
-\label{TblRT}
-\end{table}
+\label{TblRT}\\
+
+\toprule
+\textbf{Requirement(s)} & \textbf{Modules} \\
+\midrule
+\endfirsthead
+
+\multicolumn{2}{l}{\textit{Table \thetable\ continued}}\\
+\toprule
+\textbf{Requirement(s)} & \textbf{Modules} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{2}{r}{\textit{Continued on next page}}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+
+\multicolumn{2}{l}{\textbf{Drone Flight Simulation}}\\
+
+FR-FLT-01 (First-person flight view)
+& \mref{mXR}, \mref{mFlightState} \\
+
+FR-FLT-02--03 (Flight controls and gravity)
+& \mref{mController}, \mref{mFlightState},
+\mref{mPhysics} \\
+
+FR-FLT-04--06 (Collisions and crash handling)
+& \mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Training Modes and Level Management}}\\
+
+FR-LVL-01--02 (Free-flight mode and recovery)
+& \mref{mTraining}, \mref{mEnvironment},
+\mref{mCheckpoint} \\
+
+FR-LVL-03--05 (Course selection and environments)
+& \mref{mUI}, \mref{mTraining},
+\mref{mEnvironment} \\
+
+FR-LVL-06--07 (Exit and attempt initialization)
+& \mref{mUI}, \mref{mTraining},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Checkpoints and Crash Recovery}}\\
+
+FR-CHK-01--03 (Checkpoint ordering and progression)
+& \mref{mEnvironment}, \mref{mCheckpoint} \\
+
+FR-CHK-04--05 (Recovery choices and respawning)
+& \mref{mUI}, \mref{mFlightState},
+\mref{mCheckpoint} \\
+
+FR-CHK-06--07 (Recovery and restart state)
+& \mref{mTraining}, \mref{mCheckpoint},
+\mref{mPerformance} \\
+
+FR-CHK-08 (Level completion)
+& \mref{mTraining}, \mref{mCheckpoint} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Timing and Performance Evaluation}}\\
+
+FR-PER-01--06 (Flight timers and recovery timing)
+& \mref{mTraining}, \mref{mCheckpoint},
+\mref{mPerformance} \\
+
+FR-PER-07--10 (Crash penalties, scores, and ratings)
+& \mref{mFlightState}, \mref{mPerformance} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{VR Interface and Controller Input}}\\
+
+FR-UI-01--02 (VR display and execution modes)
+& \mref{mXR}, \mref{mUI} \\
+
+FR-UI-03--04 (Controller support and instructions)
+& \mref{mController}, \mref{mUI} \\
+
+FR-UI-05--06 (Menus and stationary operation)
+& \mref{mController}, \mref{mUI},
+\mref{mTraining} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Player Accounts and Authentication}}\\
+
+FR-ACC-01--04 (Registration and authentication)
+& \mref{mUI}, \mref{mAccount} \\
+
+FR-ACC-05 (Guest access and authenticated submission)
+& \mref{mTraining}, \mref{mAccount},
+\mref{mLeaderboard} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Result Storage and Leaderboards}}\\
+
+FR-DAT-01--03 (Local results and cloud synchronization)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+FR-DAT-04--07 (Leaderboards and ranking rules)
+& \mref{mUI}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+FR-DAT-08 (Online leaderboard unavailability)
+& \mref{mUI}, \mref{mTraining},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+FR-DAT-09--10 (Historical results and synchronization status)
+& \mref{mUI}, \mref{mAccount},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Post-Flight Review}}\\
+
+FR-REV-01--03 (Performance review and navigation)
+& \mref{mUI}, \mref{mTraining},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+FR-REV-04 (Review availability)
+& \mref{mUI}, \mref{mPerformance},
+\mref{mAI} \\
+
+FR-REV-05 (Previous session results)
+& \mref{mUI}, \mref{mAccount},
+\mref{mLeaderboard}, \mref{mStorage} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Intelligent Feedback}}\\
+
+FR-AI-01--03 (Intelligent feedback --- optional)
+& \mref{mUI}, \mref{mPerformance},
+\mref{mAI} \\
+
+\midrule
+\multicolumn{2}{l}{\textbf{Non-Functional Requirements}}\\
+
+NFR-INST-01--02 (Standalone and PCVR installation)
+& \mref{mXR}, \mref{mController} \\
+
+NFR-COMP-01 (Controller compatibility)
+& \mref{mXR}, \mref{mController} \\
+
+NFR-PERF-01 (Rendering performance)
+& \mref{mXR}, \mref{mUI},
+\mref{mEnvironment} \\
+
+NFR-PERF-02 (Input response time)
+& \mref{mController}, \mref{mFlightState},
+\mref{mPhysics} \\
+
+NFR-REL-01 (Crash-recovery reliability)
+& \mref{mTraining}, \mref{mFlightState},
+\mref{mCheckpoint}, \mref{mPerformance} \\
+
+NFR-USAB-01 (Control guide accessibility)
+& \mref{mController}, \mref{mUI} \\
+
+NFR-SAFE-01--02 (VR safety and stationary operation)
+& \mref{mXR}, \mref{mController},
+\mref{mUI}, \mref{mTraining} \\
+
+NFR-SEC-01--02 (Credential protection and access control)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+NFR-DAT-01 (Result persistence)
+& \mref{mAccount}, \mref{mLeaderboard},
+\mref{mStorage} \\
+
+NFR-OFF-01 (Offline availability)
+& \mref{mUI}, \mref{mTraining},
+\mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint}, \mref{mPerformance},
+\mref{mLeaderboard}, \mref{mPhysics},
+\mref{mStorage} \\
+
+\end{longtable}
+\endgroup
+
 
 \begin{table}[H]
 \centering
