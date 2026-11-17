@@ -32,6 +32,8 @@
 \newcounter{mnum}
 \newcommand{\mthemnum}{M\themnum}
 \newcommand{\mref}[1]{\hyperref[#1]{M\ref*{#1}}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.75em}
 \begin{document}
 
 \title{Module Guide for \progname{}} 
@@ -570,9 +572,37 @@ that the interface is subject to change as it continues to be developed and refi
 
 \section{Design of Communication Protocols}
 
-\wss{If there is communication between hardware and software, it may be necessary 
-to explain the design of the communication protocol.  This section should be filled 
-in with NA if it is not appropriate for a given project.}
+% \wss{If there is communication between hardware and software, it may be necessary 
+% to explain the design of the communication protocol.  This section should be filled 
+% in with NA if it is not appropriate for a given project.}
+As stated in P.5 of the SRS, if the project were to expand beyond its original scope and
+its stretch goals implemented, additional consideration would be required to design a hardware stack
+suited for bridging RC communication with FPVR. 
+
+Nearly all drones use a LoRa based radio link for reliable,
+long range control and telemetry, and many such RF protocols exist to support this. Among them, the most common open source
+protocol is called ExpressLRS (ELRS), which is built on top of Semtech's SX127x/SX1280 LoRa transceivers which can operate in
+frequency bands of 900MHz to 2.4GHz. Due to its popularity, platform-agnostic nature, and above average performance compared to 
+its competitors, ELRS will be used as the protocol of choice.
+
+\subsection{Hardware Component Diagram}
+The overall hardware architecture of the system is depicted in Figure \ref{fig:hardware_component_diagram}.
+The E22-M series of chips are variants of the SX1262 transceiver which has additional advantages over its SX127x
+predecessors. Specifically, we will be using an E22-900M22S module which operates in 900Mhz and thus
+will require a 900Mhz RC transmitter on the controller side. This module is connected to a STM32
+microcontroller over SPI running custom ELRS firmware to include support for SX1262 and passing the analog
+stick commands through UART to the simulated flight controller in the main application. How this data is formatted
+and sent through serial is still to be determined.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{media/hardware_diagram.png}
+  \caption{Hardware Architecture Diagram}
+  \label{fig:hardware_component_diagram}
+\end{figure}
+
+Unity is capable of communicating with external hardware over serial ports using the \\
+\texttt{System.IO.Ports.SerialPort} class provided by the .NET Framework.
 
 \section{Database Design}
 
