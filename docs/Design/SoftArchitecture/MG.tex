@@ -419,9 +419,9 @@ The overall hardware architecture of the system is depicted in Figure \ref{fig:h
 The E22-M series of chips are variants of the SX1262 transceiver which has additional advantages over its SX127x
 predecessors. Specifically, we will be using an E22-900M22S module which operates in 900Mhz and thus
 will require a 900Mhz RC transmitter on the controller side. This module is connected to a STM32
-microcontroller over SPI running custom ELRS firmware to include support for SX1262 and passing data
-through UART to the simulated flight controller in the main application.
-
+microcontroller over SPI running custom ELRS firmware to include support for SX1262 and passing the analog
+stick commands through UART to the simulated flight controller in the main application. How this data is formatted
+and sent through serial is still to be determined.
 
 \begin{figure}[H]
   \centering
@@ -429,6 +429,10 @@ through UART to the simulated flight controller in the main application.
   \caption{Hardware Architecture Diagram}
   \label{fig:hardware_component_diagram}
 \end{figure}
+
+Unity is capable of communicating with external hardware over serial ports using the \\
+\texttt{System.IO.Ports.SerialPort} class provided by the .NET Framework.
+
 \section{Database Design}
 
 \wss{If a database is a significant component of the project, the database
