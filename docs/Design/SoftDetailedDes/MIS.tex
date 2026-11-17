@@ -132,7 +132,20 @@ to better obscure implementation details.
 
 \section{Module Decomposition}
 
-The following table is taken directly from the Module Guide document for this project.
+Table~\ref{TblMH} reproduces the module hierarchy from the Module Guide (MG).
+The modules are grouped by the kind of secret they hide. Hardware-hiding modules
+hide the headset and controller devices. Behaviour-hiding modules hide the
+behaviour required by the SRS. Software decision modules hide algorithms and
+data structures that the SRS does not specify.
+
+Each module keeps the number it has in the MG, so M1 to M13 refer to the same
+module in both documents. Only the leaf modules in the Level 2 column are
+implemented, and each one is specified in its own section of this document.
+
+The Intelligent Feedback Analyzer (M13) is optional. FR-AI-01 to FR-AI-03
+depend on a separate feasibility decision, and FR-REV-04 and FR-AI-03 require
+the standard post-flight review to work whether or not M13 is available. No core
+module depends on M13 being present.
 
 \begin{table}[h!]
 \centering
@@ -169,7 +182,6 @@ The following table is taken directly from the Module Guide document for this pr
 \end{table}
 
 \newpage
-~\newpage
 
 \section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
   cross-referencing}
