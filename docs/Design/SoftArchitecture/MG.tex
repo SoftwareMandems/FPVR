@@ -182,9 +182,10 @@ may change as new courses are developed and user feedback is collected.
 (Related SRS: FR-LVL-01--07, FR-CHK-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
-The internal data structures and algorithms used for checkpoint
-tracking, collision handling, and drone respawning may change to
-improve reliability and maintainability.
+The internal representation of checkpoint progress and the algorithms
+used to validate checkpoint order and select recovery positions may
+change to improve reliability and maintainability. These decisions
+are hidden by the Checkpoint and Recovery Manager (\mref{mCheckpoint}).
 (Related SRS: FR-CHK-01--08.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
@@ -204,14 +205,18 @@ performance across standalone and PCVR modes.
 (Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
-The database technology, storage schema, and synchronization
-mechanisms may change as local and cloud-based result storage
-is developed. (Related SRS: FR-DAT-01--10, NFR-DAT-01.)
+The database technology, storage schema, serialization formats, and
+local and cloud persistence mechanisms may change as result storage
+is developed. These decisions are hidden by the Data Persistence
+Module (\mref{mStorage}) behind its storage interface.
+(Related SRS: FR-DAT-01--03, FR-DAT-09, NFR-DAT-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
-The authentication provider, session management, and online service
-communication methods may change based on security requirements
-and backend implementation choices.
+The authentication provider, authenticated-session implementation,
+and credential-validation and protection mechanisms may change
+based on security requirements and backend implementation choices.
+These decisions are hidden by the Account and Authentication Manager
+(\mref{mAccount}) behind its authentication interface.
 (Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
@@ -421,7 +426,10 @@ information hiding.
     To satisfy FR-CHK-01--08 and NFR-REL-01, checkpoint
     progression and recovery behaviour are encapsulated in
     a separate module to maintain consistent checkpoint
-    ordering, respawning, and level restart operations.
+    ordering, respawning, and level restart operations. Its checkpoint
+    representation and recovery-position algorithms isolate
+    \acref{acCheckpoint}; crash detection remains the responsibility
+    of \mref{mFlightState}.
 
     \item \textbf{Timing and Performance Evaluation Manager
     (\mref{mPerformance}):}
@@ -434,7 +442,9 @@ information hiding.
     To satisfy FR-ACC-01--05 and NFR-SEC-01--02, account
     registration, authentication, and session management
     are separated from gameplay to protect user information
-    and support authenticated online features.
+    and support authenticated online features. A stable authentication
+    interface isolates the provider and session implementation changes
+    in \acref{acAuthentication} from online-feature modules.
 
     \item \textbf{Results and Leaderboard Manager (\mref{mLeaderboard}):}
     To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
@@ -453,7 +463,9 @@ information hiding.
     local and cloud storage implementations are
     encapsulated behind a common interface, allowing
     database technologies and storage structures to change
-    independently of the modules using them.
+    independently of the modules using them, as anticipated by
+    \acref{acStorage}. Synchronization workflow and retry decisions
+    remain with \mref{mLeaderboard}.
 
     \item \textbf{Intelligent Feedback Analyzer (\mref{mAI},
     Optional):}
@@ -651,7 +663,8 @@ Abstract Object.
 \item[Secrets:]
 The data structures and logic used to track checkpoint
 progression, validate checkpoint ordering, and determine
-recovery positions.
+recovery positions. These are the implementation decisions covered
+by \acref{acCheckpoint}.
 
 \item[Services:]
 Tracks completed checkpoints, validates course
@@ -699,14 +712,16 @@ Abstract Object.
 \begin{description}
 
 \item[Secrets:]
-The authentication mechanisms, session management
-implementation, and methods used to validate and
-protect player credentials.
+The authentication provider integration, authenticated-session
+implementation, and methods used to validate and protect player
+credentials, as identified in \acref{acAuthentication}.
 
 \item[Services:]
 Provides account registration, sign-in, sign-out,
 and authenticated-session management. Controls access
-to account-related online functionality.
+to account-related online functionality. Exposes authentication status
+and authorized-session access without exposing provider-specific
+details to modules such as \mref{mLeaderboard}.
 
 \item[Implemented By:]
 FPVR application code integrated with a secure
@@ -731,7 +746,11 @@ to coordinate local and online performance records.
 Manages completed flight results, coordinates cloud
 synchronization and retries, retrieves previous
 results, and provides local and global leaderboard
-rankings using the required ordering rules.
+rankings using the required ordering rules. Uses the authentication
+interface of \mref{mAccount} and the storage interface of
+\mref{mStorage}, so provider changes in \acref{acAuthentication}
+and persistence changes in \acref{acStorage} remain encapsulated
+within those modules.
 
 \item[Implemented By:]
 FPVR application code with integration to the
@@ -784,7 +803,8 @@ Library.
 \item[Secrets:]
 The database technology, storage schemas, serialization
 formats, and implementation details used for local
-and cloud-based result persistence.
+and cloud-based result persistence, as identified in
+\acref{acStorage}.
 
 \item[Services:]
 Provides interfaces to store, retrieve, and update
@@ -1064,7 +1084,7 @@ NFR-OFF-01 (Offline availability)
 & \mref{mEnvironment} \\
 
 \acref{acCheckpoint}
-& \mref{mFlightState}, \mref{mCheckpoint} \\
+& \mref{mCheckpoint} \\
 
 \acref{acScoring}
 & \mref{mPerformance} \\
@@ -1076,10 +1096,10 @@ NFR-OFF-01 (Offline availability)
 & \mref{mXR} \\
 
 \acref{acStorage}
-& \mref{mLeaderboard}, \mref{mStorage} \\
+& \mref{mStorage} \\
 
 \acref{acAuthentication}
-& \mref{mAccount}, \mref{mLeaderboard} \\
+& \mref{mAccount} \\
 
 \acref{acAI}
 & \mref{mAI} \\
@@ -1097,6 +1117,17 @@ The requirements-to-modules matrix establishes traceability
 between the SRS and the proposed architecture. The
 anticipated-changes matrix identifies which modules encapsulate
 the implementation decisions most likely to evolve.
+
+Each anticipated change maps to the single module that hides the
+specified decision. This mapping assumes the module's service interface
+and required observable behaviour remain stable. In particular,
+\acref{acCheckpoint} concerns checkpoint representation and recovery
+positions in \mref{mCheckpoint}; \acref{acStorage} concerns persistence
+implementation in \mref{mStorage}; and \acref{acAuthentication} concerns
+authentication implementation in \mref{mAccount}. Modules that consume
+these services still appear in the requirements matrix where they
+collaborate to satisfy a requirement, but do not own these changeable
+implementation decisions.
 
 The Intelligent Feedback Analyzer (\mref{mAI}) remains optional
 and subject to feasibility evaluation. Its unavailability must
