@@ -50,8 +50,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+Nov 17, 2026 & 1.0 & Added database design for personal bests, leaderboards,
+and best-run replays; aligned related module descriptions.\\
 \bottomrule
 \end{tabularx}
 
@@ -76,6 +76,7 @@ This section records information for easy reference.
   R & Requirement\\
   SC & Scientific Computing \\
   SRS & Software Requirements Specification\\
+  UGS & Unity Gaming Services\\
   \progname & Explanation of program name\\
   UC & Unlikely Change \\
   \wss{etc.} & \wss{...}\\
@@ -204,8 +205,8 @@ performance across standalone and PCVR modes.
 (Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
-The database technology, storage schema, and synchronization
-mechanisms may change as local and cloud-based result storage
+The storage services, replay format, and synchronization
+mechanisms may change as local and cloud-based best-run storage
 is developed. (Related SRS: FR-DAT-01--10, NFR-DAT-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
@@ -439,7 +440,7 @@ information hiding.
     \item \textbf{Results and Leaderboard Manager (\mref{mLeaderboard}):}
     To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
     module manages result synchronization, leaderboard
-    rankings, and access to previous results while keeping
+    rankings, and access to personal bests and their replays while keeping
     online service failures independent of core training.
 
     \item \textbf{Flight Dynamics Model (\mref{mPhysics}):}
@@ -452,7 +453,7 @@ information hiding.
     To satisfy FR-DAT-01--03, FR-DAT-09, and NFR-DAT-01,
     local and cloud storage implementations are
     encapsulated behind a common interface, allowing
-    database technologies and storage structures to change
+    storage services and file formats to change
     independently of the modules using them.
 
     \item \textbf{Intelligent Feedback Analyzer (\mref{mAI},
@@ -728,10 +729,12 @@ leaderboard ranking procedures, and methods used
 to coordinate local and online performance records.
 
 \item[Services:]
-Manages completed flight results, coordinates cloud
-synchronization and retries, retrieves previous
-results, and provides local and global leaderboard
-rankings using the required ordering rules.
+Retains each player's best completed time and matching replay
+per level, coordinates cloud synchronization and retries, and
+provides local, global, and friends leaderboard rankings.
+Coordinates replay capture during an attempt and playback
+through the User Interface (\mref{mUI}) without changing
+training progress or scores.
 
 \item[Implemented By:]
 FPVR application code with integration to the
@@ -782,18 +785,18 @@ Library.
 \begin{description}
 
 \item[Secrets:]
-The database technology, storage schemas, serialization
+The storage services, record structures, serialization
 formats, and implementation details used for local
-and cloud-based result persistence.
+and cloud-based personal-best and replay persistence.
 
 \item[Services:]
 Provides interfaces to store, retrieve, and update
-player results and synchronization status without
+personal-best records, replay files, and synchronization status without
 exposing the underlying storage implementation.
 
 \item[Implemented By:]
-FPVR application code integrated with local storage
-and a cloud database service.
+FPVR application code integrated with local files and
+UGS Cloud Save.
 
 \item[Type of Module:]
 Abstract Object.
@@ -966,7 +969,7 @@ FR-DAT-08 (Online leaderboard unavailability)
 & \mref{mUI}, \mref{mTraining},
 \mref{mLeaderboard}, \mref{mStorage} \\
 
-FR-DAT-09--10 (Historical results and synchronization status)
+FR-DAT-09--10 (Personal bests and synchronization status)
 & \mref{mUI}, \mref{mAccount},
 \mref{mLeaderboard}, \mref{mStorage} \\
 
@@ -981,7 +984,7 @@ FR-REV-04 (Review availability)
 & \mref{mUI}, \mref{mPerformance},
 \mref{mAI} \\
 
-FR-REV-05 (Previous session results)
+FR-REV-05 (Personal best and replay access)
 & \mref{mUI}, \mref{mAccount},
 \mref{mLeaderboard}, \mref{mStorage} \\
 
@@ -1205,9 +1208,110 @@ Unity is capable of communicating with external hardware over serial ports using
 
 \section{Database Design}
 
-\wss{If a database is a significant component of the project, the database
-design should be summarized here.  This section should be filled in with NA if
-it is not appropriate for a given project.}
+FPVR does not plan to include live multiplayer in the current scope.
+Players will instead compare their best completed time for each
+obstacle-course level through global and friends leaderboards, and
+view their own personal best and its in-game visual replay. Only one
+best run per player and level is retained, rather than a history of
+every attempt.
+
+\subsection{Storage Services}
+
+FPVR will use Unity Gaming Services (UGS) Leaderboards for online
+rankings and UGS Cloud Save for personal-best records and replay files.
+A separate relational database is unnecessary for this small data model.
+UGS integrates with Unity and supports the shared online account used by
+the standalone Quest and Windows PCVR versions. UGS Authentication
+handles account credentials; FPVR stores player identifiers rather than
+passwords in gameplay records.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{p{0.23\textwidth} X}
+\toprule
+\textbf{Stored item} & \textbf{Purpose and contents} \\
+\midrule
+Personal-best record & One record per player and level: player and level identifiers,
+best time in whole milliseconds, run identifier, and replay file reference
+and format version. Cloud Save Player Data holds the online record. \\
+Replay file & Timestamped drone positions and orientations, with the
+events needed to reproduce the run, including checkpoint respawns.
+Cloud Save Player Files holds the owner's private replay. \\
+Leaderboard entry & Player identifier, display name, and best level time.
+One UGS leaderboard is configured for each level. Replay files are
+separate from public leaderboard entries. \\
+Local copy & Each local player's best record and matching replay,
+plus pending synchronization status, for offline access and retry. \\
+\bottomrule
+\end{tabularx}
+\caption{Personal-Best and Replay Storage}
+\label{TblBestRunStorage}
+\end{table}
+
+Unity documents these managed services in its
+\href{https://docs.unity.com/en-us/leaderboards}{Leaderboards overview},
+\href{https://docs.unity.com/en-us/cloud-save/concepts/player-data}{Player Data guide},
+and \href{https://docs.unity.com/en-us/cloud-save/concepts/files}{Player Files guide}.
+
+\subsection{Best Runs and Rankings}
+
+The first successfully completed run establishes a personal best. A
+strictly smaller whole-millisecond active flight time replaces both the saved time
+and its replay; an equal, slower, or incomplete run does not replace
+them. Timing continues to follow the SRS: failed flight segments count,
+while crash-recovery menu time does not. Scores and ratings remain part
+of the immediate post-flight review; leaderboard order uses time.
+
+Each UGS leaderboard sorts times from lowest to highest and uses the
+\texttt{Best Score} update strategy, where the submitted score value is
+the completion time in whole milliseconds. These settings retain the
+fastest time for each player. Equal online times use the order returned
+by UGS, without an additional game-specific timestamp tiebreaker. See
+Unity's \href{https://docs.unity.com/en-us/leaderboards/concepts/sort-order}{sort order}
+and \href{https://docs.unity.com/en-us/leaderboards/concepts/update-strategies}{update strategy}
+documentation.
+
+The global view shows accepted best times for the selected level. The
+friends view requests entries for the player and their accepted UGS
+Friends, sorts those times, and calculates positions within that group.
+A returned global rank is not treated as a friends rank. The local
+leaderboard uses the best records saved on the current installation,
+ordering equal times by local player identifier.
+Each leaderboard shows at least the top ten entries, or all if fewer exist, with
+rank, display name, and best time (SRS FR-DAT-04--07). Unity provides
+\href{https://docs.unity.com/en-us/friends}{Friends} and
+\href{https://docs.unity.com/en-us/leaderboards/tutorials/unity-sdk/get-score-other-player}{selected-player leaderboard queries}
+for the friends view.
+
+\subsection{Saving, Synchronization, and Replay}
+
+The Results and Leaderboard Manager (\mref{mLeaderboard}) selects the
+best run; the Data Persistence Module (\mref{mStorage}) saves its record
+and replay locally before attempting online synchronization. Temporary
+movement data from other attempts is discarded after the review or when
+the attempt is abandoned or restarted.
+Playback reconstructs the drone's movement inside the level rather
+than rerunning flight physics, and does not alter progress or scores.
+
+Only an authenticated player's own best run is uploaded. The replay
+and record share a run identifier so that the displayed time always
+refers to the matching replay. The manager uploads the replay, updates
+the best-record reference, and submits the time to Leaderboards. These
+are separate service operations: pending work is retained for retry,
+and the record is marked synchronized only when all required operations
+succeed. Cloud Save conflict checks cause the manager to reload the
+current best before replacing it. A retry must preserve a faster best already saved by another
+installation and must not associate a time with another run's replay.
+The old replay is removed only after its replacement is safely saved.
+
+Players can retrieve their current synchronized best and private replay
+after signing in on another supported installation. If an online
+service is unavailable, training, local saving, cached personal bests,
+and their replays remain available; the interface explains that online
+rankings are unavailable. Missing, corrupt, or incompatible replay data
+produces an explanatory message without changing the best time or
+preventing training. This design
+supports SRS FR-DAT-01--10, FR-REV-05, NFR-DAT-01, and NFR-OFF-01.
 
 \section{Timeline}
 
