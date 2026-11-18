@@ -249,76 +249,794 @@ module depends on M13 being present.
 
 \newpage
 
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
-  cross-referencing}
-
-\wss{You can reference SRS labels, such as R\ref{R_Inputs}.}
-
-\wss{It is also possible to use \LaTeX for hypperlinks to external documents.}
+% ==========================================================
+% M1
+% ==========================================================
+\section{MIS of VR Platform Interface (M1)} \label{sec:M1}
 
 \subsection{Module}
 
-\wss{Short name for the module}
+\textbf{Module} VRPlatform (abstract object).
 
 \subsection{Uses}
 
+None.
 
 \subsection{Syntax}
 
 \subsubsection{Exported Constants}
 
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item ExecutionMode = $\{$STANDALONE, PCVR$\}$.
+\item View: an image shown to the user in the headset. It is defined only by
+  what it depicts.
+\end{itemize}
+
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
+\begin{tabularx}{\textwidth}{p{3.2cm} p{2.8cm} p{2.8cm} X}
+\toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
-\end{tabular}
+\midrule
+init & - & - & RuntimeUnavailable \\
+getExecutionMode & - & ExecutionMode & NotInitialized \\
+getHeadPose & - & Pose & NotInitialized, TrackingLost \\
+isTracking & - & $\mathbb{B}$ & NotInitialized \\
+hasFocus & - & $\mathbb{B}$ & NotInitialized \\
+setViewOrigin & $p$: Pose & - & NotInitialized \\
+showOverlay & $v$: View $\cup \ \{\nul\}$ & - & NotInitialized \\
+\bottomrule
+\end{tabularx}
 \end{center}
 
 \subsection{Semantics}
 
 \subsubsection{State Variables}
 
-\wss{Not all modules will have state variables.  State variables give the module
-  a memory.}
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item mode: ExecutionMode
+\item viewOrigin: Pose. Where the first-person camera is.
+\item overlay: View $\cup \ \{\nul\}$. The menu or heads-up display drawn in
+  front of the flight view.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
 
 \subsubsection{Environment Variables}
 
-\wss{This section is not necessary for all modules.  Its purpose is to capture
-  when the module has external interaction with the environment, such as for a
-  device driver, screen interface, keyboard, file, etc.}
+\begin{itemize}
+\item headset: tuple of (connection: ExecutionMode $\cup \ \{\nul\}$, tracked:
+  $\mathbb{B}$, headPose: Pose, focus: $\mathbb{B}$). The VR runtime's report
+  of how the headset runs, whether tracking is valid, the user's head pose and
+  whether \progname{} has session focus.
+\item screen: View. The image displayed in the headset.
+\end{itemize}
 
 \subsubsection{Assumptions}
 
-\wss{Try to minimize assumptions and anticipate programmer errors via
-  exceptions, but for practical purposes assumptions are sometimes appropriate.}
+\begin{itemize}
+\item The VR runtime is running before init is called (NFR-INST-01,
+  NFR-INST-02).
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent init():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: initialized, mode, viewOrigin, overlay := \True,
+  headset.connection, $((0,0,0), (0,0,0))$, \nul
+\item exception: $exc :=$ (headset.connection $= \nul \Rightarrow$
+  RuntimeUnavailable)
 \end{itemize}
 
-\wss{A module without environment variables or state variables is unlikely to
-  have a state transition.  In this case a state transition can only occur if
-  the module is changing the state of another module.}
+\noindent getExecutionMode():
+\begin{itemize}
+\item output: $out :=$ mode
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
 
-\wss{Modules rarely have both a transition and an output.  In most cases you
-  will have one or the other.}
+\noindent getHeadPose():
+\begin{itemize}
+\item output: $out :=$ headset.headPose
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$headset.tracked $\Rightarrow$
+  TrackingLost)
+\end{itemize}
+
+\noindent isTracking():
+\begin{itemize}
+\item output: $out :=$ headset.tracked
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent hasFocus():
+\begin{itemize}
+\item output: $out :=$ headset.focus
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent setViewOrigin($p$):
+\begin{itemize}
+\item transition: viewOrigin, screen := $p$, render($p$, overlay). The
+  first-person view follows the drone, and head movement looks around from it
+  (FR-FLT-01, FR-UI-01).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent showOverlay($v$):
+\begin{itemize}
+\item transition: overlay, screen := $v$, render(viewOrigin, $v$)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
 
 \subsubsection{Local Functions}
 
-\wss{As appropriate} \wss{These functions are for the purpose of specification.
-  They are not necessarily something that is going to be implemented
-  explicitly.  Even if they are implemented, they are not exported; they only
-  have local scope.}
+\begin{itemize}
+\item render: Pose $\times$ (View $\cup \ \{\nul\}$) $\rightarrow$ View.
+  render($q$, $o$) is the scene seen from $q$ offset by headset.headPose, with
+  $o$ drawn in front of it when $o \neq \nul$.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Standalone execution on the headset is the primary target. PCVR is kept as an
+execution mode because FR-UI-02 still requires it.
+
+\newpage
+% ==========================================================
+% M2
+% ==========================================================
+\section{MIS of Controller Input Interface (M2)} \label{sec:M2}
+
+\subsection{Module}
+
+\textbf{Module} ControllerInput (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item DEADZONE: $\mathbb{R} = 0.05$. Stick deflections smaller than this are
+  treated as zero.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item DeviceType = $\{$MOTION\_CONTROLLERS, GAMEPAD$\}$.
+\item ControlInput = tuple of (throttle: $\mathbb{R}$, pitch: $\mathbb{R}$,
+  roll: $\mathbb{R}$, yaw: $\mathbb{R}$), with throttle in $[0, 1]$ and the
+  other three in $[-1, 1]$.
+\item MenuInput = $\{$UP, DOWN, SELECT, PAUSE, NONE$\}$.
+\item ControlMapping = tuple of (throttle: $\Sigma^*$, pitch: $\Sigma^*$, roll:
+  $\Sigma^*$, yaw: $\Sigma^*$). The name of the physical input bound to each
+  axis, shown in the control guide.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} p{1.6cm} p{3.2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & NoController \\
+getDeviceType & - & DeviceType & NotInitialized \\
+isConnected & - & $\mathbb{B}$ & NotInitialized \\
+getControlInput & - & ControlInput & NotInitialized, NoController \\
+getMenuInput & - & MenuInput & NotInitialized, NoController \\
+getControlMapping & - & ControlMapping & NotInitialized \\
+calibrate & - & - & NotInitialized, NoController \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item device: DeviceType
+\item offset: $\mathbb{R}^4$. The resting position of the four sticks.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item controller: tuple of (type: DeviceType $\cup \ \{\nul\}$, connected:
+  $\mathbb{B}$, axes: $\mathbb{R}^4$, button: MenuInput). The paired device as
+  reported by the platform, its raw stick positions in $[-1, 1]$ for throttle,
+  pitch, roll and yaw in that order, and the menu button currently pressed.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, device, offset := \True, controller.type,
+  $(0, 0, 0, 0)$
+\item exception: $exc :=$ (controller.type $= \nul \Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getDeviceType():
+\begin{itemize}
+\item output: $out :=$ device
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isConnected():
+\begin{itemize}
+\item output: $out :=$ controller.connected. Callers check this so that a
+  lost controller is not read as a new command.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getControlInput():
+\begin{itemize}
+\item output: $out :=$ toInput(deadzone(controller.axes $-$ offset)). Each
+  axis is independent (FR-FLT-02).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getMenuInput():
+\begin{itemize}
+\item output: $out :=$ controller.button
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getControlMapping():
+\begin{itemize}
+\item output: $out :=$ mappingFor(device) (FR-UI-04)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent calibrate():
+\begin{itemize}
+\item transition: offset := $(0,\ \text{controller.axes}[2],\
+  \text{controller.axes}[3],\ \text{controller.axes}[4])$. Pitch, roll and yaw
+  are centred on their current position. Throttle rests at its minimum, so it
+  has no offset.
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item deadzone: $\mathbb{R}^4 \rightarrow \mathbb{R}^4$. deadzone($a$) $= b$,
+  where $b[1] = a[1]$ and, for $i \in \{2, 3, 4\}$, $b[i] = (|a[i]| <
+  \text{DEADZONE} \Rightarrow 0 \;|\; |a[i]| \geq \text{DEADZONE} \Rightarrow
+  a[i])$.
+\item toInput: $\mathbb{R}^4 \rightarrow$ ControlInput. toInput($b$) $=$
+  (clamp($(b[1] + 1)/2$, 0, 1), clamp($b[2]$, $-1$, 1), clamp($b[3]$, $-1$,
+  1), clamp($b[4]$, $-1$, 1)).
+\item clamp: $\mathbb{R} \times \mathbb{R} \times \mathbb{R} \rightarrow
+  \mathbb{R}$. clamp($x$, $lo$, $hi$) $= \max(lo, \min(hi, x))$.
+\item mappingFor: DeviceType $\rightarrow$ ControlMapping. Both devices use
+  the same layout: mappingFor($d$) $=$ (``left stick up/down'', ``right stick
+  up/down'', ``right stick left/right'', ``left stick left/right'') for
+  throttle, pitch, roll and yaw.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The layout in mappingFor matches the FPV-style controller mapping in the MG's
+hardware user interface figure.
+
+\newpage
+% ==========================================================
+% M3
+% ==========================================================
+\section{MIS of User Interface (M3)} \label{sec:M3}
+
+\subsection{Module}
+
+\textbf{Module} UserInterface (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{1} (hasFocus, setViewOrigin, showOverlay, View)
+\item \Mref{2} (isConnected, getMenuInput, getControlMapping)
+\item \Mref{9} (register, signIn, signOut, isAuthenticated)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+The view types hold only the values a screen displays. \Mref{4} builds them
+from other modules' results, so this module needs no other module's types.
+
+\begin{itemize}
+\item ActionKind = $\{$NONE, CONTINUE, START\_FREE\_FLIGHT, BROWSE\_COURSES,
+  SELECT\_COURSE, VIEW\_LEADERBOARD, VIEW\_HISTORY, SYNC\_RESULTS, PAUSE,
+  RESUME, RESPAWN, RESTART, RETRY, CHOOSE\_ANOTHER, MAIN\_MENU$\}$. The
+  training intentions returned to the caller.
+\item UserAction = tuple of (kind: ActionKind, course: $\Sigma^* \cup
+  \ \{\nul\}$).
+\item Screen = $\{$MAIN, GUIDE, COURSES, HUD, PAUSE\_MENU, CRASH\_MENU, REVIEW,
+  LEADERBOARD, HISTORY, MESSAGE$\}$.
+\item CourseItem = tuple of (id: $\Sigma^*$, name: $\Sigma^*$, environment:
+  $\Sigma^*$, difficulty: $\Sigma^*$).
+\item HudView = tuple of (pose: Pose, $T$: $\mathbb{R}$, $S$: $\mathbb{R}$,
+  $k$: $\mathbb{Z}$, $n$: $\mathbb{Z}$). Drone pose, total and section time in
+  seconds, and checkpoints completed out of $n$.
+\item ReviewView = tuple of (course: $\Sigma^*$, $T$: $\mathbb{R}$, $k$:
+  $\mathbb{Z}$, $n$: $\mathbb{Z}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$,
+  rating: Rating, feedback: $\Sigma^* \cup \ \{\nul\}$).
+\item BoardRow = tuple of (rank: $\mathbb{N}$, name: $\Sigma^*$, score:
+  $\mathbb{Z}$, $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$).
+\item HistoryRow = tuple of (course: $\Sigma^*$, timestamp: $\mathbb{Z}$, $T$:
+  $\mathbb{R}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  synced: $\mathbb{B}$).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.7cm} >{\raggedright\arraybackslash}X p{2.2cm} p{2.6cm}}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+showMainMenu & - & - & NotInitialized \\
+showControlGuide & - & - & NotInitialized \\
+showCourseSelection & $cs$: seq of CourseItem & - & NotInitialized \\
+showHUD & $h$: HudView & - & NotInitialized \\
+showFreeFlightHUD & $p$: Pose & - & NotInitialized \\
+showPauseMenu & - & - & NotInitialized \\
+showCrashMenu & canRestart: $\mathbb{B}$ & - & NotInitialized \\
+showReview & $r$: ReviewView & - & NotInitialized \\
+showLeaderboard & $c$: $\Sigma^*$, $l$: seq of BoardRow, $g$: seq of BoardRow $\cup \ \{\nul\}$ & - & NotInitialized \\
+showHistory & $h$: seq of HistoryRow & - & NotInitialized \\
+showMessage & $msg$: $\Sigma^*$ & - & NotInitialized \\
+getUserAction & - & UserAction & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item screen: Screen
+\item items: seq of Item. The choices offered on the current screen.
+\item cursor: $\mathbb{Z}$. The position of the highlighted choice in items.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+items $\neq \langle\rangle \Rightarrow 1 \leq$ cursor $\leq |$items$|$.
+
+Every routine that changes items sets cursor to 1, and getUserAction only
+moves cursor within $[1, |\text{items}|]$, so the invariant is kept.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item textFields: tuple of ($\Sigma^*$, $\Sigma^*$). The username and password
+  typed with the headset's on-screen keyboard.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item All menus are operated with the controller, so they work while seated or
+  standing (FR-UI-06, NFR-SAFE-02).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+Every show routine has the same form. For screen $x$ and the data passed in, it
+sets screen, items, cursor := $x$, itemsFor($x$), 1 and calls
+M1.showOverlay(draw($x$, data)). It raises $exc :=$ (\noinit).
+Table~\ref{TblM3Items} gives itemsFor, and the list below gives what each
+screen draws.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Screen} & \textbf{itemsFor(screen)} \\
+\midrule
+MAIN & act(START\_FREE\_FLIGHT), act(BROWSE\_COURSES), GUIDE\_INFO,
+act(VIEW\_HISTORY), act(SYNC\_RESULTS), then (M9.isAuthenticated()
+$\Rightarrow$ SIGN\_OUT $|$ otherwise $\Rightarrow$ REGISTER, SIGN\_IN)\\
+GUIDE & act(CONTINUE)\\
+COURSES & for each $ci$ in $cs$: (SELECT\_COURSE, $ci$.id) and
+(VIEW\_LEADERBOARD, $ci$.id); then act(MAIN\_MENU)\\
+HUD & $\langle\rangle$ (flight is paused with the PAUSE button)\\
+PAUSE\_MENU & act(RESUME), act(MAIN\_MENU)\\
+CRASH\_MENU & canRestart $\Rightarrow$ act(RESPAWN), act(RESTART),
+act(MAIN\_MENU) $|$ otherwise $\Rightarrow$ act(RESPAWN), act(MAIN\_MENU)\\
+REVIEW & act(RETRY), act(CHOOSE\_ANOTHER), act(MAIN\_MENU)\\
+LEADERBOARD, HISTORY, MESSAGE & act(MAIN\_MENU)\\
+\bottomrule
+\end{tabularx}
+\caption{Choices offered on each screen}
+\label{TblM3Items}
+\end{table}
+
+\begin{itemize}
+\item showMainMenu(): screen MAIN.
+\item showControlGuide(): screen GUIDE. Draws M2.getControlMapping()
+  (FR-UI-04, NFR-USAB-01).
+\item showCourseSelection($cs$): screen COURSES. Draws each course's name,
+  environment and difficulty. Every course is selectable (FR-LVL-05).
+\item showHUD($h$): screen HUD. Also calls M1.setViewOrigin($h$.pose). Draws
+  $h.T$, $h.S$ and ``$h.k$ of $h.n$ checkpoints''.
+\item showFreeFlightHUD($p$): screen HUD. Instead of drawing, it calls
+  M1.setViewOrigin($p$) and then M1.showOverlay(\nul). Free flight has no
+  checkpoints, timers or score (FR-LVL-01).
+\item showPauseMenu(): screen PAUSE\_MENU (NFR-SAFE-01).
+\item showCrashMenu(canRestart): screen CRASH\_MENU. Obstacle courses offer
+  Respawn and Restart Level (FR-CHK-04); free flight offers Respawn
+  (FR-LVL-02).
+\item showReview($r$): screen REVIEW. Draws $r$.course, $r.T$, ``$r.k$ of
+  $r.n$'', $r.C$, $r$.score and $r$.rating (FR-REV-02). Draws $r$.feedback,
+  labelled as automated feedback, only when it is not \nul{} (FR-AI-02,
+  FR-REV-04).
+\item showLeaderboard($c$, $l$, $g$): screen LEADERBOARD. Draws the local
+  ranking $l$ for course $c$ (FR-DAT-04), and $g$ if $g \neq \nul$
+  (FR-DAT-05). If $g = \nul$, draws a message that the online leaderboard is
+  unavailable (FR-DAT-08). Each row shows rank, name, score, time and crashes
+  (FR-DAT-07).
+\item showHistory($h$): screen HISTORY. Draws each row, marking whether it is
+  synchronized (FR-REV-05, FR-DAT-10).
+\item showMessage($msg$): screen MESSAGE. Draws $msg$.
+\end{itemize}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, screen, items, cursor := \True, MAIN,
+  $\langle\rangle$, 1
+\item exception: none
+\end{itemize}
+
+\noindent getUserAction():
+\begin{itemize}
+\item transition and output: Let $e$ = M2.getMenuInput() if M2.isConnected(),
+  and $e$ = NONE otherwise. Let $x$ = items[cursor] when items $\neq
+  \langle\rangle$. Table~\ref{TblM3Action} applies its first matching row.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+\textbf{Condition} & \textbf{Transition} & \textbf{$out :=$} \\
+\midrule
+$\neg$M1.hasFocus() $\vee$ $\neg$M2.isConnected() & none & act(PAUSE) \\
+$e$ = PAUSE & none & act(PAUSE) \\
+$e$ = UP & cursor := $\max(1, \text{cursor} - 1)$ & act(NONE) \\
+$e$ = DOWN & cursor := $\min(|\text{items}|, \text{cursor} + 1)$ & act(NONE) \\
+$e$ = SELECT $\wedge$ $x$ = GUIDE\_INFO & showControlGuide() & act(NONE) \\
+$e$ = SELECT $\wedge$ $x \in$ $\{$REGISTER, SIGN\_IN, SIGN\_OUT$\}$ &
+account($x$) & act(NONE) \\
+$e$ = SELECT $\wedge$ items $\neq \langle\rangle$ & none & $x$ \\
+otherwise & none & act(NONE) \\
+\bottomrule
+\end{tabularx}
+\caption{Effect of each controller input in getUserAction}
+\label{TblM3Action}
+\end{table}
+
+Losing headset focus or the controller is reported as PAUSE, so the caller
+stops flight instead of reading stale input.
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Item = UserAction $\cup$ $\{$GUIDE\_INFO, REGISTER, SIGN\_IN,
+  SIGN\_OUT$\}$. The four extra choices are handled inside this module and are
+  never returned to the caller.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item act: ActionKind $\rightarrow$ UserAction. act($a$) $= (a, \nul)$.
+\item itemsFor: Screen $\rightarrow$ seq of Item, given in
+  Table~\ref{TblM3Items}.
+\item draw: Screen $\times$ data $\rightarrow$ View. The menu or overlay for
+  the screen showing the data, with items[cursor] highlighted.
+\item account: Item $\rightarrow$ (transition). With $(u, pw)$ = textFields:
+  account(REGISTER) $\equiv$ M9.register($u$, $pw$) (FR-ACC-01);
+  account(SIGN\_IN) $\equiv$ M9.signIn($u$, $pw$) (FR-ACC-03);
+  account(SIGN\_OUT) $\equiv$ M9.signOut() (FR-ACC-04). Then showMainMenu().
+  If M9 raises exception $e$, showMessage(explain($e$)) instead (FR-ACC-02).
+\item explain: exception $\rightarrow \Sigma^*$. A message that states why the
+  request failed. For InvalidCredentials it does not say whether the username
+  or the password was wrong (FR-ACC-03).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+getUserAction both changes state and returns a value. Reading a button press
+consumes it, so splitting the routine would let one press be read twice. This
+is the only such access program in \progname{}.
+
+\newpage
+% ==========================================================
+% M4
+% ==========================================================
+\section{MIS of Training Session Manager (M4)} \label{sec:M4}
+
+\subsection{Module}
+
+\textbf{Module} TrainingSession (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{3} (all access programs and exported types)
+\item \Mref{5} (getCourses, loadCourse, getStartPose, getCheckpoints, Mode,
+  CourseInfo, FREE\_FLIGHT\_AREA)
+\item \Mref{6} (reset, update, getPose, isCrashed, getPassages, Passage)
+\item \Mref{7} (reset, passCheckpoint, getProgress, isComplete,
+  getRespawnPose)
+\item \Mref{8} (reset, addFlightTime, resetSectionTime, recordCrash, complete,
+  getTotalTime, getSectionTime, getEvaluation, Evaluation)
+\item \Mref{10} (saveResult, retrySync, getLeaderboard, getHistory,
+  ResultInput, LeaderboardEntry, HistoryEntry, Scope)
+\item \Mref{13} (isAvailable, analyze, AttemptSummary), only when the optional
+  module is included
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Phase = $\{$MENU, GUIDE, FLYING, PAUSED, CRASHED, COMPLETE$\}$.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{2.6cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+step & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+getPhase & - & Phase & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item phase: Phase
+\item mode: Mode $\cup \ \{\nul\}$
+\item course: $\Sigma^* \cup \ \{\nul\}$. The selected course identifier.
+\item guideShown: $\mathbb{B}$. Whether the control guide has been shown since
+  \progname{} started.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+(mode $= \nul \iff$ course $= \nul$) $\wedge$ (phase $\neq$ MENU
+$\Rightarrow$ course $\neq \nul$) $\wedge$ (phase $=$ COMPLETE $\Rightarrow$
+mode $=$ OBSTACLE\_COURSE).
+
+The invariant holds after init, where mode and course are \nul{} and phase is
+MENU. begin is the only routine that leaves MENU, and it sets mode and course
+together. toMenu is the only routine that returns to MENU, and it clears them
+together. Only complete enters COMPLETE, and fly calls it only when mode $=$
+OBSTACLE\_COURSE.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item Every module that M4 uses is initialized before M4.init is called.
+\item The caller calls step once per simulation frame, with $\Delta t$ the time
+  since the previous call.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, phase, mode, course, guideShown := \True, MENU,
+  \nul, \nul, \False; M3.showMainMenu()
+\item exception: none
+\end{itemize}
+
+\noindent step($\Delta t$):
+\begin{itemize}
+\item transition: handle(M3.getUserAction()); then (phase $=$ FLYING
+  $\Rightarrow$ fly($\Delta t$))
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent getPhase():
+\begin{itemize}
+\item output: $out :=$ phase
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+Timers advance only inside fly, which runs only while phase $=$ FLYING. Time in
+the guide, pause, crash and review screens is never added (FR-PER-06).
+
+\subsubsection{Local Functions}
+
+\noindent \textbf{handle}: UserAction $\rightarrow$ (transition). handle($a$)
+applies the first row of Table~\ref{TblM4Handle} that matches phase and
+$a$.kind. If no row matches, nothing changes. In the table, $c$ is course and
+$m$ is mode.
+
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{phase} & \textbf{$a$.kind} & \textbf{Transition} \\
+\midrule
+MENU & START\_FREE\_FLIGHT & begin(FREE\_FLIGHT, FREE\_FLIGHT\_AREA) \\
+MENU & BROWSE\_COURSES & M3.showCourseSelection(items(M5.getCourses())) \\
+MENU & SELECT\_COURSE & begin(OBSTACLE\_COURSE, $a$.course) (FR-LVL-07) \\
+MENU & CONTINUE, MAIN\_MENU & M3.showMainMenu() \\
+MENU & VIEW\_LEADERBOARD & M3.showLeaderboard($a$.course,
+rows(M10.getLeaderboard($a$.course, LOCAL)), global($a$.course)) \\
+MENU & VIEW\_HISTORY & M3.showHistory(history(M10.getHistory())); on
+NotSignedIn, M3.showMessage(SIGN\_IN\_MSG) (FR-REV-05) \\
+MENU & SYNC\_RESULTS & M10.retrySync(); M3.showMainMenu(); on NotSignedIn,
+M3.showMessage(SIGN\_IN\_MSG) (FR-DAT-03) \\
+GUIDE & CONTINUE & phase := FLYING; showFlight() \\
+FLYING & PAUSE & phase := PAUSED; M3.showPauseMenu() (NFR-SAFE-01) \\
+PAUSED & RESUME & phase := FLYING; showFlight() \\
+CRASHED & RESPAWN & ($m =$ OBSTACLE\_COURSE $\Rightarrow$
+M6.reset(M7.getRespawnPose()); M8.resetSectionTime() $|$ $m =$ FREE\_FLIGHT
+$\Rightarrow$ M6.reset(M5.getStartPose($c$))); phase := FLYING; showFlight()
+(FR-CHK-05, FR-CHK-06, FR-PER-04, FR-LVL-02) \\
+CRASHED & RESTART & begin($m$, $c$) (FR-CHK-07) \\
+COMPLETE & RETRY & begin($m$, $c$) (FR-REV-03) \\
+COMPLETE & CHOOSE\_ANOTHER & toMenu();
+M3.showCourseSelection(items(M5.getCourses())) (FR-REV-03) \\
+PAUSED, CRASHED, COMPLETE & MAIN\_MENU & toMenu() (FR-LVL-06) \\
+\bottomrule
+\end{tabularx}
+\caption{Effect of each user action in each phase}
+\label{TblM4Handle}
+\end{table}
+
+\noindent \textbf{fly}: $\mathbb{R} \rightarrow$ (transition). fly($\Delta t$)
+applies these steps in order:
+\begin{enumerate}
+\item M6.update($\Delta t$).
+\item If mode $=$ OBSTACLE\_COURSE: M8.addFlightTime($\Delta t$) (FR-PER-01,
+  FR-PER-02).
+\item If M6.isCrashed(): phase := CRASHED; (mode $=$ OBSTACLE\_COURSE
+  $\Rightarrow$ M8.recordCrash()); M3.showCrashMenu(mode $=$
+  OBSTACLE\_COURSE); skip the remaining steps (FR-FLT-06, FR-PER-07).
+\item If mode $=$ OBSTACLE\_COURSE: for each GATE($i$) $\in$
+  M6.getPassages() in increasing $i$, progress($i$). Then, if FINISH $\in$
+  M6.getPassages() $\wedge$ M7.isComplete(), complete() and skip the
+  remaining step (FR-CHK-08).
+\item showFlight().
+\end{enumerate}
+Checkpoints are only processed in step 4, which is never reached after a crash,
+so progress cannot advance while a crash awaits recovery (FR-FLT-06).
+
+\noindent \textbf{begin}: Mode $\times\ \Sigma^* \rightarrow$ (transition).
+begin($m$, $c$) applies these steps in order:
+\begin{enumerate}
+\item M5.loadCourse($c$); M6.reset(M5.getStartPose($c$)).
+\item If $m =$ OBSTACLE\_COURSE: M7.reset(M5.getCheckpoints($c$),
+  M5.getStartPose($c$)); M8.reset().
+\item mode, course := $m$, $c$.
+\item If guideShown: phase := FLYING; showFlight(). Otherwise: phase,
+  guideShown := GUIDE, \True; M3.showControlGuide(). The guide is shown before
+  the first flight of a session (NFR-USAB-01).
+\end{enumerate}
+
+\noindent \textbf{toMenu}: $\rightarrow$ (transition). toMenu() $\equiv$
+phase, mode, course := MENU, \nul, \nul; M3.showMainMenu().
+
+\noindent \textbf{progress}: $\mathbb{N} \rightarrow$ (transition).
+progress($i$) $\equiv$ let $k_0$ = M7.getProgress()[1];
+M7.passCheckpoint($i$); (M7.getProgress()[1] $> k_0 \Rightarrow$
+M8.resetSectionTime()) (FR-PER-04).
+
+\noindent \textbf{complete}: $\rightarrow$ (transition). complete() applies
+these steps in order (FR-PER-10, FR-DAT-01, FR-REV-01):
+\begin{enumerate}
+\item M8.complete(). Let $ev$ = M8.getEvaluation() and $(k, n)$ =
+  M7.getProgress().
+\item M10.saveResult((course, $ev.T$, $ev.C$, $k$, $ev$.score, $ev$.rating)).
+  If this raises SaveFailed, the review is still shown.
+\item M3.showReview((course, $ev.T$, $k$, $n$, $ev.C$, $ev$.score,
+  $ev$.rating, feedback($ev$, $k$, $n$))); phase := COMPLETE.
+\end{enumerate}
+
+\noindent \textbf{showFlight}: $\rightarrow$ (transition). showFlight()
+$\equiv$ (mode $=$ OBSTACLE\_COURSE $\Rightarrow$
+M3.showHUD((M6.getPose(), M8.getTotalTime(), M8.getSectionTime(),
+M7.getProgress()[1], M7.getProgress()[2])) $|$ mode $=$ FREE\_FLIGHT
+$\Rightarrow$ M3.showFreeFlightHUD(M6.getPose())).
+
+\noindent \textbf{feedback}: Evaluation $\times\ \mathbb{Z} \times
+\mathbb{Z} \rightarrow \Sigma^* \cup \ \{\nul\}$. feedback($ev$, $k$, $n$)
+$=$ (M13 is included $\wedge$ M13.isAvailable() $\Rightarrow$
+M13.analyze(($ev.T$, $k$, $n$, $ev.C$, $ev$.score)), or \nul{} if that raises
+FeedbackUnavailable $|$ otherwise $\Rightarrow$ \nul). The review is shown in
+every case (FR-AI-03).
+
+\noindent \textbf{global}: $\Sigma^* \rightarrow$ seq of BoardRow $\cup
+\ \{\nul\}$. global($c$) $=$ rows(M10.getLeaderboard($c$, GLOBAL)), or \nul{}
+if that raises LeaderboardUnavailable (FR-DAT-08).
+
+\noindent \textbf{items}: seq of CourseInfo $\rightarrow$ seq of CourseItem.
+Copies each course's id, name and environment, and writes its difficulty as
+its name.
+
+\noindent \textbf{rows}: seq of LeaderboardEntry $\rightarrow$ seq of
+BoardRow. Copies rank, displayName, score, $T$ and $C$ from each entry.
+
+\noindent \textbf{history}: seq of HistoryEntry $\rightarrow$ seq of
+HistoryRow. Copies course, timestamp, $T$, $C$, score, rating and synced from
+each entry.
+
+\subsubsection{Local Constants}
+
+\begin{itemize}
+\item SIGN\_IN\_MSG: $\Sigma^* =$ ``Sign in to view or synchronize your saved
+  results.''
+\end{itemize}
+
+\subsubsection{Considerations}
+
+This module is the only top-level coordinator. It passes data between the
+other modules through their exported types, so none of the lower modules
+depends on another to obtain it.
 
 \newpage
 
