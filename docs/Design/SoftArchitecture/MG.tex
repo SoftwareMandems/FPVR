@@ -1463,9 +1463,98 @@ foreign keys and validation protect record consistency.
 
 \section{Timeline}
 
-\wss{Schedule of tasks and who is responsible}
+Table \ref{TblModuleSchedule} gives the module work schedule with all
+project work targeted for completion by February 15, 2027. Each period
+runs from initial implementation through module integration and
+verification; overlapping periods allow independent work in parallel.
+Core flight is targeted for the December 3, 2026 proof of concept.
+Core training is complete by January 21; accounts, persistence, rankings,
+and review integration finish by February 1. Intelligent feedback is
+integrated by February 5. February 6--12 is reserved for end-to-end
+regression testing on the Quest, including offline operation, recovery,
+security, and performance. February 13--15 is reserved for final defect
+corrections, verification reruns, documentation, and release packaging.
+These internal targets bring completion ahead of the later SRS P.3 course
+submission milestones.
 
-\wss{You can point to GitHub if this information is included there}
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{p{0.10\textwidth} p{0.23\textwidth} p{0.57\textwidth}}
+\caption{Module Activities and Planned Start--Finish Dates}
+\label{TblModuleSchedule}\\
+\toprule
+\textbf{Module} & \textbf{Work Period} & \textbf{Two Scheduled Activities} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Module} & \textbf{Work Period} & \textbf{Two Scheduled Activities} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\mref{mXR} & Nov. 17--Dec. 3, 2026
+& 1. Configure standalone Quest deployment and XR session access.\newline
+  2. Verify headset tracking, rendering, and on-device launch. \\
+\addlinespace
+\mref{mController} & Nov. 17--Dec. 3, 2026
+& 1. Bind Quest controller actions to normalized flight commands.\newline
+  2. Calibrate axes and verify menu input, availability, and response time. \\
+\addlinespace
+\mref{mPhysics} & Nov. 17--Dec. 3, 2026
+& 1. Implement thrust, gravity, and rotational motion updates.\newline
+  2. Tune the flight model and verify isolated axis responses. \\
+\addlinespace
+\mref{mFlightState} & Nov. 20--Dec. 3, 2026
+& 1. Integrate motion updates with drone state and collision detection.\newline
+  2. Verify takeoff, single crash events, suspended input, and state restoration. \\
+\addlinespace
+\mref{mEnvironment} & Nov. 20, 2026--Jan. 14, 2027
+& 1. Build the free-flight scene and course-content interface.\newline
+  2. Provide three course levels across two environments and validate layouts. \\
+\addlinespace
+\mref{mTraining} & Nov. 20, 2026--Jan. 21, 2027
+& 1. Coordinate free-flight initialization and return-to-menu transitions.\newline
+  2. Integrate course lifecycle, pause, recovery, restart, and completion. \\
+\addlinespace
+\mref{mUI} & Nov. 20, 2026--Feb. 1, 2027
+& 1. Implement headset menus, controller guidance, and recovery choices.\newline
+  2. Integrate review, account, and leaderboard views using service interfaces. \\
+\addlinespace
+\mref{mCheckpoint} & Dec. 4, 2026--Jan. 21, 2027
+& 1. Implement ordered checkpoint progression and finish validation.\newline
+  2. Verify respawn positions, preserved progress, and restart resets. \\
+\addlinespace
+\mref{mPerformance} & Dec. 4, 2026--Jan. 21, 2027
+& 1. Implement total time, section time, and crash-count accumulation.\newline
+  2. Verify lifecycle reset rules and finalize consistent review snapshots. \\
+\addlinespace
+\mref{mScoring} & Jan. 4--Feb. 1, 2027
+& 1. Implement the SRS score formula and rating bands.\newline
+  2. Verify boundary values and integrate evaluation with completed measurements. \\
+\addlinespace
+\mref{mRanking} & Jan. 4--Feb. 1, 2027
+& 1. Implement score, time, and timestamp ordering for result sets.\newline
+  2. Verify ties and integrate the policy with local and global rankings. \\
+\addlinespace
+\mref{mStorage} & Jan. 4--Feb. 1, 2027
+& 1. Implement local result persistence and the MySQL service contract.\newline
+  2. Verify online storage, ownership, retrieval, and persistence across sessions. \\
+\addlinespace
+\mref{mAccount} & Jan. 4--Feb. 1, 2027
+& 1. Implement registration, sign-in, sign-out, and session access.\newline
+  2. Verify username rules, credential protection, and unauthorized-access rejection. \\
+\addlinespace
+\mref{mLeaderboard} & Jan. 11--Feb. 1, 2027
+& 1. Integrate local results, leaderboard queries, and historical review.\newline
+  2. Verify authenticated synchronization, duplicate retries, status, and offline fallback. \\
+\addlinespace
+\mref{mAI} & Jan. 22--Feb. 5, 2027
+& 1. Evaluate a feedback strategy using completed-attempt snapshots.\newline
+  2. Integrate advisory feedback and verify failure isolation from standard review. \\
+\addlinespace
+\end{longtable}
+\endgroup
 
 \section{Generative AI Use Disclosure}
 
