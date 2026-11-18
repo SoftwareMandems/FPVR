@@ -1,0 +1,52 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 15
+skinparam nodesep 22
+skinparam ranksep 80
+skinparam ArrowColor #334155
+skinparam rectangle {
+ BorderColor #475569
+ RoundCorner 8
+}
+top to bottom direction
+rectangle "M4\nTraining Session" as M4 #DBEAFE
+rectangle "M3\nUser Interface" as M3 #E0F2FE
+rectangle "M5\nCourse / Environment" as M5 #E0F2FE
+rectangle "M6\nFlight State / Crash" as M6 #E0F2FE
+rectangle "M7\nCheckpoint / Recovery" as M7 #E0F2FE
+rectangle "M8\nAttempt Metrics" as M8 #E0F2FE
+rectangle "M10\nResult Synchronization" as M10 #E0F2FE
+rectangle "M13\nFeedback (optional)" as M13 #FEF3C7
+rectangle "M1\nVR Platform" as M1 #F1F5F9
+rectangle "M2\nController Input" as M2 #F1F5F9
+rectangle "M9\nAccount / Authentication" as M9 #F1F5F9
+rectangle "M11\nFlight Dynamics" as M11 #F1F5F9
+rectangle "M12\nData Persistence" as M12 #F1F5F9
+rectangle "M14\nScoring Policy" as M14 #F1F5F9
+rectangle "M15\nOrdering Policy" as M15 #F1F5F9
+M4 --> M3
+M4 --> M5
+M4 --> M6
+M4 --> M7
+M4 --> M8
+M4 --> M10
+M4 ..> M13
+M3 --> M1
+M3 --> M2
+M3 --> M9
+M6 --> M2
+M6 --> M11
+M8 --> M14
+M10 --> M9
+M10 --> M12
+M10 --> M15
+legend bottom
+  Blue: coordinator | Pale blue: session services
+  Grey: providers | Yellow: optional service
+  A -> B: A uses B | Dashed: optional-feature use
+  Layers indicate dependency order, not secret categories.
+endlegend
+@enduml

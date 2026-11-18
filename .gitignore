@@ -27,6 +27,9 @@
 ## Exception: committed, CI-generated PDFs kept here for TA review
 !/pdfs/**/*.pdf
 
+# Vector figure required to compile the module guide
+!/docs/Design/SoftArchitecture/media/uses-hierarchy.pdf
+
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
 *.bcf

@@ -8,6 +8,7 @@
 \usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{pdflscape}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -609,8 +610,10 @@ it does not own session transitions, scoring, or result ordering.
 \item[Services:]
 Displays training menus, flight information, crash recovery
 choices, performance results, and user notifications.
-Accepts user selections and communicates them to the
-appropriate modules.
+Renders a session view supplied by \mref{mTraining} through
+\mref{mXR}. Reads navigation input through \mref{mController}, returns
+training intentions to its caller, and delegates account actions to
+\mref{mAccount}.
 
 \item[Implemented By:]
 Unity/C\# using Unity's user interface components.
@@ -637,7 +640,9 @@ other modules' services; their internal state remains owned by them.
 Initializes and manages training sessions, coordinates
 mode selection, and handles session restarts, completion,
 and return-to-menu operations. Coordinates the reset of
-attempt-related state across the relevant modules.
+attempt-related state across the relevant modules. Supplies course
+configuration, forwards lifecycle events, and assembles immutable views
+for \mref{mUI}; the direct dependencies are listed in Section \ref{SecUse}.
 
 \item[Implemented By:]
 FPVR Unity/C\# application.
@@ -662,11 +667,10 @@ justifies grouping course and environment management. Attempt progress
 belongs to \mref{mCheckpoint}, not to the content definition.
 
 \item[Services:]
-Tracks completed checkpoints, validates course
-progression, and determines checkpoint respawn or
-level restart positions. Preserves or resets checkpoint
-progress as required, while coordinating with the
-session manager for recovery and restart operations.
+Loads and manages training environments, provides
+available course configurations, and supplies obstacle,
+checkpoint, and starting-position information to
+other modules.
 
 \item[Implemented By:]
 FPVR Unity/C\# application using Unity scenes and
@@ -697,7 +701,9 @@ Maintains the current drone flight state, processes
 collision events, identifies valid crashes, and ensures
 each crash generates a single event before normal
 flight is suspended. Applies state updates calculated
-by the Flight Dynamics Model.
+by the Flight Dynamics Model (\mref{mPhysics}) from normalized commands
+obtained through \mref{mController}. Accepts recovery poses from its caller
+and exposes registered crash events for the caller to forward.
 
 \item[Implemented By:]
 FPVR Unity/C\# application using Unity collision
@@ -1295,34 +1301,71 @@ would primarily affect \mref{mXR} and \mref{mController}.
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
-In this section, the uses hierarchy between modules is
-provided. \citet{Parnas1978} said of two programs A and B that A {\em uses} B if
-correct execution of B may be necessary for A to complete the task described in
-its specification. That is, A {\em uses} B if there exist situations in which
-the correct functioning of A depends upon the availability of a correct
-implementation of B.  Figure \ref{FigUH} illustrates the use relation between
-the modules. It can be seen that the graph is a directed acyclic graph
-(DAG). Each level of the hierarchy offers a testable and usable subset of the
-system, and modules in the higher level of the hierarchy are essentially simpler
-because they use modules from the lower levels.
+Following \citet{Parnas1978}, module A uses module B when correct
+execution of B may be necessary for A to fulfill its specification.
+Figure \ref{FigUH} shows the direct service dependencies of the proposed
+architecture. An arrow points from the caller A to the service provider B.
+These are dependencies that could require an import or an interface
+reference in code; they do not represent the direction of data movement.
 
-\wss{The uses relation is not a data flow diagram.  In the code there will often
-be an import statement in module A when it directly uses module B.  Module B
-provides the services that module A needs.  The code for module A needs to be
-able to see these services (hence the import statement).  Since the uses
-relation is transitive, there is a use relation without an import, but the
-arrows in the diagram typically correspond to the presence of import statement.}
+\subsection{Layers and Direct Dependencies}
 
-\wss{If module A uses module B, the arrow is directed from A to B.}
+The graph has three layers. The Training Session Manager
+(\mref{mTraining}) is the top-level control module. The middle layer
+contains presentation, content, flight, checkpoint, measurement, result,
+and optional feedback services. The bottom layer supplies device adapters,
+authentication, persistence, and stateless calculation policies. Each edge
+strictly descends a layer, so the graph is a directed acyclic graph (DAG).
+The layers describe dependency order, independently of the secret-based
+categories in Table \ref{TblMH}.
 
-\begin{figure}[H]
+Table \ref{TblUses} lists every direct edge with its purpose. Modules not
+listed as callers have no direct dependencies on other FPVR modules.
+Engine, runtime, operating-system, and external-service dependencies are
+outside this module graph.
+
+\begin{longtable}{p{0.16\textwidth} p{0.29\textwidth} p{0.45\textwidth}}
+\caption{Direct Module Uses and Their Purpose}\label{TblUses}\\
+\toprule
+\textbf{Caller} & \textbf{Uses} & \textbf{Required Services} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Caller} & \textbf{Uses} & \textbf{Required Services} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\mref{mTraining}
+& \mref{mUI}, \mref{mEnvironment}, \mref{mFlightState},
+  \mref{mCheckpoint}, \mref{mPerformance}, \mref{mLeaderboard}
+& Presents session views, loads courses, advances flight, coordinates
+  recovery, finalizes measurements, and saves or retrieves results. \\
+\mref{mTraining} & \mref{mAI} (optional)
+& Requests feedback from a completed-attempt snapshot when enabled;
+  handles unavailable analysis without delaying standard review. \\
+\mref{mUI} & \mref{mXR}, \mref{mController}, \mref{mAccount}
+& Presents headset views, reads menu actions or control-guide mappings,
+  and performs explicit account actions. \\
+\mref{mFlightState} & \mref{mController}, \mref{mPhysics}
+& Obtains normalized flight commands and computes the next motion state. \\
+\mref{mPerformance} & \mref{mScoring}
+& Evaluates the frozen attempt measurements to obtain score and rating. \\
+\mref{mLeaderboard} & \mref{mAccount}, \mref{mStorage}, \mref{mRanking}
+& Authorizes online operations, persists or retrieves result records,
+  and orders retrieved records for leaderboards. \\
+\end{longtable}
+
+\begin{landscape}
+\begin{figure}[p]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
-\caption{Use hierarchy among modules}
+\includegraphics[width=\linewidth,height=0.82\textheight,keepaspectratio]{media/uses-hierarchy.pdf}
+\caption{Direct module uses, directed from caller to provider.
+The dashed edge is used only when intelligent feedback is enabled.}
 \label{FigUH}
 \end{figure}
+\end{landscape}
 
-%\section*{References}
 
 \section{User Interfaces}
 
