@@ -1429,11 +1429,37 @@ serial protocol. These boundaries keep device-specific details within
 Unity's \href{https://docs.unity3d.com/Packages/com.unity.xr.openxr@1.14/manual/input.html}{OpenXR input documentation}
 describes the input integration.
 
-\section{Database Design}
+\section{Database Design} \label{SecDatabase}
 
-\wss{If a database is a significant component of the project, the database
-design should be summarized here.  This section should be filled in with NA if
-it is not appropriate for a given project.}
+FPVR uses MySQL 8.4 on a hosted backend for accounts and synchronized
+results, accessed by the Quest application through an authenticated HTTPS
+service. The headset saves results locally first, preserving guest training
+and offline use. Module \mref{mStorage} hides storage details;
+\mref{mAccount} manages identity, while \mref{mLeaderboard} manages
+synchronization. Usernames are unique and passwords are stored only as
+salted, adaptive hashes.
+
+Figure \ref{FigDatabase} shows the three relations: accounts, course
+metadata, and completed flight results. Each result references exactly
+one account and one level through foreign keys; either parent may have
+many results. Result records retain completion time, crash count, score,
+and rating for historical review. The full schema and query examples are
+in \texttt{database/schema.sql} and \texttt{database/queries.sql}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.43\textheight,keepaspectratio]{media/database-relations.pdf}
+\caption{Database Relations and Their Cardinalities}
+\label{FigDatabase}
+\end{figure}
+
+Leaderboards query results by descending score, then ascending flight time
+and completion timestamp, using the same rules for local rankings.
+Synchronization uses a unique result UUID to prevent duplicate inserts on
+retry; the server checks the authenticated owner and acknowledges accepted
+results before the client marks them synchronized. Failed submissions remain
+local for retry. Indexes support per-level rankings and account history;
+foreign keys and validation protect record consistency.
 
 \section{Timeline}
 
