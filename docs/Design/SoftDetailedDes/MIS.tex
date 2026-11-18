@@ -139,7 +139,12 @@ tuple $x$ with a field named $f$, $x.f$ is the value of that field. For a
 sequence $s$, $|s|$ is its length, $s[i]$ is its $i$-th element (starting at
 1), $s \,||\, t$ is $s$ followed by $t$, and $\langle\rangle$ is the empty
 sequence. A multiple assignment $v_1, v_2 := e_1, e_2$ evaluates every
-expression first and then assigns them together. Following the MIS format, a
+expression first and then assigns them together. Local functions are given by
+their type signature followed by their definition, where $f(x) \equiv e$ means
+$f(x)$ is defined as $e$. A local function whose signature ends in
+``$\rightarrow$ (transition)'' returns no value; it names a sequence of state
+changes and access-program calls so that an access routine can refer to them
+by name. Following the MIS format, a
 module heading names its kind: Module (a library or abstract object) or
 Template Module (an abstract data type).
 
@@ -657,9 +662,10 @@ moves cursor within $[1, |\text{items}|]$, so the invariant is kept.
 
 \subsubsection{Access Routine Semantics}
 
-Every show routine has the same form. For screen $x$ and the data passed in, it
-sets screen, items, cursor := $x$, itemsFor($x$), 1 and calls
-M1.showOverlay(draw($x$, data)). It raises $exc :=$ (\noinit).
+Every show routine has the same form. For screen $x$ and the routine's
+arguments $d$ (a ScreenData value), it sets screen, items, cursor := $x$,
+itemsFor($x$), 1 and calls M1.showOverlay(draw($x$, $d$)). It raises $exc :=$
+(\noinit).
 Table~\ref{TblM3Items} gives itemsFor, and the list below gives what each
 screen draws.
 
@@ -763,6 +769,14 @@ stops flight instead of reading stale input.
 \item Item = UserAction $\cup$ $\{$GUIDE\_INFO, REGISTER, SIGN\_IN,
   SIGN\_OUT$\}$. The four extra choices are handled inside this module and are
   never returned to the caller.
+\item ScreenData = seq of CourseItem $\cup$ HudView $\cup$ $\mathbb{B}$ $\cup$
+  ReviewView $\cup$ ($\Sigma^*$, seq of BoardRow, seq of BoardRow $\cup
+  \ \{\nul\}$) $\cup$ seq of HistoryRow $\cup$ $\Sigma^*$ $\cup$ $\{\nul\}$.
+  The arguments of the show routine that set the screen, or \nul{} for a
+  routine with no arguments.
+\item AccountError = $\{$ServiceUnavailable, UsernameTaken, WeakPassword,
+  InvalidCredentials$\}$. The exceptions that \Mref{9} can raise for an
+  account action after initialization.
 \end{itemize}
 
 \subsubsection{Local Functions}
@@ -771,16 +785,18 @@ stops flight instead of reading stale input.
 \item act: ActionKind $\rightarrow$ UserAction. act($a$) $= (a, \nul)$.
 \item itemsFor: Screen $\rightarrow$ seq of Item, given in
   Table~\ref{TblM3Items}.
-\item draw: Screen $\times$ data $\rightarrow$ View. The menu or overlay for
-  the screen showing the data, with items[cursor] highlighted.
+\item draw: Screen $\times$ ScreenData $\rightarrow$ View. draw($x$, $d$) is
+  the menu or overlay for screen $x$ showing $d$, with items[cursor]
+  highlighted.
 \item account: Item $\rightarrow$ (transition). With $(u, pw)$ = textFields:
   account(REGISTER) $\equiv$ M9.register($u$, $pw$) (FR-ACC-01);
   account(SIGN\_IN) $\equiv$ M9.signIn($u$, $pw$) (FR-ACC-03);
   account(SIGN\_OUT) $\equiv$ M9.signOut() (FR-ACC-04). Then showMainMenu().
-  If M9 raises exception $e$, showMessage(explain($e$)) instead (FR-ACC-02).
-\item explain: exception $\rightarrow \Sigma^*$. A message that states why the
-  request failed. For InvalidCredentials it does not say whether the username
-  or the password was wrong (FR-ACC-03).
+  If M9 raises an AccountError $e$, showMessage(explain($e$)) instead
+  (FR-ACC-02).
+\item explain: AccountError $\rightarrow \Sigma^*$. explain($e$) is a message
+  that states why the request failed. For InvalidCredentials it does not say
+  whether the username or the password was wrong (FR-ACC-03).
 \end{itemize}
 
 \subsubsection{Considerations}
