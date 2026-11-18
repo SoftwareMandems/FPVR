@@ -180,6 +180,12 @@ Completed S.5 and S.6 of the SRS. \\
 Oct 19, 2026 & Ibrahim &
 Completed the Environment (E) section of the SRS. \\
 
+\addlinespace
+
+Nov 17, 2026 & Ibrahim &
+Aligned storage, leaderboards and replay requirements with per-level personal
+bests using Unity Gaming Services. \\
+
 \bottomrule
 \end{tabularx}
 
@@ -276,14 +282,11 @@ feedback on their flight performance through measurable indicators such as compl
 An intelligent feedback component may provide further analysis of user performance.
 
 FPVR will also support registered player accounts,
-persistent performance records, and local and global
-leaderboards. Users will be able to practise without
-signing in, while registered players can save their
-completed results to an online service, review
-previous attempts, and compare their performance
-with other players. These features extend the
-training experience beyond individual sessions
-by providing measurable records of progress.
+one personal-best completion time and matching private replay per player and
+level, and local, global and friends leaderboards. Users can practise without
+signing in. Registered players can synchronize their best runs across supported
+installations and compare times with other players. A faster completed run
+replaces the previous best; FPVR does not retain a full attempt history.
 
 
 
@@ -337,9 +340,9 @@ attempting structured challenges.
 \hypertarget{goal:G5}{}\textbf{Persistent Progress and
 Performance Comparison (G5):}
 FPVR will allow registered users to retain
-their completed flight results across sessions
-and access them from supported installations.
-Local and global leaderboards will provide
+their best completion time and matching visual replay for each level across
+sessions and access them from supported installations.
+Local, global and friends leaderboards will provide
 opportunities to compare performance on
 individual obstacle-course levels, encouraging
 users to revisit challenges and track their
@@ -472,25 +475,23 @@ Core \\
 
 \addlinespace
 
-Cloud Result Storage &
-Stores completed flight results for registered
-players, allowing synchronized results to be
-accessed across supported installations. &
+Cloud Best-Run Storage &
+Stores one best completion time and matching private replay per registered
+player and level, accessible across supported installations. &
 Core \\
 
 \addlinespace
 
-Local and Global Leaderboards &
-Provides level-specific rankings using locally
-saved results and results submitted by registered
-players to the online service. &
+Local, Global and Friends Leaderboards &
+Ranks each player's best time for a level using installation-local records,
+global online entries, or entries for the player and accepted friends. &
 Core \\
 
 \addlinespace
 
-Performance History &
-Allows registered users to review results from
-previously completed obstacle-course attempts. &
+Personal Best and Replay &
+Allows players to view their retained best time and replay that run's recorded
+drone movement in the game. &
 Core \\
 
 
@@ -659,13 +660,14 @@ Upon completion, FPVR presents the standard
 post-flight review, including the completion
 time, collision count, numerical score, and
 performance rating. The result is saved locally
-and, when the online service is available,
-synchronized with the user's registered account.
+with its replay if it is the player's first completed run for that level or
+strictly faster than their retained best. When signed in and online, the best
+run is synchronized with the user's account. Equal or slower runs leave the
+retained best and its replay unchanged.
 
 The user may later sign in on another supported
-installation to retrieve previously synchronized
-results and review their performance over
-multiple attempts.
+installation to retrieve the synchronized best time and matching private replay
+for each level.
 
 This scenario supports G3 and G5 by enabling
 persistent performance records and allowing
@@ -679,17 +681,17 @@ After completing an obstacle-course level,
 a user opens the leaderboard for that level.
 
 FPVR displays a local leaderboard containing
-results saved on the current installation.
+one best time per local player saved on the current installation.
 When the online service is available, the
 user can also view a global leaderboard
-containing results submitted by registered
-players.
+containing best times submitted by registered players, or a friends view
+containing the player and their accepted friends.
 
-The leaderboards rank results according to
-numerical score, with completion time and
-completion timestamp used to resolve ties.
+The leaderboards rank best completion times from shortest to longest.
+Online equal-time entries use the order returned by the leaderboard service;
+numerical scores and ratings remain part of the current post-flight review.
 Users can compare their performance with
-other recorded attempts and repeat the level
+other players' best times and repeat the level
 to improve their ranking.
 
 If the online service is unavailable, the
@@ -901,9 +903,8 @@ health and safety concerns. \\
 \addlinespace
 
 Registered Players &
-Users who create accounts to preserve completed
-flight results, review their performance history,
-and participate in global leaderboards. Their
+Users who create accounts to preserve per-level personal bests and private
+replays and participate in global and friends leaderboards. Their
 interests include reliable result storage,
 account security, and access to synchronized
 performance information. \\
@@ -1073,9 +1074,8 @@ Progression is voluntary, as all levels are
 available without prerequisite completion.
 The user may initially practise without creating
 an account. If they choose to register, they
-can preserve their completed results and review
-previous attempts to evaluate their progress
-over time.
+can preserve their best time and replay for each level and try to improve it
+in later sessions.
 
 
 \subsubsection{Casual Gamer or Technology Enthusiast}
@@ -1106,7 +1106,7 @@ The user may also create an account to
 participate in global leaderboards and compare
 their results with other players. Local
 leaderboards provide an additional way to
-compare attempts recorded on the same
+compare local players' best times saved on the same
 installation.
 
 
@@ -1139,9 +1139,8 @@ behaviour with prior experience and identify
 areas for improvement. The required accuracy
 of the underlying flight model remains
 under review.
-Registered experienced users may also review
-historical results and compare their performance
-across repeated attempts. These comparisons
+Registered experienced users may also replay their best run for each level
+and compare new completion times with that retained best. These comparisons
 may support evaluation of the simulator's
 consistency, but do not establish real-world
 flight proficiency.
@@ -1198,7 +1197,8 @@ and online leaderboard service are outside the software boundary.
 Figure~\ref{fig:e-domain} shows the main training concepts. A course takes place
 in one virtual environment and contains ordered \hyperlink{glos:Checkpoint}{checkpoints}. Each attempt uses
 one course and one simulated drone. Completing the attempt produces a flight
-review. Registered users can save and retrieve completed results. The diagram
+review. Players retain one best run and its replay per level; registered users
+can synchronize these records. The diagram
 shows one course run; it does not specify software classes.
 
 \begin{figure}[H]
@@ -1243,10 +1243,10 @@ Flight data for analysis, if included. Data and processing location remain
 under review (\hyperref[sec:s2-ai]{S.2}). \\
 Authentication service (F6) & Registration/login outcomes and authenticated
 session state. & Account details, login credentials and sign-in/sign-out requests. \\
-Cloud database (F7) & Saved flight results and save/retrieval status. &
-Completed flight results linked to the user account, and requests for previous results. \\
-Online leaderboard service (F8) & Global rankings and score-submission status. &
-Course scores, player identifiers and ranking requests. \\
+Cloud database (F7) & Best-run records, private replay files and save/retrieval status. &
+The player's best-run metadata and matching replay, and requests to synchronize or retrieve them. \\
+Online leaderboard service (F8) & Global/friends rankings and time-submission status. &
+Best completion times, player identifiers, accepted-friend identifiers and ranking requests. \\
 Physical space & Room clearance, user preparation and conditions for headset
 \hyperlink{glos:Tracking}{tracking}. No direct obstacle-sensing input is assumed. & \hyperlink{glos:VR}{VR} images affect user
 attention and movement; FPVR cannot clear the physical space. \\
@@ -1358,8 +1358,9 @@ for every user.
 \textbf{Release and data rules.}
 A Meta release must meet the applicable
 \hyperref[es-meta-age]{audience rules}. Distribution must also
-respect engine, \hyperlink{glos:Runtime}{runtime} and asset licences. Account data, completed flight
-results and leaderboard entries require persistent cloud storage. Protect
+respect engine, \hyperlink{glos:Runtime}{runtime} and asset licences. Account data,
+per-level best-run records, private replays and leaderboard entries require
+persistent cloud storage. Protect
 credentials and stored data, encrypt service connections, and restrict access
 to private records to their owner and authorised services. Define the data
 collected, its purpose, recipients, retention period, deletion process and user
@@ -1367,7 +1368,7 @@ notice/consent and applicable legal duties before release. Explain which
 leaderboard details are public.
 Optional \hyperlink{glos:AI}{AI} processing must have a separate data-use policy; storing results
 does not authorise sending them or credentials to an \hyperlink{glos:AI}{AI} service.
-\textit{Reason:} required storage supports accounts, previous results and global
+\textit{Reason:} required storage supports accounts, personal bests, private replays and online
 rankings, while optional analysis (\hyperref[sec:s2-ai]{S.2}) has a separate purpose.
 
 \item[{\hyperref[et-resources]{E-C-06}:}]\phantomsection\label{ec-resources}
@@ -1477,8 +1478,9 @@ needs separate evaluation (\hyperref[g6]{G.6}).
 \textbf{Flight data and equipment use.}
 FPVR updates the selected course, \hyperlink{glos:Checkpoint}{checkpoint} progress, timers, crash count,
 score, rating and current review (\hyperref[sec:s2-performance]{FR-PER-01--10},
-\hyperref[sec:s2-review]{FR-REV-02}). Registered users can save completed results
-to persistent cloud storage and retrieve previous results. Account-linked
+\hyperref[sec:s2-review]{FR-REV-02}). Players retain only their best completed run
+and matching replay per level. Registered users can synchronize and retrieve
+these records through cloud storage. Account-linked
 records and public leaderboard entries create privacy and access-control
 obligations under \hyperref[ec-release]{E-C-05}. FPVR also uses device processing
 power, memory, display, battery and network access; \hyperlink{glos:PCVR}{PCVR} uses the computer and
@@ -1653,7 +1655,7 @@ standing without walking. Record comfort and accessibility issues. \\
 \phantomsection\label{et-release}
 \hyperref[ec-release]{E-C-05}, \hyperref[ef-data]{E-F-03} &
 \hyperref[s2]{S.2}; \hyperref[sec:s2-ai]{Optional analysis} &
-Test registration/login, cloud save/retrieval of previous results and global
+Test registration/login, cloud save/retrieval of best runs and private replays, and online
 rankings (F6--F8), including service failures. Check access to another user's
 private results is denied. Review encryption, retention/deletion, public
 leaderboard fields, separate \hyperlink{glos:AI}{AI} data use, licences and audience rules. \\
@@ -1861,25 +1863,25 @@ This section defines the externally observable functional and non-functional req
 \subsubsection{Result Storage and Leaderboards}
 \label{sec:s2-leaderboard}
 \begin{itemize}
-\item \hypertarget{req:FR-DAT-01}{}\textbf{FR-DAT-01:} After a completed obstacle-course attempt, FPVR shall save a local result record containing the level identifier, completion timestamp, total time, crash count, score, rating, and the active local player identifier.\\
-\textit{Rationale:} A local record supports a device leaderboard and retains results when a network connection is unavailable.
-\item \hypertarget{req:FR-DAT-02}{}\textbf{FR-DAT-02:} For an authenticated player with network connectivity, FPVR shall submit the completed result to the online result service and associate it with that player's account.\\
-\textit{Rationale:} Cloud association allows results to be retrieved across installations and included in global rankings.
-\item \hypertarget{req:FR-DAT-03}{}\textbf{FR-DAT-03:} FPVR shall retain a locally saved result when an online submission fails and shall allow the player to retry synchronization after connectivity is restored.\\
-\textit{Rationale:} Temporary network failure should not erase a completed attempt.
-\item \hypertarget{req:FR-DAT-04}{}\textbf{FR-DAT-04:} FPVR shall display a local leaderboard for each obstacle-course level using results saved on the current installation.\\
+\item \hypertarget{req:FR-DAT-01}{}\textbf{FR-DAT-01:} FPVR shall retain one local best completed run per player and obstacle-course level, containing the player and level identifiers, a unique run identifier, total active flight time in whole milliseconds, and matching replay file reference and format version. The first valid completed run establishes the best; only a strictly shorter stored whole-millisecond time replaces the retained best and its replay. Equal, slower or incomplete runs shall leave them unchanged.\\
+\textit{Rationale:} One best-run record supports rankings and replay without retaining a full attempt history.
+\item \hypertarget{req:FR-DAT-02}{}\textbf{FR-DAT-02:} For an authenticated player with network connectivity, FPVR shall synchronize their best-run metadata and private replay with their account and submit their best time to the online leaderboard. The metadata and replay shall identify the same run; an older or slower synchronization shall not replace a better retained run.\\
+\textit{Rationale:} Account-linked bests support cross-installation access and online ranking.
+\item \hypertarget{req:FR-DAT-03}{}\textbf{FR-DAT-03:} FPVR shall retain the local best and its matching replay when an online operation fails, allow synchronization to be retried, and track unfinished operations without presenting a mismatched replay as the accepted best.\\
+\textit{Rationale:} Leaderboard and file-storage operations can succeed or fail independently.
+\item \hypertarget{req:FR-DAT-04}{}\textbf{FR-DAT-04:} FPVR shall show a local leaderboard for each level using one saved best time per local player on that installation.\\
 \textit{Rationale:} Users can compare results without relying on an external service.
-\item \hypertarget{req:FR-DAT-05}{}\textbf{FR-DAT-05:} FPVR shall display a global leaderboard for each obstacle-course level using results successfully accepted by the online service.\\
-\textit{Rationale:} Online rankings enable comparison between registered players across installations.
-\item \hypertarget{req:FR-DAT-06}{}\textbf{FR-DAT-06:} Both leaderboards shall rank results by descending numerical score, using shorter total completion time as the first tiebreaker and earlier completion timestamp as the second tiebreaker.\\
-\textit{Rationale:} A complete ordering rule prevents ambiguous rankings for equal scores.
-\item \hypertarget{req:FR-DAT-07}{}\textbf{FR-DAT-07:} Each leaderboard shall show at least the top ten available results for the selected level, including rank, player display name, score, completion time, and crash count.\\
+\item \hypertarget{req:FR-DAT-05}{}\textbf{FR-DAT-05:} FPVR shall show a global leaderboard for each level using one accepted best time per registered player. A friends view shall contain only the signed-in player and their accepted friends, with positions numbered within that group.\\
+\textit{Rationale:} The same best-time entries support global and friends comparisons without live multiplayer.
+\item \hypertarget{req:FR-DAT-06}{}\textbf{FR-DAT-06:} All leaderboard views shall order best times in ascending whole milliseconds. Online equal-time entries shall use the order returned by the service; local equal-time entries shall use local player identifier order. Numerical score and rating shall not affect leaderboard order.\\
+\textit{Rationale:} Shortest-time ranking matches the retained personal best and the managed leaderboard service.
+\item \hypertarget{req:FR-DAT-07}{}\textbf{FR-DAT-07:} Each leaderboard view shall show at least the top ten available entries for the selected level, or all entries if fewer exist, including rank, player display name and best completion time labelled in seconds with millisecond precision.\\
 \textit{Rationale:} A fixed minimum display capacity and field list make the leaderboard interface testable.
 \item \hypertarget{req:FR-DAT-08}{}\textbf{FR-DAT-08:} When the online leaderboard is unavailable, FPVR shall display an availability message and continue to provide the local leaderboard and training modes.\\
 \textit{Rationale:} Online-service failure must not disable core gameplay.
-\item \hypertarget{req:FR-DAT-09}{}\textbf{FR-DAT-09:} A registered player shall be able to retrieve their previously synchronized completed results after signing in on another supported installation.\\
-\textit{Rationale:} Cross-device retrieval is the user-visible benefit of cloud-backed result persistence.
-\item \hypertarget{req:FR-DAT-10}{}\textbf{FR-DAT-10:} FPVR shall distinguish results saved only locally from results successfully synchronized to the online service.\\
+\item \hypertarget{req:FR-DAT-09}{}\textbf{FR-DAT-09:} A registered player shall be able to retrieve their current synchronized best time and matching private replay for each level after signing in on another supported installation.\\
+\textit{Rationale:} Cross-installation access preserves the current personal best without storing earlier attempts.
+\item \hypertarget{req:FR-DAT-10}{}\textbf{FR-DAT-10:} FPVR shall distinguish a locally retained best from successful online time submission and completed best-record/replay synchronization, and shall not report unfinished operations as complete.\\
 \textit{Rationale:} Users must not be misled into believing an offline result is already included in the global ranking.
 \end{itemize}
 
@@ -1894,8 +1896,8 @@ This section defines the externally observable functional and non-functional req
 \textit{Rationale:} Users should be able to continue training without restarting the application.
 \item \hypertarget{req:FR-REV-04}{}\textbf{FR-REV-04:} The standard review shall be displayed even when the network or intelligent feedback service is unavailable.\\
 \textit{Rationale:} Core performance feedback must not depend on optional external services.
-\item \hypertarget{req:FR-REV-05}{}\textbf{FR-REV-05:} FPVR shall permit registered players to view their stored completed results from prior sessions, showing at least the fields specified in FR-DAT-01.\\
-\textit{Rationale:} Account-linked result persistence is useful only if users can retrieve and inspect their earlier performance; this supersedes the earlier exclusion of historical results.
+\item \hypertarget{req:FR-REV-05}{}\textbf{FR-REV-05:} FPVR shall let a player select a level, view their retained best completion time, and play, pause, rewind or fast-forward a private in-game visual replay of that run's recorded drone movement. Missing, corrupt or incompatible replay data shall produce an explanatory message without deleting or changing the best time.\\
+\textit{Rationale:} Replaying the retained best run supports review without keeping every attempt or recording video footage.
 \end{itemize}
 
 \subsubsection{Intelligent Feedback} 
@@ -1932,11 +1934,11 @@ This section defines the externally observable functional and non-functional req
 \textit{Rationale:} Stationary operation reduces the need for movement within the user's physical surroundings.
 \item \hypertarget{req:NFR-SEC-01}{}\textbf{NFR-SEC-01 (Credential Protection):} FPVR shall transmit account credentials only over encrypted connections and shall not store account passwords in plaintext on the device or online service.\\
 \textit{Rationale:} Online account functionality introduces credential exposure risks absent from the original offline-only simulator.
-\item \hypertarget{req:NFR-SEC-02}{}\textbf{NFR-SEC-02 (Access Control):} An unauthenticated user shall not be able to retrieve another player's non-public account data or submit a leaderboard result under another player's account identifier.\\
+\item \hypertarget{req:NFR-SEC-02}{}\textbf{NFR-SEC-02 (Access Control):} FPVR shall reject requests for another player's private online account data, best-run metadata or replay, whether the requester is unauthenticated or signed in to a different account, and shall reject leaderboard submissions under another player's account identifier.\\
 \textit{Rationale:} Public rankings must not compromise account privacy or permit identity spoofing.
-\item \hypertarget{req:NFR-DAT-01}{}\textbf{NFR-DAT-01 (Persistence):} A result confirmed as synchronized shall remain retrievable after the player signs out, restarts FPVR, and signs in again.\\
+\item \hypertarget{req:NFR-DAT-01}{}\textbf{NFR-DAT-01 (Persistence):} The current synchronized best-run record and matching replay shall remain retrievable after sign-out, restart and sign-in, until replaced by a strictly faster completed run.\\
 \textit{Rationale:} Persistence across sessions is the defining acceptance condition for cloud-backed storage.
-\item \hypertarget{req:NFR-OFF-01}{}\textbf{NFR-OFF-01 (Offline Availability):} Free-flight, obstacle-course play, crash recovery, local result saving, and standard post-flight review shall remain usable when the online service is unavailable.\\
+\item \hypertarget{req:NFR-OFF-01}{}\textbf{NFR-OFF-01 (Offline Availability):} Free-flight, obstacle-course play, crash recovery, local best-run saving, playback of locally retained best-run replays, and standard post-flight review shall remain usable when the online service is unavailable.\\
 \textit{Rationale:} Core training should remain available despite network failures; account registration, global ranking, and synchronization may require connectivity.
 \end{itemize}
 
@@ -1977,7 +1979,8 @@ Selection is an explicit menu action that can be interfaced with a controller.
 \item[IF-04: Review:] On course completion show the selected course, final total
 active time labelled in seconds, \hyperlink{glos:Checkpoint}{checkpoint} results in course order, integer
 crash count, numerical score in points, and separate rating. Retry and activity
-selection remain available; prior-session navigation is absent. Unapproved
+selection remain available, along with access to the player's per-level best
+time and private in-game replay. Unapproved
 scoring parameters must be identified as provisional in any prototype rather
 than presented as validated training results (\req{FR-REV-01}--\req{FR-REV-05}).
 \item[IF-05: Platform Interaction:] Consumes \hyperlink{glos:Tracking}{pose}/input availability and \hyperlink{glos:Focus}{focus};
@@ -2233,32 +2236,24 @@ rating, and other results.
 \end{enumerate}
 \end{itemize}
 
-\item[U-04: Replay and Analyze Flight Performance]\mbox{}
+\item[U-04: Replay a Personal-Best Run]\mbox{}
 
 \textbf{Primary Actor:} FPVR user
 
-\textbf{Stakeholders of interest:} \hyperlink{glos:FPV}{FPV} pilots, drone training instructors,
-and the team responsible for the optional \hyperlink{glos:AI}{AI} feedback service.
+\textbf{Stakeholders of interest:} \hyperlink{glos:FPV}{FPV} pilots and instructors.
 
-\textbf{Precondition:} The user has completed at least one course and the
-attempt has been recorded by the application. If \hyperlink{glos:AI}{AI} feedback is enabled, the
-user has approved the data required for the optional analysis.
+\textbf{Precondition:} The player has a retained personal-best run and matching
+replay for a level, saved locally or retrieved after signing in.
 
 \textbf{Main success scenario:}
 \begin{itemize}
-\item The user opens the list of recorded flights.
-\item The application displays the locally stored recordings and their available results.
-\item The user selects a completed flight recording.
-\item The system loads the stored virtual \hyperlink{glos:Telemetry}{telemetry} data and footage.
-\item The application presents the recording in the \hyperlink{glos:VR}{VR} or screen replay view.
+\item The user selects a level and opens their personal-best record.
+\item The application displays the best completion time and offers its private replay.
+\item The system checks the replay's player, level, run identifier and format version
+against the selected best record, then loads the recorded drone movement.
+\item The application reconstructs the run in an in-game replay view in the headset.
 \item The user plays the recording and may pause, rewind, or fast-forward it.
-\item The system displays the standard performance results, including completion
-time, \hyperlink{glos:Checkpoint}{checkpoint} results, collision count, numerical score, and performance
-rating.
-\item If optional \hyperlink{glos:AI}{AI} feedback is enabled and consent is available, the application sends
-the permitted performance information for analysis.
-\item The system displays the resulting observations within the review without
-changing the standard results.
+\item The system displays the matching best completion time without changing the record.
 \item The user exits the replay and the application returns to the main menu.
 \end{itemize}
 
@@ -2270,8 +2265,8 @@ changing the standard results.
 \item The system detects the corruption and stops loading the recording.
 \item The application displays an error explaining that the recording cannot be replayed.
 \item The user dismisses the error.
-\item The application returns the user to the recording list or main menu without changing
-the stored result.
+\item The application returns the user to the level's best record or main menu
+without changing the best time.
 \end{enumerate}
 \item If the selected recording is missing:
 \begin{enumerate}
@@ -2279,54 +2274,17 @@ the stored result.
 \item The application detects that one or more required files are absent.
 \item The system displays an error and removes the unavailable item from the active
 replay view.
-\item The user dismisses the error and returns to the recording list or main
-menu.
+\item The user dismisses the error and returns to the level's best record or main
+menu without changing the best time.
 \end{enumerate}
 \item If the recording is incompatible with the current application version:
 \begin{enumerate}
 \item The application reads the recording version metadata.
 \item The system compares it with the current supported recording format.
 \item The application prevents incompatible data from being interpreted as a replay.
-\item The system displays a warning and suggests updating the recording or the
-application.
-\item The user returns to the recording list or updates before trying again.
-\end{enumerate}
-\item If \hyperlink{glos:AI}{AI} feedback is unavailable:
-\begin{enumerate}
-\item The application checks whether the optional service is reachable and enabled.
-\item The system reports the unavailable capability.
-\item The application skips the optional request.
-\item The system displays the standard review and leaves the user in the replay
-flow.
-\end{enumerate}
-\item If the user declines \hyperlink{glos:AI}{AI} consent:
-\begin{enumerate}
-\item The application requests consent before sending permitted flight-performance data.
-\item The user selects Decline.
-\item The system does not send the data for optional analysis.
-\item The application displays the standard review without optional observations.
-\end{enumerate}
-\item If \hyperlink{glos:AI}{AI} feedback times out:
-\begin{enumerate}
-\item The application starts the optional analysis request.
-\item The system reaches the configured timeout without a usable response.
-\item The application stops waiting and marks the analysis unavailable.
-\item The system displays the standard review without interrupting replay controls.
-\end{enumerate}
-\item If the \hyperlink{glos:AI}{AI} service fails to produce an analysis:
-\begin{enumerate}
-\item The application receives an empty or failed analysis result.
-\item The system reports that no optional feedback is available.
-\item The application keeps the standard performance results visible.
-\item The user continues or exits the replay normally.
-\end{enumerate}
-\item If the \hyperlink{glos:AI}{AI} response is malformed:
-\begin{enumerate}
-\item The system validates the response before using it.
-\item The application discards the malformed response.
-\item The system records the optional analysis as unavailable.
-\item The application displays the standard review without changing the recorded score,
-rating, or other standard results.
+\item The system explains that the replay format is unsupported.
+\item The user returns to the level's best record or main menu without changing
+the best time.
 \end{enumerate}
 \end{itemize}
 
@@ -2493,7 +2451,7 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hyperref[sec:s2-performance]{FR-PER-05} & Timer Recovery Rules & High & Maintains consistent timing across \hyperlink{glos:Respawn}{respawn} and restart, directly affecting score accuracy. \\
 \hyperref[sec:s2-performance]{FR-PER-06} & Timer Pause During Recovery & High & Prevents menu decision time from distorting flight performance measurements. \\
 \hyperref[sec:s2-performance]{FR-PER-07} & Crash Counting & High & Supplies a required performance metric and the crash penalty used in scoring. \\
-\hyperref[sec:s2-performance]{FR-PER-08} & Numerical Score Calculation & High & Converts time and crash data into a reproducible score for ratings and rankings. \\
+\hyperref[sec:s2-performance]{FR-PER-08} & Numerical Score Calculation & High & Converts time and crash data into a reproducible score for current-attempt review and ratings. \\
 \hyperref[sec:s2-performance]{FR-PER-09} & Performance Ratings & Medium & Makes results easier to interpret, although numerical scoring can operate without rating categories. \\
 \hyperref[sec:s2-performance]{FR-PER-10} & Final Timer and Score Integration & High & Ensures completed attempts use a fixed final time for scoring and review. \\
 \hline
@@ -2549,16 +2507,16 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hline
 \textbf{Requirement Link} & \textbf{Requirement Name} & \textbf{Priority} & \textbf{Rationale} \\
 \hline
-\hyperref[sec:s2-leaderboard]{FR-DAT-01} & Local Result Storage & High & Preserves completed attempt data and provides the foundation for local rankings and offline continuity. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-02} & Online Result Submission & Medium & Enables global rankings and cross-installation results but depends on connectivity and online infrastructure. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-03} & Failed Submission Recovery & High & Prevents network failures from losing results and supports later synchronization. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-01} & Local Best-Run Storage & High & Preserves one best time and matching replay per player and level for offline continuity. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-02} & Best-Run Synchronization & Medium & Enables online rankings and cross-installation bests and replays. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-03} & Failed Submission Recovery & High & Preserves the matching local best and replay for retry after partial service failures. \\
 \hyperref[sec:s2-leaderboard]{FR-DAT-04} & Local Leaderboard & Medium & Enables on-device performance comparison without depending on online services. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-05} & Global Leaderboard & Medium & Supports cross-player comparison but requires online infrastructure and authenticated submissions. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-06} & Leaderboard Ranking Rules & High & Defines deterministic ordering and tie-breaking, preventing ambiguous rankings. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-05} & Global and Friends Views & Medium & Supports online comparison with all players or accepted friends. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-06} & Best-Time Ranking Rules & High & Orders shortest times first and specifies how equal-time entries are displayed. \\
 \hyperref[sec:s2-leaderboard]{FR-DAT-07} & Leaderboard Display Requirements & Medium & Establishes a testable minimum display while depending on leaderboard functionality. \\
 \hyperref[sec:s2-leaderboard]{FR-DAT-08} & Online Unavailability Handling & High & Ensures online service failures do not disable local rankings or core training. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-09} & Cross-Installation Result Retrieval & Medium & Supports progress continuity across devices but depends on cloud persistence and authentication. \\
-\hyperref[sec:s2-leaderboard]{FR-DAT-10} & Synchronization Status Display & High & Prevents users from mistaking locally saved results for results accepted by the online service. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-09} & Cross-Installation Best Retrieval & Medium & Preserves access to current best times and private replays across devices. \\
+\hyperref[sec:s2-leaderboard]{FR-DAT-10} & Synchronization Status Display & High & Distinguishes time submission from completed record/replay synchronization. \\
 \hline
 \end{tabular}
 \end{table}
@@ -2577,7 +2535,7 @@ in Table~\ref{tab:phasein} (\hyperref[p3]{P.3}).
 \hyperref[sec:s2-review]{FR-REV-02} & Review Metrics & High & Presents the measures needed to understand completion, score, and crash penalties. \\
 \hyperref[sec:s2-review]{FR-REV-03} & Review Navigation & High & Allows users to continue training or leave without restarting the application. \\
 \hyperref[sec:s2-review]{FR-REV-04} & Review Availability Without Network & High & Preserves essential performance feedback when optional online services are unavailable. \\
-\hyperref[sec:s2-review]{FR-REV-05} & Historical Result Review & Medium & Enables progress tracking across sessions but is secondary to reviewing the current attempt. \\
+\hyperref[sec:s2-review]{FR-REV-05} & Personal-Best Replay & Medium & Supports private visual review of the retained best run without an attempt history. \\
 \hline
 \end{tabular}
 \end{table}
@@ -2871,44 +2829,47 @@ evaluation sessions, supervisor/owner review, or expert review.
 \subsubsection{Result Storage and Leaderboards}
 \begin{itemize}
 \item \hyperlink{req:FR-DAT-01}{\textbf{FR-DAT-01}}\par
- \textbf{Verification:} Complete an attempt and inspect the saved local record.
- Confirm it contains the level identifier, completion timestamp, total time,
- crash count, score, rating, and local player identifier, matching the
- post-flight review.\par
- \textbf{Validation:} Users confirm their saved results match what they
- achieved.
+ \textbf{Verification:} Complete a first valid run and inspect its player, level
+ and run identifiers, whole-millisecond time, replay reference and format
+ version. Complete a faster run and confirm the best and matching replay are
+ replaced. Equal, slower and incomplete runs must preserve them. Repeat for
+ another player and level to check isolation.\par
+ \textbf{Validation:} Users confirm their retained best time matches the run achieved.
 \item \hyperlink{req:FR-DAT-02}{\textbf{FR-DAT-02}}\par
- \textbf{Verification:} While signed in and online, complete an attempt and
- confirm the result appears on the online service under that player's
- account.\par
- \textbf{Validation:} Users confirm their online results are correctly
- attributed to them.
+ \textbf{Verification:} Synchronize a best run while signed in. Confirm the
+ leaderboard time belongs to that account and the best metadata and private
+ replay share its run identifier. Retry an older, slower upload and confirm
+ it cannot replace the better retained run.\par
+ \textbf{Validation:} Users confirm online bests are attributed to their account.
 \item \hyperlink{req:FR-DAT-03}{\textbf{FR-DAT-03}}\par
- \textbf{Verification:} Disconnect the network, complete an attempt, and
- confirm the result is kept locally. Reconnect, retry synchronization, and
- confirm the result reaches the online service.\par
- \textbf{Validation:} Users confirm no completed attempt is lost after a
- network failure.
+ \textbf{Verification:} Save a best offline, then interrupt leaderboard,
+ best-record and replay-file operations separately. Confirm the matching local
+ pair survives, incomplete operations remain retryable, and a mismatched
+ replay is not offered as the accepted best. Reconnect and retry.\par
+ \textbf{Validation:} Users confirm service failures do not lose their best run.
 \item \hyperlink{req:FR-DAT-04}{\textbf{FR-DAT-04}}\par
- \textbf{Verification:} Save results for two levels on one installation and
- confirm each level's local leaderboard shows only that level's results.\par
+ \textbf{Verification:} Save several runs for two local players and two levels.
+ Confirm each local board contains one best time per player for that level.\par
  \textbf{Validation:} Users confirm the local leaderboard is useful for
- comparing their own attempts.
+ comparing local players' best times.
 \item \hyperlink{req:FR-DAT-05}{\textbf{FR-DAT-05}}\par
- \textbf{Verification:} Submit results from two accounts and confirm each
- level's global leaderboard shows only results accepted by the online
- service.\par
- \textbf{Validation:} Users confirm the global leaderboard helps them compare
- against other players.
+ \textbf{Verification:} Submit several runs per account and level. Confirm the
+ global board retains one accepted best per player and the friends view
+ contains only the signed-in player and accepted friends. A pending request
+ or unrelated player must not appear; an empty friend list shows only self
+ if the player has an entry. Confirm friends positions are numbered within
+ that group rather than copied from global ranks.\par
+ \textbf{Validation:} Users confirm global and friends views compare the intended players.
 \item \hyperlink{req:FR-DAT-06}{\textbf{FR-DAT-06}}\par
- \textbf{Verification:} Insert results with different scores, equal scores
- with different times, and equal scores and times with different timestamps.
- Confirm both leaderboards order them by score, then time, then timestamp.\par
+ \textbf{Verification:} Submit different whole-millisecond times and equal
+ times. Confirm ascending time in every view, local player identifier order
+ for local ties, and the service-returned order for online ties. Different
+ current-attempt scores or ratings must not alter the time order.\par
  \textbf{Validation:} Users confirm the ranking order seems fair.
 \item \hyperlink{req:FR-DAT-07}{\textbf{FR-DAT-07}}\par
- \textbf{Verification:} With at least eleven results for a level, confirm each
- leaderboard shows the top ten with rank, display name, score, completion time,
- and crash count.\par
+ \textbf{Verification:} With at least eleven players' bests for a level, confirm
+ each view shows its top ten with rank, display name and best time in seconds
+ with millisecond precision. Repeat with fewer than ten entries.\par
  \textbf{Validation:} Users confirm the shown fields are enough to understand
  the rankings.
 \item \hyperlink{req:FR-DAT-08}{\textbf{FR-DAT-08}}\par
@@ -2918,16 +2879,16 @@ evaluation sessions, supervisor/owner review, or expert review.
  \textbf{Validation:} Users confirm the message explains why the global
  leaderboard is missing.
 \item \hyperlink{req:FR-DAT-09}{\textbf{FR-DAT-09}}\par
- \textbf{Verification:} Synchronize results on one installation, sign in to the
- same account on a second supported installation, and confirm the same results
- are retrieved.\par
- \textbf{Validation:} Users who switch devices confirm their history follows
- them.
+ \textbf{Verification:} Synchronize a best time and replay on one installation,
+ sign in to the same account on a second supported installation, and confirm
+ the current best and matching replay are retrieved and playable.\par
+ \textbf{Validation:} Users who switch devices confirm their best runs remain accessible.
 \item \hyperlink{req:FR-DAT-10}{\textbf{FR-DAT-10}}\par
- \textbf{Verification:} Create one result offline and one online, and confirm
- the display marks the first as local only and the second as synchronized.\par
- \textbf{Validation:} Users correctly identify which results are on the global
- leaderboard.
+ \textbf{Verification:} Create an offline best and partially complete its online
+ operations. Confirm local-only, accepted leaderboard time and completed
+ best-record/replay synchronization are distinguished, and failed operations
+ are not reported complete.\par
+ \textbf{Validation:} Users can identify which parts of their best run are synchronized.
 \end{itemize}
 
 \subsubsection{Post-Flight Review}
@@ -2951,13 +2912,13 @@ evaluation sessions, supervisor/owner review, or expert review.
  confirm the standard review is still displayed in full.\par
  \textbf{Validation:} Supervisor review confirms the core review does not depend
  on the optional feature.
-\item \hyperlink{req:FR-REV-05}{\textbf{FR-REV-05}}\par
- \textbf{Verification:} Sign in as a registered player with results from
- earlier sessions and confirm those results can be viewed, each showing at
- least the fields listed in
- \hyperlink{req:FR-DAT-01}{FR-DAT-01}.\par
- \textbf{Validation:} Users confirm the past results help them track their
- improvement.
+\item \hyperlink{req:FR-REV-05}{\textbf{FR-REV-05}}\par\nopagebreak[4]
+ \textbf{Verification:} Select a retained best for each of two levels and
+ confirm its time and matching in-game drone-movement replay. Exercise play,
+ pause, rewind and fast-forward. Missing, corrupt and incompatible files
+ must give an explanatory message while preserving the best time. Attempt
+ to retrieve another player's private replay and confirm access is denied.\par
+ \textbf{Validation:} Users confirm the replay shows their retained best run.
 \end{itemize}
 
 \subsubsection{Intelligent Feedback}
@@ -3035,20 +2996,22 @@ phase 6 of the phase-in plan (\hyperref[p3]{P.3}).
  no password is stored in plaintext.\par
  \textbf{Validation:} Supervisor review of the credential handling.
 \item \hyperlink{req:NFR-SEC-02}{\textbf{NFR-SEC-02}}\par
- \textbf{Verification:} Without signing in, request another player's
- non-public account data and submit a result using another player's account
- identifier. Confirm both are rejected.\par
+ \textbf{Verification:} Without signing in, then signed in to a different
+ account, request another player's private account data, best-run metadata
+ and replay, and submit a time using that player's account identifier.
+ Confirm all requests are rejected.\par
  \textbf{Validation:} Supervisor review confirms leaderboard results cannot be
  spoofed.
 \item \hyperlink{req:NFR-DAT-01}{\textbf{NFR-DAT-01}}\par
- \textbf{Verification:} Synchronize a result, sign out, restart FPVR, sign in
- again, and confirm the result is still retrievable.\par
- \textbf{Validation:} Users confirm their synchronized results are never
- lost.
+ \textbf{Verification:} Synchronize a best and replay, sign out, restart FPVR
+ and sign in again. Confirm both remain retrievable. Replace them with a
+ faster completed run and confirm only the current best is retained.\par
+ \textbf{Validation:} Users confirm their current synchronized best remains available.
 \item \hyperlink{req:NFR-OFF-01}{\textbf{NFR-OFF-01}}\par
  \textbf{Verification:} Disable the network or make the online service
  unavailable, then run free flight, an obstacle course, crash recovery, local
- result saving, and the standard review. Confirm each works.\par
+ best-run saving, playback of a locally retained best-run replay, and the
+ standard review. Confirm each works.\par
  \textbf{Validation:} Users confirm they can train normally without a
  connection.
 \end{itemize}
@@ -3121,15 +3084,17 @@ are ready if they are approved.
 \item \hypertarget{req:SR-06}{}\textbf{SR-06}\par
  \textbf{Verification:} With no account signed in, run core training,
  scoring, and review and inspect network traffic to confirm no attempt data
- is sent. Then sign in and confirm only the result fields in
- \hyperlink{req:FR-DAT-01}{FR-DAT-01} are sent to the online service.\par
+ is sent. Then sign in and confirm only the best-run metadata in
+ \hyperlink{req:FR-DAT-01}{FR-DAT-01}, the matching replay and identifiers needed
+ for accounts and accepted-friend rankings are sent to the relevant services.\par
  \textbf{Validation:} Owner review confirms that only the data needed for
  online results leaves the device.
 \item \hypertarget{req:SR-07}{}\textbf{SR-07}\par
  \textbf{Verification:} Inspect the storage used by the application after
- several attempts. Confirm that only the result records in
- \hyperlink{req:FR-DAT-01}{FR-DAT-01} are kept, and that other attempt data
- is discarded when a new attempt starts or the review is left.\par
+ several attempts. Confirm only one best-run record and matching movement
+ replay per player and level are retained. Temporary capture and obsolete
+ replay data must be discarded after the replacement is safely retained;
+ incomplete, equal and slower runs must not create an attempt history.\par
  \textbf{Validation:} Owner review of retention scope.
 \item \hypertarget{req:SR-08}{}\textbf{SR-08}\par
  \textbf{Verification:} If external \hyperlink{glos:AI}{AI} is proposed, review provider,
@@ -3203,8 +3168,12 @@ Toolkit; exact package versions are an open decision
 \item \textbf{Online service} -- Accounts, result synchronization, and the
 global leaderboard (\hyperref[sec:s2-accounts]{FR-ACC},
 \hyperref[sec:s2-leaderboard]{FR-DAT}) require an online service with
-authentication and data storage; the provider is an open decision
-(\hyperref[p7]{P.7}).
+authentication and data storage. Unity Gaming Services (UGS) Authentication
+will provide username/password accounts; UGS Leaderboards will retain the
+best whole-millisecond time per player and level using ascending order and
+Best Score updates. UGS Friends will supply accepted-friend identifiers, and
+Cloud Save will store a small best-run record and private replay files.
+No relational database or custom database backend is planned.
 \item \textbf{Version control and review} -- Git and GitHub, with one branch
 per issue and pull-request review before merging.
 \item \textbf{Continuous integration} -- GitHub Actions, which builds the
@@ -3277,7 +3246,7 @@ FR-UI-05, NFR-PERF-01, NFR-REL-01 &
 Jan. 21, 2027 (Module Implementation) \\
 4. Scoring, review, and local results &
 FR-PER-08 to FR-PER-10, FR-REV-01 to FR-REV-04, FR-DAT-01, FR-DAT-04,
-FR-DAT-06, FR-DAT-07, NFR-USAB-01, NFR-OFF-01 &
+FR-DAT-06, FR-DAT-07, FR-REV-05 (local replay), NFR-USAB-01, NFR-OFF-01 &
 Feb. 1 -- Feb. 11, 2027 (Revision 0 Demonstration) \\
 5. Accounts and online results &
 FR-ACC-01 to FR-ACC-05, FR-DAT-02, FR-DAT-03, FR-DAT-05, FR-DAT-08 to
@@ -3353,14 +3322,15 @@ FR-PER-07) and the level-select and crash-recovery menus (FR-UI-05); confirm
 crash-and-respawn cycles in each environment (NFR-REL-01). & Module Implementation & Jan. 21, 2027 \\
 Scoring, review, and local results (phase 4) & Implement the score and
 rating (FR-PER-08 to FR-PER-10); build the post-flight review screen
-(FR-REV); save each completed attempt locally and show the local leaderboard
-(FR-DAT-01, FR-DAT-04); confirm the core flow works with no network
+(FR-REV); retain each player's best time and matching replay per level and
+show the local leaderboard (FR-DAT-01, FR-DAT-04, FR-REV-05);
+confirm the core flow works with no network
 (NFR-OFF-01); integrate with phases 1--3 and rehearse the demonstration. &
 Revision 0 Demonstration & Feb. 1 -- Feb. 11, 2027 \\
 Accounts and online results (phase 5) & Set up the online service; implement
-registration, sign-in, and sign-out (FR-ACC); submit and synchronize results,
-show the global leaderboard, and let players view past results (FR-DAT,
-FR-REV-05); test credential protection and access control (NFR-SEC-01,
+registration, sign-in, and sign-out (FR-ACC); synchronize personal bests and
+private replays, show global and friends time rankings, and retrieve current
+bests across installations (FR-DAT, FR-REV-05); test credential protection and access control (NFR-SEC-01,
 NFR-SEC-02) and behaviour when the service is unavailable (FR-DAT-08). &
 V\&V Report and CD-Winter & Mar. 8, 2027 \\
 Verification & Run every test case from the VnV Plan on the declared
@@ -3400,13 +3370,15 @@ physics, input, and rendering systems.
 headset and controller integration.
 \item \textbf{Profiling Tools} -- Unity Profiler and headset performance
 tools to measure frame rate, input response, and state transitions.
-\item \textbf{Local Storage} -- On-device storage for saved results and the
+\item \textbf{Local Storage} -- On-device storage for per-level personal-best
+times, matching replays and the
 local leaderboard (\hyperlink{req:FR-DAT-01}{FR-DAT-01},
 \hyperlink{req:FR-DAT-04}{FR-DAT-04}).
-\item \textbf{Online Service} -- A hosted service providing account
-authentication, a result database, and the global leaderboard
+\item \textbf{Online Service} -- UGS Authentication, Leaderboards, Friends and
+Cloud Save provide accounts, best-time rankings, accepted-friend identifiers,
+best-run metadata and private replay files
 (\hyperref[sec:s2-accounts]{FR-ACC}, \hyperref[sec:s2-leaderboard]{FR-DAT});
-the provider is an open decision (\hyperref[p7]{P.7}).
+the integration details are defined in the Module Guide's database design.
 \item \textbf{Version Control} -- GitHub for source code, issues, and pull
 requests.
 \item \textbf{Continuous Integration} -- GitHub Actions with a \LaTeX{}
@@ -3536,8 +3508,8 @@ requirements are accepted.
   zones (FR-FLT).
   \item Scoring: calibration of the score constants and rating bands
   (FR-PER-08, FR-PER-09).
-  \item Online service: which provider to use for accounts, result
-  synchronization, and the global leaderboard, and how credentials are stored
+  \item Online service: configure the selected UGS services for accounts,
+  best-run synchronization, friends and leaderboards, and verify credential protection
   (FR-ACC, FR-DAT, NFR-SEC-01).
   \item Safety and comfort: the safety requirements from the Hazard Analysis,
   comfort options, and procedures for testing with users (NFR-SAFE-01,
@@ -3570,11 +3542,10 @@ works, and the reference \hyperlink{glos:PCVR}{PCVR} computer may change.
 Gravity, thrust, control response, and the takeoff rule may be retuned once a
 reference drone is agreed with the supervisor.
 \item[LC-03: Scoring and ratings.]
-\hyperlink{req:FR-PER-08}{FR-PER-08}, \hyperlink{req:FR-PER-09}{FR-PER-09},
-\hyperlink{req:FR-DAT-06}{FR-DAT-06}.
+\hyperlink{req:FR-PER-08}{FR-PER-08}, \hyperlink{req:FR-PER-09}{FR-PER-09}.
 The score constants (1000 points, 100 points per crash) and rating bands are
-initial choices and may be recalibrated after playtesting; leaderboard order
-follows whatever score is used.
+initial choices and may be recalibrated after playtesting. These review
+measures do not change shortest-time leaderboard order (FR-DAT-06).
 \item[LC-04: Performance thresholds.]
 \hyperlink{req:NFR-PERF-01}{NFR-PERF-01},
 \hyperlink{req:NFR-PERF-02}{NFR-PERF-02}.
@@ -3627,7 +3598,7 @@ to \hyperlink{req:FR-CHK-08}{FR-CHK-08}, \hyperlink{req:FR-PER-05}{FR-PER-05},
 \hyperlink{req:FR-PER-07}{FR-PER-07}.
 Ordered \hyperlink{glos:Checkpoint}{checkpoints}, keeping penalties on \hyperlink{glos:Respawn}{Respawn}, and a fresh attempt on
 \hyperlink{glos:Respawn}{Restart} Level are what make results comparable; changing them would make
-stored scores and leaderboards (\hyperlink{req:FR-DAT-06}{FR-DAT-06})
+post-flight scores and stored best-time rankings (\hyperlink{req:FR-DAT-06}{FR-DAT-06})
 meaningless.
 \item[UC-04: Headset-based training.]
 \hyperlink{req:FR-UI-01}{FR-UI-01}, \hyperlink{req:FR-UI-06}{FR-UI-06},
