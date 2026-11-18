@@ -142,9 +142,10 @@ requirements. Section \ref{SecMH} summarizes the module decomposition that
 was constructed according to the likely changes. Section \ref{SecConnection}
 specifies the connections between the software requirements and the
 modules. Section \ref{SecMD} gives a detailed description of the
-modules. Section \ref{SecTM} includes three traceability matrices. One checks
-the completeness of the design against the requirements provided in the SRS. The
-others show the relations of anticipated and unlikely changes to modules. Section
+modules. Section \ref{SecTM} includes four traceability matrices. One checks
+the completeness of the design against the requirements provided in the SRS.
+One shows that the anticipated changes cover every likely change in the SRS.
+The others show the relations of anticipated and unlikely changes to modules. Section
 \ref{SecUse} describes the use relation between modules.
 
 
@@ -1048,12 +1049,13 @@ Library.
 
 \section{Traceability Matrix} \label{SecTM}
 
-This section presents three traceability matrices: one showing
+This section presents four traceability matrices. The first shows
 the relationships between the requirements in the Software
 Requirements Specification (SRS) and the modules defined in
-Section \ref{SecMH}, and another showing the relationships
-between anticipated changes and modules, and a third identifying modules
-that would need review if an unlikely change occurred.
+Section \ref{SecMH}. The second shows which anticipated changes cover each
+SRS likely change. The third shows the relationships between anticipated
+changes and modules, and the fourth identifies modules that would need
+review if an unlikely change occurred.
 
 These matrices help verify that the module decomposition
 addresses the system requirements and that anticipated
@@ -1101,15 +1103,15 @@ FR-FLT-02--03 (Flight controls and gravity)
 \mref{mPhysics} \\
 
 FR-FLT-04--06 (Collisions and crash handling)
-& \mref{mEnvironment}, \mref{mFlightState},
-\mref{mCheckpoint} \\
+& \mref{mUI}, \mref{mTraining}, \mref{mEnvironment},
+\mref{mFlightState} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{Training Modes and Level Management}}\\
 
 FR-LVL-01--02 (Free-flight mode and recovery)
-& \mref{mTraining}, \mref{mEnvironment},
-\mref{mCheckpoint} \\
+& \mref{mUI}, \mref{mTraining}, \mref{mEnvironment},
+\mref{mFlightState} \\
 
 FR-LVL-03--05 (Course selection and environments)
 & \mref{mUI}, \mref{mTraining},
@@ -1117,23 +1119,22 @@ FR-LVL-03--05 (Course selection and environments)
 
 FR-LVL-06--07 (Exit and attempt initialization)
 & \mref{mUI}, \mref{mTraining},
-\mref{mCheckpoint}, \mref{mPerformance},
-\mref{mScoring} \\
+\mref{mCheckpoint}, \mref{mPerformance} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{Checkpoints and Crash Recovery}}\\
 
 FR-CHK-01--03 (Checkpoint ordering and progression)
-& \mref{mEnvironment}, \mref{mCheckpoint} \\
+& \mref{mTraining}, \mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint} \\
 
 FR-CHK-04--05 (Recovery choices and respawning)
 & \mref{mUI}, \mref{mFlightState},
 \mref{mCheckpoint} \\
 
 FR-CHK-06--07 (Recovery and restart state)
-& \mref{mTraining}, \mref{mCheckpoint},
-\mref{mPerformance},
-\mref{mScoring} \\
+& \mref{mTraining}, \mref{mFlightState}, \mref{mCheckpoint},
+\mref{mPerformance} \\
 
 FR-CHK-08 (Level completion)
 & \mref{mTraining}, \mref{mCheckpoint} \\
@@ -1264,6 +1265,42 @@ NFR-OFF-01 (Offline availability)
 
 
 %----------------------------------------------------------
+% SRS Likely Changes to Anticipated Changes
+%----------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{p{0.40\textwidth} X}
+\toprule
+\textbf{SRS Likely Change (LC)} & \textbf{Anticipated Changes} \\
+\midrule
+LC-01: Device support
+& \acref{acController}, \acref{acVR} \\
+LC-02: Flight tuning
+& \acref{acPhysics}, \acref{acCrash} \\
+LC-03: Scoring and ratings
+& \acref{acScoring} \\
+LC-04: Performance thresholds
+& \acref{acPhysics}, \acref{acVR} (implementation only; see
+  Section \ref{SecAchange}) \\
+LC-05: Content and comfort
+& \acref{acEnvironment}, \acref{acUI} \\
+LC-06: Online services
+& \acref{acStorage}, \acref{acAuthentication}, \acref{acSync} \\
+LC-07: Intelligent feedback
+& \acref{acAI} \\
+LC-08: Stretch goals
+& \acref{acController} (FPV transmitter); multiplayer is outside the
+  current decomposition (Section \ref{SecAchange}) \\
+\bottomrule
+\end{tabularx}
+\caption{Trace Between SRS Likely Changes and Anticipated Changes}
+\label{TblLCT}
+\end{table}
+
+%----------------------------------------------------------
 % Table 3: Anticipated Changes to Modules
 %----------------------------------------------------------
 
@@ -1308,6 +1345,12 @@ NFR-OFF-01 (Offline availability)
 \acref{acAI}
 & \mref{mAI} \\
 
+\acref{acCrash}
+& \mref{mFlightState} \\
+
+\acref{acSync}
+& \mref{mLeaderboard} \\
+
 \bottomrule
 
 \end{tabularx}
@@ -1315,6 +1358,14 @@ NFR-OFF-01 (Offline availability)
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
+
+Table \ref{TblACT} is a one-to-one mapping: each anticipated change is
+hidden by exactly one module, and no module hides more than one. The
+Training Session Manager (\mref{mTraining}), Attempt Metrics Manager
+(\mref{mPerformance}), and Leaderboard Ordering Policy (\mref{mRanking})
+have no anticipated change, because they carry out rules that are listed
+as unlikely to change (\uref{ucTraining}, \uref{ucRules}). Every
+other module hides exactly one anticipated change.
 
 \begin{table}[H]
 \centering
@@ -1338,6 +1389,9 @@ NFR-OFF-01 (Offline availability)
 \uref{ucPerformance}: Online-dependent training
 & \mref{mUI}, \mref{mTraining}, \mref{mAccount},
   \mref{mLeaderboard}, \mref{mStorage} \\
+\uref{ucRules}: Recovery and scoring rules
+& \mref{mTraining}, \mref{mCheckpoint}, \mref{mPerformance},
+  \mref{mRanking} \\
 \bottomrule
 \end{tabularx}
 \caption{Trace Between Unlikely Changes and Modules}
