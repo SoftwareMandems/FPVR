@@ -1039,6 +1039,599 @@ other modules through their exported types, so none of the lower modules
 depends on another to obtain it.
 
 \newpage
+% ==========================================================
+% M5
+% ==========================================================
+\section{MIS of Course and Environment Manager (M5)} \label{sec:M5}
+
+\subsection{Module}
+
+\textbf{Module} CourseEnvironment (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item FREE\_FLIGHT\_AREA: $\Sigma^* =$ ``free-flight''. The open practice area.
+\item MIN\_CHECKPOINTS: $\mathbb{Z} = 2$ (FR-CHK-01).
+\item MIN\_ENVIRONMENTS: $\mathbb{Z} = 2$ (FR-LVL-04).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Mode = $\{$FREE\_FLIGHT, OBSTACLE\_COURSE$\}$.
+\item Difficulty = $\{$INTRODUCTORY, INTERMEDIATE, ADVANCED$\}$.
+\item CourseInfo = tuple of (id: $\Sigma^*$, name: $\Sigma^*$, environment:
+  $\Sigma^*$, difficulty: Difficulty).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{2.2cm} p{3.2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & InvalidCourseData \\
+getCourses & - & seq of CourseInfo & NotInitialized \\
+loadCourse & $c$: $\Sigma^*$ & - & NotInitialized, CourseNotFound \\
+getStartPose & $c$: $\Sigma^*$ & Pose & NotInitialized, CourseNotFound \\
+getCheckpoints & $c$: $\Sigma^*$ & seq of Pose & NotInitialized, CourseNotFound \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item courses: seq of CourseDef
+\item loaded: $\Sigma^* \cup \ \{\nul\}$
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+initialized $\Rightarrow$ valid(courses). init is the only routine that changes
+courses, and it only succeeds when valid(courseAssets) holds.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item courseAssets: seq of CourseDef. The course definitions stored with the
+  application.
+\item scene: Layout $\cup \ \{\nul\}$. The course currently placed in the
+  simulation, which the engine's collision detection uses.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, courses, loaded := \True, courseAssets, \nul
+\item exception: $exc :=$ ($\neg$valid(courseAssets) $\Rightarrow$
+  InvalidCourseData)
+\end{itemize}
+
+\noindent getCourses():
+\begin{itemize}
+\item output: $out := \langle d.\text{info} \;|\; d \in \text{courses} \wedge
+  d.\text{info.id} \neq \text{FREE\_FLIGHT\_AREA} \rangle$. Every obstacle
+  course is listed, with no unlock conditions (FR-LVL-03, FR-LVL-05).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent loadCourse($c$):
+\begin{itemize}
+\item transition: loaded, scene := $c$, find($c$).layout
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\noindent getStartPose($c$):
+\begin{itemize}
+\item output: $out :=$ find($c$).start
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\noindent getCheckpoints($c$):
+\begin{itemize}
+\item output: $out :=$ find($c$).gates. The poses of the required checkpoints,
+  in the required order.
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Layout: the environment, obstacles, checkpoint gates and finish of one
+  course, as placed in the scene.
+\item CourseDef = tuple of (info: CourseInfo, start: Pose, gates: seq of Pose,
+  layout: Layout).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item find: $\Sigma^* \rightarrow$ CourseDef $\cup \ \{\nul\}$. find($c$) is
+  the $d \in$ courses with $d$.info.id $= c$, or \nul{} if there is none.
+\item valid: seq of CourseDef $\rightarrow \mathbb{B}$. valid($s$) is \True{}
+  iff all of the following hold:
+  \begin{itemize}
+  \item exactly one $d \in s$ has $d$.info.id $=$ FREE\_FLIGHT\_AREA, and its
+    gates $= \langle\rangle$ (FR-LVL-01);
+  \item every other $d \in s$ has $|d.\text{gates}| \geq$ MIN\_CHECKPOINTS
+    (FR-CHK-01);
+  \item the other courses include at least one of each Difficulty
+    (FR-LVL-03);
+  \item the other courses use at least MIN\_ENVIRONMENTS distinct values of
+    info.environment (FR-LVL-04).
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Attempt progress is not part of a course. It belongs to \Mref{7}.
+
+\newpage
+% ==========================================================
+% M6
+% ==========================================================
+\section{MIS of Flight State and Crash Manager (M6)} \label{sec:M6}
+
+\subsection{Module}
+
+\textbf{Module} FlightStateCrash (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{2} (isConnected, getControlInput)
+\item \Mref{11} (step, FlightState)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Passage = $\{$FINISH$\} \cup \{$GATE($i$) $|$ $i \in \mathbb{N}\}$. A
+  checkpoint gate, by its position in the required order, or the finish.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{2.4cm} p{3cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & $p$: Pose & - & NotInitialized \\
+update & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+getPose & - & Pose & NotInitialized \\
+isCrashed & - & $\mathbb{B}$ & NotInitialized \\
+getPassages & - & set of Passage & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item $s$: FlightState
+\item crashed: $\mathbb{B}$
+\item tookOff: $\mathbb{B}$. Whether the drone has left the ground since the
+  last reset.
+\item passed: set of Passage. The gates and finish passed during the last
+  update.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+crashed $\Rightarrow$ passed $= \{\}$.
+
+reset sets crashed to \False{} and passed to $\{\}$. update sets passed to
+$\{\}$ whenever crashed is or becomes \True, so the invariant is kept. Once
+crashed is \True, it stays \True{} until the next reset.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item contacts: Pose $\rightarrow$ set of Surface. The engine's collision
+  report: the surfaces the drone's body touches or passes through at a pose,
+  for the course currently in the scene.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item A course is loaded in the scene before reset or update is called.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, $s$, crashed, tookOff, passed := \True,
+  atRest($((0,0,0), (0,0,0))$), \False, \False, $\{\}$
+\item exception: none
+\end{itemize}
+
+\noindent reset($p$):
+\begin{itemize}
+\item transition: $s$, crashed, tookOff, passed := atRest($p$), \False,
+  GROUND $\notin$ contacts($p$), $\{\}$. A drone respawned in the air at a
+  checkpoint has already taken off.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent update($\Delta t$):
+\begin{itemize}
+\item transition: \\
+  (crashed $\vee\ \neg$M2.isConnected() $\Rightarrow$ passed := $\{\}$ \\
+  $|$ otherwise $\Rightarrow$ $s$, crashed, tookOff, passed := $s'$,
+  isCrash($h$, tookOff), tookOff $\vee$ GROUND $\notin h$, (isCrash($h$,
+  tookOff) $\Rightarrow \{\}$ $|$ otherwise $\Rightarrow h \cap$ Passage)) \\
+  where $u$ = M2.getControlInput(), $s'$ = M11.step($s$, $u$.throttle,
+  $u$.pitch, $u$.roll, $u$.yaw, $\Delta t$) and $h$ = contacts($s'$.pose). \\
+  While crashed, flight input is ignored until the next reset, so each crash is
+  registered exactly once (FR-FLT-06).
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent getPose():
+\begin{itemize}
+\item output: $out := s$.pose
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isCrashed():
+\begin{itemize}
+\item output: $out :=$ crashed
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getPassages():
+\begin{itemize}
+\item output: $out :=$ passed
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Surface = $\{$GROUND, OBSTACLE$\} \cup$ Passage.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item atRest: Pose $\rightarrow$ FlightState. atRest($p$) $= (p, (0,0,0),
+  (0,0,0))$.
+\item isCrash: set of Surface $\times\ \mathbb{B} \rightarrow \mathbb{B}$.
+  isCrash($h$, $t$) $=$ OBSTACLE $\in h \vee$ (GROUND $\in h \wedge t$).
+  Touching the ground before the first takeoff is not a crash. Touching it
+  after takeoff, or touching an obstacle at any time, is (FR-FLT-05).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The crash count is kept by \Mref{8}. This module only reports that a crash has
+happened, and \Mref{4} forwards it.
+
+\newpage
+% ==========================================================
+% M7
+% ==========================================================
+\section{MIS of Checkpoint and Recovery Manager (M7)} \label{sec:M7}
+
+\subsection{Module}
+
+\textbf{Module} CheckpointRecovery (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{3.6cm} p{2.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & $g$: seq of Pose, $p$: Pose & - & NotInitialized \\
+passCheckpoint & $i$: $\mathbb{N}$ & - & NotInitialized \\
+getProgress & - & ($\mathbb{Z}$, $\mathbb{Z}$) & NotInitialized \\
+isComplete & - & $\mathbb{B}$ & NotInitialized \\
+getRespawnPose & - & Pose & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+These use the SRS symbols for checkpoint progress.
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item gates: seq of Pose. The required checkpoints $\langle C_1, \ldots, C_n
+  \rangle$ in order.
+\item $n$: $\mathbb{Z}$. The number of required checkpoints.
+\item $k$: $\mathbb{Z}$. The number of checkpoints completed.
+\item start: Pose. The course start.
+\end{itemize}
+
+The completed checkpoints are $P = \langle C_1, \ldots, C_k \rangle$, the first
+$k$ elements of gates.
+
+\subsubsection{State Invariant}
+
+$n = |\text{gates}| \wedge 0 \leq k \leq n$. Completed checkpoints always form
+the start of the required order, with none skipped.
+
+The invariant holds after init ($n = k = 0$) and after reset ($k = 0$, $n =
+|\text{gates}|$). passCheckpoint only increases $k$ when $k < n$.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, gates, $n$, $k$, start := \True,
+  $\langle\rangle$, 0, 0, $((0,0,0), (0,0,0))$
+\item exception: none
+\end{itemize}
+
+\noindent reset($g$, $p$):
+\begin{itemize}
+\item transition: gates, $n$, $k$, start := $g$, $|g|$, 0, $p$ (FR-LVL-07,
+  FR-CHK-07)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent passCheckpoint($i$):
+\begin{itemize}
+\item transition: $k := (k < n \wedge i = k + 1 \Rightarrow k + 1 \;|\;
+  \text{otherwise} \Rightarrow k)$. Only the next required checkpoint counts.
+  Repeated and out-of-order checkpoints do not (FR-CHK-02, FR-CHK-03).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getProgress():
+\begin{itemize}
+\item output: $out := (k, n)$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isComplete():
+\begin{itemize}
+\item output: $out := (k = n)$. The finish only completes the level once this
+  is \True{} (FR-CHK-08).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getRespawnPose():
+\begin{itemize}
+\item output: $out := (k = 0 \Rightarrow \text{start} \;|\; k > 0
+  \Rightarrow \text{gates}[k])$. Respawn returns to the most recently
+  completed checkpoint, or to the start if there is none, without changing
+  progress (FR-CHK-05, FR-CHK-06).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+This module returns recovery poses but never moves the drone. \Mref{4} applies
+them through \Mref{6}.
+
+\newpage
+% ==========================================================
+% M8
+% ==========================================================
+\section{MIS of Attempt Metrics Manager (M8)} \label{sec:M8}
+
+\subsection{Module}
+
+\textbf{Module} AttemptMetrics (abstract object).
+
+\subsection{Uses}
+
+\Mref{14} (evaluate).
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Evaluation = tuple of ($T$: $\mathbb{R}$, $C$: $\mathbb{Z}$, score:
+  $\mathbb{Z}$, rating: Rating). The frozen total time in seconds, crash count,
+  score and rating of a completed attempt.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} p{2.4cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & - & - & NotInitialized \\
+addFlightTime & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+resetSectionTime & - & - & NotInitialized \\
+recordCrash & - & - & NotInitialized \\
+complete & - & - & NotInitialized \\
+getTotalTime & - & $\mathbb{R}$ & NotInitialized \\
+getSectionTime & - & $\mathbb{R}$ & NotInitialized \\
+getEvaluation & - & Evaluation & NotInitialized, NotCompleted \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+These use the SRS symbols $T$ and $C$.
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item $T$: $\mathbb{R}$. Total active flight time in seconds.
+\item $S$: $\mathbb{R}$. Section time in seconds since the current segment
+  began.
+\item $C$: $\mathbb{Z}$. Crash count.
+\item result: Evaluation $\cup \ \{\nul\}$. The frozen evaluation, or \nul{}
+  while the attempt is in progress.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+$0 \leq S \leq T \wedge C \geq 0 \wedge$ (result $\neq \nul \Rightarrow$
+result.$T = T \wedge$ result.$C = C$).
+
+init and reset set $S = T = C = 0$ and result to \nul. addFlightTime adds the
+same $\Delta t \geq 0$ to $S$ and $T$, resetSectionTime sets $S$ to $0 \leq
+T$, and recordCrash only increases $C$. None of the three changes anything once
+result is set, so the frozen values keep matching $T$ and $C$.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item addFlightTime is called only for intervals of active flight, so menu
+  time is never added (FR-PER-06). \Mref{4} ensures this.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, $T$, $S$, $C$, result := \True, 0, 0, 0, \nul
+\item exception: none
+\end{itemize}
+
+\noindent reset():
+\begin{itemize}
+\item transition: $T$, $S$, $C$, result := 0, 0, 0, \nul. A restart clears
+  both timers, the crash count and the previous evaluation (FR-LVL-07,
+  FR-CHK-07, FR-PER-05).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent addFlightTime($\Delta t$):
+\begin{itemize}
+\item transition: $T, S := (\text{result} = \nul \Rightarrow T + \Delta t,
+  S + \Delta t \;|\; \text{otherwise} \Rightarrow T, S)$. Time before a crash
+  stays in $T$ (FR-PER-01 to FR-PER-03).
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent resetSectionTime():
+\begin{itemize}
+\item transition: $S := 0$. Used when the next checkpoint is completed and on
+  respawn. $T$ is kept (FR-PER-04, FR-PER-05, FR-CHK-06).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent recordCrash():
+\begin{itemize}
+\item transition: $C := (\text{result} = \nul \Rightarrow C + 1 \;|\;
+  \text{otherwise} \Rightarrow C)$ (FR-PER-07)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent complete():
+\begin{itemize}
+\item transition: result := (result $= \nul \Rightarrow (T, C, sc, rt)$ $|$
+  otherwise $\Rightarrow$ result), where $(sc, rt)$ = M14.evaluate($T$, $C$).
+  $T$ stops changing once result is set (FR-PER-10).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getTotalTime():
+\begin{itemize}
+\item output: $out := T$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getSectionTime():
+\begin{itemize}
+\item output: $out := S$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getEvaluation():
+\begin{itemize}
+\item output: $out :=$ result
+\item exception: $exc :=$ (\noinit{} $|$ result $= \nul \Rightarrow$
+  NotCompleted). A score only exists once the level is complete (FR-PER-08).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+How a score and rating are computed is the secret of \Mref{14}. Changing that
+policy does not change how this module measures an attempt.
+
+\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {../../../refs/References}
