@@ -1363,6 +1363,10 @@ crashed is \True, it stays \True{} until the next reset.
 The crash count is kept by \Mref{8}. This module only reports that a crash has
 happened, and \Mref{4} forwards it.
 
+The takeoff and crash rule in isCrash may be retuned once a reference drone is
+agreed (AC11 in the MG). Only isCrash changes when it is; the rule that each
+crash is registered exactly once stays fixed.
+
 \newpage
 % ==========================================================
 % M7
@@ -1966,6 +1970,11 @@ None.
 
 A result moves through the states local only, pending, failed and synced.
 \Mref{12} stores the state, and this module decides each transition.
+
+When results are submitted and retried may change, including keeping results
+local only if the online service is not ready (AC12 in the MG). Only saveResult,
+retrySync and sync change when it does; the interface and the stored states
+stay the same.
 
 \newpage
 % ==========================================================
