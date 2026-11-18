@@ -37,6 +37,12 @@ urlcolor=cyan          % color of external links
 \input{../../Common.text}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
+\setlength{\emergencystretch}{3em}
+\newcommand{\True}{\textnormal{true}}
+\newcommand{\False}{\textnormal{false}}
+\newcommand{\nul}{\textnormal{null}}
+\newcommand{\Mref}[1]{\hyperref[sec:M#1]{M#1}}
+\newcommand{\noinit}{$\neg$initialized $\Rightarrow$ NotInitialized}
 \begin{document}
 
 \title{Module Interface Specification for \progname{}}
@@ -114,25 +120,96 @@ character & char & a single symbol or digit\\
 integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
-boolean & $\mathbb{B}$ & a value that is either true ($\top$) or false ($\bot$)\\
+boolean & $\mathbb{B}$ & a value that is either \True{} or \False{}\\
 string & $\Sigma^*$ & a sequence of characters (char)\\
 enumerate & $\{\text{E}_i \:|\: i \leq n, \text{E}_i \in \Sigma^*\}$ & a finite unordered list of named constants\\
 sequence & seq of T & an ordered list of elements of type T\\
 tuple & (T$_1$, T$_2$, ..., T$_n$) & a finite ordered list of values of types T$_1$, T$_2$, ..., T$_n$\\
 dictionary & dict of T$_1$ to T$_2$ & a key-value pairing from type T$_1$ to type T$_2$\\
 function & T$_1$ $\rightarrow$ T$_2$ & a mapping from type T$_1$ to type T$_2$\\
+set & set of T & an unordered collection of distinct elements of type T\\
 \bottomrule
-\end{tabular} 
+\end{tabular}
 \end{center}
 
 \noindent
-In addition, \progname \ uses abstract data types (Insert examples here in the future) which
-are constructed using the primitive data types listed above and represent higher level data structures
-to better obscure implementation details.
+The value \nul{} marks a field or variable that has no value, for example no
+course selected yet. A type that allows it is written T $\cup \ \{\nul\}$. For a
+tuple $x$ with a field named $f$, $x.f$ is the value of that field. For a
+sequence $s$, $|s|$ is its length, $s[i]$ is its $i$-th element (starting at
+1), $s \,||\, t$ is $s$ followed by $t$, and $\langle\rangle$ is the empty
+sequence. A multiple assignment $v_1, v_2 := e_1, e_2$ evaluates every
+expression first and then assigns them together. Following the MIS format, a
+module heading names its kind: Module (a library or abstract object) or
+Template Module (an abstract data type).
+
+\subsection*{Shared Types}
+
+Two types are fixed by the SRS rather than by any module's design, and modules
+that share no uses relation both need them. They are defined once here so that
+each module's Uses list can match the MG uses hierarchy exactly.
+
+\begin{itemize}
+\item Pose = tuple of (position: $\mathbb{R}^3$, orientation: $\mathbb{R}^3$).
+  Position is in metres in the course frame, with $\hat{z} = (0, 0, 1)$
+  pointing up. Orientation is the roll $\phi$, pitch $\theta$ and yaw $\psi$
+  angles in radians. Used for the drone, the headset, course starts and
+  checkpoints (FR-FLT-01, FR-CHK-05).
+\item Rating = $\{$GOLD, SILVER, BRONZE, NEEDS\_IMPROVEMENT$\}$. The four
+  rating names required by FR-PER-09. Which scores map to which rating is the
+  secret of \Mref{14}.
+\end{itemize}
+
+\subsection*{Exported Types}
+
+Every other type is exported by the module that owns it (Table~\ref{TblTypes}).
+A module that needs one of these types lists its owner under Uses.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.6cm} l >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Types} & \textbf{Owner} & \textbf{Meaning}\\
+\midrule
+ExecutionMode, View & \Mref{1} & Standalone or PCVR; an image shown in the headset\\
+DeviceType, ControlInput, MenuInput, ControlMapping & \Mref{2} & The active controller, the four flight axes, a menu button and the axis bindings\\
+ActionKind, UserAction, Screen, CourseItem, HudView, ReviewView, BoardRow, HistoryRow & \Mref{3} & A user's choice and the data each screen displays\\
+Phase & \Mref{4} & The stage of the current training session\\
+Mode, Difficulty, CourseInfo & \Mref{5} & Training mode and course description\\
+Passage & \Mref{6} & A checkpoint gate or the finish the drone passed through\\
+Evaluation & \Mref{8} & The frozen measurements, score and rating of an attempt\\
+User & \Mref{9} & A signed-in player and their session\\
+Scope, ResultInput, LeaderboardEntry, HistoryEntry & \Mref{10} & Result data passed in and out of synchronization\\
+FlightState & \Mref{11} & The drone's pose, velocity and angular velocity\\
+SyncStatus, ResultRecord & \Mref{12} & A stored result and its synchronization state\\
+AttemptSummary, Feedback & \Mref{13} & The input and output of feedback analysis\\
+RankKey & \Mref{15} & The values used to order one result\\
+\bottomrule
+\end{tabularx}
+\caption{Exported types and the modules that own them}
+\label{TblTypes}
+\end{table}
 
 \section{Module Decomposition}
 
-The following table is taken directly from the Module Guide document for this project.
+Table~\ref{TblMH} reproduces the module hierarchy from the Module Guide (MG).
+The modules are grouped by the kind of secret they hide. Hardware-hiding modules
+hide the headset and controller devices. Behaviour-hiding modules hide the
+behaviour required by the SRS. Software decision modules hide algorithms and
+data structures that the SRS does not specify.
+
+Each module keeps the number it has in the MG, so M1 to M15 refer to the same
+module in both documents. Only the leaf modules in the Level 2 column are
+implemented, and each one is specified in its own section of this document.
+The scoring formula and rating bands (M14) and the leaderboard ordering (M15)
+are separate modules, so either policy can change without changing the modules
+that measure attempts (M8) or manage results (M10).
+
+The Intelligent Feedback Analyzer (M13) is optional. FR-AI-01 to FR-AI-03
+depend on a separate feasibility decision, and FR-REV-04 and FR-AI-03 require
+the standard post-flight review to work whether or not M13 is available. No core
+module depends on M13 being present.
 
 \begin{table}[h!]
 \centering
@@ -141,21 +218,28 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+\multirow{2}{0.3\textwidth}{Hardware-Hiding}
+& \Mref{1}: VR Platform Interface\\
+& \Mref{2}: Controller Input Interface\\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
-& Control Module\\
-& Specification Parameters Module\\
+\multirow{8}{0.3\textwidth}{Behaviour-Hiding}
+& \Mref{3}: User Interface\\
+& \Mref{4}: Training Session Manager\\
+& \Mref{5}: Course and Environment Manager\\
+& \Mref{6}: Flight State and Crash Manager\\
+& \Mref{7}: Checkpoint and Recovery Manager\\
+& \Mref{8}: Attempt Metrics Manager\\
+& \Mref{9}: Account and Authentication Manager\\
+& \Mref{10}: Result Synchronization Manager\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{5}{0.3\textwidth}{Software Decision}
+& \Mref{11}: Flight Dynamics Model\\
+& \Mref{12}: Data Persistence Module\\
+& \Mref{13}: Intelligent Feedback Analyzer (Optional)\\
+& \Mref{14}: Performance Scoring Policy\\
+& \Mref{15}: Leaderboard Ordering Policy\\
 \bottomrule
 
 \end{tabular}
@@ -164,78 +248,2240 @@ The following table is taken directly from the Module Guide document for this pr
 \end{table}
 
 \newpage
-~\newpage
 
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
-  cross-referencing}
-
-\wss{You can reference SRS labels, such as R\ref{R_Inputs}.}
-
-\wss{It is also possible to use \LaTeX for hypperlinks to external documents.}
+% ==========================================================
+% M1
+% ==========================================================
+\section{MIS of VR Platform Interface (M1)} \label{sec:M1}
 
 \subsection{Module}
 
-\wss{Short name for the module}
+\textbf{Module} VRPlatform (abstract object).
 
 \subsection{Uses}
 
+None.
 
 \subsection{Syntax}
 
 \subsubsection{Exported Constants}
 
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item ExecutionMode = $\{$STANDALONE, PCVR$\}$.
+\item View: an image shown to the user in the headset. It is defined only by
+  what it depicts.
+\end{itemize}
+
 \subsubsection{Exported Access Programs}
 
 \begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
+\begin{tabularx}{\textwidth}{p{3.2cm} p{2.8cm} p{2.8cm} X}
+\toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
-\end{tabular}
+\midrule
+init & - & - & RuntimeUnavailable \\
+getExecutionMode & - & ExecutionMode & NotInitialized \\
+getHeadPose & - & Pose & NotInitialized, TrackingLost \\
+isTracking & - & $\mathbb{B}$ & NotInitialized \\
+hasFocus & - & $\mathbb{B}$ & NotInitialized \\
+setViewOrigin & $p$: Pose & - & NotInitialized \\
+showOverlay & $v$: View $\cup \ \{\nul\}$ & - & NotInitialized \\
+\bottomrule
+\end{tabularx}
 \end{center}
 
 \subsection{Semantics}
 
 \subsubsection{State Variables}
 
-\wss{Not all modules will have state variables.  State variables give the module
-  a memory.}
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item mode: ExecutionMode
+\item viewOrigin: Pose. Where the first-person camera is.
+\item overlay: View $\cup \ \{\nul\}$. The menu or heads-up display drawn in
+  front of the flight view.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
 
 \subsubsection{Environment Variables}
 
-\wss{This section is not necessary for all modules.  Its purpose is to capture
-  when the module has external interaction with the environment, such as for a
-  device driver, screen interface, keyboard, file, etc.}
+\begin{itemize}
+\item headset: tuple of (connection: ExecutionMode $\cup \ \{\nul\}$, tracked:
+  $\mathbb{B}$, headPose: Pose, focus: $\mathbb{B}$). The VR runtime's report
+  of how the headset runs, whether tracking is valid, the user's head pose and
+  whether \progname{} has session focus.
+\item screen: View. The image displayed in the headset.
+\end{itemize}
 
 \subsubsection{Assumptions}
 
-\wss{Try to minimize assumptions and anticipate programmer errors via
-  exceptions, but for practical purposes assumptions are sometimes appropriate.}
+\begin{itemize}
+\item The VR runtime is running before init is called (NFR-INST-01,
+  NFR-INST-02).
+\end{itemize}
 
 \subsubsection{Access Routine Semantics}
 
-\noindent \wss{accessProg}():
+\noindent init():
 \begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
+\item transition: initialized, mode, viewOrigin, overlay := \True,
+  headset.connection, $((0,0,0), (0,0,0))$, \nul
+\item exception: $exc :=$ (headset.connection $= \nul \Rightarrow$
+  RuntimeUnavailable)
 \end{itemize}
 
-\wss{A module without environment variables or state variables is unlikely to
-  have a state transition.  In this case a state transition can only occur if
-  the module is changing the state of another module.}
+\noindent getExecutionMode():
+\begin{itemize}
+\item output: $out :=$ mode
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
 
-\wss{Modules rarely have both a transition and an output.  In most cases you
-  will have one or the other.}
+\noindent getHeadPose():
+\begin{itemize}
+\item output: $out :=$ headset.headPose
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$headset.tracked $\Rightarrow$
+  TrackingLost)
+\end{itemize}
+
+\noindent isTracking():
+\begin{itemize}
+\item output: $out :=$ headset.tracked
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent hasFocus():
+\begin{itemize}
+\item output: $out :=$ headset.focus
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent setViewOrigin($p$):
+\begin{itemize}
+\item transition: viewOrigin, screen := $p$, render($p$, overlay). The
+  first-person view follows the drone, and head movement looks around from it
+  (FR-FLT-01, FR-UI-01).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent showOverlay($v$):
+\begin{itemize}
+\item transition: overlay, screen := $v$, render(viewOrigin, $v$)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
 
 \subsubsection{Local Functions}
 
-\wss{As appropriate} \wss{These functions are for the purpose of specification.
-  They are not necessarily something that is going to be implemented
-  explicitly.  Even if they are implemented, they are not exported; they only
-  have local scope.}
+\begin{itemize}
+\item render: Pose $\times$ (View $\cup \ \{\nul\}$) $\rightarrow$ View.
+  render($q$, $o$) is the scene seen from $q$ offset by headset.headPose, with
+  $o$ drawn in front of it when $o \neq \nul$.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Standalone execution on the headset is the primary target. PCVR is kept as an
+execution mode because FR-UI-02 still requires it.
+
+\newpage
+% ==========================================================
+% M2
+% ==========================================================
+\section{MIS of Controller Input Interface (M2)} \label{sec:M2}
+
+\subsection{Module}
+
+\textbf{Module} ControllerInput (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item DEADZONE: $\mathbb{R} = 0.05$. Stick deflections smaller than this are
+  treated as zero.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item DeviceType = $\{$MOTION\_CONTROLLERS, GAMEPAD$\}$.
+\item ControlInput = tuple of (throttle: $\mathbb{R}$, pitch: $\mathbb{R}$,
+  roll: $\mathbb{R}$, yaw: $\mathbb{R}$), with throttle in $[0, 1]$ and the
+  other three in $[-1, 1]$.
+\item MenuInput = $\{$UP, DOWN, SELECT, PAUSE, NONE$\}$.
+\item ControlMapping = tuple of (throttle: $\Sigma^*$, pitch: $\Sigma^*$, roll:
+  $\Sigma^*$, yaw: $\Sigma^*$). The name of the physical input bound to each
+  axis, shown in the control guide.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} p{1.6cm} p{3.2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & NoController \\
+getDeviceType & - & DeviceType & NotInitialized \\
+isConnected & - & $\mathbb{B}$ & NotInitialized \\
+getControlInput & - & ControlInput & NotInitialized, NoController \\
+getMenuInput & - & MenuInput & NotInitialized, NoController \\
+getControlMapping & - & ControlMapping & NotInitialized \\
+calibrate & - & - & NotInitialized, NoController \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item device: DeviceType
+\item offset: $\mathbb{R}^4$. The resting position of the four sticks.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item controller: tuple of (type: DeviceType $\cup \ \{\nul\}$, connected:
+  $\mathbb{B}$, axes: $\mathbb{R}^4$, button: MenuInput). The paired device as
+  reported by the platform, its raw stick positions in $[-1, 1]$ for throttle,
+  pitch, roll and yaw in that order, and the menu button currently pressed.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, device, offset := \True, controller.type,
+  $(0, 0, 0, 0)$
+\item exception: $exc :=$ (controller.type $= \nul \Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getDeviceType():
+\begin{itemize}
+\item output: $out :=$ device
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isConnected():
+\begin{itemize}
+\item output: $out :=$ controller.connected. Callers check this so that a
+  lost controller is not read as a new command.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getControlInput():
+\begin{itemize}
+\item output: $out :=$ toInput(deadzone(controller.axes $-$ offset)). Each
+  axis is independent (FR-FLT-02).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getMenuInput():
+\begin{itemize}
+\item output: $out :=$ controller.button
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\noindent getControlMapping():
+\begin{itemize}
+\item output: $out :=$ mappingFor(device) (FR-UI-04)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent calibrate():
+\begin{itemize}
+\item transition: offset := $(0,\ \text{controller.axes}[2],\
+  \text{controller.axes}[3],\ \text{controller.axes}[4])$. Pitch, roll and yaw
+  are centred on their current position. Throttle rests at its minimum, so it
+  has no offset.
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$controller.connected
+  $\Rightarrow$ NoController)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item deadzone: $\mathbb{R}^4 \rightarrow \mathbb{R}^4$. deadzone($a$) $= b$,
+  where $b[1] = a[1]$ and, for $i \in \{2, 3, 4\}$, $b[i] = (|a[i]| <
+  \text{DEADZONE} \Rightarrow 0 \;|\; |a[i]| \geq \text{DEADZONE} \Rightarrow
+  a[i])$.
+\item toInput: $\mathbb{R}^4 \rightarrow$ ControlInput. toInput($b$) $=$
+  (clamp($(b[1] + 1)/2$, 0, 1), clamp($b[2]$, $-1$, 1), clamp($b[3]$, $-1$,
+  1), clamp($b[4]$, $-1$, 1)).
+\item clamp: $\mathbb{R} \times \mathbb{R} \times \mathbb{R} \rightarrow
+  \mathbb{R}$. clamp($x$, $lo$, $hi$) $= \max(lo, \min(hi, x))$.
+\item mappingFor: DeviceType $\rightarrow$ ControlMapping. Both devices use
+  the same layout: mappingFor($d$) $=$ (``left stick up/down'', ``right stick
+  up/down'', ``right stick left/right'', ``left stick left/right'') for
+  throttle, pitch, roll and yaw.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The layout in mappingFor matches the FPV-style controller mapping in the MG's
+hardware user interface figure.
+
+\newpage
+% ==========================================================
+% M3
+% ==========================================================
+\section{MIS of User Interface (M3)} \label{sec:M3}
+
+\subsection{Module}
+
+\textbf{Module} UserInterface (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{1} (hasFocus, setViewOrigin, showOverlay, View)
+\item \Mref{2} (isConnected, getMenuInput, getControlMapping)
+\item \Mref{9} (register, signIn, signOut, isAuthenticated)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+The view types hold only the values a screen displays. \Mref{4} builds them
+from other modules' results, so this module needs no other module's types.
+
+\begin{itemize}
+\item ActionKind = $\{$NONE, CONTINUE, START\_FREE\_FLIGHT, BROWSE\_COURSES,
+  SELECT\_COURSE, VIEW\_LEADERBOARD, VIEW\_HISTORY, SYNC\_RESULTS, PAUSE,
+  RESUME, RESPAWN, RESTART, RETRY, CHOOSE\_ANOTHER, MAIN\_MENU$\}$. The
+  training intentions returned to the caller.
+\item UserAction = tuple of (kind: ActionKind, course: $\Sigma^* \cup
+  \ \{\nul\}$).
+\item Screen = $\{$MAIN, GUIDE, COURSES, HUD, PAUSE\_MENU, CRASH\_MENU, REVIEW,
+  LEADERBOARD, HISTORY, MESSAGE$\}$.
+\item CourseItem = tuple of (id: $\Sigma^*$, name: $\Sigma^*$, environment:
+  $\Sigma^*$, difficulty: $\Sigma^*$).
+\item HudView = tuple of (pose: Pose, $T$: $\mathbb{R}$, $S$: $\mathbb{R}$,
+  $k$: $\mathbb{Z}$, $n$: $\mathbb{Z}$). Drone pose, total and section time in
+  seconds, and checkpoints completed out of $n$.
+\item ReviewView = tuple of (course: $\Sigma^*$, $T$: $\mathbb{R}$, $k$:
+  $\mathbb{Z}$, $n$: $\mathbb{Z}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$,
+  rating: Rating, feedback: $\Sigma^* \cup \ \{\nul\}$).
+\item BoardRow = tuple of (rank: $\mathbb{N}$, name: $\Sigma^*$, score:
+  $\mathbb{Z}$, $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$).
+\item HistoryRow = tuple of (course: $\Sigma^*$, timestamp: $\mathbb{Z}$, $T$:
+  $\mathbb{R}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  synced: $\mathbb{B}$).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.7cm} >{\raggedright\arraybackslash}X p{2.2cm} p{2.6cm}}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+showMainMenu & - & - & NotInitialized \\
+showControlGuide & - & - & NotInitialized \\
+showCourseSelection & $cs$: seq of CourseItem & - & NotInitialized \\
+showHUD & $h$: HudView & - & NotInitialized \\
+showFreeFlightHUD & $p$: Pose & - & NotInitialized \\
+showPauseMenu & - & - & NotInitialized \\
+showCrashMenu & canRestart: $\mathbb{B}$ & - & NotInitialized \\
+showReview & $r$: ReviewView & - & NotInitialized \\
+showLeaderboard & $c$: $\Sigma^*$, $l$: seq of BoardRow, $g$: seq of BoardRow $\cup \ \{\nul\}$ & - & NotInitialized \\
+showHistory & $h$: seq of HistoryRow & - & NotInitialized \\
+showMessage & $msg$: $\Sigma^*$ & - & NotInitialized \\
+getUserAction & - & UserAction & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item screen: Screen
+\item items: seq of Item. The choices offered on the current screen.
+\item cursor: $\mathbb{Z}$. The position of the highlighted choice in items.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+items $\neq \langle\rangle \Rightarrow 1 \leq$ cursor $\leq |$items$|$.
+
+Every routine that changes items sets cursor to 1, and getUserAction only
+moves cursor within $[1, |\text{items}|]$, so the invariant is kept.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item textFields: tuple of ($\Sigma^*$, $\Sigma^*$). The username and password
+  typed with the headset's on-screen keyboard.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item All menus are operated with the controller, so they work while seated or
+  standing (FR-UI-06, NFR-SAFE-02).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+Every show routine has the same form. For screen $x$ and the data passed in, it
+sets screen, items, cursor := $x$, itemsFor($x$), 1 and calls
+M1.showOverlay(draw($x$, data)). It raises $exc :=$ (\noinit).
+Table~\ref{TblM3Items} gives itemsFor, and the list below gives what each
+screen draws.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Screen} & \textbf{itemsFor(screen)} \\
+\midrule
+MAIN & act(START\_FREE\_FLIGHT), act(BROWSE\_COURSES), GUIDE\_INFO,
+act(VIEW\_HISTORY), act(SYNC\_RESULTS), then (M9.isAuthenticated()
+$\Rightarrow$ SIGN\_OUT $|$ otherwise $\Rightarrow$ REGISTER, SIGN\_IN)\\
+GUIDE & act(CONTINUE)\\
+COURSES & for each $ci$ in $cs$: (SELECT\_COURSE, $ci$.id) and
+(VIEW\_LEADERBOARD, $ci$.id); then act(MAIN\_MENU)\\
+HUD & $\langle\rangle$ (flight is paused with the PAUSE button)\\
+PAUSE\_MENU & act(RESUME), act(MAIN\_MENU)\\
+CRASH\_MENU & canRestart $\Rightarrow$ act(RESPAWN), act(RESTART),
+act(MAIN\_MENU) $|$ otherwise $\Rightarrow$ act(RESPAWN), act(MAIN\_MENU)\\
+REVIEW & act(RETRY), act(CHOOSE\_ANOTHER), act(MAIN\_MENU)\\
+LEADERBOARD, HISTORY, MESSAGE & act(MAIN\_MENU)\\
+\bottomrule
+\end{tabularx}
+\caption{Choices offered on each screen}
+\label{TblM3Items}
+\end{table}
+
+\begin{itemize}
+\item showMainMenu(): screen MAIN.
+\item showControlGuide(): screen GUIDE. Draws M2.getControlMapping()
+  (FR-UI-04, NFR-USAB-01).
+\item showCourseSelection($cs$): screen COURSES. Draws each course's name,
+  environment and difficulty. Every course is selectable (FR-LVL-05).
+\item showHUD($h$): screen HUD. Also calls M1.setViewOrigin($h$.pose). Draws
+  $h.T$, $h.S$ and ``$h.k$ of $h.n$ checkpoints''.
+\item showFreeFlightHUD($p$): screen HUD. Instead of drawing, it calls
+  M1.setViewOrigin($p$) and then M1.showOverlay(\nul). Free flight has no
+  checkpoints, timers or score (FR-LVL-01).
+\item showPauseMenu(): screen PAUSE\_MENU (NFR-SAFE-01).
+\item showCrashMenu(canRestart): screen CRASH\_MENU. Obstacle courses offer
+  Respawn and Restart Level (FR-CHK-04); free flight offers Respawn
+  (FR-LVL-02).
+\item showReview($r$): screen REVIEW. Draws $r$.course, $r.T$, ``$r.k$ of
+  $r.n$'', $r.C$, $r$.score and $r$.rating (FR-REV-02). Draws $r$.feedback,
+  labelled as automated feedback, only when it is not \nul{} (FR-AI-02,
+  FR-REV-04).
+\item showLeaderboard($c$, $l$, $g$): screen LEADERBOARD. Draws the local
+  ranking $l$ for course $c$ (FR-DAT-04), and $g$ if $g \neq \nul$
+  (FR-DAT-05). If $g = \nul$, draws a message that the online leaderboard is
+  unavailable (FR-DAT-08). Each row shows rank, name, score, time and crashes
+  (FR-DAT-07).
+\item showHistory($h$): screen HISTORY. Draws each row, marking whether it is
+  synchronized (FR-REV-05, FR-DAT-10).
+\item showMessage($msg$): screen MESSAGE. Draws $msg$.
+\end{itemize}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, screen, items, cursor := \True, MAIN,
+  $\langle\rangle$, 1
+\item exception: none
+\end{itemize}
+
+\noindent getUserAction():
+\begin{itemize}
+\item transition and output: Let $e$ = M2.getMenuInput() if M2.isConnected(),
+  and $e$ = NONE otherwise. Let $x$ = items[cursor] when items $\neq
+  \langle\rangle$. Table~\ref{TblM3Action} applies its first matching row.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+\textbf{Condition} & \textbf{Transition} & \textbf{$out :=$} \\
+\midrule
+$\neg$M1.hasFocus() $\vee$ $\neg$M2.isConnected() & none & act(PAUSE) \\
+$e$ = PAUSE & none & act(PAUSE) \\
+$e$ = UP & cursor := $\max(1, \text{cursor} - 1)$ & act(NONE) \\
+$e$ = DOWN & cursor := $\min(|\text{items}|, \text{cursor} + 1)$ & act(NONE) \\
+$e$ = SELECT $\wedge$ $x$ = GUIDE\_INFO & showControlGuide() & act(NONE) \\
+$e$ = SELECT $\wedge$ $x \in$ $\{$REGISTER, SIGN\_IN, SIGN\_OUT$\}$ &
+account($x$) & act(NONE) \\
+$e$ = SELECT $\wedge$ items $\neq \langle\rangle$ & none & $x$ \\
+otherwise & none & act(NONE) \\
+\bottomrule
+\end{tabularx}
+\caption{Effect of each controller input in getUserAction}
+\label{TblM3Action}
+\end{table}
+
+Losing headset focus or the controller is reported as PAUSE, so the caller
+stops flight instead of reading stale input.
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Item = UserAction $\cup$ $\{$GUIDE\_INFO, REGISTER, SIGN\_IN,
+  SIGN\_OUT$\}$. The four extra choices are handled inside this module and are
+  never returned to the caller.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item act: ActionKind $\rightarrow$ UserAction. act($a$) $= (a, \nul)$.
+\item itemsFor: Screen $\rightarrow$ seq of Item, given in
+  Table~\ref{TblM3Items}.
+\item draw: Screen $\times$ data $\rightarrow$ View. The menu or overlay for
+  the screen showing the data, with items[cursor] highlighted.
+\item account: Item $\rightarrow$ (transition). With $(u, pw)$ = textFields:
+  account(REGISTER) $\equiv$ M9.register($u$, $pw$) (FR-ACC-01);
+  account(SIGN\_IN) $\equiv$ M9.signIn($u$, $pw$) (FR-ACC-03);
+  account(SIGN\_OUT) $\equiv$ M9.signOut() (FR-ACC-04). Then showMainMenu().
+  If M9 raises exception $e$, showMessage(explain($e$)) instead (FR-ACC-02).
+\item explain: exception $\rightarrow \Sigma^*$. A message that states why the
+  request failed. For InvalidCredentials it does not say whether the username
+  or the password was wrong (FR-ACC-03).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+getUserAction both changes state and returns a value. Reading a button press
+consumes it, so splitting the routine would let one press be read twice. This
+is the only such access program in \progname{}.
+
+\newpage
+% ==========================================================
+% M4
+% ==========================================================
+\section{MIS of Training Session Manager (M4)} \label{sec:M4}
+
+\subsection{Module}
+
+\textbf{Module} TrainingSession (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{3} (all access programs and exported types)
+\item \Mref{5} (getCourses, loadCourse, getStartPose, getCheckpoints, Mode,
+  CourseInfo, FREE\_FLIGHT\_AREA)
+\item \Mref{6} (reset, update, getPose, isCrashed, getPassages, Passage)
+\item \Mref{7} (reset, passCheckpoint, getProgress, isComplete,
+  getRespawnPose)
+\item \Mref{8} (reset, addFlightTime, resetSectionTime, recordCrash, complete,
+  getTotalTime, getSectionTime, getEvaluation, Evaluation)
+\item \Mref{10} (saveResult, retrySync, getLeaderboard, getHistory,
+  ResultInput, LeaderboardEntry, HistoryEntry, Scope)
+\item \Mref{13} (isAvailable, analyze, AttemptSummary), only when the optional
+  module is included
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Phase = $\{$MENU, GUIDE, FLYING, PAUSED, CRASHED, COMPLETE$\}$.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{2.6cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+step & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+getPhase & - & Phase & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item phase: Phase
+\item mode: Mode $\cup \ \{\nul\}$
+\item course: $\Sigma^* \cup \ \{\nul\}$. The selected course identifier.
+\item guideShown: $\mathbb{B}$. Whether the control guide has been shown since
+  \progname{} started.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+(mode $= \nul \iff$ course $= \nul$) $\wedge$ (phase $\neq$ MENU
+$\Rightarrow$ course $\neq \nul$) $\wedge$ (phase $=$ COMPLETE $\Rightarrow$
+mode $=$ OBSTACLE\_COURSE).
+
+The invariant holds after init, where mode and course are \nul{} and phase is
+MENU. begin is the only routine that leaves MENU, and it sets mode and course
+together. toMenu is the only routine that returns to MENU, and it clears them
+together. Only complete enters COMPLETE, and fly calls it only when mode $=$
+OBSTACLE\_COURSE.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item Every module that M4 uses is initialized before M4.init is called.
+\item The caller calls step once per simulation frame, with $\Delta t$ the time
+  since the previous call.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, phase, mode, course, guideShown := \True, MENU,
+  \nul, \nul, \False; M3.showMainMenu()
+\item exception: none
+\end{itemize}
+
+\noindent step($\Delta t$):
+\begin{itemize}
+\item transition: handle(M3.getUserAction()); then (phase $=$ FLYING
+  $\Rightarrow$ fly($\Delta t$))
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent getPhase():
+\begin{itemize}
+\item output: $out :=$ phase
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+Timers advance only inside fly, which runs only while phase $=$ FLYING. Time in
+the guide, pause, crash and review screens is never added (FR-PER-06).
+
+\subsubsection{Local Functions}
+
+\noindent \textbf{handle}: UserAction $\rightarrow$ (transition). handle($a$)
+applies the first row of Table~\ref{TblM4Handle} that matches phase and
+$a$.kind. If no row matches, nothing changes. In the table, $c$ is course and
+$m$ is mode.
+
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{phase} & \textbf{$a$.kind} & \textbf{Transition} \\
+\midrule
+MENU & START\_FREE\_FLIGHT & begin(FREE\_FLIGHT, FREE\_FLIGHT\_AREA) \\
+MENU & BROWSE\_COURSES & M3.showCourseSelection(items(M5.getCourses())) \\
+MENU & SELECT\_COURSE & begin(OBSTACLE\_COURSE, $a$.course) (FR-LVL-07) \\
+MENU & CONTINUE, MAIN\_MENU & M3.showMainMenu() \\
+MENU & VIEW\_LEADERBOARD & M3.showLeaderboard($a$.course,
+rows(M10.getLeaderboard($a$.course, LOCAL)), global($a$.course)) \\
+MENU & VIEW\_HISTORY & M3.showHistory(history(M10.getHistory())); on
+NotSignedIn, M3.showMessage(SIGN\_IN\_MSG) (FR-REV-05) \\
+MENU & SYNC\_RESULTS & M10.retrySync(); M3.showMainMenu(); on NotSignedIn,
+M3.showMessage(SIGN\_IN\_MSG) (FR-DAT-03) \\
+GUIDE & CONTINUE & phase := FLYING; showFlight() \\
+FLYING & PAUSE & phase := PAUSED; M3.showPauseMenu() (NFR-SAFE-01) \\
+PAUSED & RESUME & phase := FLYING; showFlight() \\
+CRASHED & RESPAWN & ($m =$ OBSTACLE\_COURSE $\Rightarrow$
+M6.reset(M7.getRespawnPose()); M8.resetSectionTime() $|$ $m =$ FREE\_FLIGHT
+$\Rightarrow$ M6.reset(M5.getStartPose($c$))); phase := FLYING; showFlight()
+(FR-CHK-05, FR-CHK-06, FR-PER-04, FR-LVL-02) \\
+CRASHED & RESTART & begin($m$, $c$) (FR-CHK-07) \\
+COMPLETE & RETRY & begin($m$, $c$) (FR-REV-03) \\
+COMPLETE & CHOOSE\_ANOTHER & toMenu();
+M3.showCourseSelection(items(M5.getCourses())) (FR-REV-03) \\
+PAUSED, CRASHED, COMPLETE & MAIN\_MENU & toMenu() (FR-LVL-06) \\
+\bottomrule
+\end{tabularx}
+\caption{Effect of each user action in each phase}
+\label{TblM4Handle}
+\end{table}
+
+\noindent \textbf{fly}: $\mathbb{R} \rightarrow$ (transition). fly($\Delta t$)
+applies these steps in order:
+\begin{enumerate}
+\item M6.update($\Delta t$).
+\item If mode $=$ OBSTACLE\_COURSE: M8.addFlightTime($\Delta t$) (FR-PER-01,
+  FR-PER-02).
+\item If M6.isCrashed(): phase := CRASHED; (mode $=$ OBSTACLE\_COURSE
+  $\Rightarrow$ M8.recordCrash()); M3.showCrashMenu(mode $=$
+  OBSTACLE\_COURSE); skip the remaining steps (FR-FLT-06, FR-PER-07).
+\item If mode $=$ OBSTACLE\_COURSE: for each GATE($i$) $\in$
+  M6.getPassages() in increasing $i$, progress($i$). Then, if FINISH $\in$
+  M6.getPassages() $\wedge$ M7.isComplete(), complete() and skip the
+  remaining step (FR-CHK-08).
+\item showFlight().
+\end{enumerate}
+Checkpoints are only processed in step 4, which is never reached after a crash,
+so progress cannot advance while a crash awaits recovery (FR-FLT-06).
+
+\noindent \textbf{begin}: Mode $\times\ \Sigma^* \rightarrow$ (transition).
+begin($m$, $c$) applies these steps in order:
+\begin{enumerate}
+\item M5.loadCourse($c$); M6.reset(M5.getStartPose($c$)).
+\item If $m =$ OBSTACLE\_COURSE: M7.reset(M5.getCheckpoints($c$),
+  M5.getStartPose($c$)); M8.reset().
+\item mode, course := $m$, $c$.
+\item If guideShown: phase := FLYING; showFlight(). Otherwise: phase,
+  guideShown := GUIDE, \True; M3.showControlGuide(). The guide is shown before
+  the first flight of a session (NFR-USAB-01).
+\end{enumerate}
+
+\noindent \textbf{toMenu}: $\rightarrow$ (transition). toMenu() $\equiv$
+phase, mode, course := MENU, \nul, \nul; M3.showMainMenu().
+
+\noindent \textbf{progress}: $\mathbb{N} \rightarrow$ (transition).
+progress($i$) $\equiv$ let $k_0$ = M7.getProgress()[1];
+M7.passCheckpoint($i$); (M7.getProgress()[1] $> k_0 \Rightarrow$
+M8.resetSectionTime()) (FR-PER-04).
+
+\noindent \textbf{complete}: $\rightarrow$ (transition). complete() applies
+these steps in order (FR-PER-10, FR-DAT-01, FR-REV-01):
+\begin{enumerate}
+\item M8.complete(). Let $ev$ = M8.getEvaluation() and $(k, n)$ =
+  M7.getProgress().
+\item M10.saveResult((course, $ev.T$, $ev.C$, $k$, $ev$.score, $ev$.rating)).
+  If this raises SaveFailed, the review is still shown.
+\item M3.showReview((course, $ev.T$, $k$, $n$, $ev.C$, $ev$.score,
+  $ev$.rating, feedback($ev$, $k$, $n$))); phase := COMPLETE.
+\end{enumerate}
+
+\noindent \textbf{showFlight}: $\rightarrow$ (transition). showFlight()
+$\equiv$ (mode $=$ OBSTACLE\_COURSE $\Rightarrow$
+M3.showHUD((M6.getPose(), M8.getTotalTime(), M8.getSectionTime(),
+M7.getProgress()[1], M7.getProgress()[2])) $|$ mode $=$ FREE\_FLIGHT
+$\Rightarrow$ M3.showFreeFlightHUD(M6.getPose())).
+
+\noindent \textbf{feedback}: Evaluation $\times\ \mathbb{Z} \times
+\mathbb{Z} \rightarrow \Sigma^* \cup \ \{\nul\}$. feedback($ev$, $k$, $n$)
+$=$ (M13 is included $\wedge$ M13.isAvailable() $\Rightarrow$
+M13.analyze(($ev.T$, $k$, $n$, $ev.C$, $ev$.score)), or \nul{} if that raises
+FeedbackUnavailable $|$ otherwise $\Rightarrow$ \nul). The review is shown in
+every case (FR-AI-03).
+
+\noindent \textbf{global}: $\Sigma^* \rightarrow$ seq of BoardRow $\cup
+\ \{\nul\}$. global($c$) $=$ rows(M10.getLeaderboard($c$, GLOBAL)), or \nul{}
+if that raises LeaderboardUnavailable (FR-DAT-08).
+
+\noindent \textbf{items}: seq of CourseInfo $\rightarrow$ seq of CourseItem.
+Copies each course's id, name and environment, and writes its difficulty as
+its name.
+
+\noindent \textbf{rows}: seq of LeaderboardEntry $\rightarrow$ seq of
+BoardRow. Copies rank, displayName, score, $T$ and $C$ from each entry.
+
+\noindent \textbf{history}: seq of HistoryEntry $\rightarrow$ seq of
+HistoryRow. Copies course, timestamp, $T$, $C$, score, rating and synced from
+each entry.
+
+\subsubsection{Local Constants}
+
+\begin{itemize}
+\item SIGN\_IN\_MSG: $\Sigma^* =$ ``Sign in to view or synchronize your saved
+  results.''
+\end{itemize}
+
+\subsubsection{Considerations}
+
+This module is the only top-level coordinator. It passes data between the
+other modules through their exported types, so none of the lower modules
+depends on another to obtain it.
+
+\newpage
+% ==========================================================
+% M5
+% ==========================================================
+\section{MIS of Course and Environment Manager (M5)} \label{sec:M5}
+
+\subsection{Module}
+
+\textbf{Module} CourseEnvironment (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item FREE\_FLIGHT\_AREA: $\Sigma^* =$ ``free-flight''. The open practice area.
+\item MIN\_CHECKPOINTS: $\mathbb{Z} = 2$ (FR-CHK-01).
+\item MIN\_ENVIRONMENTS: $\mathbb{Z} = 2$ (FR-LVL-04).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Mode = $\{$FREE\_FLIGHT, OBSTACLE\_COURSE$\}$.
+\item Difficulty = $\{$INTRODUCTORY, INTERMEDIATE, ADVANCED$\}$.
+\item CourseInfo = tuple of (id: $\Sigma^*$, name: $\Sigma^*$, environment:
+  $\Sigma^*$, difficulty: Difficulty).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{2.2cm} p{3.2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & InvalidCourseData \\
+getCourses & - & seq of CourseInfo & NotInitialized \\
+loadCourse & $c$: $\Sigma^*$ & - & NotInitialized, CourseNotFound \\
+getStartPose & $c$: $\Sigma^*$ & Pose & NotInitialized, CourseNotFound \\
+getCheckpoints & $c$: $\Sigma^*$ & seq of Pose & NotInitialized, CourseNotFound \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item courses: seq of CourseDef
+\item loaded: $\Sigma^* \cup \ \{\nul\}$
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+initialized $\Rightarrow$ valid(courses). init is the only routine that changes
+courses, and it only succeeds when valid(courseAssets) holds.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item courseAssets: seq of CourseDef. The course definitions stored with the
+  application.
+\item scene: Layout $\cup \ \{\nul\}$. The course currently placed in the
+  simulation, which the engine's collision detection uses.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, courses, loaded := \True, courseAssets, \nul
+\item exception: $exc :=$ ($\neg$valid(courseAssets) $\Rightarrow$
+  InvalidCourseData)
+\end{itemize}
+
+\noindent getCourses():
+\begin{itemize}
+\item output: $out := \langle d.\text{info} \;|\; d \in \text{courses} \wedge
+  d.\text{info.id} \neq \text{FREE\_FLIGHT\_AREA} \rangle$. Every obstacle
+  course is listed, with no unlock conditions (FR-LVL-03, FR-LVL-05).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent loadCourse($c$):
+\begin{itemize}
+\item transition: loaded, scene := $c$, find($c$).layout
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\noindent getStartPose($c$):
+\begin{itemize}
+\item output: $out :=$ find($c$).start
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\noindent getCheckpoints($c$):
+\begin{itemize}
+\item output: $out :=$ find($c$).gates. The poses of the required checkpoints,
+  in the required order.
+\item exception: $exc :=$ (\noinit{} $|$ find($c$) $= \nul \Rightarrow$
+  CourseNotFound)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Layout: the environment, obstacles, checkpoint gates and finish of one
+  course, as placed in the scene.
+\item CourseDef = tuple of (info: CourseInfo, start: Pose, gates: seq of Pose,
+  layout: Layout).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item find: $\Sigma^* \rightarrow$ CourseDef $\cup \ \{\nul\}$. find($c$) is
+  the $d \in$ courses with $d$.info.id $= c$, or \nul{} if there is none.
+\item valid: seq of CourseDef $\rightarrow \mathbb{B}$. valid($s$) is \True{}
+  iff all of the following hold:
+  \begin{itemize}
+  \item exactly one $d \in s$ has $d$.info.id $=$ FREE\_FLIGHT\_AREA, and its
+    gates $= \langle\rangle$ (FR-LVL-01);
+  \item every other $d \in s$ has $|d.\text{gates}| \geq$ MIN\_CHECKPOINTS
+    (FR-CHK-01);
+  \item the other courses include at least one of each Difficulty
+    (FR-LVL-03);
+  \item the other courses use at least MIN\_ENVIRONMENTS distinct values of
+    info.environment (FR-LVL-04).
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Attempt progress is not part of a course. It belongs to \Mref{7}.
+
+\newpage
+% ==========================================================
+% M6
+% ==========================================================
+\section{MIS of Flight State and Crash Manager (M6)} \label{sec:M6}
+
+\subsection{Module}
+
+\textbf{Module} FlightStateCrash (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{2} (isConnected, getControlInput)
+\item \Mref{11} (step, FlightState)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Passage = $\{$FINISH$\} \cup \{$GATE($i$) $|$ $i \in \mathbb{N}\}$. A
+  checkpoint gate, by its position in the required order, or the finish.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{2.4cm} p{3cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & $p$: Pose & - & NotInitialized \\
+update & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+getPose & - & Pose & NotInitialized \\
+isCrashed & - & $\mathbb{B}$ & NotInitialized \\
+getPassages & - & set of Passage & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item $s$: FlightState
+\item crashed: $\mathbb{B}$
+\item tookOff: $\mathbb{B}$. Whether the drone has left the ground since the
+  last reset.
+\item passed: set of Passage. The gates and finish passed during the last
+  update.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+crashed $\Rightarrow$ passed $= \{\}$.
+
+reset sets crashed to \False{} and passed to $\{\}$. update sets passed to
+$\{\}$ whenever crashed is or becomes \True, so the invariant is kept. Once
+crashed is \True, it stays \True{} until the next reset.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item contacts: Pose $\rightarrow$ set of Surface. The engine's collision
+  report: the surfaces the drone's body touches or passes through at a pose,
+  for the course currently in the scene.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item A course is loaded in the scene before reset or update is called.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, $s$, crashed, tookOff, passed := \True,
+  atRest($((0,0,0), (0,0,0))$), \False, \False, $\{\}$
+\item exception: none
+\end{itemize}
+
+\noindent reset($p$):
+\begin{itemize}
+\item transition: $s$, crashed, tookOff, passed := atRest($p$), \False,
+  GROUND $\notin$ contacts($p$), $\{\}$. A drone respawned in the air at a
+  checkpoint has already taken off.
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent update($\Delta t$):
+\begin{itemize}
+\item transition: \\
+  (crashed $\vee\ \neg$M2.isConnected() $\Rightarrow$ passed := $\{\}$ \\
+  $|$ otherwise $\Rightarrow$ $s$, crashed, tookOff, passed := $s'$,
+  isCrash($h$, tookOff), tookOff $\vee$ GROUND $\notin h$, (isCrash($h$,
+  tookOff) $\Rightarrow \{\}$ $|$ otherwise $\Rightarrow h \cap$ Passage)) \\
+  where $u$ = M2.getControlInput(), $s'$ = M11.step($s$, $u$.throttle,
+  $u$.pitch, $u$.roll, $u$.yaw, $\Delta t$) and $h$ = contacts($s'$.pose). \\
+  While crashed, flight input is ignored until the next reset, so each crash is
+  registered exactly once (FR-FLT-06).
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent getPose():
+\begin{itemize}
+\item output: $out := s$.pose
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isCrashed():
+\begin{itemize}
+\item output: $out :=$ crashed
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getPassages():
+\begin{itemize}
+\item output: $out :=$ passed
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Surface = $\{$GROUND, OBSTACLE$\} \cup$ Passage.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item atRest: Pose $\rightarrow$ FlightState. atRest($p$) $= (p, (0,0,0),
+  (0,0,0))$.
+\item isCrash: set of Surface $\times\ \mathbb{B} \rightarrow \mathbb{B}$.
+  isCrash($h$, $t$) $=$ OBSTACLE $\in h \vee$ (GROUND $\in h \wedge t$).
+  Touching the ground before the first takeoff is not a crash. Touching it
+  after takeoff, or touching an obstacle at any time, is (FR-FLT-05).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The crash count is kept by \Mref{8}. This module only reports that a crash has
+happened, and \Mref{4} forwards it.
+
+\newpage
+% ==========================================================
+% M7
+% ==========================================================
+\section{MIS of Checkpoint and Recovery Manager (M7)} \label{sec:M7}
+
+\subsection{Module}
+
+\textbf{Module} CheckpointRecovery (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+None.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{3.6cm} p{2.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & $g$: seq of Pose, $p$: Pose & - & NotInitialized \\
+passCheckpoint & $i$: $\mathbb{N}$ & - & NotInitialized \\
+getProgress & - & ($\mathbb{Z}$, $\mathbb{Z}$) & NotInitialized \\
+isComplete & - & $\mathbb{B}$ & NotInitialized \\
+getRespawnPose & - & Pose & NotInitialized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+These use the SRS symbols for checkpoint progress.
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item gates: seq of Pose. The required checkpoints $\langle C_1, \ldots, C_n
+  \rangle$ in order.
+\item $n$: $\mathbb{Z}$. The number of required checkpoints.
+\item $k$: $\mathbb{Z}$. The number of checkpoints completed.
+\item start: Pose. The course start.
+\end{itemize}
+
+The completed checkpoints are $P = \langle C_1, \ldots, C_k \rangle$, the first
+$k$ elements of gates.
+
+\subsubsection{State Invariant}
+
+$n = |\text{gates}| \wedge 0 \leq k \leq n$. Completed checkpoints always form
+the start of the required order, with none skipped.
+
+The invariant holds after init ($n = k = 0$) and after reset ($k = 0$, $n =
+|\text{gates}|$). passCheckpoint only increases $k$ when $k < n$.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, gates, $n$, $k$, start := \True,
+  $\langle\rangle$, 0, 0, $((0,0,0), (0,0,0))$
+\item exception: none
+\end{itemize}
+
+\noindent reset($g$, $p$):
+\begin{itemize}
+\item transition: gates, $n$, $k$, start := $g$, $|g|$, 0, $p$ (FR-LVL-07,
+  FR-CHK-07)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent passCheckpoint($i$):
+\begin{itemize}
+\item transition: $k := (k < n \wedge i = k + 1 \Rightarrow k + 1 \;|\;
+  \text{otherwise} \Rightarrow k)$. Only the next required checkpoint counts.
+  Repeated and out-of-order checkpoints do not (FR-CHK-02, FR-CHK-03).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getProgress():
+\begin{itemize}
+\item output: $out := (k, n)$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isComplete():
+\begin{itemize}
+\item output: $out := (k = n)$. The finish only completes the level once this
+  is \True{} (FR-CHK-08).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getRespawnPose():
+\begin{itemize}
+\item output: $out := (k = 0 \Rightarrow \text{start} \;|\; k > 0
+  \Rightarrow \text{gates}[k])$. Respawn returns to the most recently
+  completed checkpoint, or to the start if there is none, without changing
+  progress (FR-CHK-05, FR-CHK-06).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+This module returns recovery poses but never moves the drone. \Mref{4} applies
+them through \Mref{6}.
+
+\newpage
+% ==========================================================
+% M8
+% ==========================================================
+\section{MIS of Attempt Metrics Manager (M8)} \label{sec:M8}
+
+\subsection{Module}
+
+\textbf{Module} AttemptMetrics (abstract object).
+
+\subsection{Uses}
+
+\Mref{14} (evaluate).
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Evaluation = tuple of ($T$: $\mathbb{R}$, $C$: $\mathbb{Z}$, score:
+  $\mathbb{Z}$, rating: Rating). The frozen total time in seconds, crash count,
+  score and rating of a completed attempt.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} p{2.4cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+reset & - & - & NotInitialized \\
+addFlightTime & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+resetSectionTime & - & - & NotInitialized \\
+recordCrash & - & - & NotInitialized \\
+complete & - & - & NotInitialized \\
+getTotalTime & - & $\mathbb{R}$ & NotInitialized \\
+getSectionTime & - & $\mathbb{R}$ & NotInitialized \\
+getEvaluation & - & Evaluation & NotInitialized, NotCompleted \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+These use the SRS symbols $T$ and $C$.
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item $T$: $\mathbb{R}$. Total active flight time in seconds.
+\item $S$: $\mathbb{R}$. Section time in seconds since the current segment
+  began.
+\item $C$: $\mathbb{Z}$. Crash count.
+\item result: Evaluation $\cup \ \{\nul\}$. The frozen evaluation, or \nul{}
+  while the attempt is in progress.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+$0 \leq S \leq T \wedge C \geq 0 \wedge$ (result $\neq \nul \Rightarrow$
+result.$T = T \wedge$ result.$C = C$).
+
+init and reset set $S = T = C = 0$ and result to \nul. addFlightTime adds the
+same $\Delta t \geq 0$ to $S$ and $T$, resetSectionTime sets $S$ to $0 \leq
+T$, and recordCrash only increases $C$. None of the three changes anything once
+result is set, so the frozen values keep matching $T$ and $C$.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item addFlightTime is called only for intervals of active flight, so menu
+  time is never added (FR-PER-06). \Mref{4} ensures this.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, $T$, $S$, $C$, result := \True, 0, 0, 0, \nul
+\item exception: none
+\end{itemize}
+
+\noindent reset():
+\begin{itemize}
+\item transition: $T$, $S$, $C$, result := 0, 0, 0, \nul. A restart clears
+  both timers, the crash count and the previous evaluation (FR-LVL-07,
+  FR-CHK-07, FR-PER-05).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent addFlightTime($\Delta t$):
+\begin{itemize}
+\item transition: $T, S := (\text{result} = \nul \Rightarrow T + \Delta t,
+  S + \Delta t \;|\; \text{otherwise} \Rightarrow T, S)$. Time before a crash
+  stays in $T$ (FR-PER-01 to FR-PER-03).
+\item exception: $exc :=$ (\noinit{} $|$ $\Delta t < 0 \Rightarrow$
+  NegativeInterval)
+\end{itemize}
+
+\noindent resetSectionTime():
+\begin{itemize}
+\item transition: $S := 0$. Used when the next checkpoint is completed and on
+  respawn. $T$ is kept (FR-PER-04, FR-PER-05, FR-CHK-06).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent recordCrash():
+\begin{itemize}
+\item transition: $C := (\text{result} = \nul \Rightarrow C + 1 \;|\;
+  \text{otherwise} \Rightarrow C)$ (FR-PER-07)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent complete():
+\begin{itemize}
+\item transition: result := (result $= \nul \Rightarrow (T, C, sc, rt)$ $|$
+  otherwise $\Rightarrow$ result), where $(sc, rt)$ = M14.evaluate($T$, $C$).
+  $T$ stops changing once result is set (FR-PER-10).
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getTotalTime():
+\begin{itemize}
+\item output: $out := T$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getSectionTime():
+\begin{itemize}
+\item output: $out := S$
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getEvaluation():
+\begin{itemize}
+\item output: $out :=$ result
+\item exception: $exc :=$ (\noinit{} $|$ result $= \nul \Rightarrow$
+  NotCompleted). A score only exists once the level is complete (FR-PER-08).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+How a score and rating are computed is the secret of \Mref{14}. Changing that
+policy does not change how this module measures an attempt.
+
+\newpage
+% ==========================================================
+% M9
+% ==========================================================
+\section{MIS of Account and Authentication Manager (M9)} \label{sec:M9}
+
+\subsection{Module}
+
+\textbf{Module} AccountAuthentication (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item MIN\_PASSWORD\_LENGTH: $\mathbb{Z} = 12$ (FR-ACC-02).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item User = tuple of (playerID: $\Sigma^*$, displayName: $\Sigma^*$, token:
+  $\Sigma^*$). The token is an opaque session credential. Only the online
+  service can interpret it.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{3.4cm} p{2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+register & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, UsernameTaken, WeakPassword \\
+signIn & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, InvalidCredentials \\
+signOut & - & - & NotInitialized \\
+isAuthenticated & - & $\mathbb{B}$ & NotInitialized \\
+getCurrentUser & - & User & NotInitialized, NotSignedIn \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item session: User $\cup \ \{\nul\}$. The player signed in on this
+  installation.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item authService: tuple of (reachable: $\mathbb{B}$, accounts: set of
+  Account). The online account service.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item All communication with authService is encrypted (NFR-SEC-01).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, session := \True, \nul
+\item exception: none
+\end{itemize}
+
+\noindent register($u$, $pw$):
+\begin{itemize}
+\item transition: authService.accounts := authService.accounts $\cup \{(u,
+  \text{newID}(), \text{protect}(pw))\}$ (FR-ACC-01)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$authService.reachable
+  $\Rightarrow$ ServiceUnavailable $|$ $\exists a \in$ authService.accounts
+  $\cdot\ a.\text{username} = u \Rightarrow$ UsernameTaken $|$ $|pw| <$
+  MIN\_PASSWORD\_LENGTH $\Rightarrow$ WeakPassword) (FR-ACC-02)
+\end{itemize}
+
+\noindent signIn($u$, $pw$):
+\begin{itemize}
+\item transition: session := (idOf($u$), $u$, issueToken($u$))
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$authService.reachable
+  $\Rightarrow$ ServiceUnavailable $|$ $\neg$verify($u$, $pw$) $\Rightarrow$
+  InvalidCredentials). The same exception is raised whether the username or
+  the password is wrong (FR-ACC-03).
+\end{itemize}
+
+\noindent signOut():
+\begin{itemize}
+\item transition: session := \nul{} (FR-ACC-04)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isAuthenticated():
+\begin{itemize}
+\item output: $out :=$ (session $\neq \nul$)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getCurrentUser():
+\begin{itemize}
+\item output: $out :=$ session
+\item exception: $exc :=$ (\noinit{} $|$ session $= \nul \Rightarrow$
+  NotSignedIn)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Account = tuple of (username: $\Sigma^*$, playerID: $\Sigma^*$,
+  verifier: $\Sigma^*$).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item protect: $\Sigma^* \rightarrow \Sigma^*$. A salted, adaptive one-way hash
+  of a password. The password cannot be recovered from it, so it is never
+  stored in plaintext (NFR-SEC-01).
+\item verify: $\Sigma^* \times \Sigma^* \rightarrow \mathbb{B}$. verify($u$,
+  $pw$) $= \exists a \in$ authService.accounts $\cdot\ a.\text{username} = u
+  \wedge a.\text{verifier} =$ protect($pw$).
+\item idOf: $\Sigma^* \rightarrow \Sigma^*$. The playerID of the account with
+  username $u$.
+\item newID: $\rightarrow \Sigma^*$. A playerID not used by any account.
+\item issueToken: $\Sigma^* \rightarrow \Sigma^*$. A new token that the online
+  service accepts as proof that $u$ is signed in.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Usernames are also the display names shown on leaderboards.
+
+\newpage
+% ==========================================================
+% M10
+% ==========================================================
+\section{MIS of Result Synchronization Manager (M10)} \label{sec:M10}
+
+\subsection{Module}
+
+\textbf{Module} ResultSynchronization (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{9} (isAuthenticated, getCurrentUser, User)
+\item \Mref{12} (storeLocal, loadLocal, setSyncStatus, uploadResult,
+  loadGlobal, loadPlayerResults, ResultRecord, SyncStatus)
+\item \Mref{15} (order, RankKey)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item LEADERBOARD\_SIZE: $\mathbb{Z} = 10$ (FR-DAT-07).
+\item GUEST\_PLAYER: $\Sigma^* =$ ``guest''. The local player identifier when
+  no one is signed in (FR-DAT-01, FR-ACC-05).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Scope = $\{$LOCAL, GLOBAL$\}$.
+\item ResultInput = tuple of (course: $\Sigma^*$, $T$: $\mathbb{R}$, $C$:
+  $\mathbb{Z}$, $k$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating). A
+  completed attempt to save.
+\item LeaderboardEntry = tuple of (rank: $\mathbb{N}$, displayName:
+  $\Sigma^*$, score: $\mathbb{Z}$, $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$).
+\item HistoryEntry = tuple of (course: $\Sigma^*$, timestamp: $\mathbb{Z}$,
+  $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  synced: $\mathbb{B}$).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{3.2cm} p{3.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+saveResult & $r$: ResultInput & - & NotInitialized, SaveFailed \\
+retrySync & - & - & NotInitialized, NotSignedIn \\
+getLeaderboard & $c$: $\Sigma^*$, $sc$: Scope & seq of LeaderboardEntry & NotInitialized, LeaderboardUnavailable \\
+getHistory & - & seq of HistoryEntry & NotInitialized, NotSignedIn \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\end{itemize}
+
+The result records and their synchronization status are stored by \Mref{12}.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item clock: $\mathbb{Z}$. The current time in whole seconds (UTC).
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized := \True
+\item exception: none
+\end{itemize}
+
+\noindent saveResult($r$):
+\begin{itemize}
+\item transition: Let $rec$ = (newID(), owner()[1], owner()[2], $r$.course,
+  $r.T$, $r.C$, $r.k$, $r$.score, $r$.rating, clock, LOCAL\_ONLY).
+  M12.storeLocal($rec$) (FR-DAT-01); then (M9.isAuthenticated() $\Rightarrow$
+  sync($rec$)) (FR-DAT-02). A guest's result is saved locally but never
+  submitted (FR-ACC-05).
+\item exception: $exc :=$ (\noinit{} $|$ M12.storeLocal raises StorageError
+  $\Rightarrow$ SaveFailed)
+\end{itemize}
+
+\noindent retrySync():
+\begin{itemize}
+\item transition: for each $x \in$ M12.loadLocal() with $x$.status $\neq$
+  SYNCED and $x$.playerID $=$ M9.getCurrentUser().playerID, sync($x$)
+  (FR-DAT-03)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$M9.isAuthenticated()
+  $\Rightarrow$ NotSignedIn)
+\end{itemize}
+
+\noindent getLeaderboard($c$, $sc$):
+\begin{itemize}
+\item output: Let $R$ = ($sc =$ LOCAL $\Rightarrow \langle x \in$
+  M12.loadLocal() $|$ $x$.course $= c\rangle$ $|$ $sc =$ GLOBAL
+  $\Rightarrow$ M12.loadGlobal($c$)) and $p$ = M15.order($\langle$key($x$)
+  $|$ $x \in R\rangle$). \\
+  $out := \langle$entry($i$, $R[p[i]]$) $|$ $i \in [1..\min(\text{LEADERBOARD\_SIZE}, |R|)]\rangle$
+  (FR-DAT-04 to FR-DAT-07)
+\item exception: $exc :=$ (\noinit{} $|$ $sc =$ GLOBAL $\wedge$
+  M12.loadGlobal raises NetworkUnavailable $\Rightarrow$
+  LeaderboardUnavailable) (FR-DAT-08)
+\end{itemize}
+
+\noindent getHistory():
+\begin{itemize}
+\item output: Let $u$ = M9.getCurrentUser(), $G$ =
+  M12.loadPlayerResults($u$.playerID, $u$.token), or $\langle\rangle$ if that
+  raises NetworkUnavailable, and $L = \langle x \in$ M12.loadLocal() $|$
+  $x$.playerID $= u$.playerID $\wedge$ $x$.status $\neq$ SYNCED$\rangle$. \\
+  $out := \langle$past($x$) $|$ $x \in G \,||\, L\rangle$. Synchronized results
+  come from the online service, so they appear on any installation
+  (FR-DAT-09, FR-REV-05, NFR-DAT-01).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$M9.isAuthenticated()
+  $\Rightarrow$ NotSignedIn)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item owner: $\rightarrow$ ($\Sigma^*$, $\Sigma^*$). With $u$ =
+  M9.getCurrentUser(), owner() $=$ (M9.isAuthenticated() $\Rightarrow$
+  ($u$.playerID, $u$.displayName) $|$ otherwise $\Rightarrow$
+  (GUEST\_PLAYER, GUEST\_PLAYER)).
+\item sync: ResultRecord $\rightarrow$ (transition). With $u$ =
+  M9.getCurrentUser(), sync($x$) $\equiv$ M12.setSyncStatus($x$.id,
+  PENDING); then M12.uploadResult($x$, $u$.token), followed by
+  M12.setSyncStatus($x$.id, SYNCED) if it succeeds or M12.setSyncStatus($x$.id,
+  FAILED) if it raises NetworkUnavailable or Unauthorized. A failure never
+  reaches the caller, and the result can be retried (FR-DAT-03, FR-DAT-10).
+\item key: ResultRecord $\rightarrow$ RankKey. key($x$) $=$ ($x$.score,
+  $x.T$, $x$.timestamp).
+\item entry: $\mathbb{N} \times$ ResultRecord $\rightarrow$
+  LeaderboardEntry. entry($i$, $x$) $=$ ($i$, $x$.displayName, $x$.score,
+  $x.T$, $x.C$).
+\item past: ResultRecord $\rightarrow$ HistoryEntry. past($x$) $=$
+  ($x$.course, $x$.timestamp, $x.T$, $x.C$, $x$.score, $x$.rating, $x$.status
+  $=$ SYNCED).
+\item newID: $\rightarrow \Sigma^*$. A unique result identifier, so a retried
+  submission is never stored twice.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+A result moves through the states local only, pending, failed and synced.
+\Mref{12} stores the state, and this module decides each transition.
+
+\newpage
+% ==========================================================
+% M11
+% ==========================================================
+\section{MIS of Flight Dynamics Model (M11)} \label{sec:M11}
+
+\subsection{Module}
+
+\textbf{Module} FlightDynamics (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+The SRS leaves the reference drone's physical parameters as an open decision.
+The values below are initial values for a small racing drone and will be tuned
+during testing (AC2 in the MG). Only this module changes when they do.
+
+\begin{itemize}
+\item $g$: $\mathbb{R} = 9.81$ m/s$^2$. Gravitational acceleration
+  (FR-FLT-03).
+\item $m$: $\mathbb{R} = 0.5$ kg. Drone mass.
+\item TWR: $\mathbb{R} = 4$. Maximum thrust divided by weight.
+\item $\omega_{max}$: $\mathbb{R}^3 = (10, 10, 6)$ rad/s. Maximum roll, pitch
+  and yaw rates.
+\item $k_d$: $\mathbb{R} = 0.1$ kg/s. Linear drag coefficient.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item FlightState = tuple of (pose: Pose, $v$: $\mathbb{R}^3$, $\omega$:
+  $\mathbb{R}^3$). Velocity in m/s and roll, pitch and yaw rates in rad/s.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{1.6cm} >{\raggedright\arraybackslash}X p{2.4cm} p{3.2cm}}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+step & $s$: FlightState, $\tau$: $\mathbb{R}$, $u_\theta$: $\mathbb{R}$,
+$u_\phi$: $\mathbb{R}$, $u_\psi$: $\mathbb{R}$, $\Delta t$: $\mathbb{R}$ &
+FlightState & NegativeInterval \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The inputs after $s$ are the throttle $\tau \in [0, 1]$ and the pitch, roll and
+yaw commands in $[-1, 1]$.
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item $\Delta t$ is one frame, small enough for one integration step to be
+  accurate.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent step($s$, $\tau$, $u_\theta$, $u_\phi$, $u_\psi$, $\Delta t$):
+\begin{itemize}
+\item output: $out := ((p', o'), v', \omega')$, where $s = ((p, o), v,
+  \omega)$ and
+  \begin{align*}
+  \omega' &= (\omega_{max}[1] \cdot u_\phi,\ \omega_{max}[2] \cdot
+  u_\theta,\ \omega_{max}[3] \cdot u_\psi)\\
+  o' &= o + \omega' \Delta t\\
+  a &= \tau \cdot \text{TWR} \cdot g \cdot \text{up}(o') - g \hat{z} -
+  \frac{k_d}{m} v\\
+  v' &= v + a \Delta t\\
+  p' &= p + v' \Delta t
+  \end{align*}
+  Each stick sets the rotation rate about one axis, and throttle sets thrust
+  along the drone's vertical axis (FR-FLT-02).
+\item exception: $exc :=$ ($\Delta t < 0 \Rightarrow$ NegativeInterval)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item up: $\mathbb{R}^3 \rightarrow \mathbb{R}^3$. up($o$) is the unit vector
+  along the drone's vertical axis at orientation $o$: $\hat{z}$ rotated by roll
+  $o[1]$, pitch $o[2]$ and yaw $o[3]$.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+With $\tau = 0$ the vertical acceleration is $-g - \frac{k_d}{m} v_z$, which is
+negative while $v_z > -\frac{m g}{k_d} \approx -49$ m/s. A drone with no
+thrust therefore speeds up downwards until it reaches that terminal speed or
+hits the ground (FR-FLT-03). The authoritative drone state is kept by
+\Mref{6}.
+
+\newpage
+% ==========================================================
+% M12
+% ==========================================================
+\section{MIS of Data Persistence Module (M12)} \label{sec:M12}
+
+\subsection{Module}
+
+\textbf{Module} DataPersistence (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item SyncStatus = $\{$LOCAL\_ONLY, PENDING, FAILED, SYNCED$\}$.
+\item ResultRecord = tuple of (id: $\Sigma^*$, playerID: $\Sigma^*$,
+  displayName: $\Sigma^*$, course: $\Sigma^*$, $T$: $\mathbb{R}$, $C$:
+  $\mathbb{Z}$, $k$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  timestamp: $\mathbb{Z}$, status: SyncStatus). The fields required by
+  FR-DAT-01, plus the record's identity and synchronization status.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} >{\raggedright\arraybackslash}p{3.4cm} p{2.8cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+storeLocal & $x$: ResultRecord & - & NotInitialized, StorageError \\
+loadLocal & - & seq of ResultRecord & NotInitialized \\
+setSyncStatus & $id$: $\Sigma^*$, $st$: SyncStatus & - & NotInitialized, RecordNotFound \\
+uploadResult & $x$: ResultRecord, $tok$: $\Sigma^*$ & - & NotInitialized, NetworkUnavailable, Unauthorized \\
+loadGlobal & $c$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable \\
+loadPlayerResults & $pid$: $\Sigma^*$, $tok$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable, Unauthorized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item localStore: seq of ResultRecord. Results saved on the headset.
+\item backend: tuple of (reachable: $\mathbb{B}$, records: set of
+  ResultRecord, sessions: set of ($\Sigma^*$, $\Sigma^*$)). The online result
+  service, its stored results and its accepted (token, playerID) sessions.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item Records accepted by the backend stay there, so a synchronized result
+  survives sign-out, restart and sign-in (NFR-DAT-01).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized := \True
+\item exception: none
+\end{itemize}
+
+\noindent storeLocal($x$):
+\begin{itemize}
+\item transition: localStore := localStore $||\ \langle x \rangle$
+\item exception: $exc :=$ (\noinit{} $|$ localStore cannot be written
+  $\Rightarrow$ StorageError)
+\end{itemize}
+
+\noindent loadLocal():
+\begin{itemize}
+\item output: $out :=$ localStore
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent setSyncStatus($id$, $st$):
+\begin{itemize}
+\item transition: the record $y \in$ localStore with $y$.id $= id$ gets
+  $y$.status := $st$. All other records are unchanged.
+\item exception: $exc :=$ (\noinit{} $|$ $\neg\exists y \in$ localStore
+  $\cdot\ y.\text{id} = id \Rightarrow$ RecordNotFound)
+\end{itemize}
+
+\noindent uploadResult($x$, $tok$):
+\begin{itemize}
+\item transition: ($\exists y \in$ backend.records $\cdot\ y.\text{id} =
+  x.\text{id} \Rightarrow$ no change $|$ otherwise $\Rightarrow$
+  backend.records := backend.records $\cup \{x$ with status SYNCED$\}$). A
+  retried submission is never stored twice (FR-DAT-02).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable $|$ $(tok, x.\text{playerID}) \notin$
+  backend.sessions $\Rightarrow$ Unauthorized). A result can only be submitted
+  under the signed-in player's own account (NFR-SEC-02).
+\end{itemize}
+
+\noindent loadGlobal($c$):
+\begin{itemize}
+\item output: $out :=$ the records $y \in$ backend.records with $y$.course
+  $= c$, in any order (FR-DAT-05)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable)
+\end{itemize}
+
+\noindent loadPlayerResults($pid$, $tok$):
+\begin{itemize}
+\item output: $out :=$ the records $y \in$ backend.records with $y$.playerID
+  $= pid$, in any order (FR-DAT-09)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable $|$ $(tok, pid) \notin$ backend.sessions
+  $\Rightarrow$ Unauthorized) (NFR-SEC-02)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+The MG's database design describes the intended backend: a hosted relational
+database reached through an authenticated HTTPS service. Those choices stay
+hidden behind this interface. This module stores the synchronization status it
+is given but never decides when to retry.
+
+\newpage
+% ==========================================================
+% M13
+% ==========================================================
+\section{MIS of Intelligent Feedback Analyzer (M13, Optional)}
+\label{sec:M13}
+
+\subsection{Module}
+
+\textbf{Module} FeedbackAnalyzer (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item MAX\_FEEDBACK\_LENGTH: $\mathbb{Z} = 500$. The longest feedback, in
+  characters, shown in the review.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item AttemptSummary = tuple of ($T$: $\mathbb{R}$, $k$: $\mathbb{Z}$, $n$:
+  $\mathbb{Z}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$). The completed
+  attempt's time, checkpoints, crashes and score.
+\item Feedback = $\Sigma^*$.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.6cm} p{3.6cm} p{2.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+isAvailable & - & $\mathbb{B}$ & - \\
+analyze & $a$: AttemptSummary & Feedback & FeedbackUnavailable \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item feedbackService: tuple of (reachable: $\mathbb{B}$, respond: $\Sigma^*
+  \rightarrow \Sigma^* \cup \ \{\nul\}$). The service that turns a description
+  of an attempt into feedback, or \nul{} if it fails.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent isAvailable():
+\begin{itemize}
+\item output: $out :=$ feedbackService.reachable
+\item exception: none
+\end{itemize}
+
+\noindent analyze($a$):
+\begin{itemize}
+\item output: Let $reply$ = feedbackService.respond(describe($a$)). $out :=
+  reply$ (FR-AI-01)
+\item exception: $exc :=$ ($\neg$feedbackService.reachable $\vee$
+  $\neg$acceptable($reply$) $\Rightarrow$ FeedbackUnavailable). The caller
+  shows the standard review when this is raised (FR-AI-03).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item describe: AttemptSummary $\rightarrow \Sigma^*$. A description of $a.T$,
+  $a.k$ of $a.n$ checkpoints, $a.C$ and $a$.score. It contains no player
+  identity.
+\item acceptable: ($\Sigma^* \cup \ \{\nul\}) \rightarrow \mathbb{B}$.
+  acceptable($x$) is \True{} iff $x \neq \nul$ and $0 < |x| \leq$
+  MAX\_FEEDBACK\_LENGTH.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+This module is optional (FR-AI-01 to FR-AI-03). It keeps no state, as the MG's
+library classification requires, but it calls an external service, so unlike a
+pure library it has an environment variable. Its output is advisory and cannot
+change the measurements or the score.
+
+\newpage
+% ==========================================================
+% M14
+% ==========================================================
+\section{MIS of Performance Scoring Policy (M14)} \label{sec:M14}
+
+\subsection{Module}
+
+\textbf{Module} ScoringPolicy (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+These values come from FR-PER-08 and FR-PER-09.
+
+\begin{itemize}
+\item SCORE\_MAX: $\mathbb{Z} = 1000$
+\item CRASH\_PENALTY: $\mathbb{Z} = 100$
+\item GOLD\_MIN: $\mathbb{Z} = 800$
+\item SILVER\_MIN: $\mathbb{Z} = 600$
+\item BRONZE\_MIN: $\mathbb{Z} = 400$
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+None. Rating is a shared type (Section 4).
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.4cm} p{3.6cm} p{3cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+evaluate & $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$ & ($\mathbb{Z}$, Rating) & InvalidMeasurement \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent evaluate($T$, $C$):
+\begin{itemize}
+\item output: $out :=$ (score($T$, $C$), rating(score($T$, $C$)))
+\item exception: $exc :=$ ($T < 0 \vee C < 0 \Rightarrow$
+  InvalidMeasurement)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item score: $\mathbb{R} \times \mathbb{Z} \rightarrow \mathbb{Z}$.
+  score($T$, $C$) $= \max(0,\ \text{SCORE\_MAX} - \lfloor T \rfloor -
+  \text{CRASH\_PENALTY} \cdot C)$ (FR-PER-08). For example, $T = 42.7$ and $C =
+  1$ give $1000 - 42 - 100 = 858$.
+\item rating: $\mathbb{Z} \rightarrow$ Rating (FR-PER-09). \\
+  rating($x$) $=$ ($x \geq$ GOLD\_MIN $\Rightarrow$ GOLD $|$ SILVER\_MIN
+  $\leq x <$ GOLD\_MIN $\Rightarrow$ SILVER $|$ BRONZE\_MIN $\leq x <$
+  SILVER\_MIN $\Rightarrow$ BRONZE $|$ $x <$ BRONZE\_MIN $\Rightarrow$
+  NEEDS\_IMPROVEMENT).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The rating bands are grouped with the formula because they interpret its
+output scale. The SRS formula stays the baseline until an approved requirement
+change revises it (AC5 in the MG).
+
+\newpage
+% ==========================================================
+% M15
+% ==========================================================
+\section{MIS of Leaderboard Ordering Policy (M15)} \label{sec:M15}
+
+\subsection{Module}
+
+\textbf{Module} OrderingPolicy (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item RankKey = tuple of (score: $\mathbb{Z}$, $T$: $\mathbb{R}$, timestamp:
+  $\mathbb{Z}$). The values that decide one result's place.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.2cm} p{3.6cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+order & $ks$: seq of RankKey & seq of $\mathbb{N}$ & - \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent order($ks$):
+\begin{itemize}
+\item output: $out := p$, where $p$ is a sequence containing each of $1,
+  \ldots, |ks|$ exactly once, such that for all $i < j$:
+  $\neg$before($ks[p[j]]$, $ks[p[i]]$), and $p[i] < p[j]$ whenever
+  $ks[p[i]] = ks[p[j]]$. $p[1]$ is the position of the best result, and equal
+  keys keep their original order (FR-DAT-06).
+\item exception: none
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item before: RankKey $\times$ RankKey $\rightarrow \mathbb{B}$.
+  before($a$, $b$) $= a.\text{score} > b.\text{score} \vee (a.\text{score} =
+  b.\text{score} \wedge a.T < b.T) \vee (a.\text{score} = b.\text{score}
+  \wedge a.T = b.T \wedge a.\text{timestamp} < b.\text{timestamp})$. Higher
+  score first, then shorter time, then earlier completion.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The ordering rule is the public FR-DAT-06 contract. The hidden decision is how
+it is applied to a result set. The same ordering is used for local and global
+leaderboards.
 
 \newpage
 
