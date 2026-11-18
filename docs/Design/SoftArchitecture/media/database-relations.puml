@@ -35,11 +35,11 @@ entity "course_level" as level #DBEAFE {
   environment_name
   difficulty
 }
-account ||--o{ result : owns
-result }o--|| level : belongs to
+account "1" -- "0..*" result : one-to-many
+result "0..*" -- "1" level : many-to-one
 legend bottom
   PK: primary key | FK: foreign key | UQ: unique
-  Each account or level has zero or many results.
-  Each result belongs to exactly one account and one level.
+  1 = exactly one | 0..* = zero or more
+  Accounts and levels relate many-to-many through flight_result.
 endlegend
 @enduml

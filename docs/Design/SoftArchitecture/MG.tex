@@ -1439,10 +1439,11 @@ and offline use. Module \mref{mStorage} hides storage details;
 synchronization. Usernames are unique and passwords are stored only as
 salted, adaptive hashes.
 
-Figure \ref{FigDatabase} shows the three relations: accounts, course
-metadata, and completed flight results. Each result references exactly
-one account and one level through foreign keys; either parent may have
-many results. Result records retain completion time, crash count, score,
+Figure \ref{FigDatabase} shows two one-to-many UML associations. Each
+flight result references exactly one account and one course level
+(\texttt{1}), while each account or level can have zero or more results
+(\texttt{0..*}). Flight results link accounts and course levels in a
+many-to-many relationship. Result records retain completion time, crash count, score,
 and rating for historical review. The full schema and query examples are
 in \texttt{database/schema.sql} and \texttt{database/queries.sql}.
 
