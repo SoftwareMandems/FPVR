@@ -71,6 +71,7 @@ This section records information for easy reference.
   \midrule 
   AC & Anticipated Change\\
   DAG & Directed Acyclic Graph \\
+  LC & Likely Change (as listed in the SRS)\\
   M & Module \\
   MG & Module Guide \\
   OS & Operating System \\
@@ -141,9 +142,10 @@ requirements. Section \ref{SecMH} summarizes the module decomposition that
 was constructed according to the likely changes. Section \ref{SecConnection}
 specifies the connections between the software requirements and the
 modules. Section \ref{SecMD} gives a detailed description of the
-modules. Section \ref{SecTM} includes three traceability matrices. One checks
-the completeness of the design against the requirements provided in the SRS. The
-others show the relations of anticipated and unlikely changes to modules. Section
+modules. Section \ref{SecTM} includes four traceability matrices. One checks
+the completeness of the design against the requirements provided in the SRS.
+One shows that the anticipated changes cover every likely change in the SRS.
+The others show the relations of anticipated and unlikely changes to modules. Section
 \ref{SecUse} describes the use relation between modules.
 
 
@@ -165,73 +167,101 @@ Anticipated changes represent aspects of the system's requirements, design, or
  of information hiding, these decisions should be encapsulated within individual 
  modules wherever possible, minimizing the impact of modifications on the rest of the system.
 
+The SRS lists eight likely changes, LC-01 to LC-08. Each anticipated change
+below names the likely changes it covers, and Table \ref{TblLCT} shows that
+every likely change is covered. 
+
 \begin{description}
 
 \item[\refstepcounter{acnum} \actheacnum \label{acController}:]
 The device-input normalization policy in \mref{mController} may change
-as different supported controllers are tested. Its calibration and
-axis mapping jointly define the conversion to standard flight commands.
-(Related SRS: FR-UI-02--04, NFR-COMP-01.)
+as different supported controllers are tested, or as a dedicated FPV
+transmitter is added. Its calibration and axis mapping jointly define the
+conversion to standard flight commands.
+(SRS LC-01, LC-08; FR-UI-02--04, NFR-COMP-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acPhysics}:]
 The numerical flight-state evolution method in \mref{mPhysics} may
-change to improve flight realism or responsiveness. Its parameters
-must remain consistent with the integration method's units and time step.
-(Related SRS: FR-FLT-02--03.)
+change to improve flight realism or responsiveness, including changes to
+gravity, thrust, and control response once a reference drone is agreed.
+Its parameters must remain consistent with the integration method's units
+and time step.
+(SRS LC-02, LC-04; FR-FLT-02--03, NFR-PERF-02.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acEnvironment}:]
 The training-course content representation in \mref{mEnvironment}
-may change as new courses are developed. Environment assets, obstacles,
-and checkpoint locations remain parts of one course definition.
-(Related SRS: FR-LVL-01--07, FR-CHK-01.)
+may change as new courses and environments are developed. Environment
+assets, obstacles, and checkpoint locations remain parts of one course
+definition.
+(SRS LC-05; FR-LVL-01--07, FR-CHK-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
 The checkpoint-progress representation in \mref{mCheckpoint} may change
 to improve reliability or maintainability. Validation and recovery-position
 selection use the same last-valid-checkpoint invariant, so changes to
 that representation remain within this module.
-(Related SRS: FR-CHK-01--08.)
+(Design decision; FR-CHK-01--08.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
 The performance-to-rating policy in \mref{mScoring} may change after
 playtesting. Its score formula and rating bands are grouped because the
 bands interpret that formula's output scale. Measurement accumulation
-remains in \mref{mPerformance}. (Related SRS: FR-PER-08--09.)
+remains in \mref{mPerformance}. Leaderboards order results by whatever
+score this policy produces, so \mref{mRanking} does not change.
+(SRS LC-03; FR-PER-08--09, FR-DAT-06.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acUI}:]
 The user-interaction presentation scheme in \mref{mUI} may change to
-improve usability. Layout and interaction bindings jointly realize
-the visible controls for menus, flight displays, or reviews.
-(Related SRS: FR-UI-04--06, FR-REV-01--05.)
+improve usability or to add comfort and accessibility options. Layout and
+interaction bindings jointly realize the visible controls for menus,
+flight displays, or reviews.
+(SRS LC-05; FR-UI-04--06, FR-REV-01--05, NFR-SAFE-01--02.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acVR}:]
 The platform-specific XR session adapter in \mref{mXR} may change
-to improve compatibility or runtime performance. Tracking and display
-submission share this adapter's runtime session lifecycle in either
-standalone or PCVR execution.
-(Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
+to support other headset models or a different reference PCVR computer,
+or to meet a revised frame-rate target. Tracking and display submission
+share this adapter's runtime session lifecycle in either standalone or
+PCVR execution.
+(SRS LC-01, LC-04; FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
 The persistent result-record representation in \mref{mStorage} may
 change as result storage is developed. Schema, serialization, and backend
 bindings jointly realize that representation behind one storage interface.
-(Related SRS: FR-DAT-01--03, FR-DAT-09, NFR-DAT-01.)
+(SRS LC-06; FR-DAT-01--03, FR-DAT-09, NFR-DAT-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
 The authenticated-identity lifecycle implementation in \mref{mAccount}
-may change with the provider or security requirements. Credential handling
-and session-token handling share that identity boundary behind one
-authentication interface.
-(Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
+may change with the provider, the password rule, or security requirements.
+Credential handling and session-token handling share that identity boundary
+behind one authentication interface.
+(SRS LC-06; FR-ACC-01--05, NFR-SEC-01--02.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
 The flight-feedback generation strategy in \mref{mAI} may change as
-its feasibility or effectiveness is evaluated. Preprocessing and model
-invocation must follow the same model input contract. This functionality
-remains optional.
-(Related SRS: FR-AI-01--03, FR-REV-04.)
+its feasibility or effectiveness is evaluated, including whether it runs on
+the device or as a service. Preprocessing and model invocation must follow
+the same model input contract. This functionality remains optional and may
+be deferred.
+(SRS LC-07; FR-AI-01--03, FR-REV-04.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acCrash}:]
+The takeoff and crash-recognition rule in \mref{mFlightState} may be
+retuned with the reference drone, for example what counts as leaving the
+ground before a ground contact becomes a crash. The rule that each crash
+produces exactly one event stays fixed.
+(SRS LC-02; FR-FLT-05--06.)
+
+\item[\refstepcounter{acnum} \actheacnum \label{acSync}:]
+The result-synchronization policy in \mref{mLeaderboard} may change,
+including when results are submitted and retried, or deferring online
+submission so that results stay local only if the online service is not
+ready.
+(SRS LC-06; FR-DAT-02--03, FR-DAT-05, FR-DAT-08--10.)
 
 \end{description}
+
 
 
 \subsection{Unlikely Changes} \label{SecUchange}
@@ -248,14 +278,14 @@ not need to accommodate them.
 FPVR could be extended to communicate with or control
 physical drones, but this is unlikely because it would
 introduce additional hardware, safety, and regulatory
-requirements beyond the project's scope.
+requirements beyond the project's scope. (SRS UC-01.)
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucAxes}:]
 \textbf{Changes to Fundamental Flight Controls.}
 The four primary flight-control axes (throttle, pitch,
 roll, and yaw) could be replaced by a different control
 model, but this is unlikely because they are fundamental
-to the intended FPV training experience.
+to the intended FPV training experience. (SRS UC-02.)
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucPlatform}:]
 \textbf{Changes to Development Platform and VR Hardware.}
@@ -263,7 +293,8 @@ Unity/C\# or the Meta Quest 3S could be replaced with
 alternative development technologies or VR hardware,
 but this is unlikely because the project has already
 committed to these technologies for development
-and testing.
+and testing. Moving to desktop-only play is excluded by
+the SRS. (SRS UC-04.)
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucTraining}:]
 \textbf{Changes to Core Training Structure.}
@@ -271,7 +302,7 @@ The free-flight and obstacle-course training modes
 could be replaced by a different training structure,
 but this is unlikely because both modes are
 fundamental to the training objectives defined
-in the SRS.
+in the SRS. (Design decision; FR-LVL-01, FR-LVL-03.)
 
 \item[\refstepcounter{ucnum} \uctheucnum \label{ucPerformance}:]
 \textbf{Transition to Online-Dependent Training.}
@@ -279,9 +310,27 @@ FPVR could be redesigned to require an internet
 connection for all training activities, but this is
 unlikely because the SRS explicitly requires core
 flight training and local performance reviews to
-remain available offline.
+remain available offline. (SRS UC-05.)
+
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucRules}:]
+\textbf{Changes to Recovery and Scoring Rules.}
+The ordered-checkpoint rule, keeping crash penalties on
+respawn, starting a fresh attempt on restart, and the
+leaderboard ordering precedence could change, but this is
+unlikely because these rules are what make stored results
+comparable. Only the score constants and rating bands are
+expected to change (\acref{acScoring}). (SRS UC-03;
+FR-CHK-02, FR-CHK-05--08, FR-PER-05, FR-PER-07, FR-DAT-06.)
 
 \end{description}
+
+Because these rules are fixed, the modules that only carry them out, the
+Training Session Manager (\mref{mTraining}), Attempt Metrics Manager
+(\mref{mPerformance}), and Leaderboard Ordering Policy (\mref{mRanking}),
+have no anticipated change of their own. Their secrets are how they
+realize these fixed rules, and they are separate modules so that the
+policies that do change (\acref{acScoring}, \acref{acSync}) stay isolated
+from them.
 
 
 \section{Module Hierarchy} \label{SecMH}
@@ -433,7 +482,9 @@ information hiding.
     To satisfy FR-FLT-04--06, a dedicated module maintains
     the drone's flight state and manages collision and crash
     events, ensuring that each crash is registered once and
-    normal flight is suspended appropriately.
+    normal flight is suspended appropriately. The takeoff and
+    crash-recognition rule can be retuned (\acref{acCrash}) without
+    changing the flight model or the crash count.
 
     \item \textbf{Checkpoint and Recovery Manager (\mref{mCheckpoint}):}
     To satisfy FR-CHK-01--08 and NFR-REL-01, checkpoint
@@ -464,6 +515,8 @@ information hiding.
     module owns the result-synchronization state machine. It retrieves
     result sets through \mref{mStorage}, delegates their ordering to
     \mref{mRanking}, and keeps online failures independent of training.
+    Changes to when results are submitted or retried, including keeping
+    results local only, stay within this module (\acref{acSync}).
 
     \item \textbf{Flight Dynamics Model (\mref{mPhysics}):}
     To satisfy FR-FLT-02--03, the mathematical algorithms
@@ -693,8 +746,9 @@ The drone flight-state transition model.
 Airborne and crashed status are states of the same drone lifecycle.
 Crash registration must update that lifecycle atomically to emit exactly
 one event per crash, which justifies grouping flight state and crash
-management. Motion integration belongs to \mref{mPhysics}; accumulated
-crash counts belong to \mref{mPerformance}.
+management. The takeoff and crash-recognition rule is the part of this
+model varied by \acref{acCrash}. Motion integration belongs to
+\mref{mPhysics}; accumulated crash counts belong to \mref{mPerformance}.
 
 \item[Services:]
 Maintains the current drone flight state, processes
@@ -819,7 +873,8 @@ The result-synchronization state machine.
 
 \item[Justification:]
 Locally saved, pending, failed, and synchronized are states of one result
-lifecycle. Submission and retry transitions therefore share one secret.
+lifecycle. Submission and retry transitions therefore share one secret,
+which is varied by \acref{acSync}.
 Storage encoding belongs to \mref{mStorage}; leaderboard ordering belongs
 to \mref{mRanking}. Retrieval services expose the result sets managed by
 this lifecycle without introducing a second ranking secret.
@@ -975,9 +1030,10 @@ The result-ordering implementation.
 
 \item[Justification:]
 Score, completion time, and completion timestamp form one comparison key.
-Their precedence is the public FR-DAT-06 contract; the hidden decision is
-how to apply that key to a supplied result set. Authentication, storage,
-and synchronization are outside this policy.
+Their precedence is the public FR-DAT-06 contract, which the SRS treats as
+unlikely to change (\uref{ucRules}); the hidden decision is how to apply
+that key to a supplied result set. Authentication, storage, and
+synchronization are outside this policy.
 
 \item[Services:]
 Returns result records in descending score order, breaking ties by shorter
@@ -993,12 +1049,13 @@ Library.
 
 \section{Traceability Matrix} \label{SecTM}
 
-This section presents three traceability matrices: one showing
+This section presents four traceability matrices. The first shows
 the relationships between the requirements in the Software
 Requirements Specification (SRS) and the modules defined in
-Section \ref{SecMH}, and another showing the relationships
-between anticipated changes and modules, and a third identifying modules
-that would need review if an unlikely change occurred.
+Section \ref{SecMH}. The second shows which anticipated changes cover each
+SRS likely change. The third shows the relationships between anticipated
+changes and modules, and the fourth identifies modules that would need
+review if an unlikely change occurred.
 
 These matrices help verify that the module decomposition
 addresses the system requirements and that anticipated
@@ -1046,15 +1103,15 @@ FR-FLT-02--03 (Flight controls and gravity)
 \mref{mPhysics} \\
 
 FR-FLT-04--06 (Collisions and crash handling)
-& \mref{mEnvironment}, \mref{mFlightState},
-\mref{mCheckpoint} \\
+& \mref{mUI}, \mref{mTraining}, \mref{mEnvironment},
+\mref{mFlightState} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{Training Modes and Level Management}}\\
 
 FR-LVL-01--02 (Free-flight mode and recovery)
-& \mref{mTraining}, \mref{mEnvironment},
-\mref{mCheckpoint} \\
+& \mref{mUI}, \mref{mTraining}, \mref{mEnvironment},
+\mref{mFlightState} \\
 
 FR-LVL-03--05 (Course selection and environments)
 & \mref{mUI}, \mref{mTraining},
@@ -1062,23 +1119,22 @@ FR-LVL-03--05 (Course selection and environments)
 
 FR-LVL-06--07 (Exit and attempt initialization)
 & \mref{mUI}, \mref{mTraining},
-\mref{mCheckpoint}, \mref{mPerformance},
-\mref{mScoring} \\
+\mref{mCheckpoint}, \mref{mPerformance} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{Checkpoints and Crash Recovery}}\\
 
 FR-CHK-01--03 (Checkpoint ordering and progression)
-& \mref{mEnvironment}, \mref{mCheckpoint} \\
+& \mref{mTraining}, \mref{mEnvironment}, \mref{mFlightState},
+\mref{mCheckpoint} \\
 
 FR-CHK-04--05 (Recovery choices and respawning)
 & \mref{mUI}, \mref{mFlightState},
 \mref{mCheckpoint} \\
 
 FR-CHK-06--07 (Recovery and restart state)
-& \mref{mTraining}, \mref{mCheckpoint},
-\mref{mPerformance},
-\mref{mScoring} \\
+& \mref{mTraining}, \mref{mFlightState}, \mref{mCheckpoint},
+\mref{mPerformance} \\
 
 FR-CHK-08 (Level completion)
 & \mref{mTraining}, \mref{mCheckpoint} \\
@@ -1209,6 +1265,42 @@ NFR-OFF-01 (Offline availability)
 
 
 %----------------------------------------------------------
+% SRS Likely Changes to Anticipated Changes
+%----------------------------------------------------------
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{p{0.40\textwidth} X}
+\toprule
+\textbf{SRS Likely Change (LC)} & \textbf{Anticipated Changes} \\
+\midrule
+LC-01: Device support
+& \acref{acController}, \acref{acVR} \\
+LC-02: Flight tuning
+& \acref{acPhysics}, \acref{acCrash} \\
+LC-03: Scoring and ratings
+& \acref{acScoring} \\
+LC-04: Performance thresholds
+& \acref{acPhysics}, \acref{acVR} (implementation only; see
+  Section \ref{SecAchange}) \\
+LC-05: Content and comfort
+& \acref{acEnvironment}, \acref{acUI} \\
+LC-06: Online services
+& \acref{acStorage}, \acref{acAuthentication}, \acref{acSync} \\
+LC-07: Intelligent feedback
+& \acref{acAI} \\
+LC-08: Stretch goals
+& \acref{acController} (FPV transmitter); multiplayer is outside the
+  current decomposition (Section \ref{SecAchange}) \\
+\bottomrule
+\end{tabularx}
+\caption{Trace Between SRS Likely Changes and Anticipated Changes}
+\label{TblLCT}
+\end{table}
+
+%----------------------------------------------------------
 % Table 3: Anticipated Changes to Modules
 %----------------------------------------------------------
 
@@ -1253,6 +1345,12 @@ NFR-OFF-01 (Offline availability)
 \acref{acAI}
 & \mref{mAI} \\
 
+\acref{acCrash}
+& \mref{mFlightState} \\
+
+\acref{acSync}
+& \mref{mLeaderboard} \\
+
 \bottomrule
 
 \end{tabularx}
@@ -1260,6 +1358,14 @@ NFR-OFF-01 (Offline availability)
 \caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
+
+Table \ref{TblACT} is a one-to-one mapping: each anticipated change is
+hidden by exactly one module, and no module hides more than one. The
+Training Session Manager (\mref{mTraining}), Attempt Metrics Manager
+(\mref{mPerformance}), and Leaderboard Ordering Policy (\mref{mRanking})
+have no anticipated change, because they carry out rules that are listed
+as unlikely to change (\uref{ucTraining}, \uref{ucRules}). Every
+other module hides exactly one anticipated change.
 
 \begin{table}[H]
 \centering
@@ -1283,6 +1389,9 @@ NFR-OFF-01 (Offline availability)
 \uref{ucPerformance}: Online-dependent training
 & \mref{mUI}, \mref{mTraining}, \mref{mAccount},
   \mref{mLeaderboard}, \mref{mStorage} \\
+\uref{ucRules}: Recovery and scoring rules
+& \mref{mTraining}, \mref{mCheckpoint}, \mref{mPerformance},
+  \mref{mRanking} \\
 \bottomrule
 \end{tabularx}
 \caption{Trace Between Unlikely Changes and Modules}
@@ -1404,14 +1513,25 @@ that the interface is subject to change as it continues to be developed and refi
 
 \section{Design of Communication Protocols}
 
-FPVR runs directly on the Meta Quest 3S without a PC connection at runtime.
-A development computer may connect to the headset to transfer or update the
-application. This deployment connection is separate from runtime hardware
-communication.
+FPVR supports the two execution modes required by FR-UI-02. In standalone
+mode, the primary mode, it runs directly on the Meta Quest 3S without a PC
+connection at runtime. In PCVR mode, it runs on the reference PCVR computer
+and the headset displays it through Meta Horizon Link (formerly Meta Quest
+Link), either over a USB-C cable or wirelessly with Air Link
+\citep{MetaHorizonLink} (NFR-INST-02). Link carries the rendered
+images to the headset and the headset's tracking and controller data back
+to the computer; FPVR uses it through the Meta runtime and does not define
+its own protocol. Separately, a development computer may connect to the
+headset to transfer or update the standalone application. This deployment
+connection is not used at runtime.
 
-The paired Quest motion controllers communicate with the headset's platform
-services. The Meta runtime exposes controller input through OpenXR; Unity's
-OpenXR Plugin maps supported inputs to Input System actions. The Controller
+In standalone mode, the paired Quest motion controllers communicate with the
+headset's platform services. In PCVR mode, a standard gamepad connects to
+the computer through USB or Bluetooth (FR-UI-03, NFR-COMP-01). In both modes
+the input reaches FPVR through Unity: the Meta runtime exposes headset and
+controller input through OpenXR \citep{KhronosOpenXR}, Unity's OpenXR Plugin
+maps that input to Input System controls \citep{UnityOpenXRInput}, and the
+Input System provides the gamepad directly \citep{UnityInputSystemGamepad}. The Controller
 Input Interface (\mref{mController}) applies axis bindings, calibration, and
 dead zones to produce normalized throttle, pitch, roll, and yaw commands
 for \mref{mFlightState}. It also supplies menu actions and control-guide
@@ -1421,19 +1541,20 @@ unavailable input is not treated as a new command.
 The VR Platform Interface (\mref{mXR}) encapsulates headset pose, tracking
 validity, XR session status, and display integration. Module \mref{mUI}
 presents the drone-following flight view and menus through this interface.
-Unity submits the rendered eye images to the headset runtime for display.
+Unity submits the rendered eye images to the headset runtime for display;
+in PCVR mode the runtime forwards them to the headset over Link
+\citep{MetaHorizonLink}.
 The platform manages the physical controller link and display transport;
 FPVR uses their software interfaces without defining a custom radio or
 serial protocol. These boundaries keep device-specific details within
 \mref{mXR} and \mref{mController}, supporting low coupling with the simulation.
-Unity's \href{https://docs.unity3d.com/Packages/com.unity.xr.openxr@1.14/manual/input.html}{OpenXR input documentation}
-describes the input integration.
 
 \section{Database Design} \label{SecDatabase}
 
-FPVR uses MySQL 8.4 on a hosted backend for accounts and synchronized
-results, accessed by the Quest application through an authenticated HTTPS
-service. The headset saves results locally first, preserving guest training
+FPVR uses MySQL 8.4 \citep{MySQL84Manual} on a hosted backend for accounts and synchronized
+results, accessed by the application in either execution mode through an
+authenticated HTTPS service. The application saves results locally first,
+on the headset or on the PCVR computer, preserving guest training
 and offline use. Module \mref{mStorage} hides storage details;
 \mref{mAccount} manages identity, while \mref{mLeaderboard} manages
 synchronization. Usernames are unique and passwords are stored only as
@@ -1616,12 +1737,14 @@ implementation correctness or proof that each allocation is sufficient.
 checked for 15 nodes and 16 direct edges. Every edge descended its assigned
 layer, establishing that this proposed graph had no cycles; each
 non-coordinator caller used at most three providers. Ten anticipated-change
-rows were checked for one module per row. These results apply to that
+rows (AC1--AC10) were checked for one module per row; AC11 and AC12, added
+later to cover the SRS likely changes, were checked the same way. These results apply to that
 draft, not to the unfilled uses figure in the current checkout.
 \item \textbf{Technical assertions:} The communication drafts were compared
-with official Unity OpenXR input documentation and Meta Link documentation;
-the database draft was checked against the MySQL 8.4 table and constraint
-documentation. Hardware-specific behaviour and package configuration still
+with official Unity OpenXR input documentation \citep{UnityOpenXRInput} and
+Meta Link documentation \citep{MetaHorizonLink}; the database draft was
+checked against the MySQL 8.4 table and constraint documentation
+\citep{MySQL84Manual}. Hardware-specific behaviour and package configuration still
 require on-device verification. The SQL was not executed against MySQL
 because a server was unavailable; database execution, service authorization,
 and retry behaviour therefore remain unverified.
