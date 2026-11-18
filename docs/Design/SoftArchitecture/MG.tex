@@ -140,9 +140,9 @@ requirements. Section \ref{SecMH} summarizes the module decomposition that
 was constructed according to the likely changes. Section \ref{SecConnection}
 specifies the connections between the software requirements and the
 modules. Section \ref{SecMD} gives a detailed description of the
-modules. Section \ref{SecTM} includes two traceability matrices. One checks
+modules. Section \ref{SecTM} includes three traceability matrices. One checks
 the completeness of the design against the requirements provided in the SRS. The
-other shows the relation between anticipated changes and the modules. Section
+others show the relations of anticipated and unlikely changes to modules. Section
 \ref{SecUse} describes the use relation between modules.
 
 
@@ -167,62 +167,67 @@ Anticipated changes represent aspects of the system's requirements, design, or
 \begin{description}
 
 \item[\refstepcounter{acnum} \actheacnum \label{acController}:]
-The controller input mappings, calibration procedures, and integration
-methods may change as different supported controllers are tested.
+The device-input normalization policy in \mref{mController} may change
+as different supported controllers are tested. Its calibration and
+axis mapping jointly define the conversion to standard flight commands.
 (Related SRS: FR-UI-02--04, NFR-COMP-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acPhysics}:]
-The algorithms and parameters used to simulate drone thrust, gravity,
-rotation, and momentum may change to improve flight realism and
-responsiveness. (Related SRS: FR-FLT-01--06.)
+The numerical flight-state evolution method in \mref{mPhysics} may
+change to improve flight realism or responsiveness. Its parameters
+must remain consistent with the integration method's units and time step.
+(Related SRS: FR-FLT-02--03.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acEnvironment}:]
-Training environment layouts, obstacles, and checkpoint configurations
-may change as new courses are developed and user feedback is collected.
+The training-course content representation in \mref{mEnvironment}
+may change as new courses are developed. Environment assets, obstacles,
+and checkpoint locations remain parts of one course definition.
 (Related SRS: FR-LVL-01--07, FR-CHK-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acCheckpoint}:]
-The internal representation of checkpoint progress and the algorithms
-used to validate checkpoint order and select recovery positions may
-change to improve reliability and maintainability. These decisions
-are hidden by the Checkpoint and Recovery Manager (\mref{mCheckpoint}).
+The checkpoint-progress representation in \mref{mCheckpoint} may change
+to improve reliability or maintainability. Validation and recovery-position
+selection use the same last-valid-checkpoint invariant, so changes to
+that representation remain within this module.
 (Related SRS: FR-CHK-01--08.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acScoring}:]
-The scoring formula, performance rating thresholds, and evaluation
-methods may change based on testing and feedback to better reflect
-user performance. (Related SRS: FR-PER-01--10.)
+The performance-to-rating policy in \mref{mScoring} may change after
+playtesting. Its score formula and rating bands are grouped because the
+bands interpret that formula's output scale. Measurement accumulation
+remains in \mref{mPerformance}. (Related SRS: FR-PER-08--09.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acUI}:]
-The layout and design of the user interface, including menus,
-in-flight displays, and performance reviews, may change to improve
-usability. (Related SRS: FR-UI-04--06, FR-REV-01--05.)
+The user-interaction presentation scheme in \mref{mUI} may change to
+improve usability. Layout and interaction bindings jointly realize
+the visible controls for menus, flight displays, or reviews.
+(Related SRS: FR-UI-04--06, FR-REV-01--05.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acVR}:]
-The VR runtime integration, headset communication methods, and
-rendering optimizations may change to improve compatibility and
-performance across standalone and PCVR modes.
+The platform-specific XR session adapter in \mref{mXR} may change
+to improve compatibility or runtime performance. Tracking and display
+submission share this adapter's runtime session lifecycle in either
+standalone or PCVR execution.
 (Related SRS: FR-UI-01--03, NFR-INST-01--02, NFR-PERF-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acStorage}:]
-The database technology, storage schema, serialization formats, and
-local and cloud persistence mechanisms may change as result storage
-is developed. These decisions are hidden by the Data Persistence
-Module (\mref{mStorage}) behind its storage interface.
+The persistent result-record representation in \mref{mStorage} may
+change as result storage is developed. Schema, serialization, and backend
+bindings jointly realize that representation behind one storage interface.
 (Related SRS: FR-DAT-01--03, FR-DAT-09, NFR-DAT-01.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAuthentication}:]
-The authentication provider, authenticated-session implementation,
-and credential-validation and protection mechanisms may change
-based on security requirements and backend implementation choices.
-These decisions are hidden by the Account and Authentication Manager
-(\mref{mAccount}) behind its authentication interface.
+The authenticated-identity lifecycle implementation in \mref{mAccount}
+may change with the provider or security requirements. Credential handling
+and session-token handling share that identity boundary behind one
+authentication interface.
 (Related SRS: FR-ACC-01--05, NFR-SEC-01--02.)
 
 \item[\refstepcounter{acnum} \actheacnum \label{acAI}:]
-The algorithms, AI models, or external services used to generate
-intelligent flight feedback may change as their feasibility and
-effectiveness are evaluated. This functionality remains optional.
+The flight-feedback generation strategy in \mref{mAI} may change as
+its feasibility or effectiveness is evaluated. Preprocessing and model
+invocation must follow the same model input contract. This functionality
+remains optional.
 (Related SRS: FR-AI-01--03, FR-REV-04.)
 
 \end{description}
@@ -285,8 +290,7 @@ The system is decomposed according to the principle of information
 hiding. The modules are organized into hardware-hiding,
 behaviour-hiding, and software decision modules.
 
-Each module encapsulates a specific responsibility or design
-decision to minimize the impact of changes on other modules.
+Each module encapsulates one hidden design decision to minimize the impact of changes on other modules.
 The leaf modules intended for implementation are listed below
 and summarized in Table \ref{TblMH}.
 
@@ -314,13 +318,13 @@ Flight State and Crash Manager
 Checkpoint and Recovery Manager
 
 \item[\refstepcounter{mnum} \mthemnum \label{mPerformance}:]
-Timing and Performance Evaluation Manager
+Attempt Metrics Manager
 
 \item[\refstepcounter{mnum} \mthemnum \label{mAccount}:]
 Account and Authentication Manager
 
 \item[\refstepcounter{mnum} \mthemnum \label{mLeaderboard}:]
-Results and Leaderboard Manager
+Result Synchronization Manager
 
 \item[\refstepcounter{mnum} \mthemnum \label{mPhysics}:]
 Flight Dynamics Model
@@ -330,6 +334,12 @@ Data Persistence Module
 
 \item[\refstepcounter{mnum} \mthemnum \label{mAI}:]
 Intelligent Feedback Analyzer (Optional)
+
+\item[\refstepcounter{mnum} \mthemnum \label{mScoring}:]
+Performance Scoring Policy
+
+\item[\refstepcounter{mnum} \mthemnum \label{mRanking}:]
+Leaderboard Ordering Policy
 
 \end{description}
 
@@ -355,16 +365,18 @@ Intelligent Feedback Analyzer (Optional)
 & \mref{mEnvironment}: Course and Environment Manager \\
 & \mref{mFlightState}: Flight State and Crash Manager \\
 & \mref{mCheckpoint}: Checkpoint and Recovery Manager \\
-& \mref{mPerformance}: Timing and Performance Evaluation Manager \\
+& \mref{mPerformance}: Attempt Metrics Manager \\
 & \mref{mAccount}: Account and Authentication Manager \\
-& \mref{mLeaderboard}: Results and Leaderboard Manager \\
+& \mref{mLeaderboard}: Result Synchronization Manager \\
 
 \midrule
 
-\multirow{3}{0.32\textwidth}{Software Decision Modules}
+\multirow{5}{0.32\textwidth}{Software Decision Modules}
 & \mref{mPhysics}: Flight Dynamics Model \\
 & \mref{mStorage}: Data Persistence Module \\
 & \mref{mAI}: Intelligent Feedback Analyzer (Optional) \\
+& \mref{mScoring}: Performance Scoring Policy \\
+& \mref{mRanking}: Leaderboard Ordering Policy \\
 
 \bottomrule
 \end{tabularx}
@@ -431,12 +443,12 @@ information hiding.
     \acref{acCheckpoint}; crash detection remains the responsibility
     of \mref{mFlightState}.
 
-    \item \textbf{Timing and Performance Evaluation Manager
+    \item \textbf{Attempt Metrics Manager
     (\mref{mPerformance}):}
     To satisfy FR-PER-01--10 and FR-REV-02, a dedicated
-    module manages flight timers, crash counts, scoring
-    calculations, and performance ratings independently
-    of the flight simulation and user interface.
+    module accumulates attempt measurements from lifecycle events.
+    It supplies a consistent final measurement snapshot to
+    \mref{mScoring}, then exposes the resulting evaluation for review.
 
     \item \textbf{Account and Authentication Manager (\mref{mAccount}):}
     To satisfy FR-ACC-01--05 and NFR-SEC-01--02, account
@@ -446,11 +458,11 @@ information hiding.
     interface isolates the provider and session implementation changes
     in \acref{acAuthentication} from online-feature modules.
 
-    \item \textbf{Results and Leaderboard Manager (\mref{mLeaderboard}):}
+    \item \textbf{Result Synchronization Manager (\mref{mLeaderboard}):}
     To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
-    module manages result synchronization, leaderboard
-    rankings, and access to previous results while keeping
-    online service failures independent of core training.
+    module owns the result-synchronization state machine. It retrieves
+    result sets through \mref{mStorage}, delegates their ordering to
+    \mref{mRanking}, and keeps online failures independent of training.
 
     \item \textbf{Flight Dynamics Model (\mref{mPhysics}):}
     To satisfy FR-FLT-02--03, the mathematical algorithms
@@ -475,6 +487,17 @@ information hiding.
     to change or become unavailable without preventing the
     standard post-flight review.
 
+    \item \textbf{Performance Scoring Policy (\mref{mScoring}):}
+    To satisfy FR-PER-08--09, a separate policy converts completed
+    measurements into a score with its rating. This isolates
+    \acref{acScoring} from the timer implementation in \mref{mPerformance}.
+
+    \item \textbf{Leaderboard Ordering Policy (\mref{mRanking}):}
+    To satisfy FR-DAT-06, a separate policy orders supplied result records
+    using the SRS score, time, and timestamp precedence. The sorting
+    implementation can change without changing the synchronization
+    lifecycle in \mref{mLeaderboard}.
+
 \end{itemize}
 
 
@@ -482,14 +505,22 @@ information hiding.
 \section{Module Decomposition} \label{SecMD}
 
 Modules are decomposed according to the principle of information
-hiding proposed by \citet{ParnasEtAl1984}. The \emph{Secrets}
-field describes the design decisions hidden by each module,
+hiding proposed by \citet{ParnasEtAl1984}. The \emph{Secret}
+field names the single design decision hidden by each module,
 while the \emph{Services} field specifies what the module
 provides without describing how it is implemented.
 
 The \emph{Implemented By} field identifies the intended
 implementation technology, and the \emph{Type of Module}
 field identifies the module's abstraction.
+
+Each \emph{Justification} explains the cohesion of the secret and the
+service boundary. A module may provide several services over one hidden
+representation. Conjunctions in service lists name operations, not extra
+secrets. Where a module name joins two concepts, its justification explains
+why they share one representation. Independently variable scoring and
+leaderboard-ordering policies are separate modules. SRS-mandated rules
+remain public contracts; the secret is their internal realization.
 
 
 \subsection{Hardware-Hiding Modules}
@@ -504,10 +535,14 @@ of hardware implementation details.
 
 \begin{description}
 
-\item[Secrets:]
-The VR runtime integration, headset tracking mechanisms,
-rendering interfaces, and platform-specific differences
-between standalone and PCVR execution.
+\item[Secret:]
+The platform-specific XR session adapter.
+
+\item[Justification:]
+Headset tracking and display submission share the runtime session lifecycle.
+Keeping their API bindings in one adapter permits replacing that runtime
+without exposing its handles to clients. Controller normalization belongs
+to \mref{mController}; scene content belongs to \mref{mEnvironment}.
 
 \item[Services:]
 Provides access to headset pose, tracking status, and VR
@@ -528,10 +563,13 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The device-specific controller mappings, input calibration
-methods, and mechanisms used to detect and process
-controller signals.
+\item[Secret:]
+The device-input normalization policy.
+
+\item[Justification:]
+Calibration and axis mapping jointly define the conversion from raw device
+signals to the four standard flight commands. They belong to one conversion
+boundary; flight response belongs to \mref{mPhysics}.
 
 \item[Services:]
 Converts inputs from supported motion controllers and
@@ -560,10 +598,13 @@ how that behaviour is implemented.
 
 \begin{description}
 
-\item[Secrets:]
-The layout, presentation logic, and interaction methods
-used for menus, in-flight displays, control instructions,
-and performance reviews.
+\item[Secret:]
+The user-interaction presentation scheme.
+
+\item[Justification:]
+Screen layout and interaction bindings jointly realize the same visible
+controls. This module presents supplied state and emits user intentions;
+it does not own session transitions, scoring, or result ordering.
 
 \item[Services:]
 Displays training menus, flight information, crash recovery
@@ -584,10 +625,13 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The internal session state representation and logic
-governing transitions between free flight, obstacle
-courses, recovery, and completed sessions.
+\item[Secret:]
+The training-session transition model.
+
+\item[Justification:]
+Session state and transition guards form one state machine. This module
+coordinates mode changes, pause, recovery, restart, and completion through
+other modules' services; their internal state remains owned by them.
 
 \item[Services:]
 Initializes and manages training sessions, coordinates
@@ -608,16 +652,21 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The internal representation of training environments,
-obstacle layouts, course configurations, and level
-difficulty definitions.
+\item[Secret:]
+The training-course content representation.
+
+\item[Justification:]
+A course references its environment, obstacles, checkpoint locations, and
+start position as one content definition. This shared representation
+justifies grouping course and environment management. Attempt progress
+belongs to \mref{mCheckpoint}, not to the content definition.
 
 \item[Services:]
-Loads and manages training environments, provides
-available course configurations, and supplies obstacle,
-checkpoint, and starting-position information to
-other modules.
+Tracks completed checkpoints, validates course
+progression, and determines checkpoint respawn or
+level restart positions. Preserves or resets checkpoint
+progress as required, while coordinating with the
+session manager for recovery and restart operations.
 
 \item[Implemented By:]
 FPVR Unity/C\# application using Unity scenes and
@@ -633,11 +682,15 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The internal representation of drone position,
-orientation, velocity, airborne status, and crash
-state, including the rules used to recognize and
-register crash events.
+\item[Secret:]
+The drone flight-state transition model.
+
+\item[Justification:]
+Airborne and crashed status are states of the same drone lifecycle.
+Crash registration must update that lifecycle atomically to emit exactly
+one event per crash, which justifies grouping flight state and crash
+management. Motion integration belongs to \mref{mPhysics}; accumulated
+crash counts belong to \mref{mPerformance}.
 
 \item[Services:]
 Maintains the current drone flight state, processes
@@ -660,18 +713,23 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The data structures and logic used to track checkpoint
-progression, validate checkpoint ordering, and determine
-recovery positions. These are the implementation decisions covered
-by \acref{acCheckpoint}.
+\item[Secret:]
+The checkpoint-progress representation.
+
+\item[Justification:]
+Checkpoint validation and recovery-position selection use the same last
+valid checkpoint. This shared invariant justifies grouping checkpoint and
+recovery management under \acref{acCheckpoint}. This module supplies a
+recovery position; \mref{mTraining} coordinates its application through
+\mref{mFlightState}.
 
 \item[Services:]
 Tracks completed checkpoints, validates course
 progression, and determines checkpoint respawn or
 level restart positions. Preserves or resets checkpoint
-progress as required, while coordinating with the
-session manager for recovery and restart operations.
+progress as required using course configuration supplied by
+\mref{mTraining}. Returns recovery positions and progress snapshots to
+its caller without calling the session manager or modifying drone state.
 
 \item[Implemented By:]
 FPVR Unity/C\# application.
@@ -682,21 +740,28 @@ Abstract Object.
 \end{description}
 
 
-\subsubsection{Timing and Performance Evaluation Manager
+\subsubsection{Attempt Metrics Manager
 (\mref{mPerformance})}
 
 \begin{description}
 
-\item[Secrets:]
-The internal timer management, crash-count tracking,
-score calculation algorithms, and performance
-rating thresholds.
+\item[Secret:]
+The attempt-measurement accumulator.
+
+\item[Justification:]
+Total time, section time, and crash count are measurements of one attempt
+updated from the same lifecycle events. A single accumulator provides a
+consistent completion snapshot and applies the SRS reset or retention
+rules. Score calculation is delegated to \mref{mScoring}, so changing
+\acref{acScoring} does not change measurement accumulation.
 
 \item[Services:]
-Tracks total and section flight times, records crash
-penalties from registered crash events, calculates
-final scores, assigns performance ratings, and
-provides results for post-flight review.
+Accumulates total time, section time, and registered crash count.
+Applies pause, respawn, restart, and completion events to these measurements.
+At completion, freezes a measurement snapshot, calls \mref{mScoring},
+and exposes the returned score with its rating for post-flight review.
+A restart clears the previous evaluation; score state is derived from
+the current measurements through the same scoring service.
 
 \item[Implemented By:]
 FPVR Unity/C\# application.
@@ -711,10 +776,16 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The authentication provider integration, authenticated-session
-implementation, and methods used to validate and protect player
-credentials, as identified in \acref{acAuthentication}.
+\item[Secret:]
+The authenticated-identity lifecycle implementation.
+
+\item[Justification:]
+Registration, sign-in, and sign-out establish or terminate the same
+provider-backed identity. Credential protection and session-token handling
+belong to that authentication boundary, justifying the account and
+authentication grouping. This is the secret varied by
+\acref{acAuthentication}; result synchronization belongs to
+\mref{mLeaderboard}.
 
 \item[Services:]
 Provides account registration, sign-in, sign-out,
@@ -733,20 +804,26 @@ Abstract Object.
 \end{description}
 
 
-\subsubsection{Results and Leaderboard Manager (\mref{mLeaderboard})}
+\subsubsection{Result Synchronization Manager (\mref{mLeaderboard})}
 
 \begin{description}
 
-\item[Secrets:]
-The internal result synchronization workflow,
-leaderboard ranking procedures, and methods used
-to coordinate local and online performance records.
+\item[Secret:]
+The result-synchronization state machine.
+
+\item[Justification:]
+Locally saved, pending, failed, and synchronized are states of one result
+lifecycle. Submission and retry transitions therefore share one secret.
+Storage encoding belongs to \mref{mStorage}; leaderboard ordering belongs
+to \mref{mRanking}. Retrieval services expose the result sets managed by
+this lifecycle without introducing a second ranking secret.
 
 \item[Services:]
 Manages completed flight results, coordinates cloud
 synchronization and retries, retrieves previous
 results, and provides local and global leaderboard
-rankings using the required ordering rules. Uses the authentication
+rankings by passing retrieved result sets to \mref{mRanking}.
+Uses the authentication
 interface of \mref{mAccount} and the storage interface of
 \mref{mStorage}, so provider changes in \acref{acAuthentication}
 and persistence changes in \acref{acStorage} remain encapsulated
@@ -775,10 +852,14 @@ without affecting the rest of the system.
 
 \begin{description}
 
-\item[Secrets:]
-The mathematical equations, physical parameters, and
-numerical methods used to calculate drone movement,
-including thrust, gravity, acceleration, and rotation.
+\item[Secret:]
+The numerical flight-state evolution method.
+
+\item[Justification:]
+Thrust, gravity, and rotation contribute to one motion update. Model
+parameters and the integration procedure must use compatible units and
+time steps, so they form one numerical method varied by \acref{acPhysics}.
+The authoritative drone state remains in \mref{mFlightState}.
 
 \item[Services:]
 Calculates changes in simulated drone motion from
@@ -800,11 +881,14 @@ Library.
 
 \begin{description}
 
-\item[Secrets:]
-The database technology, storage schemas, serialization
-formats, and implementation details used for local
-and cloud-based result persistence, as identified in
-\acref{acStorage}.
+\item[Secret:]
+The persistent result-record representation.
+
+\item[Justification:]
+Schema, serialization, and backend bindings realize the same logical
+result record in local or cloud storage. They are grouped behind one
+persistence contract for \acref{acStorage}. The module stores synchronization
+status supplied by \mref{mLeaderboard}; it does not decide when to retry.
 
 \item[Services:]
 Provides interfaces to store, retrieve, and update
@@ -812,8 +896,8 @@ player results and synchronization status without
 exposing the underlying storage implementation.
 
 \item[Implemented By:]
-FPVR application code integrated with local storage
-and a cloud database service.
+FPVR application code integrated with local headset storage
+and an HTTPS backend using MySQL (Section \ref{SecDatabase}).
 
 \item[Type of Module:]
 Abstract Object.
@@ -826,10 +910,14 @@ Abstract Object.
 
 \begin{description}
 
-\item[Secrets:]
-The algorithms, AI models, data-processing techniques,
-and external service integrations used to generate
-natural-language flight feedback.
+\item[Secret:]
+The flight-feedback generation strategy.
+
+\item[Justification:]
+Input preprocessing and model invocation must agree on the selected
+model's input contract. They form one replaceable analysis strategy under
+\acref{acAI}. Its output is advisory text; it cannot change attempt
+measurements or the authoritative score.
 
 \item[Services:]
 Analyzes completed attempt data, including flight time,
@@ -849,13 +937,62 @@ Library.
 
 
 
+\subsubsection{Performance Scoring Policy (\mref{mScoring})}
+
+\begin{description}
+\item[Secret:]
+The performance-to-rating policy.
+
+\item[Justification:]
+The score formula and rating bands are grouped because the bands interpret
+that formula's output scale. They define one evaluation policy varied by
+\acref{acScoring}. This module has no timers or mutable attempt state;
+\mref{mPerformance} supplies the measurements. The SRS formula remains the
+required baseline until an approved requirement change revises it.
+
+\item[Services:]
+Returns the numerical score with its corresponding rating for supplied
+active-flight time and crash count, following FR-PER-08--09.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Library.
+\end{description}
+
+\subsubsection{Leaderboard Ordering Policy (\mref{mRanking})}
+
+\begin{description}
+\item[Secret:]
+The result-ordering implementation.
+
+\item[Justification:]
+Score, completion time, and completion timestamp form one comparison key.
+Their precedence is the public FR-DAT-06 contract; the hidden decision is
+how to apply that key to a supplied result set. Authentication, storage,
+and synchronization are outside this policy.
+
+\item[Services:]
+Returns result records in descending score order, breaking ties by shorter
+completion time, then earlier completion timestamp. Uses the same ordering
+for local or global result sets supplied by \mref{mLeaderboard}.
+
+\item[Implemented By:]
+FPVR Unity/C\# application.
+
+\item[Type of Module:]
+Library.
+\end{description}
+
 \section{Traceability Matrix} \label{SecTM}
 
-This section presents two traceability matrices: one showing
+This section presents three traceability matrices: one showing
 the relationships between the requirements in the Software
 Requirements Specification (SRS) and the modules defined in
 Section \ref{SecMH}, and another showing the relationships
-between anticipated changes and modules.
+between anticipated changes and modules, and a third identifying modules
+that would need review if an unlikely change occurred.
 
 These matrices help verify that the module decomposition
 addresses the system requirements and that anticipated
@@ -919,7 +1056,8 @@ FR-LVL-03--05 (Course selection and environments)
 
 FR-LVL-06--07 (Exit and attempt initialization)
 & \mref{mUI}, \mref{mTraining},
-\mref{mCheckpoint}, \mref{mPerformance} \\
+\mref{mCheckpoint}, \mref{mPerformance},
+\mref{mScoring} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{Checkpoints and Crash Recovery}}\\
@@ -933,7 +1071,8 @@ FR-CHK-04--05 (Recovery choices and respawning)
 
 FR-CHK-06--07 (Recovery and restart state)
 & \mref{mTraining}, \mref{mCheckpoint},
-\mref{mPerformance} \\
+\mref{mPerformance},
+\mref{mScoring} \\
 
 FR-CHK-08 (Level completion)
 & \mref{mTraining}, \mref{mCheckpoint} \\
@@ -946,7 +1085,8 @@ FR-PER-01--06 (Flight timers and recovery timing)
 \mref{mPerformance} \\
 
 FR-PER-07--10 (Crash penalties, scores, and ratings)
-& \mref{mFlightState}, \mref{mPerformance} \\
+& \mref{mFlightState}, \mref{mPerformance},
+\mref{mScoring} \\
 
 \midrule
 \multicolumn{2}{l}{\textbf{VR Interface and Controller Input}}\\
@@ -980,7 +1120,7 @@ FR-DAT-01--03 (Local results and cloud synchronization)
 
 FR-DAT-04--07 (Leaderboards and ranking rules)
 & \mref{mUI}, \mref{mLeaderboard},
-\mref{mStorage} \\
+\mref{mStorage}, \mref{mRanking} \\
 
 FR-DAT-08 (Online leaderboard unavailability)
 & \mref{mUI}, \mref{mTraining},
@@ -995,11 +1135,13 @@ FR-DAT-09--10 (Historical results and synchronization status)
 
 FR-REV-01--03 (Performance review and navigation)
 & \mref{mUI}, \mref{mTraining},
-\mref{mCheckpoint}, \mref{mPerformance} \\
+\mref{mCheckpoint}, \mref{mPerformance},
+\mref{mScoring} \\
 
 FR-REV-04 (Review availability)
 & \mref{mUI}, \mref{mPerformance},
-\mref{mAI} \\
+\mref{mAI},
+\mref{mScoring} \\
 
 FR-REV-05 (Previous session results)
 & \mref{mUI}, \mref{mAccount},
@@ -1053,7 +1195,8 @@ NFR-OFF-01 (Offline availability)
 \mref{mEnvironment}, \mref{mFlightState},
 \mref{mCheckpoint}, \mref{mPerformance},
 \mref{mLeaderboard}, \mref{mPhysics},
-\mref{mStorage} \\
+\mref{mStorage},
+\mref{mScoring} \\
 
 \end{longtable}
 \endgroup
@@ -1087,7 +1230,7 @@ NFR-OFF-01 (Offline availability)
 & \mref{mCheckpoint} \\
 
 \acref{acScoring}
-& \mref{mPerformance} \\
+& \mref{mScoring} \\
 
 \acref{acUI}
 & \mref{mUI} \\
@@ -1112,27 +1255,43 @@ NFR-OFF-01 (Offline availability)
 \label{TblACT}
 \end{table}
 
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{p{0.44\textwidth} X}
+\toprule
+\textbf{Unlikely Change (UC)} & \textbf{Modules Requiring Review} \\
+\midrule
+\uref{ucSimulation}: Physical-drone integration
+& \mref{mController}, \mref{mTraining}, \mref{mFlightState},
+  \mref{mPhysics} \\
+\uref{ucAxes}: Fundamental flight controls
+& \mref{mController}, \mref{mUI}, \mref{mFlightState},
+  \mref{mPhysics} \\
+\uref{ucPlatform}: Development platform or VR hardware
+& All modules (\mref{mXR}--\mref{mRanking}) \\
+\uref{ucTraining}: Core training structure
+& \mref{mUI}, \mref{mTraining}, \mref{mEnvironment},
+  \mref{mCheckpoint}, \mref{mPerformance}, \mref{mScoring} \\
+\uref{ucPerformance}: Online-dependent training
+& \mref{mUI}, \mref{mTraining}, \mref{mAccount},
+  \mref{mLeaderboard}, \mref{mStorage} \\
+\bottomrule
+\end{tabularx}
+\caption{Trace Between Unlikely Changes and Modules}
+\label{TblUCT}
+\end{table}
 
-The requirements-to-modules matrix establishes traceability
-between the SRS and the proposed architecture. The
-anticipated-changes matrix identifies which modules encapsulate
-the implementation decisions most likely to evolve.
+Table \ref{TblUCT} identifies the principal modules whose assumptions
+would need review if each unlikely change occurred. These are impact
+relationships, not promises that such changes are isolated within one
+module. Additional modules or interfaces may be required. In particular,
+replacing Unity/C\# could affect every module, while a headset-only change
+would primarily affect \mref{mXR} and \mref{mController}.
 
-Each anticipated change maps to the single module that hides the
-specified decision. This mapping assumes the module's service interface
-and required observable behaviour remain stable. In particular,
-\acref{acCheckpoint} concerns checkpoint representation and recovery
-positions in \mref{mCheckpoint}; \acref{acStorage} concerns persistence
-implementation in \mref{mStorage}; and \acref{acAuthentication} concerns
-authentication implementation in \mref{mAccount}. Modules that consume
-these services still appear in the requirements matrix where they
-collaborate to satisfy a requirement, but do not own these changeable
-implementation decisions.
 
-The Intelligent Feedback Analyzer (\mref{mAI}) remains optional
-and subject to feasibility evaluation. Its unavailability must
-not affect the standard post-flight review provided by the
-core modules.
+
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
