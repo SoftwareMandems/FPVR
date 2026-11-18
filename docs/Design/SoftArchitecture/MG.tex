@@ -1513,14 +1513,25 @@ that the interface is subject to change as it continues to be developed and refi
 
 \section{Design of Communication Protocols}
 
-FPVR runs directly on the Meta Quest 3S without a PC connection at runtime.
-A development computer may connect to the headset to transfer or update the
-application. This deployment connection is separate from runtime hardware
-communication.
+FPVR supports the two execution modes required by FR-UI-02. In standalone
+mode, the primary mode, it runs directly on the Meta Quest 3S without a PC
+connection at runtime. In PCVR mode, it runs on the reference PCVR computer
+and the headset displays it through Meta Horizon Link (formerly Meta Quest
+Link), either over a USB-C cable or wirelessly with Air Link
+\citep{MetaHorizonLink} (NFR-INST-02). Link carries the rendered
+images to the headset and the headset's tracking and controller data back
+to the computer; FPVR uses it through the Meta runtime and does not define
+its own protocol. Separately, a development computer may connect to the
+headset to transfer or update the standalone application. This deployment
+connection is not used at runtime.
 
-The paired Quest motion controllers communicate with the headset's platform
-services. The Meta runtime exposes controller input through OpenXR; Unity's
-OpenXR Plugin maps supported inputs to Input System actions. The Controller
+In standalone mode, the paired Quest motion controllers communicate with the
+headset's platform services. In PCVR mode, a standard gamepad connects to
+the computer through USB or Bluetooth (FR-UI-03, NFR-COMP-01). In both modes
+the input reaches FPVR through Unity: the Meta runtime exposes headset and
+controller input through OpenXR \citep{KhronosOpenXR}, Unity's OpenXR Plugin
+maps that input to Input System controls \citep{UnityOpenXRInput}, and the
+Input System provides the gamepad directly \citep{UnityInputSystemGamepad}. The Controller
 Input Interface (\mref{mController}) applies axis bindings, calibration, and
 dead zones to produce normalized throttle, pitch, roll, and yaw commands
 for \mref{mFlightState}. It also supplies menu actions and control-guide
@@ -1530,19 +1541,20 @@ unavailable input is not treated as a new command.
 The VR Platform Interface (\mref{mXR}) encapsulates headset pose, tracking
 validity, XR session status, and display integration. Module \mref{mUI}
 presents the drone-following flight view and menus through this interface.
-Unity submits the rendered eye images to the headset runtime for display.
+Unity submits the rendered eye images to the headset runtime for display;
+in PCVR mode the runtime forwards them to the headset over Link
+\citep{MetaHorizonLink}.
 The platform manages the physical controller link and display transport;
 FPVR uses their software interfaces without defining a custom radio or
 serial protocol. These boundaries keep device-specific details within
 \mref{mXR} and \mref{mController}, supporting low coupling with the simulation.
-Unity's \href{https://docs.unity3d.com/Packages/com.unity.xr.openxr@1.14/manual/input.html}{OpenXR input documentation}
-describes the input integration.
 
 \section{Database Design} \label{SecDatabase}
 
-FPVR uses MySQL 8.4 on a hosted backend for accounts and synchronized
-results, accessed by the Quest application through an authenticated HTTPS
-service. The headset saves results locally first, preserving guest training
+FPVR uses MySQL 8.4 \citep{MySQL84Manual} on a hosted backend for accounts and synchronized
+results, accessed by the application in either execution mode through an
+authenticated HTTPS service. The application saves results locally first,
+on the headset or on the PCVR computer, preserving guest training
 and offline use. Module \mref{mStorage} hides storage details;
 \mref{mAccount} manages identity, while \mref{mLeaderboard} manages
 synchronization. Usernames are unique and passwords are stored only as
@@ -1725,12 +1737,14 @@ implementation correctness or proof that each allocation is sufficient.
 checked for 15 nodes and 16 direct edges. Every edge descended its assigned
 layer, establishing that this proposed graph had no cycles; each
 non-coordinator caller used at most three providers. Ten anticipated-change
-rows were checked for one module per row. These results apply to that
+rows (AC1--AC10) were checked for one module per row; AC11 and AC12, added
+later to cover the SRS likely changes, were checked the same way. These results apply to that
 draft, not to the unfilled uses figure in the current checkout.
 \item \textbf{Technical assertions:} The communication drafts were compared
-with official Unity OpenXR input documentation and Meta Link documentation;
-the database draft was checked against the MySQL 8.4 table and constraint
-documentation. Hardware-specific behaviour and package configuration still
+with official Unity OpenXR input documentation \citep{UnityOpenXRInput} and
+Meta Link documentation \citep{MetaHorizonLink}; the database draft was
+checked against the MySQL 8.4 table and constraint documentation
+\citep{MySQL84Manual}. Hardware-specific behaviour and package configuration still
 require on-device verification. The SQL was not executed against MySQL
 because a server was unavailable; database execution, service authorization,
 and retry behaviour therefore remain unverified.
