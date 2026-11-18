@@ -52,6 +52,8 @@
 \midrule
 Nov 17, 2026 & 1.0 & Added database design for personal bests, leaderboards,
 and best-run replays; aligned related module descriptions.\\
+Nov 17, 2026 & 1.1 & Clarified account, leaderboard, and persistence
+responsibilities in the database design.\\
 \bottomrule
 \end{tabularx}
 
@@ -707,11 +709,11 @@ protect player credentials.
 \item[Services:]
 Provides account registration, sign-in, sign-out,
 and authenticated-session management. Controls access
-to account-related online functionality.
+to account-related online functionality and supplies the authenticated
+player identifier and accepted-friend identifiers for leaderboard queries.
 
 \item[Implemented By:]
-FPVR application code integrated with a secure
-authentication service.
+FPVR application code integrated with UGS Authentication and Friends.
 
 \item[Type of Module:]
 Abstract Object.
@@ -732,13 +734,14 @@ to coordinate local and online performance records.
 Retains each player's best completed time and matching replay
 per level, coordinates cloud synchronization and retries, and
 provides local, global, and friends leaderboard rankings.
-Coordinates replay capture during an attempt and playback
-through the User Interface (\mref{mUI}) without changing
+Coordinates replay capture during an attempt and provides playback
+operations to the User Interface (\mref{mUI}) without changing
 training progress or scores.
 
 \item[Implemented By:]
-FPVR application code with integration to the
-Data Persistence Module (\mref{mStorage}).
+FPVR application code integrated with UGS Leaderboards, the Account and
+Authentication Manager (\mref{mAccount}), and the Data Persistence
+Module (\mref{mStorage}).
 
 \item[Type of Module:]
 Abstract Object.
@@ -962,7 +965,7 @@ FR-DAT-01--03 (Local results and cloud synchronization)
 \mref{mStorage} \\
 
 FR-DAT-04--07 (Leaderboards and ranking rules)
-& \mref{mUI}, \mref{mLeaderboard},
+& \mref{mUI}, \mref{mAccount}, \mref{mLeaderboard},
 \mref{mStorage} \\
 
 FR-DAT-08 (Online leaderboard unavailability)
@@ -1272,8 +1275,10 @@ and \href{https://docs.unity.com/en-us/leaderboards/concepts/update-strategies}{
 documentation.
 
 The global view shows accepted best times for the selected level. The
-friends view requests entries for the player and their accepted UGS
-Friends, sorts those times, and calculates positions within that group.
+friends view uses player and accepted-friend identifiers supplied by the
+Account and Authentication Manager (\mref{mAccount}) through UGS Friends.
+The Results and Leaderboard Manager requests those players' entries,
+sorts their times, and calculates positions within that group.
 A returned global rank is not treated as a friends rank. The local
 leaderboard uses the best records saved on the current installation,
 ordering equal times by local player identifier.
@@ -1295,12 +1300,15 @@ than rerunning flight physics, and does not alter progress or scores.
 
 Only an authenticated player's own best run is uploaded. The replay
 and record share a run identifier so that the displayed time always
-refers to the matching replay. The manager uploads the replay, updates
-the best-record reference, and submits the time to Leaderboards. These
+refers to the matching replay. The Results and Leaderboard Manager
+coordinates replay upload and best-record updates through the Data
+Persistence Module (\mref{mStorage}), and submits the time to UGS
+Leaderboards. These
 are separate service operations: pending work is retained for retry,
 and the record is marked synchronized only when all required operations
-succeed. Cloud Save conflict checks cause the manager to reload the
-current best before replacing it. A retry must preserve a faster best already saved by another
+succeed. The Data Persistence Module reports Cloud Save conflicts so
+the manager can reload the current best before replacing it.
+A retry must preserve a faster best already saved by another
 installation and must not associate a time with another run's replay.
 The old replay is removed only after its replacement is safely saved.
 
