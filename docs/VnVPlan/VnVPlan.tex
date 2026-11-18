@@ -34,6 +34,7 @@
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 November 2, 2026 & 1.0 & Initial version of the VnV Plan\\
+November 17, 2026 & 1.1 & Updated best-time storage, friends rankings, and best-run replay tests\\
 \bottomrule
 \end{tabularx}
 
@@ -95,7 +96,7 @@ T.FR, T.NFR & Prefixes of the functional and nonfunctional system test identifie
 
 FPVR is a virtual reality (\hyperlink{abbr:VR}{VR})-based first-person-view (\hyperlink{abbr:FPV}{FPV}) drone training simulator designed to help beginners develop and improve their drone piloting skills in a safe and accessible environment. Instead of requiring a physical drone, users can operate a simulated drone using \hyperlink{abbr:VR}{VR} controls and practise essential flight manoeuvres without the risks of equipment damage or unsafe flying conditions. It is also meant as a tool for experienced Drone fliers to be able to practice in a safe and controlled environment without the pressure of piloting a very expensive piece of equipment.
 
-The system features free-flight practice, progressively challenging obstacle courses, multiple virtual environments, and checkpoints to create a structured learning experience. Users can track their performance through metrics such as completion time, checkpoint progress, and performance ratings, with potential AI-driven feedback to help identify areas for improvement. FPVR also supports registered accounts, saved performance records, attempt history, and local and global leaderboards, allowing users to monitor their progress and compare results with others. Overall, FPVR aims to make learning \hyperlink{abbr:FPV}{FPV} drone piloting more accessible, engaging, and cost-effective through an immersive virtual training experience.  
+The system features free-flight practice, progressively challenging obstacle courses, multiple virtual environments, and checkpoints to create a structured learning experience. Users can track their performance through metrics such as completion time, checkpoint progress, and performance ratings, with potential AI-driven feedback to help identify areas for improvement. FPVR also supports registered accounts, one personal-best time and matching drone-movement replay per player and level, and local, global, and friends leaderboards. These features let users review their best runs and compare times without retaining a full attempt history. Overall, FPVR aims to make learning \hyperlink{abbr:FPV}{FPV} drone piloting more accessible, engaging, and cost-effective through an immersive virtual training experience.
 
 \subsection{Objectives}
 
@@ -1393,10 +1394,10 @@ service that nothing was submitted.
 
 \subsubsection{Result Storage and Leaderboards (S.2.7)}
 
-These tests cover result storage, synchronization, and leaderboards in \hyperlink{abbr:SRS}{SRS} S.2.7.
+These tests cover best-time storage, synchronization, and leaderboards in \hyperlink{abbr:SRS}{SRS} S.2.7. Times are stored in whole milliseconds. Scores and ratings remain part of the current post-flight review but do not determine leaderboard order. The online tests check FPVR's integration with Unity Gaming Services Leaderboards, Friends, and private Cloud Save storage.
 
 {\sloppy
-\paragraph{Local Result Record}
+\paragraph{Local Personal Best}
 
 \begin{enumerate}
 
@@ -1405,17 +1406,24 @@ These tests cover result storage, synchronization, and leaderboards in \hyperlin
 
 \textbf{Initial State:} Empty local storage.
 
-\textbf{Input:} Complete an obstacle-course attempt with known values.
+\textbf{Input:} Create known bests on a second level and for a second local player.
+For the target player and level, complete runs of 95,000 ms, 100,000 ms,
+and 95,000 ms with different drone paths. Abandon a run at 80,000 ms, then complete
+a 90,000 ms run.
 
-\textbf{Output:} A local record is saved with the level identifier, completion
-timestamp, total time, crash count, score, rating, and local player identifier, each
-matching the attempt.
+\textbf{Output:} The first completed run saves a best time of 95,000 ms and its
+matching replay. The slower, equal, and incomplete runs leave both unchanged.
+The 90,000 ms completed run replaces both. Only one best pair is retained for each
+player and level, and the other player's and level's records are unaffected. Each
+record identifies the player, level, and run, and includes the replay file reference
+and format version required by \mbox{FR-DAT-01}.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-01} lists these seven fields, so each is
-compared with the attempt.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-01} retains the first valid completion
+and replaces it only with a strictly faster completion. Different paths reveal an
+incorrect replay replacement even when times are equal.
 
-\textbf{How test will be performed:} An automated test completes the attempt and reads
-the saved record.
+\textbf{How test will be performed:} An automated test uses known times and motion
+samples, then reads the best time and replay after each run.
 
 \end{enumerate}
 
@@ -1428,16 +1436,20 @@ the saved record.
 
 \textbf{Initial State:} Signed-in player with network connectivity.
 
-\textbf{Input:} Complete an obstacle-course attempt.
+\textbf{Input:} Complete a first valid run of 95,000 ms, followed by a slower run
+and a faster run of 90,000 ms.
 
-\textbf{Output:} The result is stored by the online service and linked to the player's
-account.
+\textbf{Output:} The online leaderboard and private best record initially show
+95,000 ms with the matching replay available to its owner. The slower run changes
+neither. After synchronization, the leaderboard shows 90,000 ms and the private
+record refers to the matching faster replay, all linked to the signed-in account.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-02} requires submission and association with
-the account, so the service record is checked for both.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-02} requires authenticated best-time
+submission and account association. Checking the time and replay together detects
+a replay linked to the wrong run.
 
-\textbf{How test will be performed:} An automated test completes the attempt and queries
-the test service.
+\textbf{How test will be performed:} An automated integration test completes each
+run and queries the test leaderboard and the owner's private best record and replay.
 
 \end{enumerate}
 
@@ -1448,19 +1460,27 @@ the test service.
 \item{\hypertarget{test-fr-da03}{}\textbf{T.FR.DAT.03}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} Signed-in player with the online service unavailable.
+\textbf{Initial State:} Signed-in player with a synchronized 95,000 ms best and
+its replay.
 
-\textbf{Input:} Complete an attempt, restore the service, and retry synchronization.
+\textbf{Input:} Complete a 90,000 ms run while the service is unavailable. Also
+exercise a failed replay upload and a failed leaderboard update separately. Restore
+the services and retry twice. Then save an 85,000 ms best from another installation
+and retry the stale 90,000 ms and 95,000 ms submissions.
 
-\textbf{Output:} Before the retry, the result is kept locally and marked as local only.
-After the retry, it is on the service and marked as synchronized.
+\textbf{Output:} The new best and matching replay remain available locally, with
+synchronization pending until the private best record, replay, and accepted
+leaderboard time agree. Successful retries leave one 90,000 ms best and its matching
+replay. Once the other installation saves 85,000 ms, stale retries preserve that
+faster remote best and its replay; the local view retrieves the same matching pair.
+Repeated submissions neither duplicate the record nor restore a slower run.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-03} requires the result to be kept and
-retried, and \mbox{FR-DAT-10} requires the two states to be distinguished, which this
-sequence shows.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-03} requires local preservation and
+retry, and \mbox{FR-DAT-10} distinguishes pending and synchronized records. Separate
+service failures check recovery without assuming that both services update at once.
 
-\textbf{How test will be performed:} An automated test switches the test service off and
-on and reads the result's state.
+\textbf{How test will be performed:} An automated test injects each failure, restores
+the services, and compares local status, online time, and replay identity after retries.
 
 \end{enumerate}
 
@@ -1471,42 +1491,50 @@ on and reads the result's state.
 \item{\hypertarget{test-fr-da04}{}\textbf{T.FR.DAT.04}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} Twelve local results for one level on the current installation.
+\textbf{Initial State:} Twelve local players each have one best time for a level on
+the current installation; some players have completed several attempts.
 
 \textbf{Input:} Open the local leaderboard for that level.
 
-\textbf{Output:} At least the top ten results are shown, each with rank, player display
-name, score, completion time, and crash count.
+\textbf{Output:} At least the top ten local players are shown once each, with rank,
+player display name, and best completion time in seconds with millisecond precision.
+Slower attempts do not create entries. With fewer than ten players, all available
+entries are shown.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-04} requires a local leaderboard per level,
-and \mbox{FR-DAT-07} requires at least ten entries with these fields. Twelve results
-make it possible to check the ten-entry minimum.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-04} requires a per-level local board
+with one best entry per local player, and \mbox{FR-DAT-07} defines the displayed fields and ten-entry
+minimum when enough players have records.
 
 \textbf{How test will be performed:} A tester opens the leaderboard and checks each
-field.
+field, then repeats with three local players to check the smaller board.
 
 \end{enumerate}
 
-\paragraph{Global Leaderboard}
+\paragraph{Global and Friends Leaderboards}
 
 \begin{enumerate}
 
 \item{\hypertarget{test-fr-da05}{}\textbf{T.FR.DAT.05}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} Online service with accepted results for one level, and one
-local result that was not synchronized.
+\textbf{Initial State:} A signed-in player's accepted best is 95,000 ms. Other
+players have 100,000 ms (accepted friend), 90,000 ms (non-friend), 110,000 ms
+(pending friend request), and an unsynchronized local best of 85,000 ms.
 
-\textbf{Input:} Open the global leaderboard for that level.
+\textbf{Input:} Open the global leaderboard and the friends view for that level.
 
-\textbf{Output:} The accepted results are shown, and the unsynchronized local result is
-not.
+\textbf{Output:} The global leaderboard shows accepted best times, once per player,
+including the faster non-friend. The friends view contains only the signed-in player
+and accepted friends with an accepted best for that level. Pending requests and
+non-friends are excluded from this view. Neither view includes an unsynchronized
+local best as an accepted online result. The player and accepted friend have global
+ranks 2 and 3, but friends-view positions 1 and 2.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-05} uses only results accepted by the online
-service, so an unsynchronized result must be absent.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-05} uses accepted online best times and
+filters the friends view using accepted friendships, rather than the global top ten.
 
-\textbf{How test will be performed:} An automated test compares the leaderboard with the
-service records.
+\textbf{How test will be performed:} An automated integration test compares both
+views with test leaderboard entries and the accepted friend identifiers from Friends.
 
 \end{enumerate}
 
@@ -1517,19 +1545,23 @@ service records.
 \item{\hypertarget{test-fr-da06}{}\textbf{T.FR.DAT.06}\\}
 \textbf{Control:} Automatic
 
-\textbf{Initial State:} Results for one level: A (705, 195.0 s, 10:05), B (705, 95.0 s,
-10:10), C (705, 95.0 s, 10:00), and D (800, 150.0 s, 10:20).
+\textbf{Initial State:} Four players have accepted best times for one level:
+A = 195,000 ms, B = 95,000 ms, C = 95,000 ms, and D = 150,000 ms. All four
+are also present in the local board and the test player's accepted-friends view.
 
-\textbf{Input:} Rank the results on the local and global leaderboards.
+\textbf{Input:} Rank the best times on the local, global, and friends leaderboards.
 
-\textbf{Output:} The order is D, C, B, A on both leaderboards.
+\textbf{Output:} B and C precede D, which precedes A on every board. Equal best
+times follow local player identifier order on the local board and the order returned
+by Leaderboards in the online views. Times are shown in seconds with millisecond
+precision; score and crash count do not affect the ranking.
 
-\textbf{Test Case Derivation:} \mbox{FR-DAT-06} ranks by score, then shorter time, then
-earlier timestamp. D has the highest score, A has the longest time, and C and B are
-separated by timestamp.
+\textbf{Test Case Derivation:} \mbox{FR-DAT-06} ranks by ascending whole-millisecond
+completion time with local player identifiers or the online service order resolving
+equal times. The equal values exercise these rules.
 
-\textbf{How test will be performed:} An automated test loads the results and reads both
-rankings.
+\textbf{How test will be performed:} An automated test loads the best times and
+checks the ascending order and equal-time handling in all three views.
 
 \end{enumerate}
 
@@ -1540,13 +1572,14 @@ rankings.
 \item{\hypertarget{test-fr-da07}{}\textbf{T.FR.DAT.07}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} Online service unavailable.
+\textbf{Initial State:} Online services unavailable, with a local personal best and
+its replay already saved.
 
-\textbf{Input:} Open the global leaderboard, then the local leaderboard, then a training
-mode.
+\textbf{Input:} Open the global and friends leaderboards, the local leaderboard,
+the player's saved best and replay, and a training mode.
 
-\textbf{Output:} An availability message is shown, and the local leaderboard and
-training modes still work.
+\textbf{Output:} The online views show an availability message. The local
+leaderboard, personal best, saved replay playback, and training modes still work.
 
 \textbf{Test Case Derivation:} \mbox{FR-DAT-08} requires both the message and continued
 local use.
@@ -1556,24 +1589,27 @@ steps.
 
 \end{enumerate}
 
-\paragraph{Results on Another Installation}
+\paragraph{Personal Best on Another Installation}
 
 \begin{enumerate}
 
 \item{\hypertarget{test-fr-da08}{}\textbf{T.FR.DAT.08}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} Registered player with a synchronized result.
+\textbf{Initial State:} Registered player with a synchronized 90,000 ms best and
+a replay containing known drone-movement samples.
 
-\textbf{Input:} Sign in on a second supported installation and open the player's
-results.
+\textbf{Input:} Sign in on a second supported installation, open the player's
+personal best, and play its replay.
 
-\textbf{Output:} The synchronized result is shown with the same values.
+\textbf{Output:} The same level and 90,000 ms best are shown, and the replay uses
+the matching run's movement samples. No earlier attempts are presented as history.
 
 \textbf{Test Case Derivation:} \mbox{FR-DAT-09} requires retrieval after signing in on
 another installation.
 
-\textbf{How test will be performed:} A tester compares the values on both installations.
+\textbf{How test will be performed:} A tester compares the best time and replay
+identity on both installations and checks playback against the known run.
 
 \end{enumerate}
 \par}
@@ -1651,25 +1687,31 @@ level.
 
 \end{enumerate}
 
-\paragraph{Prior Session Results}
+\paragraph{Personal Best and Replay Playback}
 
 \begin{enumerate}
 
 \item{\hypertarget{test-fr-rev-04}{}\textbf{T.FR.REV.04}\\}
 \textbf{Control:} Manual
 
-\textbf{Initial State:} Registered player with completed results from an earlier
-session.
+\textbf{Initial State:} Player with a retained personal best and matching replay
+from an earlier session. The replay has known drone positions and orientations.
 
-\textbf{Input:} Restart FPVR, sign in, and open the stored results.
+\textbf{Input:} Restart FPVR, open the player's personal best, and play its replay.
+Pause, rewind, and fast-forward playback. Repeat with the replay missing, corrupted,
+and using an incompatible format version.
 
-\textbf{Output:} The earlier results are shown with every field in \mbox{FR-DAT-01}.
+\textbf{Output:} The best time is shown and normal playback reproduces the matching
+run's drone movement in the level. Playback does not alter the best record, training
+progress, timers, score, or rating. A missing or corrupt replay produces a clear
+message without a crash or loss of the saved best time, as does an incompatible
+format. Playback controls move through the replay without changing the recorded run.
 
-\textbf{Test Case Derivation:} \mbox{FR-REV-05} requires stored results from prior
-sessions with at least the \mbox{FR-DAT-01} fields.
+\textbf{Test Case Derivation:} \mbox{FR-REV-05} provides the retained personal best
+and matching visual replay; normal and unavailable replay cases check safe playback.
 
-\textbf{How test will be performed:} A tester compares the shown results with the
-earlier records.
+\textbf{How test will be performed:} A tester checks playback against the known
+movement samples and compares saved data and gameplay state before and after each case.
 
 \end{enumerate}
 
@@ -2069,12 +2111,14 @@ credential handling.
 \item{\hypertarget{test-nfr-sec-02}{}\textbf{T.NFR.SEC.02}\\}
 \textbf{Type:} Nonfunctional, Dynamic, Automatic
 
-\textbf{Initial State:} Two test accounts with stored results.
+\textbf{Initial State:} Two test accounts with private best records and replays.
 
-\textbf{Input/Condition:} Without signing in, request the other account's non-public
-data and submit a result using its identifier.
+\textbf{Input/Condition:} While signed out, then while signed in as the other
+account, request a player's private best record and replay, try to replace them,
+and submit a leaderboard time under that player's account identifier.
 
-\textbf{Output/Result:} Both requests are rejected, and no data is returned or changed.
+\textbf{Output/Result:} All unauthorized requests are rejected, and no private data
+is returned or changed. Public leaderboard times remain separate from private replays.
 (\mbox{NFR-SEC-02})
 
 \textbf{How test will be performed:} Automated requests are sent to the service, and the
@@ -2091,13 +2135,15 @@ stored records are compared before and after.
 
 \textbf{Initial State:} FPVR with network capture enabled.
 
-\textbf{Input/Condition:} Play and review several attempts while signed out, then sign
-in and submit a result.
+\textbf{Input/Condition:} Complete a best run, a slower run, and an equal-time run,
+and abandon another run while signed out. Sign in and synchronize the best.
 
-\textbf{Output/Result:} No attempt data is sent while signed out, only the result record
-fields (level, timestamp, total time, crash count, score, rating, and player) are sent
-after sign-in, and only result records remain in local storage. (\mbox{SR-06},
-\mbox{SR-07})
+\textbf{Output/Result:} No attempt data is sent while signed out. Retained gameplay
+data is limited to each player's best time per level, necessary identifiers and
+synchronization metadata, and the matching drone-movement replay. Temporary motion
+data from slower, equal, and incomplete runs is discarded. After sign-in, only this
+best data is synchronized; private replay data is accessible only to its owner.
+No full attempt history is retained. (\mbox{SR-06}, \mbox{SR-07})
 
 \textbf{How test will be performed:} Network traffic and local storage are inspected
 after each step.
@@ -2128,8 +2174,8 @@ tests compare result data before and after feedback.
 
 \subsubsection{Data Persistence and Offline Availability}
 
-This area checks that results are kept across sessions and that core training works
-without the online service.
+This area checks that personal bests and matching replays are kept across sessions
+and that core training works without the online service.
 
 {\sloppy
 \paragraph{Result Persistence}
@@ -2139,15 +2185,16 @@ without the online service.
 \item{\hypertarget{test-nfr-da01}{}\textbf{T.NFR.DAT.01}\\}
 \textbf{Type:} Nonfunctional, Dynamic, Manual
 
-\textbf{Initial State:} Signed-in player with a result confirmed as synchronized.
+\textbf{Initial State:} Signed-in player with a best time and matching replay
+confirmed as synchronized.
 
 \textbf{Input/Condition:} Sign out, restart FPVR, and sign in again.
 
-\textbf{Output/Result:} The synchronized result is still retrievable with the same
-values. (\mbox{NFR-DAT-01})
+\textbf{Output/Result:} The synchronized best time and matching replay remain
+retrievable with the same values. (\mbox{NFR-DAT-01})
 
-\textbf{How test will be performed:} A tester records the result values before and after
-the steps.
+\textbf{How test will be performed:} A tester compares the best time and replay
+identity before and after the steps.
 
 \end{enumerate}
 
@@ -2160,8 +2207,8 @@ the steps.
 
 \textbf{Initial State:} FPVR running with the online service unreachable.
 
-\textbf{Input/Condition:} Use free flight, play a course, crash and recover, save the
-result, and open the review.
+\textbf{Input/Condition:} Use free flight, play a course, crash and recover, save a
+new personal best, open the current review, and play the locally saved best-run replay.
 
 \textbf{Output/Result:} Every listed action works, and only online features report that
 the service is unavailable. (\mbox{NFR-OFF-01})
