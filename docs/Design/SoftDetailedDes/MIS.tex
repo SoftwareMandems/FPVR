@@ -138,9 +138,12 @@ hide the headset and controller devices. Behaviour-hiding modules hide the
 behaviour required by the SRS. Software decision modules hide algorithms and
 data structures that the SRS does not specify.
 
-Each module keeps the number it has in the MG, so M1 to M13 refer to the same
+Each module keeps the number it has in the MG, so M1 to M15 refer to the same
 module in both documents. Only the leaf modules in the Level 2 column are
 implemented, and each one is specified in its own section of this document.
+The scoring formula and rating bands (M14) and the leaderboard ordering (M15)
+are separate modules, so either policy can change without changing the modules
+that measure attempts (M8) or manage results (M10).
 
 The Intelligent Feedback Analyzer (M13) is optional. FR-AI-01 to FR-AI-03
 depend on a separate feasibility decision, and FR-REV-04 and FR-AI-03 require
@@ -165,15 +168,17 @@ module depends on M13 being present.
 & M5: Course and Environment Manager\\
 & M6: Flight State and Crash Manager\\
 & M7: Checkpoint and Recovery Manager\\
-& M8: Timing and Performance Evaluation Manager\\
+& M8: Attempt Metrics Manager\\
 & M9: Account and Authentication Manager\\
-& M10: Results and Leaderboard Manager\\
+& M10: Result Synchronization Manager\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision}
+\multirow{5}{0.3\textwidth}{Software Decision}
 & M11: Flight Dynamics Model\\
 & M12: Data Persistence Module\\
 & M13: Intelligent Feedback Analyzer (Optional)\\
+& M14: Performance Scoring Policy\\
+& M15: Leaderboard Ordering Policy\\
 \bottomrule
 
 \end{tabular}
