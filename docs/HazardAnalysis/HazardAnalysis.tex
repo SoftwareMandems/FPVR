@@ -69,6 +69,7 @@ Oct 19, 2026 & Arjun Sasidaran & Added FMEA (Section 5), user well-being
 hazards and SR21--SR24, and the roadmap (Section 7); restructured safety
 requirements into functional and non-functional subsections; marked
 multiplayer, user account, and database requirements as stretch goals\\
+Nov 17, 2026 & Team 9 & Applied account and storage safeguards to planned best-run records, private replays, and online leaderboards\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -261,18 +262,25 @@ The system may locally store information such as:
     \item user settings;
     \item controller configuration;
     \item training progress;
-    \item scores; and
+    \item per-level personal best completion times and matching movement replays; and
     \item application configuration.
 \end{itemize}
 
 Data corruption or unauthorized modification could affect system operation or
 training results.
 
+Accounts, global and friends leaderboards, and private best-run cloud saves are
+planned features using Unity Gaming Services (UGS). Cloud Save holds each
+player's best time and matching in-game movement replay, with a local copy for
+offline use; it does not retain every attempt. Leaderboard names, times, and
+ranks are shared for comparison, while replay files remain private. UGS provides
+managed storage without a custom relational database.
+
 \section{Critical Assumptions}\label{sec:assumptions}
 
 \begin{enumerate}
-    \item \textbf{Stable Internet Connection:} Users have access to a sufficiently stable internet connection for online features, including forms, multiplayer elements, and reviews.\\
-    \textbf{Rationale:} Online features require reliable network connectivity to transmit user input, synchronize multiplayer gameplay, and submit or retrieve reviews. This assumption allows the system to be designed around the availability of network connectivity.
+    \item \textbf{Stable Internet Connection:} Users have access to a sufficiently stable internet connection for account sign-in, leaderboards, and cloud saves.\\
+    \textbf{Rationale:} These online features need network access. Local gameplay and saved personal bests remain available offline, and failed cloud updates can be retried after connectivity returns. Live multiplayer remains future work.
 
     \item \textbf{Honest User Feedback:} Users provide honest gameplay reviews and feedback, and accurately report their experiences with the game.\\
     \textbf{Rationale:} Honest feedback helps ensure that reviews and user evaluations accurately represent gameplay experiences, allowing developers to identify issues and measure goals accurately without accounting for fake comments.
@@ -442,7 +450,8 @@ H5-1 \\
 Saved gameplay results are lost or corrupted &
 Loss of user progress and performance records &
 Application crash or network interruption during a save &
-Preserve previously saved records when errors occur; write records atomically &
+Preserve the previous best run during local saves and failed cloud updates;
+retry incomplete uploads without mismatching the time and replay &
 \reqref{SR10} &
 H5-2 \\
 \hline
@@ -452,8 +461,8 @@ Data Storage and Privacy &
 Stored gameplay records are accessed or modified by unauthorized parties &
 Exposure of user data; inaccurate performance records &
 Missing access controls; tampering with stored data &
-Restrict access to user-specific records; enforce authorization checks; verify
-record integrity on retrieval (Future; see Section 7) &
+Restrict access to private records; enforce authorization checks; verify
+record integrity and the time--replay association (Planned; see Section 7) &
 \reqref{SR8}, \reqref{SR14}, \reqref{SR17} &
 H6-1 \\
 \hline
@@ -478,8 +487,8 @@ H6-3 \\
 User account credentials are compromised &
 Unauthorized access to personal accounts and records &
 Weak authentication; plaintext password storage; brute-force attempts &
-Require authentication; hash passwords with a salted algorithm; limit repeated
-attempts; log security-relevant events (Future; see Section 7) &
+Use managed authentication; never save plaintext passwords; limit repeated
+attempts; log security-relevant events (Planned; see Section 7) &
 \reqref{SR13}, \reqref{SR15}, \reqref{SR19}, \reqref{SR20} &
 H6-4 \\
 \hline
@@ -487,11 +496,12 @@ H6-4 \\
 % Network and Multiplayer Services
 Network and Multiplayer Services (Multiplayer: Stretch Goal) &
 Required external services are unavailable &
-Dependent features, such as intelligent feedback or multiplayer, fail; user
+Dependent features, such as cloud saves or leaderboards, fail; user
 unaware of the cause &
 Server outage; unstable internet connection &
 Verify connectivity before enabling dependent features; notify the user of
-multiplayer network interruptions (notification: Future; see Section 7) &
+failed cloud access; multiplayer interruption notifications remain Future
+(see Section 7) &
 \reqref{SR6}, \reqref{SR11} &
 H7-1 \\
 \hline
@@ -508,8 +518,8 @@ H7-2 \\
 Network traffic or session credentials are intercepted or reused &
 Exposure of user data; unauthorized access to sessions &
 Unencrypted communication; session credentials not invalidated &
-Encrypt network communication; invalidate session credentials when a user leaves
-or a session expires (Future; see Section 7) &
+Encrypt account and cloud-save communication; invalidate multiplayer session
+credentials when a user leaves or a session expires (multiplayer: Future; see Section 7) &
 \reqref{SR7}, \reqref{SR18} &
 H7-3 \\
 \hline
@@ -599,7 +609,7 @@ H9-4 \\
 
 \noindent
 \reqdef{SR6} The system shall verify connectivity to required external services before enabling features that depend on them.\\
-\textbf{Rationale:} Service connectivity failures may prevent multiplayer sessions or cause dependent features to behave incorrectly.\\
+\textbf{Rationale:} Service connectivity failures may prevent account sign-in, leaderboard access, or cloud saves.\\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
@@ -618,13 +628,13 @@ H9-4 \\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\reqdef{SR13} The system shall require users to authenticate before accessing personal accounts or user-specific gameplay records, if account functionality is implemented.\\
+\reqdef{SR13} The system shall require users to authenticate before accessing personal accounts or private cloud-saved gameplay records.\\
 \textbf{Rationale:} Authentication helps prevent unauthorized users from accessing personal information and saved progress.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\reqdef{SR14} The system shall enforce authorization checks before allowing users to view, modify, or delete stored gameplay records.\\
-\textbf{Rationale:} Authorization prevents users from accessing or modifying records belonging to other users.\\
+\reqdef{SR14} The system shall enforce authorization checks before allowing users to view private gameplay records or modify or delete stored records.\\
+\textbf{Rationale:} Authorization protects private replays and record updates while allowing leaderboard times and ranks to be shared.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
@@ -644,7 +654,7 @@ H9-4 \\
 \textbf{Risk:} High\\[1em]
 
 \noindent
-\reqdef{SR8} The system shall restrict access to stored user-specific gameplay records to the relevant user and authorized system components.\\
+\reqdef{SR8} The system shall restrict access to private user-specific gameplay records, including movement replays, to the relevant user and authorized system components.\\
 \textbf{Rationale:} Unauthorized access may expose private information or allow gameplay records to be modified.\\
 \textbf{Risk:} Medium\\[1em]
 
@@ -654,8 +664,8 @@ H9-4 \\
 \textbf{Risk:} Medium\\[1em]
 
 \noindent
-\reqdef{SR15} The system shall securely store authentication credentials and shall not store passwords in plaintext. Passwords shall be protected using an appropriate salted password-hashing algorithm.\\
-\textbf{Rationale:} Plaintext passwords may be exposed if stored data is accessed by an unauthorized party.\\
+\reqdef{SR15} The system shall delegate credential storage to UGS Authentication and shall not store passwords in local saves, replay files, or logs.\\
+\textbf{Rationale:} Managed authentication avoids maintaining a separate credential database and keeps passwords out of gameplay records.\\
 \textbf{Risk:} High\\[1em]
 
 \noindent
@@ -723,6 +733,11 @@ The following roadmap outlines which of the safety and security requirements
 from Section 6 will be implemented within the capstone timeline and which will
 be implemented in the future.
 
+Under the revised scope, account and storage safeguards in \reqref{SR7},
+\reqref{SR8}, \reqref{SR13}--\reqref{SR15}, \reqref{SR17}, \reqref{SR19}, and
+\reqref{SR20} apply within the capstone timeline. The online-feature list below
+identifies this current scope separately from future multiplayer obligations.
+
 \subsection{Requirements Within the Capstone Timeline}
 
 \begin{itemize}
@@ -778,19 +793,19 @@ be implemented in the future.
     \textbf{Justification:} Interruptions are expected during normal VR use, and quick recovery avoids forcing users to restart the application.
 \end{itemize}
 
-\subsection{Requirements Implemented in the Future}
+\subsection{Online Feature Requirements and Future Multiplayer}
 
-The following requirements depend on multiplayer functionality, user accounts,
-or database storage of gameplay records. These features are stretch goals of
-the project that may not be implemented within the capstone timeline, so the
-requirements will be implemented when the corresponding features are developed.
+Account and storage requirements below apply to the planned online best-time
+leaderboards and private best-run saves. Requirements that apply only to live
+multiplayer remain future work and will be implemented if that stretch goal is
+developed.
 
 \begin{itemize}
-    \item \textbf{\reqref{SR7}:} The system shall use encrypted communication when transmitting multiplayer session information.\\
-    \textbf{Justification:} Encryption only applies once multiplayer networking is implemented, which is a stretch goal.
+    \item \textbf{\reqref{SR7}:} The system shall use encrypted communication when transmitting user data or multiplayer session information.\\
+    \textbf{Justification:} Encryption is required for planned account, leaderboard, and cloud-save communication. Multiplayer session traffic remains conditional on future multiplayer.
 
-    \item \textbf{\reqref{SR8}:} The system shall restrict access to stored user-specific gameplay records.\\
-    \textbf{Justification:} Access restrictions only apply once user-specific records are stored, which depends on account functionality.
+    \item \textbf{\reqref{SR8}:} The system shall restrict access to private user-specific gameplay records.\\
+    \textbf{Justification:} Private replay files and best-run saves are planned features, so access restrictions are required within the capstone timeline.
 
     \item \textbf{\reqref{SR9}:} The system shall validate data received from multiplayer clients.\\
     \textbf{Justification:} Validation of client data is only needed once multiplayer is implemented, and should be built alongside the multiplayer networking code.
@@ -798,26 +813,26 @@ requirements will be implemented when the corresponding features are developed.
     \item \textbf{\reqref{SR11}:} The system shall notify users when a network interruption prevents multiplayer access.\\
     \textbf{Justification:} This notification only applies to multiplayer features, which are a stretch goal.
 
-    \item \textbf{\reqref{SR13}:} The system shall require users to authenticate before accessing personal accounts or records.\\
-    \textbf{Justification:} Authentication is only needed once user accounts exist, which are a stretch goal.
+    \item \textbf{\reqref{SR13}:} The system shall require users to authenticate before accessing personal accounts or private cloud-saved records.\\
+    \textbf{Justification:} UGS Authentication is required for planned personal cloud saves and record submissions within the capstone timeline.
 
-    \item \textbf{\reqref{SR14}:} The system shall enforce authorization checks before stored gameplay records are viewed, modified, or deleted.\\
-    \textbf{Justification:} Authorization depends on both authenticated users and stored records, so it follows the implementation of SR13.
+    \item \textbf{\reqref{SR14}:} The system shall enforce authorization checks before private records are viewed or stored records are modified or deleted.\\
+    \textbf{Justification:} Planned personal saves require authorized access; public leaderboard reads do not grant access to another player's private replay.
 
-    \item \textbf{\reqref{SR15}:} The system shall store passwords using a salted password-hashing algorithm.\\
-    \textbf{Justification:} No passwords are stored until account functionality is implemented.
+    \item \textbf{\reqref{SR15}:} The system shall delegate credential storage to UGS Authentication and keep passwords out of gameplay saves and logs.\\
+    \textbf{Justification:} Accounts are planned within the capstone timeline; a separate application credential database is unnecessary.
 
     \item \textbf{\reqref{SR17}:} The system shall prevent unauthorized modification of stored gameplay records and verify their integrity.\\
-    \textbf{Justification:} Integrity verification depends on database storage of gameplay records, which is a stretch goal.
+    \textbf{Justification:} Planned best-run saves must preserve a matching completion time and replay and retain the previous record when an update fails.
 
     \item \textbf{\reqref{SR18}:} The system shall invalidate multiplayer session credentials when a user leaves or a session expires.\\
-    \textbf{Justification:} Session credentials only exist once multiplayer is implemented, and depend on user accounts; both are stretch goals.
+    \textbf{Justification:} This requirement concerns multiplayer session credentials and remains future work; planned user accounts do not introduce live multiplayer sessions.
 
     \item \textbf{\reqref{SR19}:} The system shall limit repeated authentication attempts within a defined period.\\
-    \textbf{Justification:} Rate limiting only applies once an authentication system exists.
+    \textbf{Justification:} Repeated-attempt protection applies to the planned account integration within the capstone timeline.
 
     \item \textbf{\reqref{SR20}:} The system shall record security-relevant events without logging unnecessary sensitive information.\\
-    \textbf{Justification:} Most security events relate to authentication and record access, which depend on the user account and database stretch goals.
+    \textbf{Justification:} Planned account and private record access require security logging within the capstone timeline without exposing credentials or replay data.
 \end{itemize}
 
 \newpage{}
