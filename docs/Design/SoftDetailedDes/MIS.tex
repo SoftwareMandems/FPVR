@@ -1632,6 +1632,579 @@ How a score and rating are computed is the secret of \Mref{14}. Changing that
 policy does not change how this module measures an attempt.
 
 \newpage
+% ==========================================================
+% M9
+% ==========================================================
+\section{MIS of Account and Authentication Manager (M9)} \label{sec:M9}
+
+\subsection{Module}
+
+\textbf{Module} AccountAuthentication (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item MIN\_PASSWORD\_LENGTH: $\mathbb{Z} = 12$ (FR-ACC-02).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item User = tuple of (playerID: $\Sigma^*$, displayName: $\Sigma^*$, token:
+  $\Sigma^*$). The token is an opaque session credential. Only the online
+  service can interpret it.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.2cm} p{3.4cm} p{2cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+register & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, UsernameTaken, WeakPassword \\
+signIn & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, InvalidCredentials \\
+signOut & - & - & NotInitialized \\
+isAuthenticated & - & $\mathbb{B}$ & NotInitialized \\
+getCurrentUser & - & User & NotInitialized, NotSignedIn \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\item session: User $\cup \ \{\nul\}$. The player signed in on this
+  installation.
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item authService: tuple of (reachable: $\mathbb{B}$, accounts: set of
+  Account). The online account service.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item All communication with authService is encrypted (NFR-SEC-01).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized, session := \True, \nul
+\item exception: none
+\end{itemize}
+
+\noindent register($u$, $pw$):
+\begin{itemize}
+\item transition: authService.accounts := authService.accounts $\cup \{(u,
+  \text{newID}(), \text{protect}(pw))\}$ (FR-ACC-01)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$authService.reachable
+  $\Rightarrow$ ServiceUnavailable $|$ $\exists a \in$ authService.accounts
+  $\cdot\ a.\text{username} = u \Rightarrow$ UsernameTaken $|$ $|pw| <$
+  MIN\_PASSWORD\_LENGTH $\Rightarrow$ WeakPassword) (FR-ACC-02)
+\end{itemize}
+
+\noindent signIn($u$, $pw$):
+\begin{itemize}
+\item transition: session := (idOf($u$), $u$, issueToken($u$))
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$authService.reachable
+  $\Rightarrow$ ServiceUnavailable $|$ $\neg$verify($u$, $pw$) $\Rightarrow$
+  InvalidCredentials). The same exception is raised whether the username or
+  the password is wrong (FR-ACC-03).
+\end{itemize}
+
+\noindent signOut():
+\begin{itemize}
+\item transition: session := \nul{} (FR-ACC-04)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent isAuthenticated():
+\begin{itemize}
+\item output: $out :=$ (session $\neq \nul$)
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent getCurrentUser():
+\begin{itemize}
+\item output: $out :=$ session
+\item exception: $exc :=$ (\noinit{} $|$ session $= \nul \Rightarrow$
+  NotSignedIn)
+\end{itemize}
+
+\subsubsection{Local Types}
+
+\begin{itemize}
+\item Account = tuple of (username: $\Sigma^*$, playerID: $\Sigma^*$,
+  verifier: $\Sigma^*$).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item protect: $\Sigma^* \rightarrow \Sigma^*$. A salted, adaptive one-way hash
+  of a password. The password cannot be recovered from it, so it is never
+  stored in plaintext (NFR-SEC-01).
+\item verify: $\Sigma^* \times \Sigma^* \rightarrow \mathbb{B}$. verify($u$,
+  $pw$) $= \exists a \in$ authService.accounts $\cdot\ a.\text{username} = u
+  \wedge a.\text{verifier} =$ protect($pw$).
+\item idOf: $\Sigma^* \rightarrow \Sigma^*$. The playerID of the account with
+  username $u$.
+\item newID: $\rightarrow \Sigma^*$. A playerID not used by any account.
+\item issueToken: $\Sigma^* \rightarrow \Sigma^*$. A new token that the online
+  service accepts as proof that $u$ is signed in.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+Usernames are also the display names shown on leaderboards.
+
+\newpage
+% ==========================================================
+% M10
+% ==========================================================
+\section{MIS of Result Synchronization Manager (M10)} \label{sec:M10}
+
+\subsection{Module}
+
+\textbf{Module} ResultSynchronization (abstract object).
+
+\subsection{Uses}
+
+\begin{itemize}
+\item \Mref{9} (isAuthenticated, getCurrentUser, User)
+\item \Mref{12} (storeLocal, loadLocal, setSyncStatus, uploadResult,
+  loadGlobal, loadPlayerResults, ResultRecord, SyncStatus)
+\item \Mref{15} (order, RankKey)
+\end{itemize}
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item LEADERBOARD\_SIZE: $\mathbb{Z} = 10$ (FR-DAT-07).
+\item GUEST\_PLAYER: $\Sigma^* =$ ``guest''. The local player identifier when
+  no one is signed in (FR-DAT-01, FR-ACC-05).
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item Scope = $\{$LOCAL, GLOBAL$\}$.
+\item ResultInput = tuple of (course: $\Sigma^*$, $T$: $\mathbb{R}$, $C$:
+  $\mathbb{Z}$, $k$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating). A
+  completed attempt to save.
+\item LeaderboardEntry = tuple of (rank: $\mathbb{N}$, displayName:
+  $\Sigma^*$, score: $\mathbb{Z}$, $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$).
+\item HistoryEntry = tuple of (course: $\Sigma^*$, timestamp: $\mathbb{Z}$,
+  $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  synced: $\mathbb{B}$).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3cm} p{3.2cm} p{3.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+saveResult & $r$: ResultInput & - & NotInitialized, SaveFailed \\
+retrySync & - & - & NotInitialized, NotSignedIn \\
+getLeaderboard & $c$: $\Sigma^*$, $sc$: Scope & seq of LeaderboardEntry & NotInitialized, LeaderboardUnavailable \\
+getHistory & - & seq of HistoryEntry & NotInitialized, NotSignedIn \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\end{itemize}
+
+The result records and their synchronization status are stored by \Mref{12}.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item clock: $\mathbb{Z}$. The current time in whole seconds (UTC).
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized := \True
+\item exception: none
+\end{itemize}
+
+\noindent saveResult($r$):
+\begin{itemize}
+\item transition: Let $rec$ = (newID(), owner()[1], owner()[2], $r$.course,
+  $r.T$, $r.C$, $r.k$, $r$.score, $r$.rating, clock, LOCAL\_ONLY).
+  M12.storeLocal($rec$) (FR-DAT-01); then (M9.isAuthenticated() $\Rightarrow$
+  sync($rec$)) (FR-DAT-02). A guest's result is saved locally but never
+  submitted (FR-ACC-05).
+\item exception: $exc :=$ (\noinit{} $|$ M12.storeLocal raises StorageError
+  $\Rightarrow$ SaveFailed)
+\end{itemize}
+
+\noindent retrySync():
+\begin{itemize}
+\item transition: for each $x \in$ M12.loadLocal() with $x$.status $\neq$
+  SYNCED and $x$.playerID $=$ M9.getCurrentUser().playerID, sync($x$)
+  (FR-DAT-03)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$M9.isAuthenticated()
+  $\Rightarrow$ NotSignedIn)
+\end{itemize}
+
+\noindent getLeaderboard($c$, $sc$):
+\begin{itemize}
+\item output: Let $R$ = ($sc =$ LOCAL $\Rightarrow \langle x \in$
+  M12.loadLocal() $|$ $x$.course $= c\rangle$ $|$ $sc =$ GLOBAL
+  $\Rightarrow$ M12.loadGlobal($c$)) and $p$ = M15.order($\langle$key($x$)
+  $|$ $x \in R\rangle$). \\
+  $out := \langle$entry($i$, $R[p[i]]$) $|$ $i \in [1..\min(\text{LEADERBOARD\_SIZE}, |R|)]\rangle$
+  (FR-DAT-04 to FR-DAT-07)
+\item exception: $exc :=$ (\noinit{} $|$ $sc =$ GLOBAL $\wedge$
+  M12.loadGlobal raises NetworkUnavailable $\Rightarrow$
+  LeaderboardUnavailable) (FR-DAT-08)
+\end{itemize}
+
+\noindent getHistory():
+\begin{itemize}
+\item output: Let $u$ = M9.getCurrentUser(), $G$ =
+  M12.loadPlayerResults($u$.playerID, $u$.token), or $\langle\rangle$ if that
+  raises NetworkUnavailable, and $L = \langle x \in$ M12.loadLocal() $|$
+  $x$.playerID $= u$.playerID $\wedge$ $x$.status $\neq$ SYNCED$\rangle$. \\
+  $out := \langle$past($x$) $|$ $x \in G \,||\, L\rangle$. Synchronized results
+  come from the online service, so they appear on any installation
+  (FR-DAT-09, FR-REV-05, NFR-DAT-01).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$M9.isAuthenticated()
+  $\Rightarrow$ NotSignedIn)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item owner: $\rightarrow$ ($\Sigma^*$, $\Sigma^*$). With $u$ =
+  M9.getCurrentUser(), owner() $=$ (M9.isAuthenticated() $\Rightarrow$
+  ($u$.playerID, $u$.displayName) $|$ otherwise $\Rightarrow$
+  (GUEST\_PLAYER, GUEST\_PLAYER)).
+\item sync: ResultRecord $\rightarrow$ (transition). With $u$ =
+  M9.getCurrentUser(), sync($x$) $\equiv$ M12.setSyncStatus($x$.id,
+  PENDING); then M12.uploadResult($x$, $u$.token), followed by
+  M12.setSyncStatus($x$.id, SYNCED) if it succeeds or M12.setSyncStatus($x$.id,
+  FAILED) if it raises NetworkUnavailable or Unauthorized. A failure never
+  reaches the caller, and the result can be retried (FR-DAT-03, FR-DAT-10).
+\item key: ResultRecord $\rightarrow$ RankKey. key($x$) $=$ ($x$.score,
+  $x.T$, $x$.timestamp).
+\item entry: $\mathbb{N} \times$ ResultRecord $\rightarrow$
+  LeaderboardEntry. entry($i$, $x$) $=$ ($i$, $x$.displayName, $x$.score,
+  $x.T$, $x.C$).
+\item past: ResultRecord $\rightarrow$ HistoryEntry. past($x$) $=$
+  ($x$.course, $x$.timestamp, $x.T$, $x.C$, $x$.score, $x$.rating, $x$.status
+  $=$ SYNCED).
+\item newID: $\rightarrow \Sigma^*$. A unique result identifier, so a retried
+  submission is never stored twice.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+A result moves through the states local only, pending, failed and synced.
+\Mref{12} stores the state, and this module decides each transition.
+
+\newpage
+% ==========================================================
+% M11
+% ==========================================================
+\section{MIS of Flight Dynamics Model (M11)} \label{sec:M11}
+
+\subsection{Module}
+
+\textbf{Module} FlightDynamics (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+The SRS leaves the reference drone's physical parameters as an open decision.
+The values below are initial values for a small racing drone and will be tuned
+during testing (AC2 in the MG). Only this module changes when they do.
+
+\begin{itemize}
+\item $g$: $\mathbb{R} = 9.81$ m/s$^2$. Gravitational acceleration
+  (FR-FLT-03).
+\item $m$: $\mathbb{R} = 0.5$ kg. Drone mass.
+\item TWR: $\mathbb{R} = 4$. Maximum thrust divided by weight.
+\item $\omega_{max}$: $\mathbb{R}^3 = (10, 10, 6)$ rad/s. Maximum roll, pitch
+  and yaw rates.
+\item $k_d$: $\mathbb{R} = 0.1$ kg/s. Linear drag coefficient.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item FlightState = tuple of (pose: Pose, $v$: $\mathbb{R}^3$, $\omega$:
+  $\mathbb{R}^3$). Velocity in m/s and roll, pitch and yaw rates in rad/s.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{1.6cm} >{\raggedright\arraybackslash}X p{2.4cm} p{3.2cm}}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+step & $s$: FlightState, $\tau$: $\mathbb{R}$, $u_\theta$: $\mathbb{R}$,
+$u_\phi$: $\mathbb{R}$, $u_\psi$: $\mathbb{R}$, $\Delta t$: $\mathbb{R}$ &
+FlightState & NegativeInterval \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The inputs after $s$ are the throttle $\tau \in [0, 1]$ and the pitch, roll and
+yaw commands in $[-1, 1]$.
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item $\Delta t$ is one frame, small enough for one integration step to be
+  accurate.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent step($s$, $\tau$, $u_\theta$, $u_\phi$, $u_\psi$, $\Delta t$):
+\begin{itemize}
+\item output: $out := ((p', o'), v', \omega')$, where $s = ((p, o), v,
+  \omega)$ and
+  \begin{align*}
+  \omega' &= (\omega_{max}[1] \cdot u_\phi,\ \omega_{max}[2] \cdot
+  u_\theta,\ \omega_{max}[3] \cdot u_\psi)\\
+  o' &= o + \omega' \Delta t\\
+  a &= \tau \cdot \text{TWR} \cdot g \cdot \text{up}(o') - g \hat{z} -
+  \frac{k_d}{m} v\\
+  v' &= v + a \Delta t\\
+  p' &= p + v' \Delta t
+  \end{align*}
+  Each stick sets the rotation rate about one axis, and throttle sets thrust
+  along the drone's vertical axis (FR-FLT-02).
+\item exception: $exc :=$ ($\Delta t < 0 \Rightarrow$ NegativeInterval)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item up: $\mathbb{R}^3 \rightarrow \mathbb{R}^3$. up($o$) is the unit vector
+  along the drone's vertical axis at orientation $o$: $\hat{z}$ rotated by roll
+  $o[1]$, pitch $o[2]$ and yaw $o[3]$.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+With $\tau = 0$ the vertical acceleration is $-g - \frac{k_d}{m} v_z$, which is
+negative while $v_z > -\frac{m g}{k_d} \approx -49$ m/s. A drone with no
+thrust therefore speeds up downwards until it reaches that terminal speed or
+hits the ground (FR-FLT-03). The authoritative drone state is kept by
+\Mref{6}.
+
+\newpage
+% ==========================================================
+% M12
+% ==========================================================
+\section{MIS of Data Persistence Module (M12)} \label{sec:M12}
+
+\subsection{Module}
+
+\textbf{Module} DataPersistence (abstract object).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item SyncStatus = $\{$LOCAL\_ONLY, PENDING, FAILED, SYNCED$\}$.
+\item ResultRecord = tuple of (id: $\Sigma^*$, playerID: $\Sigma^*$,
+  displayName: $\Sigma^*$, course: $\Sigma^*$, $T$: $\mathbb{R}$, $C$:
+  $\mathbb{Z}$, $k$: $\mathbb{Z}$, score: $\mathbb{Z}$, rating: Rating,
+  timestamp: $\mathbb{Z}$, status: SyncStatus). The fields required by
+  FR-DAT-01, plus the record's identity and synchronization status.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{3.4cm} >{\raggedright\arraybackslash}p{3.4cm} p{2.8cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+init & - & - & - \\
+storeLocal & $x$: ResultRecord & - & NotInitialized, StorageError \\
+loadLocal & - & seq of ResultRecord & NotInitialized \\
+setSyncStatus & $id$: $\Sigma^*$, $st$: SyncStatus & - & NotInitialized, RecordNotFound \\
+uploadResult & $x$: ResultRecord, $tok$: $\Sigma^*$ & - & NotInitialized, NetworkUnavailable, Unauthorized \\
+loadGlobal & $c$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable \\
+loadPlayerResults & $pid$: $\Sigma^*$, $tok$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable, Unauthorized \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+\begin{itemize}
+\item initialized: $\mathbb{B}$
+\end{itemize}
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item localStore: seq of ResultRecord. Results saved on the headset.
+\item backend: tuple of (reachable: $\mathbb{B}$, records: set of
+  ResultRecord, sessions: set of ($\Sigma^*$, $\Sigma^*$)). The online result
+  service, its stored results and its accepted (token, playerID) sessions.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+\begin{itemize}
+\item Records accepted by the backend stay there, so a synchronized result
+  survives sign-out, restart and sign-in (NFR-DAT-01).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: initialized := \True
+\item exception: none
+\end{itemize}
+
+\noindent storeLocal($x$):
+\begin{itemize}
+\item transition: localStore := localStore $||\ \langle x \rangle$
+\item exception: $exc :=$ (\noinit{} $|$ localStore cannot be written
+  $\Rightarrow$ StorageError)
+\end{itemize}
+
+\noindent loadLocal():
+\begin{itemize}
+\item output: $out :=$ localStore
+\item exception: $exc :=$ (\noinit)
+\end{itemize}
+
+\noindent setSyncStatus($id$, $st$):
+\begin{itemize}
+\item transition: the record $y \in$ localStore with $y$.id $= id$ gets
+  $y$.status := $st$. All other records are unchanged.
+\item exception: $exc :=$ (\noinit{} $|$ $\neg\exists y \in$ localStore
+  $\cdot\ y.\text{id} = id \Rightarrow$ RecordNotFound)
+\end{itemize}
+
+\noindent uploadResult($x$, $tok$):
+\begin{itemize}
+\item transition: ($\exists y \in$ backend.records $\cdot\ y.\text{id} =
+  x.\text{id} \Rightarrow$ no change $|$ otherwise $\Rightarrow$
+  backend.records := backend.records $\cup \{x$ with status SYNCED$\}$). A
+  retried submission is never stored twice (FR-DAT-02).
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable $|$ $(tok, x.\text{playerID}) \notin$
+  backend.sessions $\Rightarrow$ Unauthorized). A result can only be submitted
+  under the signed-in player's own account (NFR-SEC-02).
+\end{itemize}
+
+\noindent loadGlobal($c$):
+\begin{itemize}
+\item output: $out :=$ the records $y \in$ backend.records with $y$.course
+  $= c$, in any order (FR-DAT-05)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable)
+\end{itemize}
+
+\noindent loadPlayerResults($pid$, $tok$):
+\begin{itemize}
+\item output: $out :=$ the records $y \in$ backend.records with $y$.playerID
+  $= pid$, in any order (FR-DAT-09)
+\item exception: $exc :=$ (\noinit{} $|$ $\neg$backend.reachable
+  $\Rightarrow$ NetworkUnavailable $|$ $(tok, pid) \notin$ backend.sessions
+  $\Rightarrow$ Unauthorized) (NFR-SEC-02)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+None.
+
+\subsubsection{Considerations}
+
+The MG's database design describes the intended backend: a hosted relational
+database reached through an authenticated HTTPS service. Those choices stay
+hidden behind this interface. This module stores the synchronization status it
+is given but never decides when to retry.
+
+\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {../../../refs/References}
