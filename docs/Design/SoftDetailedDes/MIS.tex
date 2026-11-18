@@ -57,6 +57,7 @@ urlcolor=cyan          % color of external links
 Date 1 & 1.0 & Notes\\
 Date 2 & 1.1 & Notes\\
 Nov 17, 2026 & 1.2 & Aligned planned account and best-run storage with UGS managed services\\
+Nov 17, 2026 & 1.3 & Aligned module hierarchy with the MG database design\\
 \bottomrule
 \end{tabularx}
 
@@ -145,27 +146,37 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+\multirow{2}{0.3\textwidth}{Hardware-Hiding}
+& M1: VR Platform Interface \\
+& M2: Controller Input Interface \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
-& Control Module\\
-& Specification Parameters Module\\
+\multirow{8}{0.3\textwidth}{Behaviour-Hiding}
+& M3: User Interface \\
+& M4: Training Session Manager \\
+& M5: Course and Environment Manager \\
+& M6: Flight State and Crash Manager \\
+& M7: Checkpoint and Recovery Manager \\
+& M8: Timing and Performance Evaluation Manager \\
+& M9: Account and Authentication Manager \\
+& M10: Results and Leaderboard Manager \\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{3}{0.3\textwidth}{Software Decision}
+& M11: Flight Dynamics Model \\
+& M12: Data Persistence Module \\
+& M13: Intelligent Feedback Analyzer (Optional) \\
 \bottomrule
 
 \end{tabular}
 \caption{Module Hierarchy}
 \label{TblMH}
 \end{table}
+
+For the database design in MG Section 12, M9 supplies account and accepted-friend
+identifiers, M10 manages best-run selection, leaderboard queries and synchronization
+policy, and M12 provides local and Cloud Save record and replay storage. The
+detailed module interface section below remains a template awaiting specification.
 
 \newpage
 ~\newpage
