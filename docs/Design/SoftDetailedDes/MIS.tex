@@ -37,6 +37,12 @@ urlcolor=cyan          % color of external links
 \input{../../Common.text}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
+\setlength{\emergencystretch}{3em}
+\newcommand{\True}{\textnormal{true}}
+\newcommand{\False}{\textnormal{false}}
+\newcommand{\nul}{\textnormal{null}}
+\newcommand{\Mref}[1]{\hyperref[sec:M#1]{M#1}}
+\newcommand{\noinit}{$\neg$initialized $\Rightarrow$ NotInitialized}
 \begin{document}
 
 \title{Module Interface Specification for \progname{}}
@@ -114,21 +120,76 @@ character & char & a single symbol or digit\\
 integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
-boolean & $\mathbb{B}$ & a value that is either true ($\top$) or false ($\bot$)\\
+boolean & $\mathbb{B}$ & a value that is either \True{} or \False{}\\
 string & $\Sigma^*$ & a sequence of characters (char)\\
 enumerate & $\{\text{E}_i \:|\: i \leq n, \text{E}_i \in \Sigma^*\}$ & a finite unordered list of named constants\\
 sequence & seq of T & an ordered list of elements of type T\\
 tuple & (T$_1$, T$_2$, ..., T$_n$) & a finite ordered list of values of types T$_1$, T$_2$, ..., T$_n$\\
 dictionary & dict of T$_1$ to T$_2$ & a key-value pairing from type T$_1$ to type T$_2$\\
 function & T$_1$ $\rightarrow$ T$_2$ & a mapping from type T$_1$ to type T$_2$\\
+set & set of T & an unordered collection of distinct elements of type T\\
 \bottomrule
-\end{tabular} 
+\end{tabular}
 \end{center}
 
 \noindent
-In addition, \progname \ uses abstract data types (Insert examples here in the future) which
-are constructed using the primitive data types listed above and represent higher level data structures
-to better obscure implementation details.
+The value \nul{} marks a field or variable that has no value, for example no
+course selected yet. A type that allows it is written T $\cup \ \{\nul\}$. For a
+tuple $x$ with a field named $f$, $x.f$ is the value of that field. For a
+sequence $s$, $|s|$ is its length, $s[i]$ is its $i$-th element (starting at
+1), $s \,||\, t$ is $s$ followed by $t$, and $\langle\rangle$ is the empty
+sequence. A multiple assignment $v_1, v_2 := e_1, e_2$ evaluates every
+expression first and then assigns them together. Following the MIS format, a
+module heading names its kind: Module (a library or abstract object) or
+Template Module (an abstract data type).
+
+\subsection*{Shared Types}
+
+Two types are fixed by the SRS rather than by any module's design, and modules
+that share no uses relation both need them. They are defined once here so that
+each module's Uses list can match the MG uses hierarchy exactly.
+
+\begin{itemize}
+\item Pose = tuple of (position: $\mathbb{R}^3$, orientation: $\mathbb{R}^3$).
+  Position is in metres in the course frame, with $\hat{z} = (0, 0, 1)$
+  pointing up. Orientation is the roll $\phi$, pitch $\theta$ and yaw $\psi$
+  angles in radians. Used for the drone, the headset, course starts and
+  checkpoints (FR-FLT-01, FR-CHK-05).
+\item Rating = $\{$GOLD, SILVER, BRONZE, NEEDS\_IMPROVEMENT$\}$. The four
+  rating names required by FR-PER-09. Which scores map to which rating is the
+  secret of \Mref{14}.
+\end{itemize}
+
+\subsection*{Exported Types}
+
+Every other type is exported by the module that owns it (Table~\ref{TblTypes}).
+A module that needs one of these types lists its owner under Uses.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.6cm} l >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Types} & \textbf{Owner} & \textbf{Meaning}\\
+\midrule
+ExecutionMode, View & \Mref{1} & Standalone or PCVR; an image shown in the headset\\
+DeviceType, ControlInput, MenuInput, ControlMapping & \Mref{2} & The active controller, the four flight axes, a menu button and the axis bindings\\
+ActionKind, UserAction, Screen, CourseItem, HudView, ReviewView, BoardRow, HistoryRow & \Mref{3} & A user's choice and the data each screen displays\\
+Phase & \Mref{4} & The stage of the current training session\\
+Mode, Difficulty, CourseInfo & \Mref{5} & Training mode and course description\\
+Passage & \Mref{6} & A checkpoint gate or the finish the drone passed through\\
+Evaluation & \Mref{8} & The frozen measurements, score and rating of an attempt\\
+User & \Mref{9} & A signed-in player and their session\\
+Scope, ResultInput, LeaderboardEntry, HistoryEntry & \Mref{10} & Result data passed in and out of synchronization\\
+FlightState & \Mref{11} & The drone's pose, velocity and angular velocity\\
+SyncStatus, ResultRecord & \Mref{12} & A stored result and its synchronization state\\
+AttemptSummary, Feedback & \Mref{13} & The input and output of feedback analysis\\
+RankKey & \Mref{15} & The values used to order one result\\
+\bottomrule
+\end{tabularx}
+\caption{Exported types and the modules that own them}
+\label{TblTypes}
+\end{table}
 
 \section{Module Decomposition}
 
@@ -158,27 +219,27 @@ module depends on M13 being present.
 \midrule
 
 \multirow{2}{0.3\textwidth}{Hardware-Hiding}
-& M1: VR Platform Interface\\
-& M2: Controller Input Interface\\
+& \Mref{1}: VR Platform Interface\\
+& \Mref{2}: Controller Input Interface\\
 \midrule
 
 \multirow{8}{0.3\textwidth}{Behaviour-Hiding}
-& M3: User Interface\\
-& M4: Training Session Manager\\
-& M5: Course and Environment Manager\\
-& M6: Flight State and Crash Manager\\
-& M7: Checkpoint and Recovery Manager\\
-& M8: Attempt Metrics Manager\\
-& M9: Account and Authentication Manager\\
-& M10: Result Synchronization Manager\\
+& \Mref{3}: User Interface\\
+& \Mref{4}: Training Session Manager\\
+& \Mref{5}: Course and Environment Manager\\
+& \Mref{6}: Flight State and Crash Manager\\
+& \Mref{7}: Checkpoint and Recovery Manager\\
+& \Mref{8}: Attempt Metrics Manager\\
+& \Mref{9}: Account and Authentication Manager\\
+& \Mref{10}: Result Synchronization Manager\\
 \midrule
 
 \multirow{5}{0.3\textwidth}{Software Decision}
-& M11: Flight Dynamics Model\\
-& M12: Data Persistence Module\\
-& M13: Intelligent Feedback Analyzer (Optional)\\
-& M14: Performance Scoring Policy\\
-& M15: Leaderboard Ordering Policy\\
+& \Mref{11}: Flight Dynamics Model\\
+& \Mref{12}: Data Persistence Module\\
+& \Mref{13}: Intelligent Feedback Analyzer (Optional)\\
+& \Mref{14}: Performance Scoring Policy\\
+& \Mref{15}: Leaderboard Ordering Policy\\
 \bottomrule
 
 \end{tabular}
