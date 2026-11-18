@@ -1,0 +1,45 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 16
+skinparam linetype ortho
+hide circle
+hide methods
+left to right direction
+entity "player_account" as account #DBEAFE {
+  * account_id <<PK>>
+  --
+  username <<UQ>>
+  password_hash
+  created_at
+}
+entity "flight_result" as result #E0F2FE {
+  * result_id <<PK>>
+  --
+  * account_id <<FK>>
+  * level_id <<FK>>
+  source_local_player_id
+  completed_at
+  total_time_seconds
+  crash_count
+  score
+  rating
+  accepted_at
+}
+entity "course_level" as level #DBEAFE {
+  * level_id <<PK>>
+  --
+  level_name
+  environment_name
+  difficulty
+}
+account "1" -- "0..*" result : one-to-many
+result "0..*" -- "1" level : many-to-one
+legend bottom
+  PK: primary key | FK: foreign key | UQ: unique
+  1 = exactly one | 0..* = zero or more
+  Accounts and levels relate many-to-many through flight_result.
+endlegend
+@enduml
