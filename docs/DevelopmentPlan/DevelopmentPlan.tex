@@ -30,6 +30,7 @@ Sep 27 2026 & Sankalpa Chhetri Dhakal & Add IP to Protect section and Project De
 Sep 28 2026 & John Cho & Added POC Demo Plan and Potential Risks\\
 Sep 28 2026 & Arjun Sasidaran & Add Copyright License, Team Meeting Plan, Team Communication Plan, Team Member Roles and Workflow Plan sections, and reflection\\
 Oct 19 2026 & Arjun Sasidaran & Added user accounts and database storage to the stretch goals in the scheduling plan\\
+Nov 17 2026 & Team 9 & Planned accounts, personal best times and replays, and managed online leaderboards\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -259,9 +260,11 @@ The overall project schedule will follow the major capstone milestones and
 deadlines provided in the course outline. In addition to course deliverables,
 technical work will be scheduled in stages. The early stages will focus on setting up the Unity and VR environment and developing a basic FPV drone flight model.
 Once the core simulation is working, development will move toward controller
-support, training environments, scoring and feedback systems, and then the
-stretch goals: multiplayer functionality, AI-based flight analysis, user
-accounts, and database storage of flight records.
+support, training environments, scoring and feedback systems, user accounts,
+and per-level personal best times with matching private movement replays.
+Global and friends leaderboards are planned online features. Local best runs
+will remain available when offline; storing every attempt is not planned.
+Multiplayer functionality and AI-based flight analysis remain stretch goals.
 
 Tasks that are not yet ready to be worked on will remain in the backlog, while
 tasks that are prepared for development will move into the ready state. Work
@@ -317,7 +320,14 @@ The following is a list of potential risks that can impact the success of FPVR:
 \section{Expected Technology}
 
 
-\noindent The project will use an open source game engine like Unity as the primary game engine and C\# as the primary programming language. C\# will be used to implement the drone simulation, flight controls, physics, user interfaces, VR interactions, multiplayer functionality, and AI-based flight analysis. Unity and C\# were selected because they provide established tools for VR development, physics simulation, and cross-platform deployment. However, Unity's abstractions may limit access to lower-level hardware functionality and may introduce performance overhead for computationally intensive components. C may therefore be investigated for lower-level components such as drivers if direct hardware access or performance requirements make it necessary.
+\noindent The project will use an open source game engine like Unity as the primary game engine and C\# as the primary programming language. C\# will be used to implement the drone simulation, flight controls, physics, user interfaces, VR interactions, AI-based flight analysis, and any future multiplayer functionality. Unity and C\# were selected because they provide established tools for VR development, physics simulation, and cross-platform deployment. However, Unity's abstractions may limit access to lower-level hardware functionality and may introduce performance overhead for computationally intensive components. C may therefore be investigated for lower-level components such as drivers if direct hardware access or performance requirements make it necessary.
+
+The planned online features will use Unity Gaming Services (UGS): Authentication
+for accounts, Friends for friend relationships, Leaderboards for per-level best
+completion times, and Cloud Save for private best-run metadata and movement
+replay files. These managed services do not require a custom relational database.
+Each new personal best replaces the previous best and its replay; scores and
+ratings remain available for immediate post-attempt review.
 
 \vspace{0.75em}
 
