@@ -69,13 +69,15 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \url{https://softwaremandems.github.io/FPVR/SRS/SRS.pdf}
-in the Glossary section for the full table of symbols, abbreviations and acronyms.
+See the Glossary section of the Software Requirements Specification
+\citep{SRS} for the full table of symbols, abbreviations and acronyms. The
+types used in this document are defined in Section~\ref{SecNotation}.
 
 % \wss{Also add any additional symbols, abbreviations or acronyms}
 
 \newpage
 
+\setcounter{tocdepth}{2}
 \tableofcontents
 
 \newpage
@@ -91,11 +93,11 @@ courses. FPVR is powered by the Unity Game Engine, connected to a backend server
 manage user accounts and scores, hardware controller compatible, and features an AI-assisted interface
 to generate feedback and suggestions for improvement.
 
-Complementary documents include the System Requirement Specifications
-and Module Guide.  The full documentation and implementation can be
-found at \url{https://github.com/SoftwareMandems/FPVR}.
+Complementary documents include the Software Requirements Specification
+\citep{SRS} and the Module Guide. The full documentation and implementation
+can be found in the project repository \citep{FPVRRepository}.
 
-\section{Notation}
+\section{Notation} \label{SecNotation}
 
 % \wss{You should describe your notation.  You can use what is below as
 %   a starting point.}
@@ -139,7 +141,12 @@ tuple $x$ with a field named $f$, $x.f$ is the value of that field. For a
 sequence $s$, $|s|$ is its length, $s[i]$ is its $i$-th element (starting at
 1), $s \,||\, t$ is $s$ followed by $t$, and $\langle\rangle$ is the empty
 sequence. A multiple assignment $v_1, v_2 := e_1, e_2$ evaluates every
-expression first and then assigns them together. Following the MIS format, a
+expression first and then assigns them together. Local functions are given by
+their type signature followed by their definition, where $f(x) \equiv e$ means
+$f(x)$ is defined as $e$. A local function whose signature ends in
+``$\rightarrow$ (transition)'' returns no value; it names a sequence of state
+changes and access-program calls so that an access routine can refer to them
+by name. Following the MIS format, a
 module heading names its kind: Module (a library or abstract object) or
 Template Module (an abstract data type).
 
@@ -386,8 +393,12 @@ None.
 
 \subsubsection{Considerations}
 
-Standalone execution on the headset is the primary target. PCVR is kept as an
-execution mode because FR-UI-02 still requires it.
+Standalone execution on the headset is the primary target. PCVR is a second
+execution mode required by FR-UI-02 and NFR-INST-02: \progname{} runs on the
+reference PCVR computer, and the headset shows it through Meta Horizon Link
+over a cable or Air Link, as described in the MG's communication protocols.
+The VR runtime handles that link, so this module's interface is the same in
+both modes; only the value of headset.connection differs.
 
 \newpage
 % ==========================================================
@@ -657,9 +668,10 @@ moves cursor within $[1, |\text{items}|]$, so the invariant is kept.
 
 \subsubsection{Access Routine Semantics}
 
-Every show routine has the same form. For screen $x$ and the data passed in, it
-sets screen, items, cursor := $x$, itemsFor($x$), 1 and calls
-M1.showOverlay(draw($x$, data)). It raises $exc :=$ (\noinit).
+Every show routine has the same form. For screen $x$ and the routine's
+arguments $d$ (a ScreenData value), it sets screen, items, cursor := $x$,
+itemsFor($x$), 1 and calls M1.showOverlay(draw($x$, $d$)). It raises $exc :=$
+(\noinit).
 Table~\ref{TblM3Items} gives itemsFor, and the list below gives what each
 screen draws.
 
@@ -763,6 +775,14 @@ stops flight instead of reading stale input.
 \item Item = UserAction $\cup$ $\{$GUIDE\_INFO, REGISTER, SIGN\_IN,
   SIGN\_OUT$\}$. The four extra choices are handled inside this module and are
   never returned to the caller.
+\item ScreenData = seq of CourseItem $\cup$ HudView $\cup$ $\mathbb{B}$ $\cup$
+  ReviewView $\cup$ ($\Sigma^*$, seq of BoardRow, seq of BoardRow $\cup
+  \ \{\nul\}$) $\cup$ seq of HistoryRow $\cup$ $\Sigma^*$ $\cup$ $\{\nul\}$.
+  The arguments of the show routine that set the screen, or \nul{} for a
+  routine with no arguments.
+\item AccountError = $\{$ServiceUnavailable, UsernameTaken, WeakPassword,
+  InvalidCredentials$\}$. The exceptions that \Mref{9} can raise for an
+  account action after initialization.
 \end{itemize}
 
 \subsubsection{Local Functions}
@@ -771,16 +791,18 @@ stops flight instead of reading stale input.
 \item act: ActionKind $\rightarrow$ UserAction. act($a$) $= (a, \nul)$.
 \item itemsFor: Screen $\rightarrow$ seq of Item, given in
   Table~\ref{TblM3Items}.
-\item draw: Screen $\times$ data $\rightarrow$ View. The menu or overlay for
-  the screen showing the data, with items[cursor] highlighted.
+\item draw: Screen $\times$ ScreenData $\rightarrow$ View. draw($x$, $d$) is
+  the menu or overlay for screen $x$ showing $d$, with items[cursor]
+  highlighted.
 \item account: Item $\rightarrow$ (transition). With $(u, pw)$ = textFields:
   account(REGISTER) $\equiv$ M9.register($u$, $pw$) (FR-ACC-01);
   account(SIGN\_IN) $\equiv$ M9.signIn($u$, $pw$) (FR-ACC-03);
   account(SIGN\_OUT) $\equiv$ M9.signOut() (FR-ACC-04). Then showMainMenu().
-  If M9 raises exception $e$, showMessage(explain($e$)) instead (FR-ACC-02).
-\item explain: exception $\rightarrow \Sigma^*$. A message that states why the
-  request failed. For InvalidCredentials it does not say whether the username
-  or the password was wrong (FR-ACC-03).
+  If M9 raises an AccountError $e$, showMessage(explain($e$)) instead
+  (FR-ACC-02).
+\item explain: AccountError $\rightarrow \Sigma^*$. explain($e$) is a message
+  that states why the request failed. For InvalidCredentials it does not say
+  whether the username or the password was wrong (FR-ACC-03).
 \end{itemize}
 
 \subsubsection{Considerations}
@@ -1340,6 +1362,10 @@ crashed is \True, it stays \True{} until the next reset.
 
 The crash count is kept by \Mref{8}. This module only reports that a crash has
 happened, and \Mref{4} forwards it.
+
+The takeoff and crash rule in isCrash may be retuned once a reference drone is
+agreed (AC11 in the MG). Only isCrash changes when it is; the rule that each
+crash is registered exactly once stays fixed.
 
 \newpage
 % ==========================================================
@@ -1944,6 +1970,11 @@ None.
 
 A result moves through the states local only, pending, failed and synced.
 \Mref{12} stores the state, and this module decides each transition.
+
+When results are submitted and retried may change, including keeping results
+local only if the online service is not ready (AC12 in the MG). Only saveResult,
+retrySync and sync change when it does; the interface and the stored states
+stay the same.
 
 \newpage
 % ==========================================================
