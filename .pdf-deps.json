@@ -51,12 +51,13 @@
     "docs/Comments.text",
     "docs/Common.text",
     "docs/Design/SoftArchitecture/MG.tex",
-    "docs/Design/SoftArchitecture/media/hardware_diagram.png",
+    "docs/Design/SoftArchitecture/media/database-relations.pdf",
     "docs/Design/SoftArchitecture/media/ui_crash_screen.png",
     "docs/Design/SoftArchitecture/media/ui_in_flight.png",
     "docs/Design/SoftArchitecture/media/ui_path_diagram.png",
     "docs/Design/SoftArchitecture/media/ui_rc_mapping.png",
     "docs/Design/SoftArchitecture/media/ui_start_course.png",
+    "docs/Design/SoftArchitecture/media/uses-hierarchy.pdf",
     "refs/References.bib"
   ],
   "docs/Design/SoftDetailedDes/MIS.tex": [
