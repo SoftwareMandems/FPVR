@@ -69,13 +69,15 @@ Date 2 & 1.1 & Notes\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See SRS Documentation at \url{https://softwaremandems.github.io/FPVR/SRS/SRS.pdf}
-in the Glossary section for the full table of symbols, abbreviations and acronyms.
+See the Glossary section of the Software Requirements Specification
+\citep{SRS} for the full table of symbols, abbreviations and acronyms. The
+types used in this document are defined in Section~\ref{SecNotation}.
 
 % \wss{Also add any additional symbols, abbreviations or acronyms}
 
 \newpage
 
+\setcounter{tocdepth}{2}
 \tableofcontents
 
 \newpage
@@ -91,11 +93,11 @@ courses. FPVR is powered by the Unity Game Engine, connected to a backend server
 manage user accounts and scores, hardware controller compatible, and features an AI-assisted interface
 to generate feedback and suggestions for improvement.
 
-Complementary documents include the System Requirement Specifications
-and Module Guide.  The full documentation and implementation can be
-found at \url{https://github.com/SoftwareMandems/FPVR}.
+Complementary documents include the Software Requirements Specification
+\citep{SRS} and the Module Guide. The full documentation and implementation
+can be found in the project repository \citep{FPVRRepository}.
 
-\section{Notation}
+\section{Notation} \label{SecNotation}
 
 % \wss{You should describe your notation.  You can use what is below as
 %   a starting point.}
@@ -391,8 +393,12 @@ None.
 
 \subsubsection{Considerations}
 
-Standalone execution on the headset is the primary target. PCVR is kept as an
-execution mode because FR-UI-02 still requires it.
+Standalone execution on the headset is the primary target. PCVR is a second
+execution mode required by FR-UI-02 and NFR-INST-02: \progname{} runs on the
+reference PCVR computer, and the headset shows it through Meta Horizon Link
+over a cable or Air Link, as described in the MG's communication protocols.
+The VR runtime handles that link, so this module's interface is the same in
+both modes; only the value of headset.connection differs.
 
 \newpage
 % ==========================================================
