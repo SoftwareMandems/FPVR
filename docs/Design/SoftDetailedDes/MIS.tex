@@ -56,6 +56,7 @@ urlcolor=cyan          % color of external links
 \midrule
 Date 1 & 1.0 & Notes\\
 Date 2 & 1.1 & Notes\\
+Nov 17, 2026 & 1.2 & Aligned planned account and best-run storage with UGS managed services\\
 \bottomrule
 \end{tabularx}
 
@@ -81,8 +82,11 @@ in the Glossary section for the full table of symbols, abbreviations and acronym
 The following document details the Module Interface Specifications for
 FPVR: An FPV drone simulation game. The application is designed to provide a realistic
 virtual environment for pilots to hone their skills by completing increasingly difficult
-courses. FPVR is powered by the Unity Game Engine, connected to a backend server and database to
-manage user accounts and scores, hardware controller compatible, and features an AI-assisted interface
+courses. FPVR is powered by the Unity Game Engine and will use Unity Gaming Services
+for accounts, global and friends leaderboards, and each level's personal best
+completion time with its matching private movement replay. Leaderboards and Cloud Save
+provide managed storage without a custom relational database; the best run is also
+preserved locally for offline use. FPVR is hardware controller compatible and features an AI-assisted interface
 to generate feedback and suggestions for improvement.
 
 Complementary documents include the System Requirement Specifications
