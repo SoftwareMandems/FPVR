@@ -2205,6 +2205,285 @@ hidden behind this interface. This module stores the synchronization status it
 is given but never decides when to retry.
 
 \newpage
+% ==========================================================
+% M13
+% ==========================================================
+\section{MIS of Intelligent Feedback Analyzer (M13, Optional)}
+\label{sec:M13}
+
+\subsection{Module}
+
+\textbf{Module} FeedbackAnalyzer (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+\begin{itemize}
+\item MAX\_FEEDBACK\_LENGTH: $\mathbb{Z} = 500$. The longest feedback, in
+  characters, shown in the review.
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item AttemptSummary = tuple of ($T$: $\mathbb{R}$, $k$: $\mathbb{Z}$, $n$:
+  $\mathbb{Z}$, $C$: $\mathbb{Z}$, score: $\mathbb{Z}$). The completed
+  attempt's time, checkpoints, crashes and score.
+\item Feedback = $\Sigma^*$.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.6cm} p{3.6cm} p{2.4cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+isAvailable & - & $\mathbb{B}$ & - \\
+analyze & $a$: AttemptSummary & Feedback & FeedbackUnavailable \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+\begin{itemize}
+\item feedbackService: tuple of (reachable: $\mathbb{B}$, respond: $\Sigma^*
+  \rightarrow \Sigma^* \cup \ \{\nul\}$). The service that turns a description
+  of an attempt into feedback, or \nul{} if it fails.
+\end{itemize}
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent isAvailable():
+\begin{itemize}
+\item output: $out :=$ feedbackService.reachable
+\item exception: none
+\end{itemize}
+
+\noindent analyze($a$):
+\begin{itemize}
+\item output: Let $reply$ = feedbackService.respond(describe($a$)). $out :=
+  reply$ (FR-AI-01)
+\item exception: $exc :=$ ($\neg$feedbackService.reachable $\vee$
+  $\neg$acceptable($reply$) $\Rightarrow$ FeedbackUnavailable). The caller
+  shows the standard review when this is raised (FR-AI-03).
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item describe: AttemptSummary $\rightarrow \Sigma^*$. A description of $a.T$,
+  $a.k$ of $a.n$ checkpoints, $a.C$ and $a$.score. It contains no player
+  identity.
+\item acceptable: ($\Sigma^* \cup \ \{\nul\}) \rightarrow \mathbb{B}$.
+  acceptable($x$) is \True{} iff $x \neq \nul$ and $0 < |x| \leq$
+  MAX\_FEEDBACK\_LENGTH.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+This module is optional (FR-AI-01 to FR-AI-03). It keeps no state, as the MG's
+library classification requires, but it calls an external service, so unlike a
+pure library it has an environment variable. Its output is advisory and cannot
+change the measurements or the score.
+
+\newpage
+% ==========================================================
+% M14
+% ==========================================================
+\section{MIS of Performance Scoring Policy (M14)} \label{sec:M14}
+
+\subsection{Module}
+
+\textbf{Module} ScoringPolicy (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+These values come from FR-PER-08 and FR-PER-09.
+
+\begin{itemize}
+\item SCORE\_MAX: $\mathbb{Z} = 1000$
+\item CRASH\_PENALTY: $\mathbb{Z} = 100$
+\item GOLD\_MIN: $\mathbb{Z} = 800$
+\item SILVER\_MIN: $\mathbb{Z} = 600$
+\item BRONZE\_MIN: $\mathbb{Z} = 400$
+\end{itemize}
+
+\subsubsection{Exported Types}
+
+None. Rating is a shared type (Section 4).
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.4cm} p{3.6cm} p{3cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+evaluate & $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$ & ($\mathbb{Z}$, Rating) & InvalidMeasurement \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent evaluate($T$, $C$):
+\begin{itemize}
+\item output: $out :=$ (score($T$, $C$), rating(score($T$, $C$)))
+\item exception: $exc :=$ ($T < 0 \vee C < 0 \Rightarrow$
+  InvalidMeasurement)
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item score: $\mathbb{R} \times \mathbb{Z} \rightarrow \mathbb{Z}$.
+  score($T$, $C$) $= \max(0,\ \text{SCORE\_MAX} - \lfloor T \rfloor -
+  \text{CRASH\_PENALTY} \cdot C)$ (FR-PER-08). For example, $T = 42.7$ and $C =
+  1$ give $1000 - 42 - 100 = 858$.
+\item rating: $\mathbb{Z} \rightarrow$ Rating (FR-PER-09). \\
+  rating($x$) $=$ ($x \geq$ GOLD\_MIN $\Rightarrow$ GOLD $|$ SILVER\_MIN
+  $\leq x <$ GOLD\_MIN $\Rightarrow$ SILVER $|$ BRONZE\_MIN $\leq x <$
+  SILVER\_MIN $\Rightarrow$ BRONZE $|$ $x <$ BRONZE\_MIN $\Rightarrow$
+  NEEDS\_IMPROVEMENT).
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The rating bands are grouped with the formula because they interpret its
+output scale. The SRS formula stays the baseline until an approved requirement
+change revises it (AC5 in the MG).
+
+\newpage
+% ==========================================================
+% M15
+% ==========================================================
+\section{MIS of Leaderboard Ordering Policy (M15)} \label{sec:M15}
+
+\subsection{Module}
+
+\textbf{Module} OrderingPolicy (library).
+
+\subsection{Uses}
+
+None.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+
+None.
+
+\subsubsection{Exported Types}
+
+\begin{itemize}
+\item RankKey = tuple of (score: $\mathbb{Z}$, $T$: $\mathbb{R}$, timestamp:
+  $\mathbb{Z}$). The values that decide one result's place.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{p{2.2cm} p{3.6cm} p{2.6cm} X}
+\toprule
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\midrule
+order & $ks$: seq of RankKey & seq of $\mathbb{N}$ & - \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+
+None.
+
+\subsubsection{State Invariant}
+
+None.
+
+\subsubsection{Environment Variables}
+
+None.
+
+\subsubsection{Assumptions}
+
+None.
+
+\subsubsection{Access Routine Semantics}
+
+\noindent order($ks$):
+\begin{itemize}
+\item output: $out := p$, where $p$ is a sequence containing each of $1,
+  \ldots, |ks|$ exactly once, such that for all $i < j$:
+  $\neg$before($ks[p[j]]$, $ks[p[i]]$), and $p[i] < p[j]$ whenever
+  $ks[p[i]] = ks[p[j]]$. $p[1]$ is the position of the best result, and equal
+  keys keep their original order (FR-DAT-06).
+\item exception: none
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\begin{itemize}
+\item before: RankKey $\times$ RankKey $\rightarrow \mathbb{B}$.
+  before($a$, $b$) $= a.\text{score} > b.\text{score} \vee (a.\text{score} =
+  b.\text{score} \wedge a.T < b.T) \vee (a.\text{score} = b.\text{score}
+  \wedge a.T = b.T \wedge a.\text{timestamp} < b.\text{timestamp})$. Higher
+  score first, then shorter time, then earlier completion.
+\end{itemize}
+
+\subsubsection{Considerations}
+
+The ordering rule is the public FR-DAT-06 contract. The hidden decision is how
+it is applied to a result set. The same ordering is used for local and global
+leaderboards.
+
+\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {../../../refs/References}
