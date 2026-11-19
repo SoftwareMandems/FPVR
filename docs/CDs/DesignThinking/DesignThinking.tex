@@ -1,0 +1,8 @@
+\documentclass{article}
+\usepackage{pdfpages}
+
+% Build with make from the repository root. The Makefile exports the slides
+% from Design Thinking.pptx before LaTeX includes them.
+\begin{document}
+\includepdf[pages=-,fitpaper=true]{design-thinking-slides.pdf}
+\end{document}

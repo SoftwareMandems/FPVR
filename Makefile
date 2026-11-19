@@ -1,4 +1,4 @@
-# Makefile for compiling .tex files
+# Makefile for building document PDFs
 
 # Define the pdflatex command
 # -recorder makes pdflatex write a .fls listing every file it read, which
@@ -22,8 +22,21 @@ define COMPILE_BIBTEX
 	cd $(dir $1) && $(BIBTEX_CMD)
 endef
 
-# Default target: Compile all .tex files if no specific target is given
-all: $(patsubst %.tex, %.pdf, $(wildcard **/*.tex))
+# The workflow discovers the space-free TeX wrapper and builds this target.
+DESIGN_THINKING_PDF = docs/CDs/DesignThinking/DesignThinking.pdf
+
+# Default target: Build document PDFs if no specific target is given
+all: $(patsubst %.tex, %.pdf, $(wildcard **/*.tex)) $(DESIGN_THINKING_PDF)
+
+$(DESIGN_THINKING_PDF): docs/CDs/DesignThinking/Design\ Thinking.pptx \
+                       docs/CDs/DesignThinking/DesignThinking.tex \
+                       .github/scripts/build_presentation.py
+	# The GitHub runner has already refreshed the APT package index.
+	@if [ "$${GITHUB_ACTIONS:-}" = "true" ]; then \
+	  sudo apt-get install -y --no-install-recommends libreoffice-impress-nogui \
+	    fonts-crosextra-carlito fonts-liberation fonts-open-sans; \
+	fi
+	python3 .github/scripts/build_presentation.py "$<" "$@"
 
 # Rule for compiling .md to .pdf.
 # NOTE: this rule is deliberately listed BEFORE the .tex rule. When a folder
