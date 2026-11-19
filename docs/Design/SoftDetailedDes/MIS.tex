@@ -60,8 +60,7 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+Nov. 18, 2026 & 1.0 & Rev. $-1$\\
 \bottomrule
 \end{tabularx}
 
@@ -2525,36 +2524,104 @@ leaderboards.
 
 \section{Appendix --- Generative AI Use Disclosure}
 
-\wss{ChatGPT (version 5) was used to brainstorm ideas for the template for this disclose section.}
+Generative AI assisted with drafting and reviewing the Module Interface
+Specification (MIS). The Module Guide (MG) provided the module boundaries
+and dependencies, and the Software Requirements Specification (SRS)
+provided the required behaviour. The project team is responsible for the
+interface decisions and the accuracy, completeness, consistency, and
+appropriateness of the submitted specification.
 
 \subsection{AI Tools Used}
 
-\wss{Give the name of the AI tool(s) used and the version.}
+The team used Anthropic Claude Opus 5.5 and OpenAI GPT 6.2-sol
+(model identifier \texttt{gpt-6.2-sol}, accessed through Codex).
+The following describes their combined contribution to the MIS.
 
 \subsection{How and Where Used}
 
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
+The examples below identify the sections where AI assisted drafting or
+review and the interface details those contributions addressed.
 
-\wss{For each of the uses, identify which parts of the document were affected.}
+\begin{itemize}
+\item \textbf{Notation and Module Decomposition.} The tools helped use
+consistent names and types across module boundaries and express
+conditions, state updates, outputs, and exceptions in a common notation.
+They also assisted with reviewing whether the dependencies listed under
+Uses matched the responsibilities assigned in the Module Guide and
+whether the Syntax subsections exposed the types and operations needed
+by callers.
 
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
+\item \textbf{Headset, input, and presentation (\Mref{1}--\Mref{3}).}
+In the VR Platform Interface, Controller Input Interface, and User
+Interface sections, AI assisted with specifying headset pose and
+execution mode, control input and button mappings, and actions returned
+by the interface. This included clarifying which operations read device
+state and which translate a player's input into menu or flight actions.
+
+\item \textbf{Training and course content (\Mref{4} and \Mref{5}).}
+For Training Session Manager, AI helped describe how each session step
+coordinates the other modules as the player selects a course, flies,
+recovers, or completes an attempt. For Course and Environment Manager,
+it helped specify the course-loading operations and the values returned
+for start poses and checkpoint layouts.
+
+\item \textbf{Flight, recovery, and measurement
+(\Mref{6}--\Mref{8} and \Mref{11}).}
+In the Flight State and Crash Manager and Flight Dynamics Model sections,
+AI assisted with describing updates to the aircraft's state from
+control input, time steps, and collisions. For Checkpoint and Recovery
+Manager, it helped express how the next checkpoint advances progress
+and how progress determines the respawn pose. For Attempt Metrics Manager,
+it helped distinguish total flight time from section time and describe
+how crash counts and the final evaluation are produced.
+
+\item \textbf{Accounts, synchronization, and storage
+(\Mref{9}, \Mref{10}, and \Mref{12}).}
+AI assisted with describing registration, sign-in, and session access
+in Account and Authentication Manager. In Result Synchronization
+Manager, it helped specify local saving for guests, online submission
+for authenticated players, and retries for the signed-in owner. For
+Data Persistence Module, it helped document the separate operations
+for local records, global results, and a player's result history.
+
+\item \textbf{Feedback, scoring, and ranking
+(\Mref{13}--\Mref{15}).}
+For Intelligent Feedback Analyzer, AI helped describe what information
+the optional analysis receives and how the caller handles unavailable
+feedback. For Performance Scoring Policy, it helped express the
+calculation and rating boundaries. For Leaderboard Ordering Policy, it
+helped specify the order of tie-breakers and the treatment of equal
+keys. The tools also assisted with editing the LaTeX wording,
+assumptions, cross-references, and disclosure throughout the document.
+\end{itemize}
 
 \subsection{Verification of AI-Generated Content}
 
-\wss{\begin{itemize}
-    \item Describe how the team checked AI-generated or AI-assisted material
-    before including it in the document.
-    \item In particular, verify factual claims, technical assertions,
-    requirements, calculations, references, and other information for which an
-    AI system may produce incorrect or fabricated results.
-    \item \textbf{The team is responsible for the accuracy, completeness,
-consistency, and appropriateness of the submitted document, regardless of
-whether material was generated by a human or an AI system.}
-\end{itemize}}
+\begin{itemize}
+\item \textbf{Coverage and consistency.} We checked that the MIS contains
+15 module specifications and compared the imported module links in their
+Uses subsections with the MG hierarchy. All 16 direct dependencies matched.
+We also checked that the functional and non-functional requirement
+identifiers cited in the MIS appear in the SRS. These checks cover module
+and requirement references. Evaluating each contract still requires
+reviewing the behaviour it specifies.
+
+\item \textbf{Behaviour and calculations.} We compared representative
+contracts with the SRS. This included ordered checkpoint progression
+(FR-CHK-02 and FR-CHK-03), local saving and authenticated submission
+(FR-DAT-01, FR-DAT-02, and FR-ACC-05), and the score and rating rules
+(FR-PER-08 and FR-PER-09). For example, M14 floors 42.7 seconds to 42,
+subtracts 100 for one crash from the 1000-point starting score, and
+assigns Gold to the resulting score of 858. We also checked that M15
+applies the required ranking keys in order: higher score, shorter flight
+time, and earlier completion (FR-DAT-06).
+
+\item \textbf{Document and implementation checks.} We compiled the MIS
+with pdfLaTeX and checked the build output and the rendered disclosure.
+The document review checked the specified interfaces and behaviour.
+Runtime validation on the Quest and end-to-end testing of persistence,
+authorization, and synchronization remain separate implementation checks.
+\end{itemize}
 
 \newpage{}
 
