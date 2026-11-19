@@ -85,8 +85,10 @@ The abbreviations and acronyms below are used throughout the guide.
   \hypertarget{mg-abbr:requirement}{R} & Requirement\\
   \hypertarget{mg-abbr:sc}{SC} & Scientific Computing \\
   \hypertarget{mg-abbr:srs}{SRS} & Software Requirements Specification\\
-  \hypertarget{mg-abbr:fpvr}{\progname} & First-Person View Drone Simulator Game\\
+  \hypertarget{mg-abbr:fpvr}{\progname} & First-Person View Drone Simulator
+  Game\\
   \hypertarget{mg-abbr:uc}{UC} & Unlikely Change \\
+  \hypertarget{mg-abbr:uml}{UML} & Unified Modeling Language\\
   \bottomrule
 \end{tabular}
 
@@ -524,7 +526,7 @@ information hiding.
     (\mref{mPerformance}):}
     To satisfy FR-PER-01--10 and FR-REV-02, a dedicated
     module accumulates attempt measurements from lifecycle events.
-    It supplies a consistent final measurement snapshot to
+    This module supplies a consistent final measurement snapshot to
     \mref{mScoring}, then exposes the resulting evaluation for review.
 
     \item \textbf{Account and Authentication Manager (\mref{mAccount}):}
@@ -537,7 +539,7 @@ information hiding.
 
     \item \textbf{Result Synchronization Manager (\mref{mLeaderboard}):}
     To satisfy FR-DAT-02--10 and FR-REV-05, a dedicated
-    module owns the result-synchronization state machine. It retrieves
+    module owns the result-synchronization state machine. The module retrieves
     result sets through \mref{mStorage}, delegates their ordering to
     \mref{mRanking}, and keeps online failures independent of training.
     Changes to when results are submitted or retried, including keeping
@@ -814,8 +816,8 @@ recovery position; \mref{mTraining} coordinates its application through
 Tracks and validates progress through the checkpoints. Supplies positions
 for respawning or restarting the level. Preserves or resets checkpoint
 progress as required using course configuration supplied by
-\mref{mTraining}. Returns recovery positions and progress snapshots without calling
-the session manager or modifying drone state.
+\mref{mTraining}. Returns recovery positions and progress snapshots without
+calling the session manager or modifying drone state.
 
 \item[Implemented By:]
 \mgabbr{fpvr}{FPVR} Unity/C\# application.
@@ -1453,8 +1455,6 @@ These are dependencies that could require an import or an interface
 reference in code; they do not represent the direction of data movement.
 The dashed edge applies only when intelligent feedback is enabled.
 
-\subsection{Layers and Direct Dependencies}
-
 The graph has three layers. The Training Session Manager
 (\mref{mTraining}) is the top-level control module. The middle layer
 contains presentation, content, flight, checkpoint, measurement, result,
@@ -1618,7 +1618,8 @@ and offline use. Module \mref{mStorage} hides storage details;
 synchronization. Usernames are unique and passwords are stored only as
 salted, adaptive hashes.
 
-Figure \ref{FigDatabase} shows two one-to-many UML associations. Each
+Figure \ref{FigDatabase} shows two one-to-many Unified Modeling Language
+(\mgabbr{uml}{UML}) associations. Each
 flight result references exactly one account and one course level
 (\texttt{1}), while each account or level can have zero or more results
 (\texttt{0..*}). Flight results link accounts and course levels in a
