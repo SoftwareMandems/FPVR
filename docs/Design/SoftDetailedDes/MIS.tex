@@ -7,7 +7,6 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{colortbl}
-\usepackage{xr}
 \usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{xfrac}
@@ -23,15 +22,13 @@
 \hypersetup{
 bookmarks=true,     % show bookmarks bar?
 colorlinks=true,       % false: boxed links; true: colored links
-linkcolor=red,          % color of internal links (change box color with linkbordercolor)
+linkcolor=red,         % Internal links
 citecolor=blue,      % color of links to bibliography
-filecolor=magenta,  % color of file links
+filecolor=blue,      % color of file links
 urlcolor=cyan          % color of external links
 }
 
 \usepackage{array}
-
-\externaldocument{../../SRS/SRS}
 
 \input{../../Comments.text}
 \input{../../Common.text}
@@ -51,7 +48,9 @@ urlcolor=cyan          % color of external links
 
 \date{\today}
 
+\hypersetup{pageanchor=false}
 \maketitle
+\hypersetup{pageanchor=true}
 
 \pagenumbering{roman}
 
@@ -68,11 +67,10 @@ Nov. 18, 2026 & 1.0 & Rev. $-1$\\
 
 \section{Symbols, Abbreviations and Acronyms}
 
-See the Glossary section of the Software Requirements Specification
-\citep{SRS} for the full table of symbols, abbreviations and acronyms. The
+See the glossary in the Software Requirements Specification (SRS)
+\citep{SRS} for the full list of symbols, abbreviations, and acronyms. The
 types used in this document are defined in Section~\ref{SecNotation}.
 
-% \wss{Also add any additional symbols, abbreviations or acronyms}
 
 \newpage
 
@@ -85,21 +83,19 @@ types used in this document are defined in Section~\ref{SecNotation}.
 
 \section{Introduction}
 
-The following document details the Module Interface Specifications for
-FPVR: An FPV drone simulation game. The application is designed to provide a realistic
-virtual environment for pilots to hone their skills by completing increasingly difficult
-courses. FPVR is powered by the Unity Game Engine, connected to a backend server and database to
-manage user accounts and scores, hardware controller compatible, and features an AI-assisted interface
-to generate feedback and suggestions for improvement.
+The Module Interface Specification (MIS) defines the software interfaces
+for \progname{}, a first-person view (FPV) drone simulator. Players practise
+on virtual courses with a headset and controller. The Unity application
+uses a backend service for accounts and scores. An optional artificial
+intelligence (AI) module provides post-flight feedback.
 
-Complementary documents include the Software Requirements Specification
-\citep{SRS} and the Module Guide. The full documentation and implementation
-can be found in the project repository \citep{FPVRRepository}.
+The SRS defines the required
+behaviour \citep{SRS}. The Module Guide (MG) defines the architecture.
+The project repository contains both documents and the implementation
+\citep{FPVRRepository}.
 
 \section{Notation} \label{SecNotation}
 
-% \wss{You should describe your notation.  You can use what is below as
-%   a starting point.}
 
 The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
@@ -108,25 +104,28 @@ with the addition that template modules have been adapted from
 multiple assignment statement and conditional rules follow the form $(c_1
 \Rightarrow r_1 | c_2 \Rightarrow r_2 | ... | c_n \Rightarrow r_n )$.
 
-The following table summarizes the primitive data types used by \progname. 
+The following table summarizes the primitive data types used by \progname.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
-\noindent 
-\begin{tabular}{l l p{7.5cm}} 
-\toprule 
-\textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\ 
+\noindent
+\begin{tabular}{l l p{7.5cm}}
+\toprule
+\textbf{Data Type} & \textbf{Notation} & \textbf{Description}\\
 \midrule
 character & char & a single symbol or digit\\
-integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
-natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
+integer & $\mathbb{Z}$ & an integer in $(-\infty, \infty)$ \\
+natural number & $\mathbb{N}$ & a positive integer \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
 boolean & $\mathbb{B}$ & a value that is either \True{} or \False{}\\
 string & $\Sigma^*$ & a sequence of characters (char)\\
-enumerate & $\{\text{E}_i \:|\: i \leq n, \text{E}_i \in \Sigma^*\}$ & a finite unordered list of named constants\\
+enumerate & $\{\text{E}_i \:|\: i \leq n, \text{E}_i \in \Sigma^*\}$ & a finite
+unordered list of named constants\\
 sequence & seq of T & an ordered list of elements of type T\\
-tuple & (T$_1$, T$_2$, ..., T$_n$) & a finite ordered list of values of types T$_1$, T$_2$, ..., T$_n$\\
-dictionary & dict of T$_1$ to T$_2$ & a key-value pairing from type T$_1$ to type T$_2$\\
+tuple & (T$_1$, T$_2$, ..., T$_n$) & a finite ordered list of values of types
+T$_1$, T$_2$, ..., T$_n$\\
+dictionary & dict of T$_1$ to T$_2$ & a key-value pairing from type T$_1$ to
+type T$_2$\\
 function & T$_1$ $\rightarrow$ T$_2$ & a mapping from type T$_1$ to type T$_2$\\
 set & set of T & an unordered collection of distinct elements of type T\\
 \bottomrule
@@ -151,8 +150,8 @@ Template Module (an abstract data type).
 
 \subsection*{Shared Types}
 
-Two types are fixed by the SRS rather than by any module's design, and modules
-that share no uses relation both need them. They are defined once here so that
+The SRS defines two types that are shared across module boundaries. They are
+defined once here so that
 each module's Uses list can match the MG uses hierarchy exactly.
 
 \begin{itemize}
@@ -174,22 +173,30 @@ A module that needs one of these types lists its owner under Uses.
 \begin{table}[h!]
 \centering
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.6cm} l >{\raggedright\arraybackslash}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5.6cm} l
+>{\raggedright\arraybackslash}X}
 \toprule
 \textbf{Types} & \textbf{Owner} & \textbf{Meaning}\\
 \midrule
-ExecutionMode, View & \Mref{1} & Standalone or PCVR; an image shown in the headset\\
-DeviceType, ControlInput, MenuInput, ControlMapping & \Mref{2} & The active controller, the four flight axes, a menu button and the axis bindings\\
-ActionKind, UserAction, Screen, CourseItem, HudView, ReviewView, BoardRow, HistoryRow & \Mref{3} & A user's choice and the data each screen displays\\
+ExecutionMode, View & \Mref{1} & Standalone or PC-based virtual reality (PCVR)
+mode, and a headset image\\
+DeviceType, ControlInput, MenuInput, ControlMapping & \Mref{2} & The active
+controller, the four flight axes, a menu button and the axis bindings\\
+ActionKind, UserAction, Screen, CourseItem, HudView, ReviewView, BoardRow,
+HistoryRow & \Mref{3} & A user's choice and the data each screen displays\\
 Phase & \Mref{4} & The stage of the current training session\\
 Mode, Difficulty, CourseInfo & \Mref{5} & Training mode and course description\\
 Passage & \Mref{6} & A checkpoint gate or the finish the drone passed through\\
-Evaluation & \Mref{8} & The frozen measurements, score and rating of an attempt\\
+Evaluation & \Mref{8} & The frozen measurements, score and rating of an
+attempt\\
 User & \Mref{9} & A signed-in player and their session\\
-Scope, ResultInput, LeaderboardEntry, HistoryEntry & \Mref{10} & Result data passed in and out of synchronization\\
+Scope, ResultInput, LeaderboardEntry, HistoryEntry & \Mref{10} & Result data
+passed in and out of synchronization\\
 FlightState & \Mref{11} & The drone's pose, velocity and angular velocity\\
-SyncStatus, ResultRecord & \Mref{12} & A stored result and its synchronization state\\
-AttemptSummary, Feedback & \Mref{13} & The input and output of feedback analysis\\
+SyncStatus, ResultRecord & \Mref{12} & A stored result and its synchronization
+state\\
+AttemptSummary, Feedback & \Mref{13} & The input and output of feedback
+analysis\\
 RankKey & \Mref{15} & The values used to order one result\\
 \bottomrule
 \end{tabularx}
@@ -199,7 +206,7 @@ RankKey & \Mref{15} & The values used to order one result\\
 
 \section{Module Decomposition}
 
-Table~\ref{TblMH} reproduces the module hierarchy from the Module Guide (MG).
+Table~\ref{TblMH} reproduces the module hierarchy from the MG.
 The modules are grouped by the kind of secret they hide. Hardware-hiding modules
 hide the headset and controller devices. Behaviour-hiding modules hide the
 behaviour required by the SRS. Software decision modules hide algorithms and
@@ -260,6 +267,8 @@ module depends on M13 being present.
 % ==========================================================
 \section{MIS of VR Platform Interface (M1)} \label{sec:M1}
 
+Provides headset tracking and display access in both execution modes.
+
 \subsection{Module}
 
 \textbf{Module} VRPlatform (abstract object).
@@ -270,6 +279,8 @@ None.
 
 \subsection{Syntax}
 
+Callers use the exported interface to manage the headset view.
+
 \subsubsection{Exported Constants}
 
 None.
@@ -278,14 +289,17 @@ None.
 
 \begin{itemize}
 \item ExecutionMode = $\{$STANDALONE, PCVR$\}$.
-\item View: an image shown to the user in the headset. It is defined only by
+\item View: a virtual reality (VR) image shown in the headset and defined by
   what it depicts.
 \end{itemize}
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM1Access} lists the exported operations and their signatures.
+
 \begin{center}
-\begin{tabularx}{\textwidth}{p{3.2cm} p{2.8cm} p{2.8cm} X}
+\begin{minipage}{\textwidth}
+\begin{tabularx}{\textwidth}{p{3.5cm} p{2.45cm} p{2.85cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
@@ -298,9 +312,14 @@ setViewOrigin & $p$: Pose & - & NotInitialized \\
 showOverlay & $v$: View $\cup \ \{\nul\}$ & - & NotInitialized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M1}
+\label{TblM1Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The headset runtime supplies tracking and display state.
 
 \subsubsection{State Variables}
 
@@ -405,6 +424,8 @@ both modes; only the value of headset.connection differs.
 % ==========================================================
 \section{MIS of Controller Input Interface (M2)} \label{sec:M2}
 
+Translates controller input into flight and menu commands.
+
 \subsection{Module}
 
 \textbf{Module} ControllerInput (abstract object).
@@ -414,6 +435,8 @@ both modes; only the value of headset.connection differs.
 None.
 
 \subsection{Syntax}
+
+The interface exposes device type, control values, and bindings.
 
 \subsubsection{Exported Constants}
 
@@ -437,8 +460,11 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM2Access} lists the exported operations and their signatures.
+
 \begin{center}
-\begin{tabularx}{\textwidth}{p{3.4cm} p{1.6cm} p{3.2cm} X}
+\begin{minipage}{\textwidth}
+\begin{tabularx}{\textwidth}{p{3.6cm} p{1.4cm} p{3.2cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
@@ -451,9 +477,14 @@ getControlMapping & - & ControlMapping & NotInitialized \\
 calibrate & - & - & NotInitialized, NoController \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M2}
+\label{TblM2Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Input availability and the active device determine what callers receive.
 
 \subsubsection{State Variables}
 
@@ -562,6 +593,8 @@ hardware user interface figure.
 % ==========================================================
 \section{MIS of User Interface (M3)} \label{sec:M3}
 
+Presents screens and converts player input into application actions.
+
 \subsection{Module}
 
 \textbf{Module} UserInterface (abstract object).
@@ -575,6 +608,8 @@ hardware user interface figure.
 \end{itemize}
 
 \subsection{Syntax}
+
+Exported types describe screens, displayed data, and user actions.
 
 \subsubsection{Exported Constants}
 
@@ -592,7 +627,8 @@ from other modules' results, so this module needs no other module's types.
   training intentions returned to the caller.
 \item UserAction = tuple of (kind: ActionKind, course: $\Sigma^* \cup
   \ \{\nul\}$).
-\item Screen = $\{$MAIN, GUIDE, COURSES, HUD, PAUSE\_MENU, CRASH\_MENU, REVIEW,
+\item Screen includes the head-up display (HUD). Its values are
+  $\{$MAIN, GUIDE, COURSES, HUD, PAUSE\_MENU, CRASH\_MENU, REVIEW,
   LEADERBOARD, HISTORY, MESSAGE$\}$.
 \item CourseItem = tuple of (id: $\Sigma^*$, name: $\Sigma^*$, environment:
   $\Sigma^*$, difficulty: $\Sigma^*$).
@@ -611,8 +647,12 @@ from other modules' results, so this module needs no other module's types.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM3Access} lists the exported operations and their signatures.
+
 \begin{center}
-\begin{tabularx}{\textwidth}{p{3.7cm} >{\raggedright\arraybackslash}X p{2.2cm} p{2.6cm}}
+\begin{minipage}{\textwidth}
+\begin{tabularx}{\textwidth}{p{3.9cm} >{\raggedright\arraybackslash}X p{2.2cm}
+p{2.6cm}}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
@@ -625,15 +665,21 @@ showFreeFlightHUD & $p$: Pose & - & NotInitialized \\
 showPauseMenu & - & - & NotInitialized \\
 showCrashMenu & canRestart: $\mathbb{B}$ & - & NotInitialized \\
 showReview & $r$: ReviewView & - & NotInitialized \\
-showLeaderboard & $c$: $\Sigma^*$, $l$: seq of BoardRow, $g$: seq of BoardRow $\cup \ \{\nul\}$ & - & NotInitialized \\
+showLeaderboard & $c$: $\Sigma^*$, $l$: seq of BoardRow, $g$: seq of BoardRow
+$\cup \ \{\nul\}$ & - & NotInitialized \\
 showHistory & $h$: seq of HistoryRow & - & NotInitialized \\
 showMessage & $msg$: $\Sigma^*$ & - & NotInitialized \\
 getUserAction & - & UserAction & NotInitialized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M3}
+\label{TblM3Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The current screen governs which player actions can be returned.
 
 \subsubsection{State Variables}
 
@@ -677,7 +723,8 @@ screen draws.
 \begin{table}[h!]
 \centering
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.5cm}
+>{\raggedright\arraybackslash}X}
 \toprule
 \textbf{Screen} & \textbf{itemsFor(screen)} \\
 \midrule
@@ -746,7 +793,8 @@ LEADERBOARD, HISTORY, MESSAGE & act(MAIN\_MENU)\\
 \begin{table}[h!]
 \centering
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.6cm}}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.6cm}
+>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.6cm}}
 \toprule
 \textbf{Condition} & \textbf{Transition} & \textbf{$out :=$} \\
 \midrule
@@ -779,9 +827,9 @@ stops flight instead of reading stale input.
   \ \{\nul\}$) $\cup$ seq of HistoryRow $\cup$ $\Sigma^*$ $\cup$ $\{\nul\}$.
   The arguments of the show routine that set the screen, or \nul{} for a
   routine with no arguments.
-\item AccountError = $\{$ServiceUnavailable, UsernameTaken, WeakPassword,
-  InvalidCredentials$\}$. The exceptions that \Mref{9} can raise for an
-  account action after initialization.
+\item AccountError is one of ServiceUnavailable, UsernameTaken,
+  WeakPassword, or InvalidCredentials. These are the exceptions
+  \Mref{9} can raise for an account action after initialization.
 \end{itemize}
 
 \subsubsection{Local Functions}
@@ -816,6 +864,8 @@ is the only such access program in \progname{}.
 % ==========================================================
 \section{MIS of Training Session Manager (M4)} \label{sec:M4}
 
+Coordinates the modules involved in a training attempt.
+
 \subsection{Module}
 
 \textbf{Module} TrainingSession (abstract object).
@@ -839,6 +889,8 @@ is the only such access program in \progname{}.
 
 \subsection{Syntax}
 
+Callers can initialize the session, advance it, and read its phase.
+
 \subsubsection{Exported Constants}
 
 None.
@@ -851,7 +903,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM4Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3.2cm} p{2.6cm} p{2.6cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -861,9 +916,14 @@ step & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
 getPhase & - & Phase & NotInitialized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M4}
+\label{TblM4Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The current phase governs which actions advance or end an attempt.
 
 \subsubsection{State Variables}
 
@@ -937,7 +997,8 @@ $m$ is mode.
 \centering
 \small
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.3cm}
+>{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}X}
 \toprule
 \textbf{phase} & \textbf{$a$.kind} & \textbf{Transition} \\
 \midrule
@@ -1003,9 +1064,9 @@ begin($m$, $c$) applies these steps in order:
 phase, mode, course := MENU, \nul, \nul; M3.showMainMenu().
 
 \noindent \textbf{progress}: $\mathbb{N} \rightarrow$ (transition).
-progress($i$) $\equiv$ let $k_0$ = M7.getProgress()[1];
-M7.passCheckpoint($i$); (M7.getProgress()[1] $> k_0 \Rightarrow$
-M8.resetSectionTime()) (FR-PER-04).
+To run progress($i$), first read the checkpoint count $k_0$ from
+M7.getProgress()[1]. Then call M7.passCheckpoint($i$). If the resulting
+count exceeds $k_0$, call M8.resetSectionTime() (FR-PER-04).
 
 \noindent \textbf{complete}: $\rightarrow$ (transition). complete() applies
 these steps in order (FR-PER-10, FR-DAT-01, FR-REV-01):
@@ -1018,11 +1079,11 @@ these steps in order (FR-PER-10, FR-DAT-01, FR-REV-01):
   $ev$.rating, feedback($ev$, $k$, $n$))); phase := COMPLETE.
 \end{enumerate}
 
-\noindent \textbf{showFlight}: $\rightarrow$ (transition). showFlight()
-$\equiv$ (mode $=$ OBSTACLE\_COURSE $\Rightarrow$
-M3.showHUD((M6.getPose(), M8.getTotalTime(), M8.getSectionTime(),
-M7.getProgress()[1], M7.getProgress()[2])) $|$ mode $=$ FREE\_FLIGHT
-$\Rightarrow$ M3.showFreeFlightHUD(M6.getPose())).
+\noindent \textbf{showFlight}: $\rightarrow$ (transition).
+In OBSTACLE\_COURSE mode, call M3.showHUD with the drone pose from
+M6.getPose(), total and section times from M8.getTotalTime() and
+M8.getSectionTime(), and checkpoint counts from M7.getProgress().
+In FREE\_FLIGHT mode, call M3.showFreeFlightHUD with M6.getPose().
 
 \noindent \textbf{feedback}: Evaluation $\times\ \mathbb{Z} \times
 \mathbb{Z} \rightarrow \Sigma^* \cup \ \{\nul\}$. feedback($ev$, $k$, $n$)
@@ -1065,6 +1126,8 @@ depends on another to obtain it.
 % ==========================================================
 \section{MIS of Course and Environment Manager (M5)} \label{sec:M5}
 
+Provides course metadata, start poses, and checkpoint layouts.
+
 \subsection{Module}
 
 \textbf{Module} CourseEnvironment (abstract object).
@@ -1074,6 +1137,8 @@ depends on another to obtain it.
 None.
 
 \subsection{Syntax}
+
+The interface identifies courses and exposes their configuration.
 
 \subsubsection{Exported Constants}
 
@@ -1094,7 +1159,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM5Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3cm} p{2.2cm} p{3.2cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -1103,12 +1171,18 @@ init & - & - & InvalidCourseData \\
 getCourses & - & seq of CourseInfo & NotInitialized \\
 loadCourse & $c$: $\Sigma^*$ & - & NotInitialized, CourseNotFound \\
 getStartPose & $c$: $\Sigma^*$ & Pose & NotInitialized, CourseNotFound \\
-getCheckpoints & $c$: $\Sigma^*$ & seq of Pose & NotInitialized, CourseNotFound \\
+getCheckpoints & $c$: $\Sigma^*$ & seq of Pose & NotInitialized, CourseNotFound
+\\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M5}
+\label{TblM5Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Course loading and lookup use the supported course identifiers.
 
 \subsubsection{State Variables}
 
@@ -1213,6 +1287,8 @@ Attempt progress is not part of a course. It belongs to \Mref{7}.
 % ==========================================================
 \section{MIS of Flight State and Crash Manager (M6)} \label{sec:M6}
 
+Owns the drone state and records collisions during flight.
+
 \subsection{Module}
 
 \textbf{Module} FlightStateCrash (abstract object).
@@ -1225,6 +1301,8 @@ Attempt progress is not part of a course. It belongs to \Mref{7}.
 \end{itemize}
 
 \subsection{Syntax}
+
+The interface exposes state updates, crashes, and gate passages.
 
 \subsubsection{Exported Constants}
 
@@ -1239,7 +1317,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM6Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3cm} p{2.4cm} p{3cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -1252,9 +1333,14 @@ isCrashed & - & $\mathbb{B}$ & NotInitialized \\
 getPassages & - & set of Passage & NotInitialized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M6}
+\label{TblM6Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Each update can change the drone state and register a crash or passage.
 
 \subsubsection{State Variables}
 
@@ -1372,6 +1458,8 @@ crash is registered exactly once stays fixed.
 % ==========================================================
 \section{MIS of Checkpoint and Recovery Manager (M7)} \label{sec:M7}
 
+Tracks ordered checkpoint progress and supplies a respawn pose.
+
 \subsection{Module}
 
 \textbf{Module} CheckpointRecovery (abstract object).
@@ -1381,6 +1469,8 @@ crash is registered exactly once stays fixed.
 None.
 
 \subsection{Syntax}
+
+The interface supports resetting progress, recording passes, and recovery.
 
 \subsubsection{Exported Constants}
 
@@ -1392,7 +1482,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM7Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3.2cm} p{3.6cm} p{2.4cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -1405,9 +1498,14 @@ isComplete & - & $\mathbb{B}$ & NotInitialized \\
 getRespawnPose & - & Pose & NotInitialized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M7}
+\label{TblM7Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Progress advances only when the player passes the next required gate.
 
 \subsubsection{State Variables}
 
@@ -1502,6 +1600,8 @@ them through \Mref{6}.
 % ==========================================================
 \section{MIS of Attempt Metrics Manager (M8)} \label{sec:M8}
 
+Tracks measurements used to evaluate a flight attempt.
+
 \subsection{Module}
 
 \textbf{Module} AttemptMetrics (abstract object).
@@ -1511,6 +1611,8 @@ them through \Mref{6}.
 \Mref{14} (evaluate).
 
 \subsection{Syntax}
+
+The interface records flight time and crashes and exposes the evaluation.
 
 \subsubsection{Exported Constants}
 
@@ -1526,14 +1628,18 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM8Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3.4cm} p{2.4cm} p{2.6cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
 init & - & - & - \\
 reset & - & - & NotInitialized \\
-addFlightTime & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval \\
+addFlightTime & $\Delta t$: $\mathbb{R}$ & - & NotInitialized, NegativeInterval
+\\
 resetSectionTime & - & - & NotInitialized \\
 recordCrash & - & - & NotInitialized \\
 complete & - & - & NotInitialized \\
@@ -1542,9 +1648,14 @@ getSectionTime & - & $\mathbb{R}$ & NotInitialized \\
 getEvaluation & - & Evaluation & NotInitialized, NotCompleted \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M8}
+\label{TblM8Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Completion fixes the measurements used to calculate the result.
 
 \subsubsection{State Variables}
 
@@ -1662,6 +1773,8 @@ policy does not change how this module measures an attempt.
 % ==========================================================
 \section{MIS of Account and Authentication Manager (M9)} \label{sec:M9}
 
+Manages player registration and authenticated sessions.
+
 \subsection{Module}
 
 \textbf{Module} AccountAuthentication (abstract object).
@@ -1671,6 +1784,8 @@ policy does not change how this module measures an attempt.
 None.
 
 \subsection{Syntax}
+
+Callers can register, sign in, sign out, and query the active player.
 
 \subsubsection{Exported Constants}
 
@@ -1688,22 +1803,32 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM9Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3.2cm} p{3.4cm} p{2cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
 init & - & - & - \\
-register & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, UsernameTaken, WeakPassword \\
-signIn & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized, ServiceUnavailable, InvalidCredentials \\
+register & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized,
+ServiceUnavailable, UsernameTaken, WeakPassword \\
+signIn & $u$: $\Sigma^*$, $pw$: $\Sigma^*$ & - & NotInitialized,
+ServiceUnavailable, InvalidCredentials \\
 signOut & - & - & NotInitialized \\
 isAuthenticated & - & $\mathbb{B}$ & NotInitialized \\
 getCurrentUser & - & User & NotInitialized, NotSignedIn \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M9}
+\label{TblM9Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Account operations update the session according to the service response.
 
 \subsubsection{State Variables}
 
@@ -1740,8 +1865,8 @@ None.
 
 \noindent register($u$, $pw$):
 \begin{itemize}
-\item transition: authService.accounts := authService.accounts $\cup \{(u,
-  \text{newID}(), \text{protect}(pw))\}$ (FR-ACC-01)
+\item transition: Add $(u, \text{newID}(), \text{protect}(pw))$ to
+  authService.accounts (FR-ACC-01).
 \item exception: $exc :=$ (\noinit{} $|$ $\neg$authService.reachable
   $\Rightarrow$ ServiceUnavailable $|$ $\exists a \in$ authService.accounts
   $\cdot\ a.\text{username} = u \Rightarrow$ UsernameTaken $|$ $|pw| <$
@@ -1809,6 +1934,8 @@ Usernames are also the display names shown on leaderboards.
 % ==========================================================
 \section{MIS of Result Synchronization Manager (M10)} \label{sec:M10}
 
+Coordinates local results and authenticated synchronization.
+
 \subsection{Module}
 
 \textbf{Module} ResultSynchronization (abstract object).
@@ -1823,6 +1950,8 @@ Usernames are also the display names shown on leaderboards.
 \end{itemize}
 
 \subsection{Syntax}
+
+The interface supports saving, retrying, and retrieving results.
 
 \subsubsection{Exported Constants}
 
@@ -1848,7 +1977,10 @@ Usernames are also the display names shown on leaderboards.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM10Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{3cm} p{3.2cm} p{3.4cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -1856,13 +1988,19 @@ Usernames are also the display names shown on leaderboards.
 init & - & - & - \\
 saveResult & $r$: ResultInput & - & NotInitialized, SaveFailed \\
 retrySync & - & - & NotInitialized, NotSignedIn \\
-getLeaderboard & $c$: $\Sigma^*$, $sc$: Scope & seq of LeaderboardEntry & NotInitialized, LeaderboardUnavailable \\
+getLeaderboard & $c$: $\Sigma^*$, $sc$: Scope & seq of LeaderboardEntry &
+NotInitialized, LeaderboardUnavailable \\
 getHistory & - & seq of HistoryEntry & NotInitialized, NotSignedIn \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M10}
+\label{TblM10Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Local storage and remote submission have separate outcomes.
 
 \subsubsection{State Variables}
 
@@ -1920,7 +2058,8 @@ None.
   M12.loadLocal() $|$ $x$.course $= c\rangle$ $|$ $sc =$ GLOBAL
   $\Rightarrow$ M12.loadGlobal($c$)) and $p$ = M15.order($\langle$key($x$)
   $|$ $x \in R\rangle$). \\
-  $out := \langle$entry($i$, $R[p[i]]$) $|$ $i \in [1..\min(\text{LEADERBOARD\_SIZE}, |R|)]\rangle$
+  $out := \langle$entry($i$, $R[p[i]]$) $|$ $i \in
+  [1..\min(\text{LEADERBOARD\_SIZE}, |R|)]\rangle$
   (FR-DAT-04 to FR-DAT-07)
 \item exception: $exc :=$ (\noinit{} $|$ $sc =$ GLOBAL $\wedge$
   M12.loadGlobal raises NetworkUnavailable $\Rightarrow$
@@ -1943,10 +2082,9 @@ None.
 \subsubsection{Local Functions}
 
 \begin{itemize}
-\item owner: $\rightarrow$ ($\Sigma^*$, $\Sigma^*$). With $u$ =
-  M9.getCurrentUser(), owner() $=$ (M9.isAuthenticated() $\Rightarrow$
-  ($u$.playerID, $u$.displayName) $|$ otherwise $\Rightarrow$
-  (GUEST\_PLAYER, GUEST\_PLAYER)).
+\item owner: $\rightarrow$ ($\Sigma^*$, $\Sigma^*$). For an authenticated
+  user $u$ from M9.getCurrentUser(), returns ($u$.playerID, $u$.displayName).
+  Otherwise, returns (GUEST\_PLAYER, GUEST\_PLAYER).
 \item sync: ResultRecord $\rightarrow$ (transition). With $u$ =
   M9.getCurrentUser(), sync($x$) $\equiv$ M12.setSyncStatus($x$.id,
   PENDING); then M12.uploadResult($x$, $u$.token), followed by
@@ -1981,6 +2119,8 @@ stay the same.
 % ==========================================================
 \section{MIS of Flight Dynamics Model (M11)} \label{sec:M11}
 
+Calculates the drone motion for a flight update.
+
 \subsection{Module}
 
 \textbf{Module} FlightDynamics (library).
@@ -1990,6 +2130,8 @@ stay the same.
 None.
 
 \subsection{Syntax}
+
+The exported interface takes a flight state, control values, and time step.
 
 \subsubsection{Exported Constants}
 
@@ -2016,8 +2158,12 @@ during testing (AC2 in the MG). Only this module changes when they do.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM11Access} lists the exported operations and their signatures.
+
 \begin{center}
-\begin{tabularx}{\textwidth}{p{1.6cm} >{\raggedright\arraybackslash}X p{2.4cm} p{3.2cm}}
+\begin{minipage}{\textwidth}
+\begin{tabularx}{\textwidth}{p{1.6cm} >{\raggedright\arraybackslash}X p{2.4cm}
+p{3.2cm}}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
@@ -2026,12 +2172,17 @@ $u_\phi$: $\mathbb{R}$, $u_\psi$: $\mathbb{R}$, $\Delta t$: $\mathbb{R}$ &
 FlightState & NegativeInterval \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M11}
+\label{TblM11Access}
+\end{minipage}
 \end{center}
 
 The inputs after $s$ are the throttle $\tau \in [0, 1]$ and the pitch, roll and
 yaw commands in $[-1, 1]$.
 
 \subsection{Semantics}
+
+The model calculates the next state from its inputs and physical parameters.
 
 \subsubsection{State Variables}
 
@@ -2094,6 +2245,8 @@ hits the ground (FR-FLT-03). The authoritative drone state is kept by
 % ==========================================================
 \section{MIS of Data Persistence Module (M12)} \label{sec:M12}
 
+Provides access to local and online result records.
+
 \subsection{Module}
 
 \textbf{Module} DataPersistence (abstract object).
@@ -2103,6 +2256,8 @@ hits the ground (FR-FLT-03). The authoritative drone state is kept by
 None.
 
 \subsection{Syntax}
+
+The operations cover storing results and retrieving rankings or history.
 
 \subsubsection{Exported Constants}
 
@@ -2121,23 +2276,36 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM12Access} lists the exported operations and their signatures.
+
 \begin{center}
-\begin{tabularx}{\textwidth}{p{3.4cm} >{\raggedright\arraybackslash}p{3.4cm} p{2.8cm} X}
+\begin{minipage}{\textwidth}
+\begin{tabularx}{\textwidth}{p{3.4cm} >{\raggedright\arraybackslash}p{3.4cm}
+p{2.8cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
 init & - & - & - \\
 storeLocal & $x$: ResultRecord & - & NotInitialized, StorageError \\
 loadLocal & - & seq of ResultRecord & NotInitialized \\
-setSyncStatus & $id$: $\Sigma^*$, $st$: SyncStatus & - & NotInitialized, RecordNotFound \\
-uploadResult & $x$: ResultRecord, $tok$: $\Sigma^*$ & - & NotInitialized, NetworkUnavailable, Unauthorized \\
-loadGlobal & $c$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable \\
-loadPlayerResults & $pid$: $\Sigma^*$, $tok$: $\Sigma^*$ & seq of ResultRecord & NotInitialized, NetworkUnavailable, Unauthorized \\
+setSyncStatus & $id$: $\Sigma^*$, $st$: SyncStatus & - & NotInitialized,
+RecordNotFound \\
+uploadResult & $x$: ResultRecord, $tok$: $\Sigma^*$ & - & NotInitialized,
+NetworkUnavailable, Unauthorized \\
+loadGlobal & $c$: $\Sigma^*$ & seq of ResultRecord & NotInitialized,
+NetworkUnavailable \\
+loadPlayerResults & $pid$: $\Sigma^*$, $tok$: $\Sigma^*$ & seq of ResultRecord &
+NotInitialized, NetworkUnavailable, Unauthorized \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M12}
+\label{TblM12Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The outcome depends on the requested store and the service response.
 
 \subsubsection{State Variables}
 
@@ -2230,7 +2398,8 @@ None.
 \subsubsection{Considerations}
 
 The MG's database design describes the intended backend: a hosted relational
-database reached through an authenticated HTTPS service. Those choices stay
+database reached through an authenticated Hypertext Transfer Protocol
+Secure (HTTPS) service. Those choices stay
 hidden behind this interface. This module stores the synchronization status it
 is given but never decides when to retry.
 
@@ -2241,6 +2410,8 @@ is given but never decides when to retry.
 \section{MIS of Intelligent Feedback Analyzer (M13, Optional)}
 \label{sec:M13}
 
+Produces optional feedback from an attempt summary.
+
 \subsection{Module}
 
 \textbf{Module} FeedbackAnalyzer (library).
@@ -2250,6 +2421,8 @@ is given but never decides when to retry.
 None.
 
 \subsection{Syntax}
+
+The interface reports availability and accepts a completed attempt summary.
 
 \subsubsection{Exported Constants}
 
@@ -2269,7 +2442,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM13Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{2.6cm} p{3.6cm} p{2.4cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -2278,9 +2454,14 @@ isAvailable & - & $\mathbb{B}$ & - \\
 analyze & $a$: AttemptSummary & Feedback & FeedbackUnavailable \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M13}
+\label{TblM13Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+Availability and the provider response determine the feedback outcome.
 
 \subsubsection{State Variables}
 
@@ -2343,6 +2524,8 @@ change the measurements or the score.
 % ==========================================================
 \section{MIS of Performance Scoring Policy (M14)} \label{sec:M14}
 
+Calculates the score and rating for a completed attempt.
+
 \subsection{Module}
 
 \textbf{Module} ScoringPolicy (library).
@@ -2352,6 +2535,8 @@ change the measurements or the score.
 None.
 
 \subsection{Syntax}
+
+The exported operation evaluates total flight time and crash count.
 
 \subsubsection{Exported Constants}
 
@@ -2371,17 +2556,26 @@ None. Rating is a shared type (Section 4).
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM14Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{2.4cm} p{3.6cm} p{3cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \midrule
-evaluate & $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$ & ($\mathbb{Z}$, Rating) & InvalidMeasurement \\
+evaluate & $T$: $\mathbb{R}$, $C$: $\mathbb{Z}$ & ($\mathbb{Z}$, Rating) &
+InvalidMeasurement \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M14}
+\label{TblM14Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The calculation uses the scoring formula and rating bands from the SRS.
 
 \subsubsection{State Variables}
 
@@ -2434,6 +2628,8 @@ change revises it (AC5 in the MG).
 % ==========================================================
 \section{MIS of Leaderboard Ordering Policy (M15)} \label{sec:M15}
 
+Orders results for local and global leaderboards.
+
 \subsection{Module}
 
 \textbf{Module} OrderingPolicy (library).
@@ -2443,6 +2639,8 @@ change revises it (AC5 in the MG).
 None.
 
 \subsection{Syntax}
+
+The exported operation accepts the ranking keys for a set of results.
 
 \subsubsection{Exported Constants}
 
@@ -2457,7 +2655,10 @@ None.
 
 \subsubsection{Exported Access Programs}
 
+Table~\ref{TblM15Access} lists the exported operations and their signatures.
+
 \begin{center}
+\begin{minipage}{\textwidth}
 \begin{tabularx}{\textwidth}{p{2.2cm} p{3.6cm} p{2.6cm} X}
 \toprule
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
@@ -2465,9 +2666,14 @@ None.
 order & $ks$: seq of RankKey & seq of $\mathbb{N}$ & - \\
 \bottomrule
 \end{tabularx}
+\captionof{table}{Exported Access Programs for M15}
+\label{TblM15Access}
+\end{minipage}
 \end{center}
 
 \subsection{Semantics}
+
+The returned order follows score, time, and completion timestamp.
 
 \subsubsection{State Variables}
 
