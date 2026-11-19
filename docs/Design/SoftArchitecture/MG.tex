@@ -37,8 +37,8 @@
 \newcommand{\uref}[1]{\mgabbr{uc}{UC}\ref{#1}}
 
 \newcounter{mnum}
-\newcommand{\mthemnum}{\mgabbr{module}{M}\themnum}
-\newcommand{\mref}[1]{\mgabbr{module}{M}\ref{#1}}
+\newcommand{\mthemnum}{M\themnum}
+\newcommand{\mref}[1]{\hyperref[#1]{M\ref*{#1}}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.75em}
 \begin{document}
@@ -79,7 +79,6 @@ The abbreviations and acronyms below are used throughout the guide.
   \hypertarget{mg-abbr:dag}{DAG} & Directed Acyclic Graph \\
   \hypertarget{mg-abbr:lc}{LC} & Likely Change (as listed in the
   \mgabbr{srs}{SRS})\\
-  \hypertarget{mg-abbr:module}{M} & Module \\
   \hypertarget{mg-abbr:mg}{MG} & Module Guide \\
   \hypertarget{mg-abbr:os}{OS} & Operating System\\
   \hypertarget{mg-abbr:requirement}{R} & Requirement\\
