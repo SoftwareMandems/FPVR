@@ -85,14 +85,18 @@ types used in this document are defined in Section~\ref{SecNotation}.
 
 The Module Interface Specification (MIS) defines the software interfaces
 for \progname{}, a first-person view (FPV) drone simulator. Players practise
-on virtual courses with a headset and controller. The Unity application
+on virtual courses with a virtual reality (VR) headset and a controller. The
+Unity application
 uses a backend service for accounts and scores. An optional artificial
 intelligence (AI) module provides post-flight feedback.
 
 The SRS defines the required
 behaviour \citep{SRS}. The Module Guide (MG) defines the architecture.
 The project repository contains both documents and the implementation
-\citep{FPVRRepository}.
+\citep{FPVRRepository}. Requirement identifiers such as FR-FLT-01 and
+NFR-INST-01 name functional requirements (FR) and nonfunctional requirements
+(NFR) in the SRS, and identifiers such as AC11 name anticipated changes (AC)
+in the MG.
 
 \section{Notation} \label{SecNotation}
 
@@ -178,8 +182,8 @@ A module that needs one of these types lists its owner under Uses.
 \toprule
 \textbf{Types} & \textbf{Owner} & \textbf{Meaning}\\
 \midrule
-ExecutionMode, View & \Mref{1} & Standalone or PC-based virtual reality (PCVR)
-mode, and a headset image\\
+ExecutionMode, View & \Mref{1} & Standalone or PC-based VR (PCVR) mode, and
+a headset image\\
 DeviceType, ControlInput, MenuInput, ControlMapping & \Mref{2} & The active
 controller, the four flight axes, a menu button and the axis bindings\\
 ActionKind, UserAction, Screen, CourseItem, HudView, ReviewView, BoardRow,
@@ -204,7 +208,7 @@ RankKey & \Mref{15} & The values used to order one result\\
 \label{TblTypes}
 \end{table}
 
-\section{Module Decomposition}
+\section{Module Decomposition} \label{SecMD}
 
 Table~\ref{TblMH} reproduces the module hierarchy from the MG.
 The modules are grouped by the kind of secret they hide. Hardware-hiding modules
@@ -289,7 +293,7 @@ None.
 
 \begin{itemize}
 \item ExecutionMode = $\{$STANDALONE, PCVR$\}$.
-\item View: a virtual reality (VR) image shown in the headset and defined by
+\item View: a VR image shown in the headset and defined by
   what it depicts.
 \end{itemize}
 
@@ -715,8 +719,8 @@ moves cursor within $[1, |\text{items}|]$, so the invariant is kept.
 
 Every show routine has the same form. For screen $x$ and the routine's
 arguments $d$ (a ScreenData value), it sets screen, items, cursor := $x$,
-itemsFor($x$), 1 and calls M1.showOverlay(draw($x$, $d$)). It raises $exc :=$
-(\noinit).
+itemsFor($x$), 1 and calls M1.showOverlay(draw($x$, $d$)). Each show routine
+raises $exc :=$ (\noinit).
 Table~\ref{TblM3Items} gives itemsFor, and the list below gives what each
 screen draws.
 
@@ -1116,7 +1120,7 @@ each entry.
 
 \subsubsection{Considerations}
 
-This module is the only top-level coordinator. It passes data between the
+This module is the only top-level coordinator and passes data between the
 other modules through their exported types, so none of the lower modules
 depends on another to obtain it.
 
@@ -1279,7 +1283,7 @@ None.
 
 \subsubsection{Considerations}
 
-Attempt progress is not part of a course. It belongs to \Mref{7}.
+Attempt progress is not part of a course and belongs to \Mref{7}.
 
 \newpage
 % ==========================================================
@@ -2017,7 +2021,8 @@ None.
 \subsubsection{Environment Variables}
 
 \begin{itemize}
-\item clock: $\mathbb{Z}$. The current time in whole seconds (UTC).
+\item clock: $\mathbb{Z}$. The current time in whole seconds, in Coordinated
+  Universal Time (UTC).
 \end{itemize}
 
 \subsubsection{Assumptions}
@@ -2504,8 +2509,7 @@ None.
 
 \begin{itemize}
 \item describe: AttemptSummary $\rightarrow \Sigma^*$. A description of $a.T$,
-  $a.k$ of $a.n$ checkpoints, $a.C$ and $a$.score. It contains no player
-  identity.
+  $a.k$ of $a.n$ checkpoints, $a.C$ and $a$.score, with no player identity.
 \item acceptable: ($\Sigma^* \cup \ \{\nul\}) \rightarrow \mathbb{B}$.
   acceptable($x$) is \True{} iff $x \neq \nul$ and $0 < |x| \leq$
   MAX\_FEEDBACK\_LENGTH.
@@ -2513,10 +2517,10 @@ None.
 
 \subsubsection{Considerations}
 
-This module is optional (FR-AI-01 to FR-AI-03). It keeps no state, as the MG's
-library classification requires, but it calls an external service, so unlike a
-pure library it has an environment variable. Its output is advisory and cannot
-change the measurements or the score.
+This module is optional (FR-AI-01 to FR-AI-03). The module keeps no state, as
+the MG's library classification requires, but it calls an external service, so
+unlike a pure library it has an environment variable. Its output is advisory
+and cannot change the measurements or the score.
 
 \newpage
 % ==========================================================
@@ -2552,7 +2556,7 @@ These values come from FR-PER-08 and FR-PER-09.
 
 \subsubsection{Exported Types}
 
-None. Rating is a shared type (Section 4).
+None. Rating is a shared type (Section~\ref{SecNotation}).
 
 \subsubsection{Exported Access Programs}
 
@@ -2858,8 +2862,8 @@ The answers below are written by the team as a whole and cover the MIS.
   checklist and the MIS format document gave us a concrete standard to check
   each module against, which made reviews faster and more consistent.
 
-  \item \textbf{What pain points did you experience during this deliverable, and how
-    did you resolve them?}
+  \item \textbf{What pain points did you experience during this deliverable,
+    and how did you resolve them?}
 
   \begin{itemize}
   \item \emph{Refining the modules while the MIS was being written.} The first
@@ -2869,7 +2873,8 @@ The answers below are written by the team as a whole and cover the MIS.
     Scoring Policy (\Mref{14}) and the Leaderboard Ordering Policy
     (\Mref{15}), so that each policy could change on its own. These changes
     had to be made in the MG first, and because the MIS depends on the MG's
-    module list, secrets and uses hierarchy, Section 5 and every affected
+    module list, secrets and uses hierarchy, Section~\ref{SecMD} and every
+    affected
     specification then had to be updated to match. We resolved this by
     updating the MG before the MIS and by checking the MG on the main branch
     again before each round of MIS edits.
@@ -2896,9 +2901,9 @@ The answers below are written by the team as a whole and cover the MIS.
     technology choices into Considerations where they were needed at all.
   \end{itemize}
 
-  \item \textbf{Which of your design decisions stemmed from speaking to your client(s)
-  or a proxy (e.g. your peers, stakeholders, potential users)? For those that
-  were not, why, and where did they come from?}
+  \item \textbf{Which of your design decisions stemmed from speaking to your
+  client(s) or a proxy (e.g. your peers, stakeholders, potential users)? For
+  those that were not, why, and where did they come from?}
 
   We spoke with potential users who fly drones about how the simulator should
   feel to control. Their input shaped the Controller Input Interface
@@ -2941,8 +2946,9 @@ The answers below are written by the team as a whole and cover the MIS.
   its access programs, and aimed for interfaces with high cohesion and low
   coupling. The behaviour each interface must provide and the module
   boundaries themselves came from the SRS and the MG.
-  \item \textbf{While creating the design doc, what parts of your other documents (e.g.
-  requirements, hazard analysis, etc), it any, needed to be changed, and why?}
+  \item \textbf{While creating the design doc, what parts of your other
+  documents (e.g. requirements, hazard analysis, etc), it any, needed to be
+  changed, and why?}
 
   Writing the MIS exposed gaps in the MG. Its anticipated changes did not
   cover every likely change in the SRS, so we linked each one to the SRS
@@ -2956,8 +2962,9 @@ The answers below are written by the team as a whole and cover the MIS.
   in the test traceability of the VnV Plan predate the final fifteen modules
   and still need to be updated to match.
 
-  \item \textbf{What are the limitations of your solution?  Put another way, given
-  unlimited resources, what could you do to make the project better? (LO\_ProbSolutions)}
+  \item \textbf{What are the limitations of your solution?  Put another way,
+  given unlimited resources, what could you do to make the project better?
+  (LO\_ProbSolutions)}
 
   The physical constants in \Mref{11} are initial estimates for a small racing
   drone and have not been validated against a real drone or measured flight
@@ -2974,10 +2981,10 @@ The answers below are written by the team as a whole and cover the MIS.
   unit tests from the state invariants. We would also run user studies to
   check that the control guide and recovery menus work for beginners.
 
-  \item \textbf{Give a brief overview of other design solutions you considered.  What
-  are the benefits and tradeoffs of those other designs compared with the chosen
-  design?  From all the potential options, why did you select the documented design?
-  (LO\_Explores)}
+  \item \textbf{Give a brief overview of other design solutions you
+  considered.  What are the benefits and tradeoffs of those other designs
+  compared with the chosen design?  From all the potential options, why did
+  you select the documented design? (LO\_Explores)}
 
   \begin{itemize}
   \item \emph{A stateful flight model.} Making \Mref{11} own the drone's
@@ -3016,9 +3023,12 @@ The answers below are written by the team as a whole and cover the MIS.
   could have changed to make the process go more smoothly for when an
   ``outsider'' completes some of the implementation?
 
-  Your reflection should be about concepts learned in your SE education, such as modular decomposition, cohesion, coupling, information hiding, etc.  You should critique the quality and utility of the specification you received.
+  Your reflection should be about concepts learned in your SE education, such
+  as modular decomposition, cohesion, coupling, information hiding, etc.  You
+  should critique the quality and utility of the specification you received.
 
-  You should create a PR for your implemented module.  A link to the PR should be part of your reflection.
+  You should create a PR for your implemented module.  A link to the PR should
+  be part of your reflection.
 
   \emph{To be completed after the cross-team implementation activity.}
 
