@@ -188,22 +188,6 @@ team members attended all four discussions.
 
 \section{Commits, Lines Added and Lines Deleted, Pull Requests}
 
-\wss{For each team member how many commits to the main branch have been made
-over the time period of interest.  The total is the total number of commits for
-the entire team since the beginning of the term.  The percentage is the
-percentage of the total commits made by each team member.}
-
-\wss{There are also columns for lines added and lines deleted to give a sense of
-the magnitude of each team member's contributions.  Note that these numbers can
-be somewhat misleading, as a team member who does refactoring may have high
-numbers in both columns, while a team member who implements a large new feature
-may have a high number of lines added, but few lines deleted.  As for all commit
-information, these numbers will be interpreted with care.}
-
-\wss{The pull requests column counts the number of pull requests created by each
-team member.  This is a measure of how many contributions were made in branches,
-which may not be reflected in the commit counts for the main branch.}
-
 \begin{table}[H]
 \centering
 \begin{tabular}{lllllll}
@@ -211,50 +195,42 @@ which may not be reflected in the commit counts for the main branch.}
 \textbf{Student} & \textbf{Commits} & \textbf{Percent} & \textbf{Lines Added} &
 \textbf{Lines Deleted} & \textbf{Pull Requests}\\
 \midrule
-Total & 335 & 100\% & 24,470 & 6,080 & 97\\
-Ibrahim Tariq & 84 & 25.07\% & 13,865 & 1,237 & 15\\
-John Cho & 72 & 21.49\% & 1,204 & 323 & 23\\
-Sankalpa Dhakal & 66 & 19.70\% & 3,068 & 2,109 & 22\\
-Vikram Chandar & 54 & 16.12\% & 1,937 & 286 & 18\\
-Arjun Sasidaran & 59 & 17.61\% & 4,396 & 2,125 & 19\\
+Total & 427 & 100\% & 30,273 & 7,412 & 119\\
+Ibrahim Tariq & 93 & 21.78\% & 13,978 & 1,276 & 22\\
+John Cho & 81 & 18.97\% & 1,302 & 346 & 25\\
+Sankalpa Dhakal & 88 & 20.61\% & 4,219 & 2,518 & 23\\
+Vikram Chandar & 83 & 19.44\% & 3,555 & 930 & 24\\
+Arjun Sasidaran & 82 & 19.20\% & 7,219 & 2,342 & 25\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.  For
-instance, if a team member has more commits to unmerged branches, these numbers
-can be provided here.  If multiple people contribute to a commit, git allows for
-multi-author commits.}
+We used \href{https://github.com/SoftwareMandems/FPVR/graphs/contributors}{GitHub
+Insights} to review repository contributions and verified the figures against
+GitHub pull request records and the main-branch snapshot
+\href{https://github.com/SoftwareMandems/FPVR/commit/b9ffc85a6e601fa25f906428faeb0058c3502530}{\texttt{b9ffc85}}.
+These figures cover September 17 through November 19, 2026. Each team-authored
+commit reachable from \texttt{main}, including merge commits, counts once
+under its primary author. Git author email determines attribution. Seven
+commits display the name \texttt{IbrahimT} but use Sankalpa's GitHub email
+(five) or Vikram's (two). The team total excludes 80 automated GitHub Actions
+commits. The coauthored reflection commits
+\href{https://github.com/SoftwareMandems/FPVR/commit/b18fd072e1377cc2e5fa4c36acc694fb758ccdb6}{\texttt{b18fd07}}
+and
+\href{https://github.com/SoftwareMandems/FPVR/commit/31efc15f7c197ef68895da722466d494bc65d86d}{\texttt{31efc15}}
+are counted under Arjun as primary author.
 
-These figures cover the repository's history from September 17 through
-November 15, 2026. Git counts use the main-branch snapshot
-\href{https://github.com/SoftwareMandems/FPVR/commit/efd515b7912094b806e53041e0e7dd937f3f969c}{\texttt{efd515b}}.
-Each reachable team-authored commit is counted once, including merge commits.
-Author email addresses map Git identities to the five team members. In
-particular, five commits display the name IbrahimT but use Sankalpa's GitHub
-email address and are attributed to Sankalpa.
+Line totals count text additions and deletions from non-merge commits.
+Ibrahim's
+\href{https://github.com/SoftwareMandems/FPVR/commit/2dfed2dc67f478f6178f4257a1a28202987b39cb}{initial repository import}
+accounts for 11,354 of his 13,978 added lines (81.23\%), mostly course templates
+and repository support files. He added 2,624 lines in subsequent commits.
 
-Ibrahim's 13,865 added lines include 11,354 from the
-\href{https://github.com/SoftwareMandems/FPVR/commit/2dfed2dc67f478f6178f4257a1a28202987b39cb}{initial repository commit},
-which imported course document templates, checklists, LaTeX styles, and
-repository support files. These setup files account for 81.89\% of his added
-lines. His subsequent commits added 2,511 lines. This initial import accounts
-for most of the difference between his raw line total and those of his teammates.
-
-Line totals use Git's text-file additions and deletions from non-merge commit
-diffs. Binary files have no line counts, and merge commits contribute to the
-commit totals without repeating their merged line changes. The team total is
-335 commits. GitHub Actions accounts for 59 additional automated commits.
-Rounded percentages sum to 99.99\%.
-
-Pull request counts include all 97 team-authored pull requests, across open,
-merged, and closed states, captured on November 15 before creating this
-report's six pull requests. Counts by member include 1, 4, 4, 0, and 3 open
-pull requests, respectively, in the table's member order. Their unmerged
-branch commits are outside the main-branch figures. The joint reflection
-commit \href{https://github.com/SoftwareMandems/FPVR/commit/b18fd072e1377cc2e5fa4c36acc694fb758ccdb6}{\texttt{b18fd07}}
-credits Vikram as a coauthor and is counted once under its primary author,
-Arjun.
+The 119 team-authored pull requests include 111 merged, four open, and four
+closed without merging. Ibrahim authored one of the open pull requests and
+Arjun authored three. Commits found only on unmerged branches are outside the
+\texttt{main} figures. The pull request count includes the six earlier
+productivity report pull requests.
 
 \section{Issue Tracker}
 
