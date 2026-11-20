@@ -274,9 +274,16 @@ closed and contribute to Ibrahim's closed assignment count.
 
 \section{CICD via GitHub Actions}
 
-\wss{Say how CICD technology is used and will be used in your project.}
+The repository's
+\href{https://github.com/SoftwareMandems/FPVR/blob/main/.github/workflows/latex-pages.yml}{default documentation workflow}
+checks LaTeX builds on relevant pull requests and publishes PDFs from
+\texttt{main} to GitHub Pages.
 
-\wss{Provide links to your CICD yaml files}
+As implementation progresses, we plan to add Unity build verification and
+automated unit tests to the pull request process, starting with checks that
+run reliably on GitHub Actions within the available resources. Tests that
+need the Quest headset or a physical controller will run on the target
+hardware.
 
 \section{Custom Documents (CDs)}
 
