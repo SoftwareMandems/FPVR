@@ -31,20 +31,23 @@ a Meta Quest headset while receiving controller inputs that drive the simulated
 drone. The prototype initially appeared only on the monitor and received no
 Quest controller input. We enabled Unity's OpenXR loader and Quest controller
 profiles, then verified headset rendering, head tracking, and thumbstick and
-trigger input over USB Quest Link.
+trigger input with the simulation running on a PC over USB Quest Link.
 \href{https://github.com/SoftwareMandems/FPVR-Game/pull/12}{The Quest Link
 integration pull request} records these results.
 
 During the demo, we will launch the Unity training scene, show how the drone
 responds to Quest controller input on the gate course, and reset the run.
 We will show desktop keyboard or gamepad controls as a fallback for headset or
-controller integration problems. Using supported controllers lets us demonstrate
-basic flight while a custom radio link remains under investigation. We started
-with a configurable flight model so we can tune the drone's response, and the
-prototype lets us disable costly rendering effects if frame rate drops. The
-remaining work includes correcting the
-\href{https://github.com/SoftwareMandems/FPVR-Game/issues/13}{known control
-mapping issue} and measuring frame rate and input latency on the target
+controller integration problems. The target headset is the Quest 3S. Standalone
+operation and the supported pairings with Quest motion controllers and
+Xbox-compatible gamepads still need validation. Dedicated FPV radio transmitter
+support is a stretch goal.
+
+The configurable flight model lets us tune the drone's response. We can reduce
+rendering cost during the run by turning off screen-space ambient occlusion.
+Remaining checks include verifying that the
+\href{https://github.com/SoftwareMandems/FPVR-Game/issues/13}{right stick
+controls drone tilt} and measuring frame rate and input latency on the target
 hardware.
 
 \section{Team Meeting Attendance}
