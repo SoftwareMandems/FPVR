@@ -18,30 +18,39 @@
 
 \maketitle
 
-This document summarizes the contributions of each team member up to the POC
-Demo.  The time period of interest is the time between the beginning of the term
-and the POC demo.
-
-\wss{Please do not delete sections or modify the table formats.  Standardization
-helps the instructors and TAs to review these documents. You may add sections to
-the report.}
-
-\wss{Remove the instructor guidelines/comments in the final version.}
-
-\wss{Fill in the requested information, like project url, TA name, supervisor name, etc.}
+This report summarizes team contributions in preparation for the proof of
+concept (POC) demo. Attendance figures cover the start of the term through
+November 15, 2026. Repository metrics use the November 19 snapshot of the
+\href{https://github.com/SoftwareMandems/FPVR}{FPVR repository} taken before
+the pull request for this report update.
 
 \section{Demo Plans}
 
-\wss{What is your feasibility risk?}
+The main feasibility risk is whether Unity can render a first-person view in
+a Meta Quest headset while receiving controller inputs that drive the simulated
+drone. The prototype initially appeared only on the monitor and received no
+Quest controller input. We enabled Unity's OpenXR loader and Quest controller
+profiles, then verified headset rendering, head tracking, and thumbstick and
+trigger input with the simulation running on a PC over USB Quest Link.
+\href{https://github.com/SoftwareMandems/FPVR-Game/pull/12}{The Quest Link
+integration pull request} records these results.
 
-\wss{What will you be demonstrating}
+During the demo, we will launch the Unity training scene, show how the drone
+responds to Quest controller input on the gate course, and reset the run.
+We will show desktop keyboard or gamepad controls as a fallback for headset or
+controller integration problems. The target headset is the Quest 3S. Standalone
+operation and the supported pairings with Quest motion controllers and
+Xbox-compatible gamepads still need validation. Dedicated FPV radio transmitter
+support is a stretch goal.
+
+The configurable flight model lets us tune the drone's response. We can reduce
+rendering cost during the run by turning off screen-space ambient occlusion.
+Remaining checks include verifying that the
+\href{https://github.com/SoftwareMandems/FPVR-Game/issues/13}{right stick
+controls drone tilt} and measuring frame rate and input latency on the target
+hardware.
 
 \section{Team Meeting Attendance}
-
-\wss{For each team member how many team meetings have they attended over the
-time period of interest.  This number should be determined from the meeting
-issues in the team's repo.  The first entry in the table should be the total
-number of team meetings held by the team.}
 
 \begin{table}[H]
 \centering
@@ -52,31 +61,24 @@ number of team meetings held by the team.}
 Total & 3\\
 Ibrahim Tariq & 3\\
 John Cho & 3\\
-Sankalpa Dhakal & 3\\
+Sankalpa Chhetri Dhakal & 3\\
 Vikram Chandar & 3\\
 Arjun Sasidaran & 3\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
-
-As of November 15, 2026, we held three team meetings, on October 8,
-October 19, and November 2. Since October 19, team meetings have followed an
-every-other-Monday schedule, from 3:30 pm to 4:30 pm. All five team members
-attended every meeting. The closed meeting records are
-\href{https://github.com/SoftwareMandems/FPVR/issues/75}{\#75},
-\href{https://github.com/SoftwareMandems/FPVR/issues/283}{\#283}, and
-\href{https://github.com/SoftwareMandems/FPVR/issues/284}{\#284}.
+The team reported full attendance at three meetings. After the Thursday
+meeting on October 8, the team moved to alternate Mondays from 3:30 to
+4:30~p.m. The checklists for
+\href{https://github.com/SoftwareMandems/FPVR/issues/283}{October 19} and
+\href{https://github.com/SoftwareMandems/FPVR/issues/284}{November 2}
+confirm all five attendees. The
+\href{https://github.com/SoftwareMandems/FPVR/issues/75}{October 8} checklist
+was left blank, so attendance for that meeting uses the
+\href{https://github.com/SoftwareMandems/FPVR/pull/285}{team's attendance report}.
 
 \section{Supervisor/Stakeholder Meeting Attendance}
-
-\wss{For each team member how many supervisor/stakeholder team meetings have
-they attended over the time period of interest.  This number should be determined
-from the supervisor meeting issues in the team's repo.  The first entry in the
-table should be the total number of supervisor and team meetings held by the
-team.  If there is no supervisor, there will usually be meetings with
-stakeholders (potential users) that can serve a similar purpose.}
 
 \noindent \textbf{Supervisor's Name: } Dr. Douglas Down
 
@@ -89,34 +91,21 @@ stakeholders (potential users) that can serve a similar purpose.}
 Total & 2\\
 Ibrahim Tariq & 2\\
 John Cho & 2\\
-Sankalpa Dhakal & 2\\
+Sankalpa Chhetri Dhakal & 2\\
 Vikram Chandar & 2\\
 Arjun Sasidaran & 2\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
-
-Supervisor meetings are scheduled every other Wednesday beginning October 7,
-2026. As of November 15, two meetings were held, and all five team members
-attended both. The third planned meeting was rescheduled because of a lack of
-updates and scheduling conflicts. The two completed meetings are recorded in
-\href{https://github.com/SoftwareMandems/FPVR/issues/73}{\#73} and
-\href{https://github.com/SoftwareMandems/FPVR/issues/151}{\#151}.
+The team planned to meet with Dr.\ Down every other Wednesday. All five
+members attended the two meetings held by the attendance cutoff, on
+\href{https://github.com/SoftwareMandems/FPVR/issues/73}{October 7} and
+\href{https://github.com/SoftwareMandems/FPVR/issues/151}{October 28}.
+The team rescheduled a third meeting because of scheduling conflicts and a
+lack of updates.
 
 \section{Lecture Attendance}
-
-\wss{For each team member how many lectures have they attended over the time
-period of interest.  This number should be determined from the lecture issues in
-the team's repo. You can find the number of lectures in the time period of
-interest by looking at the
-\href{https://calendar.google.com/calendar/u/0/embed?src=rnboqiaki1k2la7rpu3bn0um58@group.calendar.google.com&ctz=America/Toronto}
-{Google calendar} for the capstone course. The first entry in the
-table should be the total number of lectures held for the class during the period of interest.}
-
-\wss{NOTE: There will be approximately 13 lectures between the start of class
-and the POC demos}
 
 \begin{table}[H]
 \centering
@@ -127,24 +116,18 @@ and the POC demos}
 Total & 11\\
 Ibrahim Tariq & 8\\
 John Cho & 10\\
-Sankalpa Dhakal & 9\\
+Sankalpa Chhetri Dhakal & 9\\
 Vikram Chandar & 9\\
 Arjun Sasidaran & 8\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the lecture attendance can be provided here.}
-
-Eleven lectures had been held as of November 15, 2026. Although individual
-attendance varied, every lecture was attended by several team members so that the
-group received the relevant course information.
+The \href{https://calendar.google.com/calendar/u/0/embed?src=rnboqiaki1k2la7rpu3bn0um58@group.calendar.google.com&ctz=America/Toronto}{course calendar}
+lists 11 software engineering lectures through November 15. The individual
+counts come from the \href{https://github.com/SoftwareMandems/FPVR/pull/287}{team's lecture attendance report}.
 
 \section{TA Document Discussion Attendance}
-
-\wss{For each team member how many of the informal document discussion meetings
-with the TA were attended over the time period of interest. The first row is the
-total number of discussion meetings scheduled by the TA with the team.}
 
 \noindent \textbf{TA's Name:} Rebecca Di Filippo
 
@@ -157,35 +140,24 @@ total number of discussion meetings scheduled by the TA with the team.}
 Total & 4\\
 Ibrahim Tariq & 4\\
 John Cho & 4\\
-Sankalpa Dhakal & 4\\
+Sankalpa Chhetri Dhakal & 4\\
 Vikram Chandar & 4\\
 Arjun Sasidaran & 4\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the attendance can be provided here.}
-
-Four TA document discussions had been held as of November 15, 2026. All five
-team members attended all four discussions.
+The team reported that all five members attended four TA discussions. The
+\href{https://github.com/SoftwareMandems/FPVR/issues/3}{September record}
+lists all five members, and the
+\href{https://github.com/SoftwareMandems/FPVR/issues/83}{October 28} and
+\href{https://github.com/SoftwareMandems/FPVR/issues/84}{November 11}
+checklists confirm attendance. The
+\href{https://github.com/SoftwareMandems/FPVR/issues/76}{October 7} checklist
+was left blank, so that entry uses the
+\href{https://github.com/SoftwareMandems/FPVR/pull/288}{team's attendance report}.
 
 \section{Commits, Lines Added and Lines Deleted, Pull Requests}
-
-\wss{For each team member how many commits to the main branch have been made
-over the time period of interest.  The total is the total number of commits for
-the entire team since the beginning of the term.  The percentage is the
-percentage of the total commits made by each team member.}
-
-\wss{There are also columns for lines added and lines deleted to give a sense of
-the magnitude of each team member's contributions.  Note that these numbers can
-be somewhat misleading, as a team member who does refactoring may have high
-numbers in both columns, while a team member who implements a large new feature
-may have a high number of lines added, but few lines deleted.  As for all commit
-information, these numbers will be interpreted with care.}
-
-\wss{The pull requests column counts the number of pull requests created by each
-team member.  This is a measure of how many contributions were made in branches,
-which may not be reflected in the commit counts for the main branch.}
 
 \begin{table}[H]
 \centering
@@ -194,56 +166,46 @@ which may not be reflected in the commit counts for the main branch.}
 \textbf{Student} & \textbf{Commits} & \textbf{Percent} & \textbf{Lines Added} &
 \textbf{Lines Deleted} & \textbf{Pull Requests}\\
 \midrule
-Total & 335 & 100\% & 24,470 & 6,080 & 97\\
-Ibrahim Tariq & 84 & 25.07\% & 13,865 & 1,237 & 15\\
-John Cho & 72 & 21.49\% & 1,204 & 323 & 23\\
-Sankalpa Dhakal & 66 & 19.70\% & 3,068 & 2,109 & 22\\
-Vikram Chandar & 54 & 16.12\% & 1,937 & 286 & 18\\
-Arjun Sasidaran & 59 & 17.61\% & 4,396 & 2,125 & 19\\
+Total & 427 & 100\% & 30,273 & 7,412 & 119\\
+Ibrahim Tariq & 93 & 21.78\% & 13,978 & 1,276 & 22\\
+John Cho & 81 & 18.97\% & 1,302 & 346 & 25\\
+Sankalpa Chhetri Dhakal & 88 & 20.61\% & 4,219 & 2,518 & 23\\
+Vikram Chandar & 83 & 19.44\% & 3,555 & 930 & 24\\
+Arjun Sasidaran & 82 & 19.20\% & 7,219 & 2,342 & 25\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.  For
-instance, if a team member has more commits to unmerged branches, these numbers
-can be provided here.  If multiple people contribute to a commit, git allows for
-multi-author commits.}
+We reviewed contributions in
+\href{https://github.com/SoftwareMandems/FPVR/graphs/contributors}{GitHub Insights}.
+Its Contributors graph excludes merge commits and credits coauthors. For this
+table we counted each team-authored commit reachable from \texttt{main} once
+under its primary author, including merge commits. The Git figures cover the
+initial repository setup on September 17, 2026, through the November 19
+snapshot at
+\href{https://github.com/SoftwareMandems/FPVR/commit/b9ffc85a6e601fa25f906428faeb0058c3502530}{\texttt{b9ffc85}}. Git author email determines attribution. Seven
+commits display the name \texttt{IbrahimT} but use Sankalpa's GitHub email
+(five) or Vikram's (two). The team total excludes 80 automated GitHub Actions
+commits. The coauthored reflection commits
+\href{https://github.com/SoftwareMandems/FPVR/commit/b18fd072e1377cc2e5fa4c36acc694fb758ccdb6}{\texttt{b18fd07}}
+and
+\href{https://github.com/SoftwareMandems/FPVR/commit/31efc15f7c197ef68895da722466d494bc65d86d}{\texttt{31efc15}}
+are counted under Arjun as primary author.
 
-These figures cover the repository's history from September 17 through
-November 15, 2026. Git counts use the main-branch snapshot
-\href{https://github.com/SoftwareMandems/FPVR/commit/efd515b7912094b806e53041e0e7dd937f3f969c}{\texttt{efd515b}}.
-Each reachable team-authored commit is counted once, including merge commits.
-Author email addresses map Git identities to the five team members. In
-particular, five commits display the name IbrahimT but use Sankalpa's GitHub
-email address and are attributed to Sankalpa.
+Line totals count text additions and deletions from non-merge commits.
+Ibrahim's
+\href{https://github.com/SoftwareMandems/FPVR/commit/2dfed2dc67f478f6178f4257a1a28202987b39cb}{initial repository import}
+accounts for 11,354 of his 13,978 added lines (81.23\%), mostly course templates
+and repository support files. He added 2,624 lines in subsequent commits.
 
-Ibrahim's 13,865 added lines include 11,354 from the
-\href{https://github.com/SoftwareMandems/FPVR/commit/2dfed2dc67f478f6178f4257a1a28202987b39cb}{initial repository commit},
-which imported course document templates, checklists, LaTeX styles, and
-repository support files. These setup files account for 81.89\% of his added
-lines. His subsequent commits added 2,511 lines. This initial import accounts
-for most of the difference between his raw line total and those of his teammates.
-
-Line totals use Git's text-file additions and deletions from non-merge commit
-diffs. Binary files have no line counts, and merge commits contribute to the
-commit totals without repeating their merged line changes. The team total is
-335 commits. GitHub Actions accounts for 59 additional automated commits.
-Rounded percentages sum to 99.99\%.
-
-Pull request counts include all 97 team-authored pull requests, across open,
-merged, and closed states, captured on November 15 before creating this
-report's six pull requests. Counts by member include 1, 4, 4, 0, and 3 open
-pull requests, respectively, in the table's member order. Their unmerged
-branch commits are outside the main-branch figures. The joint reflection
-commit \href{https://github.com/SoftwareMandems/FPVR/commit/b18fd072e1377cc2e5fa4c36acc694fb758ccdb6}{\texttt{b18fd07}}
-credits Vikram as a coauthor and is counted once under its primary author,
-Arjun.
+The \href{https://github.com/SoftwareMandems/FPVR/pulls?q=is\%3Apr}{GitHub
+pull request records} include 119 team-authored pull requests at the cutoff:
+111 merged, four open, and four closed without merging. Ibrahim authored one of the open pull requests and
+Arjun authored three. Commits found only on unmerged branches are outside the
+\texttt{main} figures. The pull request count includes the six earlier
+productivity report pull requests.
 
 \section{Issue Tracker}
-
-\wss{For each team member how many issues have they authored (including open and
-closed issues (O+C)) and how many have they been assigned (only counting closed
-issues (C only)) over the time period of interest.}
 
 \begin{table}[H]
 \centering
@@ -251,75 +213,126 @@ issues (C only)) over the time period of interest.}
 \toprule
 \textbf{Student} & \textbf{Authored (O+C)} & \textbf{Assigned (C only)}\\
 \midrule
-Ibrahim Tariq & 37 & 18 \\
-John Cho & 52 & 21 \\
-Sankalpa Dhakal & 12 & 23 \\
-Vikram Chandar & 7 & 23 \\
-Arjun Sasidaran & 44 & 20 \\
+Ibrahim Tariq & 55 & 26 \\
+John Cho & 52 & 26 \\
+Sankalpa Chhetri Dhakal & 12 & 28 \\
+Vikram Chandar & 11 & 31 \\
+Arjun Sasidaran & 44 & 22 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.}
-
-Counts use a November 15, 2026 snapshot of the
-\href{https://github.com/SoftwareMandems/FPVR/issues}{GitHub issue tracker}.
-Authored counts include open and closed issues created by each listed GitHub
-account. Assigned counts include issues closed at the snapshot and assigned
-to that member. An issue with multiple assignees counts for each assignee.
-Pull requests are counted separately in Section 6.
-
-The account mapping, in table order, is
+We used \href{https://github.com/SoftwareMandems/FPVR/pulse}{GitHub Insights
+Pulse} to review issue activity and the
+\href{https://github.com/SoftwareMandems/FPVR/issues}{GitHub issue tracker}
+to count authorship and assignments as of November 19, 2026. Authored counts
+include open and closed issues created by each member. Assigned counts include
+issues that were closed and assigned to that member at the snapshot, including
+issues opened by external reviewers. An issue with multiple assignees counts
+for each assignee. Pull requests are counted in Section~6. The GitHub
+accounts, in table order, are
 \href{https://github.com/IbrahimT04}{IbrahimT04},
 \href{https://github.com/chosterto}{chosterto},
 \href{https://github.com/xSankalpaD}{xSankalpaD},
 \href{https://github.com/vikramC04}{vikramC04}, and
 \href{https://github.com/ArjunSasidaran}{ArjunSasidaran}.
-The snapshot includes the two closed team-meeting records
-\href{https://github.com/SoftwareMandems/FPVR/issues/283}{\#283} and
-\href{https://github.com/SoftwareMandems/FPVR/issues/284}{\#284}.
-Issues created by external peer reviewers contribute to a member's assigned
-count when closed and assigned to that member. The six section issues
+
+Since the November 15 snapshot, Ibrahim opened 18 issues to track TA feedback
+on the SRS and Hazard Analysis, and Vikram opened four issues covering the
+Design Thinking slides, the backend module, PDF compilation, and module links.
+The six earlier productivity report issues,
 \href{https://github.com/SoftwareMandems/FPVR/issues/264}{\#264} through
-\href{https://github.com/SoftwareMandems/FPVR/issues/269}{\#269} are open at
-this snapshot and contribute to authored counts.
+\href{https://github.com/SoftwareMandems/FPVR/issues/269}{\#269}, are now
+closed and contribute to Ibrahim's closed assignment count.
 
 \section{CICD via GitHub Actions}
 
-\wss{Say how CICD technology is used and will be used in your project.}
+The \href{https://github.com/SoftwareMandems/FPVR/blob/main/.github/workflows/latex-pages.yml}{documentation workflow}
+builds affected documents when a pull request to \texttt{main} changes
+documentation, references, or build files. On a matching push to
+\texttt{main}, it commits updated PDFs and publishes the documentation on
+GitHub Pages. The workflow also supports manual runs.
 
-\wss{Provide links to your CICD yaml files}
+As implementation progresses, we plan to add Unity build verification and
+automated unit tests to the pull request process, starting with checks that
+run reliably on GitHub Actions within the available resources. Tests that
+need the Quest headset or a physical controller will run on the target
+hardware.
 
 \section{Custom Documents (CDs)}
 
-\wss{What is the plan (as documented in TeamComposition.csv) for the team's
-CDs?  Should the CDs be modified now that the team knows more about the
-project?}
+FPVR's two custom documents are the \textbf{Design Thinking Report} and the
+\textbf{Usability Report}. The \href{https://softwaremandems.github.io/FPVR/CDs/DesignThinking/DesignThinking.pdf}{Design Thinking Report}
+uses interview findings and empathy maps to explain what beginner pilots need.
+It compares two paper prototypes: guided lessons and obstacle courses of
+increasing difficulty. The slides identify questions for direct user testing,
+including whether learners understand the lesson objectives.
+
+The Usability Report will document representative users completing predefined
+simulator tasks and answering structured survey questions. Task results, survey ratings, and
+written feedback will help identify improvements to the controller guide,
+navigation, training tasks, and post-flight feedback. Both documents still
+serve the project's goals, so we plan to keep them and use what we learn from
+the prototype to refine the usability tasks.
 
 \section{Team Charter Trigger Items}
 
-\wss{Provide a summary of the quantified triggers identified in the team's
-charter.}
+The
+\href{https://github.com/SoftwareMandems/FPVR/blob/b9ffc85a6e601fa25f906428faeb0058c3502530/docs/DevelopmentPlan/DevelopmentPlan.tex#L568-L615}{Team Charter}
+expects each member to attend at least 90\% of scheduled team and supervisor
+meetings, arrive on time, and give advance notice in Discord when possible.
+The charter calls for a check-in after more than 48 hours without
+communication on weekdays. Repeated absences or lateness without notice,
+repeated missed deadlines without notice, and consistently incomplete work
+also trigger a discussion.
 
-\wss{Provide a list of any violations of the triggers.  If the team wishes, the
-violations can be summarized on aggregate, instead of naming specific team
-members.}
+Based on the team's attendance report, each member attended all three team
+meetings and both supervisor meetings, meeting the 90\% threshold. The
+available records do not consistently capture arrival times, Discord response
+times, or changes to internal deadlines, so those triggers could not be
+assessed.
 
-\wss{Provide a plan to address the violations.  This could include revising the
-triggers, if they are found to be too weak, strong or ambiguous.}
+The charter also calls for at least one teammate to review each pull request
+before merge. Of the 111 merged pull requests, 104 had a teammate review
+recorded on GitHub by the time they were merged. Seven, including
+\href{https://github.com/SoftwareMandems/FPVR/pull/314}{\#314}, had no
+recorded review. We will record a teammate's review on GitHub before merging
+future pull requests.
+
+For future check-ins, we will record agreed deadlines and changes in GitHub
+and discuss recurring problems in team meetings. If a trigger is reached, we
+will first check in directly to identify the blocker. If it continues, the
+team can redistribute work and involve the TA, supervisor, or instructor as
+needed. We propose keeping the current thresholds and reviewing them after
+we have more complete records.
 
 \section{Additional Productivity Metrics}
 
-\wss{If your team has additional metrics of productivity, please feel free to
-add them to this report.  If not, please explicitly state that there are no additional
-metrics.}
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Student} & \textbf{Pull Requests Reviewed}\\
+\midrule
+Total & 125\\
+Ibrahim Tariq & 24\\
+John Cho & 14\\
+Sankalpa Chhetri Dhakal & 30\\
+Vikram Chandar & 45\\
+Arjun Sasidaran & 12\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\wss{Additional metrics can include things like code reviews done, pull requests
-created, count of joining meetings late, count of number of times contributions
-had to be corrected, number of internal deadlines missed, test cases written, etc.}
+As of November 19, 2026, the team had recorded 125 peer reviews across 107
+pull requests in the
+\href{https://github.com/SoftwareMandems/FPVR/pulls}{FPVR repository}.
+These reviews include documentation and repository tooling changes.
 
-\wss{We are looking for data on these metrics, not just a list of additional
-metrics the team is planning on tracking.  However, if all you have is a plan,
-please share it here.}
+We counted each team member once per pull request on which they submitted a
+GitHub review of a teammate's changes. Approvals, change requests, and
+comments submitted as formal reviews qualify. Self-reviews and standalone
+discussion comments are excluded. A single pull request can count for
+multiple reviewers.
 
 \end{document}
