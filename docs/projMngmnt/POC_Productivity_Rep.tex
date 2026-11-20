@@ -247,10 +247,11 @@ closed and contribute to Ibrahim's closed assignment count.
 
 \section{CICD via GitHub Actions}
 
-The repository's
-\href{https://github.com/SoftwareMandems/FPVR/blob/main/.github/workflows/latex-pages.yml}{default documentation workflow}
-checks LaTeX builds on relevant pull requests and publishes PDFs from
-\texttt{main} to GitHub Pages.
+The \href{https://github.com/SoftwareMandems/FPVR/blob/main/.github/workflows/latex-pages.yml}{documentation workflow}
+builds affected documents when a pull request to \texttt{main} changes
+documentation, references, or build files. On a matching push to
+\texttt{main}, it commits updated PDFs and publishes the documentation on
+GitHub Pages. The workflow also supports manual runs.
 
 As implementation progresses, we plan to add Unity build verification and
 automated unit tests to the pull request process, starting with checks that
